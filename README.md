@@ -1,14 +1,27 @@
-# COVID-19 <Project Name> - <platform>
+# COVID-19 BCO - backend
 
 ## Introduction
-This repository contains the <platform> implementation of the Dutch COVID-19 <project or app name>.
+This repository contains the backend implementation of the Dutch COVID-19 BCO.
 
-* The <platform> app is located in the repository you are currently viewing.
-* The <related> can be found here: <related repo>
+* The backend is located in the repository you are currently viewing.
+* The iOS app can be found here: ...
+* The Android app can be found here: ...
 
-## Local development setup
+## Overview
 
-Instructions for local development
+* console: implements a docker image that can be used to manually or periodically (e.g. cron) run commands
+* api: implements the API
+
+## Development
+
+To run a local development environment:
+
+- Create an `.env` file (you can create a copy of `.env.example` to get started). 
+- Run `bin/setup-dev`
+
+## Testing
+
+You can run the unit tests using `bin/phpunit`.
 
 ## Development & Contribution process
 
