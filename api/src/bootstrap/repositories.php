@@ -1,0 +1,16 @@
+<?php
+declare(strict_types=1);
+
+use App\Application\Repositories\ExampleRepository;
+use App\Application\Repositories\SimpleExampleRepository;
+
+use DI\ContainerBuilder;
+use function DI\autowire;
+use function DI\get;
+use function DI\env;
+
+return function (ContainerBuilder $containerBuilder) {
+    $containerBuilder->addDefinitions([
+        ExampleRepository::class => autowire(SimpleExampleRepository::class)
+    ]);
+};

@@ -1,0 +1,5 @@
+#!/bin/bash
+BASE_PATH=$(dirname $0)/..
+docker-compose stop
+docker-compose rm --force
+$BASE_PATH/bin/setup-dev

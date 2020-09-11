@@ -1,0 +1,9 @@
+#!/bin/bash
+BASE_PATH=$(dirname $0)/..
+
+echo "=====[ SETUP CONSOLE ]====="
+docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint composer console install
+
+echo
+echo "=====[ SETUP API ]====="
+docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint composer api install
