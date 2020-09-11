@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+    api:
+        build: api
+        environment:
+            APP_ENV: "development"
+        ports:
+            - 8080:80
+        volumes:
+            - ./api/src:/src
+
+    console:
+        build: console
+        environment:
+            APP_ENV: development
+        volumes:
+            - ./console/src:/src
