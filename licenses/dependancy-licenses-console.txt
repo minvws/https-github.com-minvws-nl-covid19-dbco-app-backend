@@ -1,0 +1,55 @@
+Name: __root__
+Version: No version set (parsed as 1.0.0)
+Licenses: none
+Dependencies:
+
+Name                                Version  License       
+doctrine/instantiator               1.3.1    MIT           
+monolog/monolog                     2.1.1    MIT           
+myclabs/deep-copy                   1.10.1   MIT           
+nikic/php-parser                    v4.9.1   BSD-3-Clause  
+opis/closure                        3.5.7    MIT           
+phar-io/manifest                    2.0.1    BSD-3-Clause  
+phar-io/version                     3.0.2    BSD-3-Clause  
+php-di/invoker                      2.1.0    MIT           
+php-di/php-di                       6.2.2    MIT           
+php-di/phpdoc-reader                2.1.1    MIT           
+phpdocumentor/reflection-common     2.2.0    MIT           
+phpdocumentor/reflection-docblock   5.2.1    MIT           
+phpdocumentor/type-resolver         1.3.0    MIT           
+phpspec/prophecy                    1.11.1   MIT           
+phpunit/php-code-coverage           9.1.8    BSD-3-Clause  
+phpunit/php-file-iterator           3.0.4    BSD-3-Clause  
+phpunit/php-invoker                 3.1.0    BSD-3-Clause  
+phpunit/php-text-template           2.0.2    BSD-3-Clause  
+phpunit/php-timer                   5.0.1    BSD-3-Clause  
+phpunit/phpunit                     9.3.8    BSD-3-Clause  
+psr/container                       1.0.0    MIT           
+psr/log                             1.1.3    MIT           
+sebastian/cli-parser                1.0.0    BSD-3-Clause  
+sebastian/code-unit                 1.0.5    BSD-3-Clause  
+sebastian/code-unit-reverse-lookup  2.0.2    BSD-3-Clause  
+sebastian/comparator                4.0.3    BSD-3-Clause  
+sebastian/complexity                2.0.0    BSD-3-Clause  
+sebastian/diff                      4.0.2    BSD-3-Clause  
+sebastian/environment               5.1.2    BSD-3-Clause  
+sebastian/exporter                  4.0.2    BSD-3-Clause  
+sebastian/global-state              5.0.0    BSD-3-Clause  
+sebastian/lines-of-code             1.0.0    BSD-3-Clause  
+sebastian/object-enumerator         4.0.2    BSD-3-Clause  
+sebastian/object-reflector          2.0.2    BSD-3-Clause  
+sebastian/recursion-context         4.0.2    BSD-3-Clause  
+sebastian/resource-operations       3.0.2    BSD-3-Clause  
+sebastian/type                      2.2.1    BSD-3-Clause  
+sebastian/version                   3.0.1    BSD-3-Clause  
+symfony/console                     v5.1.5   MIT           
+symfony/polyfill-ctype              v1.18.1  MIT           
+symfony/polyfill-intl-grapheme      v1.18.1  MIT           
+symfony/polyfill-intl-normalizer    v1.18.1  MIT           
+symfony/polyfill-mbstring           v1.18.1  MIT           
+symfony/polyfill-php73              v1.18.1  MIT           
+symfony/polyfill-php80              v1.18.1  MIT           
+symfony/service-contracts           v2.2.0   MIT           
+symfony/string                      v5.1.5   MIT           
+theseer/tokenizer                   1.2.0    BSD-3-Clause  
+webmozart/assert                    1.9.1    MIT           
