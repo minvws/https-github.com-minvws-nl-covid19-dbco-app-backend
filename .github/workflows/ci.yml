@@ -11,10 +11,18 @@ jobs:
     - name: Build the stack
       run: docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml up -d
 
-    - name: Run phpunit console
+    - name: Console - Run composer
+      run: |
+        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer console install
+
+    - name: Api - Run composer
+      run: |
+        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer api install
+
+    - name: Console - Run phpunit Console
       run: |
         docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit console
 
-    - name: Run phpunit console
+    - name: Api - Run phpunit
       run: |
         docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit api
