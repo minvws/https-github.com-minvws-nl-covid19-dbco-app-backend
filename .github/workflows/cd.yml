@@ -1,6 +1,9 @@
 name: CD
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   push_to_registry:
@@ -9,7 +12,7 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
-      - name: Push to GitHub Packages
+      - name: Push Api container to GitHub Packages
         uses: docker/build-push-action@v1
         with:
           path: ./api
@@ -17,4 +20,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           repository: minvws/nl-covid19-dbco-app-backend-private/backend-api
+          tag_with_ref: true
+      - name: Push Console container to GitHub Packages
+        uses: docker/build-push-action@v1
+        with:
+          path: ./console
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: minvws/nl-covid19-dbco-app-backend-private/backend-console
           tag_with_ref: true
