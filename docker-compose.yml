@@ -1,18 +1,43 @@
 version: '3.7'
 
+volumes:
+    postgres-data:
+        driver: local
+
 services:
+    postgres:
+        image: postgres
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        ports:
+            - ${POSTGRES_PORT:-5432}:5432
+
     api:
         build: api
         environment:
             APP_ENV: "development"
+            DB_HOST: postgres
+            DB_DATABASE: postgres
+            DB_USERNAME: ${API_USERNAME}
+            DB_PASSWORD: ${API_PASSWORD}
         ports:
-            - 8080:80
+            - ${API_PORT:-8080}:80
         volumes:
             - ./api/src:/src
+        depends_on:
+            - postgres
 
     console:
         build: console
         environment:
             APP_ENV: development
+            DB_HOST: postgres
+            DB_DATABASE: postgres
+            DB_USERNAME: ${CONSOLE_USERNAME}
+            DB_PASSWORD: ${CONSOLE_PASSWORD}
         volumes:
             - ./console/src:/src
+        depends_on:
+            - postgres
