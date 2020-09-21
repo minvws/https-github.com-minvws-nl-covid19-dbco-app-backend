@@ -7,6 +7,8 @@ use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use App\Application\Helpers\RandomKeyGeneratorInterface;
+use App\Application\Helpers\RandomKeyGenerator;
 use function DI\autowire;
 
 return function (ContainerBuilder $containerBuilder) {
@@ -26,5 +28,12 @@ return function (ContainerBuilder $containerBuilder) {
             return $logger;
         },
         // add your actions, helpers etc. here that can't be auto-wired
-    ]);
+    ],
+    [
+        RandomKeyGeneratorInterface::class => function (ContainerInterface $c) {
+            $options = $c->get('settings')['randomKeyGenerator'];
+            return new RandomKeyGenerator($options);
+        }
+    ],
+    );
 };
