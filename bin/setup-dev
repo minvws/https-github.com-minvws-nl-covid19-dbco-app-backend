@@ -1,6 +1,18 @@
 #!/bin/bash
 BASE_PATH=$(dirname $0)/..
 
+echo "=====[ Start containers ]======================="
+docker-compose up -d
+sleep 5
+
+echo
+echo "=====[ Setup database ]========================="
+docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm psql --host=postgres --user=postgres < $BASE_PATH/install/tables.sql
+docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER api PASSWORD '\$API_PASSWORD'"\"
+docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER console PASSWORD '\$CONSOLE_PASSWORD'"\"
+docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm psql --host=postgres --user=postgres < $BASE_PATH/install/permissions.sql
+
+
 echo "=====[ SETUP CONSOLE ]====="
 docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint composer console install
 
