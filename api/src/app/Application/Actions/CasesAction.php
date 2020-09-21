@@ -3,25 +3,25 @@ declare(strict_types=1);
 
 namespace App\Application\Actions;
 
-use App\Application\Services\ExampleService;
+use App\Application\Services\CaseService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
-class ExampleAction extends Action
+class CasesAction extends Action
 {
-    protected ExampleService $exampleService;
+    protected CaseService $caseService;
 
     /**
      * @param LoggerInterface $logger
-     * @param PaddingGeneratorInterface $paddingGenerator
+     * @param CasesService\
      */
     public function __construct(
         LoggerInterface $logger,
-        ExampleService $caseService
+        CaseService $caseService
     )
     {
         parent::__construct($logger);
-        $this->exampleService = $caseService;
+        $this->caseService = $caseService;
     }
 
     /**
@@ -29,8 +29,8 @@ class ExampleAction extends Action
      */
     protected function action(): Response
     {
-        $example = $this->exampleService->example();
-        $this->response->getBody()->write(json_encode($example));            
+        $case = $this->caseService->create();
+        $this->response->getBody()->write(json_encode($case));
         return $this->response->withHeader('Content-Type', 'application/json');
     }
 }

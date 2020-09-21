@@ -13,7 +13,8 @@ return function (App $app) {
     });
 
     $app->get('/example', ExampleAction::class);
-    
+    $app->get('/cases', CasesAction::class);
+
     $app->get('/status', function (Request $request, Response $response) {
         return $response->withStatus(200);
     });
