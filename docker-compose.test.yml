@@ -1,3 +1,17 @@
 version: '3.7'
 
 # test overrides
+services:
+
+    postgres:
+        ports:
+            - ${POSTGRES_PORT:-5432}:5432
+    psql:
+        image: postgres
+        entrypoint: psql
+        environment:
+            PGPASSWORD: ${POSTGRES_PASSWORD}
+            API_PASSWORD: ${API_PASSWORD}
+            CONSOLE_PASSWORD: ${CONSOLE_PASSWORD}
+        depends_on:
+            - postgres

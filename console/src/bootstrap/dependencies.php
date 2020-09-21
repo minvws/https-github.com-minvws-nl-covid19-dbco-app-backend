@@ -22,26 +22,48 @@ use Psr\Log\LoggerInterface;
 use function DI\get;
 
 return function (ContainerBuilder $containerBuilder) {
-    $containerBuilder->addDefinitions([
-        LoggerInterface::class => function (ContainerInterface $c) {
-            $settings = $c->get('settings');
+    $containerBuilder->addDefinitions(
+        [
+            LoggerInterface::class => function (ContainerInterface $c) {
+                $settings = $c->get('settings');
 
-            $loggerSettings = $settings['logger'];
-            $logger = new Logger($loggerSettings['name']);
+                $loggerSettings = $settings['logger'];
+                $logger = new Logger($loggerSettings['name']);
 
-            $processor = new UidProcessor();
-            $logger->pushProcessor($processor);
+                $processor = new UidProcessor();
+                $logger->pushProcessor($processor);
 
-            $handler = new StreamHandler($loggerSettings['path'], $loggerSettings['level']);
-            $logger->pushHandler($handler);
+                $handler = new StreamHandler($loggerSettings['path'], $loggerSettings['level']);
+                $logger->pushHandler($handler);
 
-            return $logger;
-        },
-    ]);
-    
+                return $logger;
+            },
+        ],
+        [
+            'PDO' => function (ContainerInterface $c) {
+                $settings = $c->get('settings')['db'];
+
+                $host = $settings['host'];
+                $dbname = $settings['database'];
+                $username = $settings['username'];
+                $password = $settings['password'];
+                $driver = $settings['driver'];
+                $dsn = "$driver:host=$host;dbname=$dbname";
+                $pdo = new PDO($dsn, $username, $password);
+                $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                return $pdo;
+            },
+        ],
+    );
+
     $containerBuilder->addDefinitions([
         ExampleService::class =>
             autowire(ExampleService::class)
                 ->constructorParameter('logger', get(LoggerInterface::class)) // not really necessary
     ]);
+
+    $containerBuilder->addDefinitions([
+        TransactionManager::class => autowire(DbTransactionManager::class)
+    ]);
+
 };

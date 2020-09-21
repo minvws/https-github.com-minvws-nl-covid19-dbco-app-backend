@@ -1,6 +1,7 @@
 <?php
 namespace App\Application\Services;
 
+use App\Application\Managers\TransactionManager;
 use App\Application\Models\Example;
 use App\Application\Repositories\ExampleRepository;
 use Exception;
@@ -19,6 +20,11 @@ class ExampleService
     private LoggerInterface $logger;
 
     /**
+     * @var \App\Application\Managers\TransactionManager
+     */
+    private TransactionManager $transactionManager;
+
+    /**
      * Constructor.
      *
      * @param ExampleRepository $$exampleRepository
@@ -26,11 +32,13 @@ class ExampleService
      */
     public function __construct(
         ExampleRepository $exampleRepository,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        TransactionManager $transactionManager
     )
     {
         $this->exampleRepository = $exampleRepository;
         $this->logger = $logger;
+        $this->transactionManager = $transactionManager;
     }
 
     /**
@@ -43,11 +51,13 @@ class ExampleService
     public function example(): Example
     {
         $this->logger->debug('Run example code');
-        
-        $example = $this->exampleRepository->createExample();
-        // ...
-        $this->exampleRepository->markExampleAsPrepared($example);
+        return $this->transactionManager->run(function () {
 
-        return $example;
+            $example = $this->exampleRepository->createExample();
+            // ...
+            $this->exampleRepository->markExampleAsPrepared($example);
+
+            return $example;
+        });
     }
 }
