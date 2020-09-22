@@ -17,11 +17,11 @@ class ExampleAction extends Action
      */
     public function __construct(
         LoggerInterface $logger,
-        ExampleService $caseService
+        ExampleService $exampleService
     )
     {
         parent::__construct($logger);
-        $this->exampleService = $caseService;
+        $this->exampleService = $exampleService;
     }
 
     /**
