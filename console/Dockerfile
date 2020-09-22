@@ -7,6 +7,7 @@ RUN apt-get -qq update && \
     && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install zip && \
+    docker-php-ext-install pdo_pgsql && \
     docker-php-ext-install opcache
 
 # Install Composer and prestissimo globally for increased performance
