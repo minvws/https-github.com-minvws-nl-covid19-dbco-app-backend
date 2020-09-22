@@ -1,8 +1,11 @@
 <?php
-namespace App\Application\Models;
+namespace App\Application\DTO;
+
+use App\Application\Models\DbcoCase as DbcoCaseModel;
+use DateTimeInterface;
 
 /**
- * Case model.
+ * DbcoCase DTO.
  */
 class DbcoCase
 {
@@ -26,9 +29,9 @@ class DbcoCase
      * possible anymore to link the device to the case. Datetime is stored
      * in UTC.
      *
-     * @var \DateTimeImmutable
+     * @var string
      */
-    public \DateTimeImmutable $pairingCodeExpiresAt;
+    public string $pairingCodeExpiresAt;
 
     /**
      * DbcoCase constructor.
@@ -37,10 +40,12 @@ class DbcoCase
      * @param string $pairingCode
      * @param string $pairingCodeExpiresAt
      */
-    public function __construct(string $id, string $pairingCode, string $pairingCodeExpiresAt)
+    public function __construct(DbcoCaseModel $caseModel)
     {
-        $this->caseId = $id;
-        $this->pairingCode = $pairingCode;
-        $this->pairingCodeExpiresAt = new \DateTimeImmutable($pairingCodeExpiresAt);
+        $this->caseId = $caseModel->caseId;
+        $this->pairingCode = $caseModel->pairingCode;
+        $this->pairingCodeExpiresAt = $caseModel->pairingCodeExpiresAt
+            ->setTimezone(new \DateTimeZone('UTC'))
+            ->format('Y-m-d\TH:i:s\Z');
     }
 }
