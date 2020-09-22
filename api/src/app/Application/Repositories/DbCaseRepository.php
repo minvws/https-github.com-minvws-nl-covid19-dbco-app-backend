@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Application\Repositories;
 
+use App\Domain\DomainException\KeyAlreadyExistsException;
 use Psr\Container\ContainerInterface;
 use App\Application\Helpers\RandomKeyGenerator;
 use App\Application\Helpers\RandomKeyGeneratorInterface;
@@ -48,7 +49,7 @@ class DbCaseRepository implements CaseRepository
             $pairingCode = $this->randomKeyGenerator->generateToken();
             $attempts++;
             if ($this->maxKeyGenerationAttempts !== -1 && $attempts > $this->maxKeyGenerationAttempts) {
-                throw new Exception('Error creating an unique pairingCode');
+                throw new KeyAlreadyExistsException('Error creating an unique pairingCode');
             }
         } while ($this->pairingCodeExists($pairingCode));
 
@@ -68,7 +69,8 @@ class DbCaseRepository implements CaseRepository
             throw new Exception('Error prepairing case query');
         }
         $stmt->execute($row);
-        return new DbcoCase($row['case_id'], $row['pairing_code'], $row['pairing_code_expires_at']);
+        $id = (int) $this->connection->lastInsertId('dbco_case_id_seq');
+        return new DbcoCase($id, $row['case_id'], $row['pairing_code'], $row['pairing_code_expires_at']);
     }
 
     protected function pairingCodeExists(string $pairingCode): bool

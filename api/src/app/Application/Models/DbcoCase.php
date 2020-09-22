@@ -7,6 +7,13 @@ namespace App\Application\Models;
 class DbcoCase
 {
     /**
+     * Primary key
+     *
+     * @var int
+     */
+    public int $id;
+
+    /**
      * Case identifier from the GGD system
      *
      * @var string
@@ -37,9 +44,10 @@ class DbcoCase
      * @param string $pairingCode
      * @param string $pairingCodeExpiresAt
      */
-    public function __construct(string $id, string $pairingCode, string $pairingCodeExpiresAt)
+    public function __construct(int $id, string $caseId, string $pairingCode, string $pairingCodeExpiresAt)
     {
-        $this->caseId = $id;
+        $this->id = $id;
+        $this->caseId = $caseId;
         $this->pairingCode = $pairingCode;
         $this->pairingCodeExpiresAt = new \DateTimeImmutable($pairingCodeExpiresAt);
     }
