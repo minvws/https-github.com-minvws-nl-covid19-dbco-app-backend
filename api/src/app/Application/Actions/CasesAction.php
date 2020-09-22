@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Application\Actions;
 
+use App\Application\DTO\DbcoCase;
 use App\Application\Services\CaseService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
@@ -41,7 +42,7 @@ class CasesAction extends Action
 
 
         $case = $this->caseService->create($caseId);
-        $this->response->getBody()->write(json_encode($case));
+        $this->response->getBody()->write(json_encode(new DbcoCase($case)));
         return $this->response->withHeader('Content-Type', 'application/json');
     }
 }
