@@ -7,5 +7,5 @@ use App\Application\Models\DbcoCase;
 
 interface CaseRepository
 {
-    public function create(): DbcoCase;
+    public function create(string $caseId): DbcoCase;
 }

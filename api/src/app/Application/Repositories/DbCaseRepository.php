@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Application\Repositories;
 
+use Psr\Container\ContainerInterface;
 use App\Application\Helpers\RandomKeyGenerator;
 use App\Application\Helpers\RandomKeyGeneratorInterface;
 use App\Application\Models\DbcoCase;
@@ -21,10 +22,11 @@ class DbCaseRepository implements CaseRepository
     private int $maxKeyGenerationAttempts;
 
     /**
-     * Constructor.
+     * DbCaseRepository constructor.
      *
-     * @param PDO $connection The database connection
-     * @param RandomKeyGeneratorInterface $randomKeyGenerator
+     * @param \PDO $connection
+     * @param \App\Application\Helpers\RandomKeyGeneratorInterface $randomKeyGenerator
+     * @param int $maxKeyGenerationAttempts
      */
     public function __construct(PDO $connection, RandomKeyGeneratorInterface $randomKeyGenerator, int $maxKeyGenerationAttempts)
     {
@@ -39,62 +41,42 @@ class DbCaseRepository implements CaseRepository
      * @return DbcoCase
      * @throws Exception
      */
-    public function create(): DbcoCase
+    public function create(string $caseId): DbcoCase
     {
         $attempts = 0;
         do {
-            $caseId = $this->randomKeyGenerator->generateToken();
+            $pairingCode = $this->randomKeyGenerator->generateToken();
             $attempts++;
             if ($this->maxKeyGenerationAttempts !== -1 && $attempts > $this->maxKeyGenerationAttempts) {
-                throw new Exception('Error creating an unique case id');
+                throw new Exception('Error creating an unique pairingCode');
             }
-        } while ($this->caseIdExists($caseId));
-
-        do {
-            $linkCode = $this->randomKeyGenerator->generateToken();
-            $attempts++;
-            if ($this->maxKeyGenerationAttempts !== -1 && $attempts > $this->maxKeyGenerationAttempts) {
-                throw new Exception('Error creating an unique linkCode');
-            }
-        } while ($this->linkCodeExists($linkCode));
+        } while ($this->pairingCodeExists($pairingCode));
 
         $row = [
-            'id' =>  $caseId,
-            'link_code' =>  $linkCode,
-            'link_code_expires_at' => (new \DateTime('-1 hour', new \DateTimeZone('UTC')))->format(\DateTime::ATOM),
+            'case_id' =>  $caseId,
+            'pairing_code' =>  $pairingCode,
+            'pairing_code_expires_at' => (new \DateTime('+1 hour', new \DateTimeZone('UTC')))->format(\DateTime::ATOM),
         ];
 
-        $sql = "INSERT INTO case (id, link_code, link_code_expires_at) VALUES (
-                :id,
-                :link_code,
-                :link_code_expires_at)";
+        $sql = "INSERT INTO dbco_case (case_id, pairing_code, pairing_code_expires_at) VALUES (
+                :case_id,
+                :pairing_code,
+                :pairing_code_expires_at)";
 
         $stmt = $this->connection->prepare($sql);
         if ($stmt === false) {
-            throw new Exception('Error preparing case query');
+            throw new Exception('Error prepairing case query');
         }
         $stmt->execute($row);
-        return new DbcoCase($row['id'], $row['link_code'], $row['link_code_expires_at']);
+        return new DbcoCase($row['case_id'], $row['pairing_code'], $row['pairing_code_expires_at']);
     }
 
-    protected function caseIdExists(string $caseId): bool
+    protected function pairingCodeExists(string $pairingCode): bool
     {
         $values = [
-            'id' => $caseId,
+            'pairing_code' => $pairingCode,
         ];
-        $sql = "SELECT COUNT(id) as total FROM case WHERE id = :id";
-        $sth = $this->connection->prepare($sql);
-        $sth->execute($values);
-        $total = (int) $sth->fetchColumn(0);
-        return $total > 0;
-    }
-
-    protected function linkCodeExists(string $linkCode): bool
-    {
-        $values = [
-            'linkCode' => $linkCode,
-        ];
-        $sql = "SELECT COUNT(linkCode) as total FROM case WHERE linkCode = :linkCode";
+        $sql = "SELECT COUNT(pairing_code) as total FROM dbco_case WHERE pairing_code = :pairing_code";
         $sth = $this->connection->prepare($sql);
         $sth->execute($values);
         $total = (int) $sth->fetchColumn(0);

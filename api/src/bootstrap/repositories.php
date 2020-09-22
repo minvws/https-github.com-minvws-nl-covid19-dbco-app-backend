@@ -5,7 +5,8 @@ use App\Application\Repositories\ExampleRepository;
 use App\Application\Repositories\SimpleExampleRepository;
 use App\Application\Repositories\CaseRepository;
 use App\Application\Repositories\DbCaseRepository;
-use App\Application\Helpers\RandomKeyGeneratorInterface
+use App\Application\Helpers\RandomKeyGeneratorInterface;
+use Psr\Container\ContainerInterface;
 
 use DI\ContainerBuilder;
 use function DI\autowire;
@@ -23,6 +24,6 @@ return function (ContainerBuilder $containerBuilder) {
                 $c->get(RandomKeyGeneratorInterface::class),
                 $maxKeyGenerationAttempts
             );
-        },
+        }
     ]);
 };

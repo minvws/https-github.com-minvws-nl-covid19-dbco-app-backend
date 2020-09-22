@@ -40,11 +40,11 @@ class CaseService
      *
      * @throws Exception
      */
-    public function create(): DbcoCase
+    public function create(string $caseId): DbcoCase
     {
         $this->logger->debug('Create case');
         
-        $case = $this->caseRepository->create();
+        $case = $this->caseRepository->create($caseId);
 
         return $case;
     }

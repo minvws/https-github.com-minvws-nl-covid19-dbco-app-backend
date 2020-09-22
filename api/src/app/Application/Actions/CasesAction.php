@@ -29,7 +29,18 @@ class CasesAction extends Action
      */
     protected function action(): Response
     {
-        $case = $this->caseService->create();
+        $parsedBody = $this->request->getParsedBody();
+        $caseId = $parsedBody['caseId'] ?? null;
+        if ($caseId === null) {
+            $this->logger->error('No caseId found in the request data');
+            $this->response->getBody()->write(
+                json_encode(new ActionError(ActionError::BAD_REQUEST, 'No caseId found in the request data'))
+            );
+            return $this->response->withStatus(403)->withHeader('Content-Type', 'application/json');
+        }
+
+
+        $case = $this->caseService->create($caseId);
         $this->response->getBody()->write(json_encode($case));
         return $this->response->withHeader('Content-Type', 'application/json');
     }

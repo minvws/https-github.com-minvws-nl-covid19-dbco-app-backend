@@ -7,11 +7,11 @@ namespace App\Application\Models;
 class DbcoCase
 {
     /**
-     * Random generated case identifier.
+     * Case identifier from the GGD system
      *
      * @var string
      */
-    public string $id;
+    public string $caseId;
 
     /**
      * Random generated link code that can be communicated out-of-band
@@ -19,7 +19,7 @@ class DbcoCase
      *
      * @var string
      */
-    public string $linkCode;
+    public string $pairingCode;
 
     /**
      * Expiration date/time for the link code. After this time it is not
@@ -28,7 +28,7 @@ class DbcoCase
      *
      * @var \DateTime
      */
-    public \DateTimeImmutable $linkCodeExpiresAt;
+    public \DateTimeImmutable $pairingCodeExpiresAt;
 
     /**
      * Constructor.
@@ -36,10 +36,10 @@ class DbcoCase
      * @param string $id
      * @param string $status
      */
-    public function __construct(string $id, string $linkCode, string $linkCodeExpiresAt)
+    public function __construct(string $id, string $pairingCode, string $pairingCodeExpiresAt)
     {
-        $this->id = $id;
-        $this->status = $linkCode;
-        $this->linkCodeExpiresAt = new \DateTimeImmutable($linkCodeExpiresAt);
+        $this->caseId = $id;
+        $this->pairingCode = $pairingCode;
+        $this->pairingCodeExpiresAt = new \DateTimeImmutable($pairingCodeExpiresAt);
     }
 }
