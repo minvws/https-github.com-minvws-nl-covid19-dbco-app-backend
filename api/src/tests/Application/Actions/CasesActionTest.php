@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\Application\Actions;
 
 use Tests\TestCase;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 class CasesActionTest extends TestCase
