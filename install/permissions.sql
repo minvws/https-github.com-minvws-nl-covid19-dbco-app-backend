@@ -1,2 +1,3 @@
-GRANT SELECT, INSERT, UPDATE ON dbco_case TO api;
-GRANT USAGE ON SEQUENCE dbco_case_id_seq TO api;
+GRANT SELECT, INSERT, UPDATE ON "case" TO api;
+GRANT SELECT, INSERT, UPDATE, DELETE ON pairing TO api;
+GRANT USAGE ON SEQUENCE pairing_id_seq TO api;

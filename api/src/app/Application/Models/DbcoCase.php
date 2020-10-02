@@ -1,54 +1,44 @@
 <?php
 namespace App\Application\Models;
 
+use DateTimeImmutable;
+use DateTimeInterface;
+use Exception;
+use RuntimeException;
+
 /**
  * Case model.
  */
 class DbcoCase
 {
     /**
-     * Primary key
-     *
-     * @var int
-     */
-    public int $id;
-
-    /**
      * Case identifier from the GGD system
      *
      * @var string
      */
-    public string $caseId;
+    public string $id;
 
     /**
-     * Random generated link code that can be communicated out-of-band
-     * to the patient.
+     * Expiration date/time for the case. After this time it is not
+     * possible anymore to submit data for this case.
      *
-     * @var string
+     * @var DateTimeImmutable
      */
-    public string $pairingCode;
+    public DateTimeImmutable $expiresAt;
 
     /**
-     * Expiration date/time for the link code. After this time it is not
-     * possible anymore to link the device to the case. Datetime is stored
-     * in UTC.
+     * Constructor.
      *
-     * @var \DateTimeImmutable
+     * @param string            $id
+     * @param DateTimeInterface $expiresAt
      */
-    public \DateTimeImmutable $pairingCodeExpiresAt;
-
-    /**
-     * DbcoCase constructor.
-     *
-     * @param string $id
-     * @param string $pairingCode
-     * @param string $pairingCodeExpiresAt
-     */
-    public function __construct(int $id, string $caseId, string $pairingCode, string $pairingCodeExpiresAt)
+    public function __construct(string $id, DateTimeInterface $expiresAt)
     {
-        $this->id = $id;
-        $this->caseId = $caseId;
-        $this->pairingCode = $pairingCode;
-        $this->pairingCodeExpiresAt = new \DateTimeImmutable($pairingCodeExpiresAt);
+        try {
+            $this->id = $id;
+            $this->expiresAt = new DateTimeImmutable('@' . $expiresAt->getOffset());
+        } catch (Exception $e) {
+            throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 }
