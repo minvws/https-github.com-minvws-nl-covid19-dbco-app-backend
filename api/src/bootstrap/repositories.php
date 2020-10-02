@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Repositories\ExampleRepository;
-use App\Application\Repositories\SimpleExampleRepository;
+use App\Application\Repositories\DbPairingRepository;
+use App\Application\Repositories\PairingRepository;
 use App\Application\Repositories\CaseRepository;
 use App\Application\Repositories\DbCaseRepository;
 use App\Application\Helpers\RandomKeyGeneratorInterface;
@@ -15,15 +15,7 @@ use function DI\env;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
-        ExampleRepository::class => autowire(SimpleExampleRepository::class),
-        CaseRepository::class => function (ContainerInterface $c) {
-            $maxKeyGenerationAttempts = $settings = $c->get('settings')['maxKeyGenerationAttempts'];
-
-            return new  DbCaseRepository(
-                $c->get('PDO'),
-                $c->get(RandomKeyGeneratorInterface::class),
-                $maxKeyGenerationAttempts
-            );
-        }
+        CaseRepository::class => autowire(DbCaseRepository::class),
+        PairingRepository::class => autowire(DbPairingRepository::class)
     ]);
 };

@@ -1,0 +1,24 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Application\Responses;
+
+use JsonSerializable;
+
+/**
+ * Response.
+ *
+ * @package App\Application\Responses
+ */
+abstract class Response implements JsonSerializable
+{
+    /**
+     * Returns the status code.
+     *
+     * @return int
+     */
+    public function getStatusCode(): int
+    {
+        return 200;
+    }
+}
