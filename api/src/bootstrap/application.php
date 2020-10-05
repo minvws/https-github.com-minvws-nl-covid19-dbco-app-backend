@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Handlers\HttpErrorHandler;
+use App\Application\Handlers\ErrorHandler;
 use App\Application\Handlers\ShutdownHandler;
 use App\Application\ResponseEmitter\ResponseEmitter;
 use DI\ContainerBuilder;
@@ -19,7 +19,7 @@ if (false) { // Should be set to true in production
 
 // Set up settings
 $settings = require __DIR__ . '/settings.php';
-$settings($containerBuilder);
+$containerBuilder->addDefinitions($settings);
 
 // Set up dependencies
 $dependencies = require __DIR__ . '/dependencies.php';
@@ -29,13 +29,16 @@ $dependencies($containerBuilder);
 $repositories = require __DIR__ . '/repositories.php';
 $repositories($containerBuilder);
 
+// Set up services
+$services = require __DIR__ . '/services.php';
+$services($containerBuilder);
+
 // Build PHP-DI Container instance
 $container = $containerBuilder->build();
 
 // Instantiate the app
 AppFactory::setContainer($container);
 $app = AppFactory::create();
-$callableResolver = $app->getCallableResolver();
 
 // Register middleware
 $middleware = require __DIR__ . '/middleware.php';

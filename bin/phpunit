@@ -11,9 +11,9 @@ docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-co
 docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER console PASSWORD '\$CONSOLE_PASSWORD'"\"
 docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm psql --host=postgres --user=postgres < $BASE_PATH/install/permissions.sql
 
-echo "=====[ CONSOLE ]====="
-docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit console
-echo
+#echo "=====[ CONSOLE ]====="
+#docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit console
+#echo
 echo "=====[ API ]====="
 docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit api
 echo

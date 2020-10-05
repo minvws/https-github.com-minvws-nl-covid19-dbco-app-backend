@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Application\Actions;
 
-use App\Domain\DomainException\DomainRecordNotFoundException;
+use JsonSerializable;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
@@ -45,80 +45,64 @@ abstract class Action
      * @param Response $response
      * @param array    $args
      * @return Response
-     * @throws HttpNotFoundException
-     * @throws HttpBadRequestException
+     *
+     * @throws ActionException
      */
     public function __invoke(Request $request, Response $response, $args): Response
     {
         $this->request = $request;
         $this->response = $response;
         $this->args = $args;
-
-        try {
-            return $this->action();
-        } catch (DomainRecordNotFoundException $e) {
-            throw new HttpNotFoundException($this->request, $e->getMessage());
-        }
+        return $this->action();
     }
 
     /**
+     * Action.
+     *
      * @return Response
-     * @throws DomainRecordNotFoundException
-     * @throws HttpBadRequestException
+     *
+     * @throws ActionException
      */
     abstract protected function action(): Response;
 
     /**
-     * @return array|object
-     * @throws HttpBadRequestException
-     */
-    protected function getFormData()
-    {
-        $input = json_decode(file_get_contents('php://input'));
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new HttpBadRequestException($this->request, 'Malformed JSON input.');
-        }
-
-        return $input;
-    }
-
-    /**
-     * @param  string $name
-     * @return mixed
-     * @throws HttpBadRequestException
-     */
-    protected function resolveArg(string $name)
-    {
-        if (!isset($this->args[$name])) {
-            throw new HttpBadRequestException($this->request, "Could not resolve argument `{$name}`.");
-        }
-
-        return $this->args[$name];
-    }
-
-    /**
-     * @param  array|object|null $data
+     * Respond with response object.
+     *
+     * @param \App\Application\Responses\Response $response Response.
+     *
      * @return Response
      */
-    protected function respondWithData($data = null, int $statusCode = 200): Response
+    protected function respond(\App\Application\Responses\Response $response): Response
     {
-        $payload = new ActionPayload($statusCode, $data);
-
-        return $this->respond($payload);
+        return $this->respondWithJson($response, $response->getStatusCode());
     }
 
     /**
-     * @param ActionPayload $payload
+     * Respond with JSON.
+     *
+     * @param mixed|JsonSerializable $data       Data to serialize.
+     * @param int                    $statusCode HTTP status code.
+     *
      * @return Response
      */
-    protected function respond(ActionPayload $payload): Response
+    protected function respondWithJson($data, int $statusCode = 200): Response
     {
-        $json = json_encode($payload, JSON_PRETTY_PRINT);
+        $json = json_encode($data, JSON_PRETTY_PRINT);
         $this->response->getBody()->write($json);
-
         return $this->response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus($payload->getStatusCode());
+            ->withHeader('Content-Type', 'application/json')
+            ->withStatus($statusCode);
+    }
+
+    /**
+     * Respond with error.
+     *
+     * @param ActionException $e Error.
+     *
+     * @return Response
+     */
+    protected function respondWithError(ActionException $e): Response
+    {
+        return $this->respondWithJson($e, $e->getCode());
     }
 }
