@@ -1,28 +1,25 @@
 <?php
 declare(strict_types=1);
 
-use DI\ContainerBuilder;
 use Monolog\Logger;
 
-return function (ContainerBuilder $containerBuilder) {
-    // Global Settings Object
-    $containerBuilder->addDefinitions([
-        'settings' => [
-            'displayErrorDetails' => true, // TODO: make env, set to false in production
-            'logErrors' => true,
-            'logErrorDetails' => true,
-            'logger' => [
-                'name' => 'api',
-                'path' => 'php://stdout',
-                'level' => Logger::DEBUG,
-            ],
-            'db' => [
-                'driver' => 'pgsql',
-                'host' => getenv('DB_HOST'),
-                'username' => getenv('DB_USERNAME'),
-                'database' => getenv('DB_DATABASE'),
-                'password' => getenv('DB_PASSWORD'),
-            ]
-        ]
-    ]);
-};
+$debug = filter_var(DI\env('DEBUG', 0), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false;
+
+return [
+    'pairingCode.allowedChars' => 'BCFGJLQRSTUVXYZ23456789',
+    'pairingCode.length' => 6,
+    'pairingCode.timeToLive' => 900, // 15 minutes
+    'displayErrorDetails' => $debug,
+    'logErrors' => true,
+    'logErrorDetails' => true,
+    'logger.name' => 'api',
+    'logger.path' => 'php://stdout',
+    'logger.level' => $debug ? Logger::DEBUG : Logger::ERROR,
+    'db' => [
+        'driver' => 'pgsql',
+        'host' => DI\env('DB_HOST'),
+        'username' => DI\env('DB_USERNAME'),
+        'database' => DI\env('DB_DATABASE'),
+        'password' => DI\env('DB_PASSWORD'),
+    ]
+];
