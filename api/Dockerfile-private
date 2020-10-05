@@ -1,0 +1,50 @@
+FROM php:7.4-apache
+
+# Install packages and extensions
+RUN apt-get -qq update && \
+    apt-get -y install curl git wget vim unzip libzip-dev libpq-dev libicu-dev apt-transport-https apt-transport-https ca-certificates gnupg \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-install zip && \
+    docker-php-ext-install pdo_pgsql && \
+    docker-php-ext-install opcache
+
+RUN a2enmod rewrite && \
+    a2enmod headers && \
+    a2enmod proxy && \
+    a2enmod proxy_http && \
+    a2enmod rewrite deflate
+
+# Install Composer and prestissimo globally for increased performance
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+    composer self-update && \
+    composer global require hirak/prestissimo
+
+# Copy assets and sources
+COPY assets/default.conf /etc/apache2/sites-available/000-default.conf
+COPY assets/entrypoint.sh /entrypoint.sh
+RUN chmod 755 /entrypoint.sh
+COPY assets/api.ini /usr/local/etc/php/conf.d/api.ini
+COPY assets/security.conf /etc/apache2/conf-available/security.conf
+COPY assets/apache2.conf /etc/apache2/apache2.conf
+COPY assets/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
+COPY assets/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_default.conf
+
+COPY src/shared /shared
+COPY src/private /src
+
+RUN cd /src && composer install && \
+    usermod -u 1000 www-data
+
+# logs should go to stdout / stderr
+RUN set -ex \
+	&& ln -sf /proc/1/fd/1 "/var/log/cron.log" \
+	&& ln -sf /proc/1/fd/1 "/var/log/syslog"
+
+# Environment
+ENV PATH $PATH:/root/.composer/vendor/bin
+
+WORKDIR /src
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["apache2-foreground"]
