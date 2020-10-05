@@ -2,7 +2,6 @@ version: '3.7'
 
 # test overrides
 services:
-
     postgres:
         ports:
             - ${POSTGRES_PORT:-5432}:5432
@@ -15,3 +14,11 @@ services:
             CONSOLE_PASSWORD: ${CONSOLE_PASSWORD}
         depends_on:
             - postgres
+
+    private:
+        environment:
+            APP_ENV: test
+
+    console:
+        environment:
+            APP_ENV: test
