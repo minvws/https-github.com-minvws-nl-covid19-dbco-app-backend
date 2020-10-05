@@ -16,7 +16,7 @@ This repository contains the backend implementation of the Dutch COVID-19 BCO.
 
 To run a local development environment:
 
-- Create an `.env` file (you can registerCase a copy of `.env.example` to get started). 
+- Create an `.env` file (you can create a copy of `.env.example` to get started). 
 - Run `bin/setup-dev`
 
 ## Testing
