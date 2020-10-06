@@ -9,7 +9,6 @@ use DateTime;
 use DBCO\Application\Actions\Action;
 use DBCO\Application\Actions\ValidationError;
 use DBCO\Application\Actions\ValidationException;
-use Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
@@ -63,11 +62,7 @@ class RegisterCaseAction extends Action
             throw new ValidationException($this->request, $errors);
         }
 
-        try {
-            $pairing = $this->caseService->registerCase($caseId, $caseExpiresAt);
-            return $this->respond(new RegisterCaseResponse($pairing));
-        } catch (Exception $e) {
-            throw new ActionException('registrationFailed', 'Case registration failed', ActionException::INTERNAL_SERVER_ERROR, $e);
-        }
+        $pairing = $this->caseService->registerCase($caseId, $caseExpiresAt);
+        return $this->respond(new RegisterCaseResponse($pairing));
     }
 }

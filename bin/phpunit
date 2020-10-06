@@ -8,18 +8,18 @@ sleep 5
 
 echo "=====[ Setup database ]========================="
 docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm psql --host=postgres --user=postgres < $BASE_PATH/install/tables.sql
-docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER api PASSWORD '\$API_PASSWORD'"\"
-docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER console PASSWORD '\$CONSOLE_PASSWORD'"\"
+docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER private_api PASSWORD '\$PRIVATE_API_DB_PASSWORD'"\"
+docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER console PASSWORD '\$CONSOLE_DB_PASSWORD'"\"
 docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm psql --host=postgres --user=postgres < $BASE_PATH/install/permissions.sql
 
 #echo "=====[ CONSOLE ]====="
 #docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit console
 #echo
 echo "=====[ PRIVATE API ]====="
-docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit private
+docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit private_api
 echo
 
-echo "=====[Bringing containers down]====="
+echo "=====[ Stop containers ]====="
 docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml down
 docker volume rm "${PROJECT_NAME}_postgres-data"
 echo

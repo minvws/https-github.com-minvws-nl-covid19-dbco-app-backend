@@ -21,5 +21,9 @@ return [
         'username' => DI\env('DB_USERNAME'),
         'database' => DI\env('DB_DATABASE'),
         'password' => DI\env('DB_PASSWORD'),
+    ],
+    'jwt' => [
+        'secure' => false,
+        'secret' => getenv('JWT_SECRET')
     ]
 ];
