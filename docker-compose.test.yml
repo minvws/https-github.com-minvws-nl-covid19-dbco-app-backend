@@ -10,12 +10,12 @@ services:
         entrypoint: psql
         environment:
             PGPASSWORD: ${POSTGRES_PASSWORD}
-            API_PASSWORD: ${API_PASSWORD}
-            CONSOLE_PASSWORD: ${CONSOLE_PASSWORD}
+            PRIVATE_API_DB_PASSWORD: ${PRIVATE_API_DB_PASSWORD}
+            CONSOLE_DB_PASSWORD: ${CONSOLE_DB_PASSWORD}
         depends_on:
             - postgres
 
-    private:
+    private_api:
         environment:
             APP_ENV: test
 
