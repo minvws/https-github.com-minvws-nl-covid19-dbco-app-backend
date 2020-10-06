@@ -6,8 +6,8 @@ use Monolog\Logger;
 $debug = filter_var(getenv('DEBUG'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false;
 
 return [
-    'pairingCode.allowedChars' => 'BCFGJLQRSTUVXYZ23456789',
-    'pairingCode.length' => 6,
+    'pairingCode.allowedChars' => '0123456789',
+    'pairingCode.length' => 9,
     'pairingCode.timeToLive' => 900, // 15 minutes
     'displayErrorDetails' => $debug,
     'logErrors' => true,
@@ -23,7 +23,7 @@ return [
         'password' => DI\env('DB_PASSWORD'),
     ],
     'jwt' => [
-        'secure' => false,
+        'secure' => filter_var(getenv('JWT_SECURE'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? true,
         'secret' => getenv('JWT_SECRET')
     ]
 ];

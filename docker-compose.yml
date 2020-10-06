@@ -26,6 +26,7 @@ services:
             DB_USERNAME: ${PRIVATE_API_DB_USERNAME}
             DB_PASSWORD: ${PRIVATE_API_DB_PASSWORD}
             JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
+            JWT_SECURE: ${PRIVATE_API_JWT_SECURE}
         ports:
             - ${PRIVATE_API_PORT:-8080}:80
         volumes:
