@@ -2,7 +2,6 @@ version: '3.7'
 
 # development overrides
 services:
-
     postgres:
         ports:
             - ${POSTGRES_PORT:-5432}:5432
@@ -12,5 +11,5 @@ services:
         entrypoint: psql
         environment:
             PGPASSWORD: ${POSTGRES_PASSWORD}
-            API_PASSWORD: ${API_PASSWORD}
-            CONSOLE_PASSWORD: ${CONSOLE_PASSWORD}
+            PRIVATE_API_DB_PASSWORD: ${PRIVATE_API_DB_PASSWORD}
+            CONSOLE_DB_PASSWORD: ${CONSOLE_DB_PASSWORD}

@@ -1,24 +1,25 @@
 #!/bin/bash
 BASE_PATH=$(dirname $0)/..
+PROJECT_NAME=dbco-test
 
 echo "=====[ Start containers ]======================="
-docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml up -d
+docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml up -d
 sleep 5
 
 echo "=====[ Setup database ]========================="
-docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm psql --host=postgres --user=postgres < $BASE_PATH/install/tables.sql
-docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER api PASSWORD '\$API_PASSWORD'"\"
-docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER console PASSWORD '\$CONSOLE_PASSWORD'"\"
-docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm psql --host=postgres --user=postgres < $BASE_PATH/install/permissions.sql
+docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm psql --host=postgres --user=postgres < $BASE_PATH/install/tables.sql
+docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER private_api PASSWORD '\$PRIVATE_API_DB_PASSWORD'"\"
+docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER console PASSWORD '\$CONSOLE_DB_PASSWORD'"\"
+docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm psql --host=postgres --user=postgres < $BASE_PATH/install/permissions.sql
 
 #echo "=====[ CONSOLE ]====="
-#docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit console
+#docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit console
 #echo
-echo "=====[ API ]====="
-docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit api
+echo "=====[ PRIVATE API ]====="
+docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit private_api
 echo
 
-echo "=====[Bringing containers down]====="
-docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml down
-docker volume rm test_postgres-data
+echo "=====[ Stop containers ]====="
+docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml down
+docker volume rm "${PROJECT_NAME}_postgres-data"
 echo
