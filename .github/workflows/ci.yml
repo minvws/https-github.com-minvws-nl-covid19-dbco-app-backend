@@ -24,7 +24,7 @@ jobs:
 
     - name: Api - Run composer
       run: |
-        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer api install
+        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer private install
 
     - name: Console - Run phpunit Console
       run: |
@@ -32,4 +32,4 @@ jobs:
 
     - name: Api - Run phpunit
       run: |
-        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit api
+        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit private

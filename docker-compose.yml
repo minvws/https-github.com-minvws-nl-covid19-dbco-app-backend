@@ -14,18 +14,24 @@ services:
         ports:
             - ${POSTGRES_PORT:-5432}:5432
 
-    api:
-        build: api
+    private_api:
+        build:
+            context: ./api
+            dockerfile: Dockerfile-private
         environment:
-            APP_ENV: "development"
+            APP_ENV: development
+            DEBUG: ${DEBUG:-0}
             DB_HOST: postgres
             DB_DATABASE: postgres
-            DB_USERNAME: ${API_USERNAME}
-            DB_PASSWORD: ${API_PASSWORD}
+            DB_USERNAME: ${PRIVATE_API_DB_USERNAME}
+            DB_PASSWORD: ${PRIVATE_API_DB_PASSWORD}
+            JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
+            JWT_SECURE: ${PRIVATE_API_JWT_SECURE}
         ports:
-            - ${API_PORT:-8080}:80
+            - ${PRIVATE_API_PORT:-8080}:80
         volumes:
-            - ./api/src:/src
+            - ./api/src/shared:/shared
+            - ./api/src/private:/src
         depends_on:
             - postgres
 
@@ -33,10 +39,11 @@ services:
         build: console
         environment:
             APP_ENV: development
+            DEBUG: ${DEBUG:-0}
             DB_HOST: postgres
             DB_DATABASE: postgres
-            DB_USERNAME: ${CONSOLE_USERNAME}
-            DB_PASSWORD: ${CONSOLE_PASSWORD}
+            DB_USERNAME: ${CONSOLE_DB_USERNAME}
+            DB_PASSWORD: ${CONSOLE_DB_PASSWORD}
         volumes:
             - ./console/src:/src
         depends_on:
