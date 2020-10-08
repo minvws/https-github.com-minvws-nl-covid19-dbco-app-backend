@@ -19,6 +19,8 @@ use Psr\Log\LoggerInterface;
  */
 class RegisterCaseAction extends Action
 {
+    private const CLAIM_CASE_ID = 'http://ggdghor.nl/cid';
+
     protected CaseService $caseService;
 
     /**
@@ -41,6 +43,9 @@ class RegisterCaseAction extends Action
      */
     protected function action(): Response
     {
+        $token = $this->request->getAttribute("token");
+        $claimCaseId = $token[self::CLAIM_CASE_ID];
+
         $body = $this->request->getParsedBody();
 
         $errors = [];
@@ -48,6 +53,8 @@ class RegisterCaseAction extends Action
         $caseId = $body['caseId'] ?? null;
         if (empty($caseId)) {
             $errors[] = ValidationError::body('isRequired', 'caseId is required', ['caseId']);
+        } else if ($caseId !== $claimCaseId) {
+            $errors[] = ValidationError::body('invalid', 'caseId does not match claim', ['caseId']);
         }
 
         $caseExpiresAt = $body['caseExpiresAt'] ?? null;
