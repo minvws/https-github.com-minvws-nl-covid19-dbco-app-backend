@@ -121,7 +121,7 @@ class RegisterCaseActionTest extends TestCase
     }
 
     /**
-     * Test missing data.
+     * Test validation.
      *
      * @throws Exception
      */
