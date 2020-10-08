@@ -1,6 +1,8 @@
 <?php
 namespace DBCO\Application\Managers;
 
+use Exception;
+
 interface TransactionManager
 {
     /**
@@ -16,7 +18,7 @@ interface TransactionManager
      *
      * @return mixed Callback result
      *
-     * @throws \Exception
+     * @throws Exception
      */
     function run(Callable $callback);
 }

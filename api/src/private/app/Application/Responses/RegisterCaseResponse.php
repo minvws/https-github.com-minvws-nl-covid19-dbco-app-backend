@@ -1,7 +1,7 @@
 <?php
 namespace App\Application\Responses;
 
-use App\Application\Models\Pairing;
+use DBCO\Application\Models\Pairing;
 use DBCO\Application\Responses\Response;
 
 /**

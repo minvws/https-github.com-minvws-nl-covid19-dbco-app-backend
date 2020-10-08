@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 /**
  * Handle PHP errors on shutdown.
  *
- * @package App\Application\Handlers
+ * @package DBCO\Application\Handlers
  */
 class ShutdownHandler
 {
