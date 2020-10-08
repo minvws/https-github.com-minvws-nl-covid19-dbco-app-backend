@@ -14,7 +14,8 @@ jobs:
     - name: Setup db
       run: |
         docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm psql --host=postgres --user=postgres < ./install/tables.sql
-        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER api PASSWORD '\$API_PASSWORD'"\"
+        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER private_api PASSWORD '\$PRIVATE_API_DB_PASSWORD'"\"
+        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER public_api PASSWORD '\$PUBLIC_API_DB_PASSWORD'"\"
         docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER console PASSWORD '\$CONSOLE_PASSWORD'"\"
         docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm psql --host=postgres --user=postgres < ./install/permissions.sql
 
@@ -22,14 +23,22 @@ jobs:
       run: |
         docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer console install
 
-    - name: Api - Run composer
+    - name: Private Api - Run composer
       run: |
-        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer private install
+        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer private_api install
+
+    - name: Public Api - Run composer
+      run: |
+        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer public_api install
 
     - name: Console - Run phpunit Console
       run: |
         docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit console
 
-    - name: Api - Run phpunit
+    - name: Private Api - Run phpunit
       run: |
-        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit private
+        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit private_api
+
+    - name: Public Api - Run phpunit
+      run: |
+        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit public_api

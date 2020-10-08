@@ -66,7 +66,7 @@ abstract class Action
     /**
      * Respond with response object.
      *
-     * @param \App\Application\Responses\Response $response Response.
+     * @param \DBCO\Application\Responses\Response $response Response.
      *
      * @return Response
      */

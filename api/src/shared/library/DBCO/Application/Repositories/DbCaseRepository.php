@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Repositories;
+namespace DBCO\Application\Repositories;
 
-use App\Application\Models\DbcoCase;
-use DateTimeInterface;
+use DBCO\Application\Models\DbcoCase;
+use DateTime;
 use PDO;
 use RuntimeException;
 
@@ -31,11 +31,11 @@ class DbCaseRepository implements CaseRepository
     /**
      * @inheritDoc
      */
-    public function createCase(string $id, DateTimeInterface $expiresAt): DbcoCase
+    public function createCase(DbcoCase $case)
     {
         $values = [
-            'id' => $id,
-            'expires_at' => $expiresAt->format(\DateTime::ATOM)
+            'id' => $case->id,
+            'expires_at' => $case->expiresAt->format(DateTime::ATOM)
         ];
 
         $sql = "
@@ -49,7 +49,5 @@ class DbCaseRepository implements CaseRepository
         }
 
         $stmt->execute($values);
-
-        return new DbcoCase($id, $expiresAt);
     }
 }

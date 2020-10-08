@@ -11,7 +11,7 @@ use Throwable;
 /**
  * Action exception.
  *
- * @package App\Application\Actions
+ * @package DBCO\Application\Actions
  */
 class ActionException extends Exception implements JsonSerializable
 {

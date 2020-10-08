@@ -2,11 +2,11 @@
 namespace App\Application\Services;
 
 use App\Application\Helpers\TokenGenerator;
-use App\Application\Models\DbcoCase;
-use App\Application\Models\Pairing;
-use App\Application\Repositories\CaseRepository;
-use App\Application\Repositories\PairingRepository;
 use DateTimeInterface;
+use DBCO\Application\Models\DbcoCase;
+use DBCO\Application\Models\Pairing;
+use DBCO\Application\Repositories\CaseRepository;
+use DBCO\Application\Repositories\PairingRepository;
 use DBCO\Application\Managers\TransactionManager;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -82,10 +82,27 @@ class CaseService
      * @param DateTimeInterface $caseExpiresAt
      *
      * @return DbcoCase
+     *
+     * @throws Exception
      */
     protected function createCase(string $caseId, DateTimeInterface $caseExpiresAt): DbcoCase
     {
-        return $this->caseRepository->createCase($caseId, $caseExpiresAt);
+        $case = new DbcoCase($caseId, $caseExpiresAt);
+        $this->caseRepository->createCase($case);
+        return $case;
+    }
+
+    /**
+     * Is active pairing code?
+     *
+     * @param string $code
+     *
+     * @return bool
+     */
+    protected function isActivePairingCode(string $code): bool
+    {
+        $pairing = $this->pairingRepository->getPairingByCode($code);
+        return $pairing !== null && $pairing->codeExpiresAt > new DateTime();
     }
 
     /**
@@ -97,7 +114,7 @@ class CaseService
     {
         do {
             $code = $this->pairingCodeGenerator->generateToken();
-        } while ($this->pairingRepository->isActivePairingCode($code));
+        } while ($this->isActivePairingCode($code));
 
         return $code;
     }
@@ -114,9 +131,10 @@ class CaseService
     protected function createPairing(DbcoCase $case): Pairing
     {
         $code = $this->generatePairingCode();
-        $string = '+' . $this->pairingCodeTimeToLive . ' seconds';
-        $codeExpiresAt = new \DateTime($string);
-        return $this->pairingRepository->createPairing($case->id, $code, $codeExpiresAt);
+        $codeExpiresAt = new \DateTime('+' . $this->pairingCodeTimeToLive . ' seconds');
+        $pairing = new Pairing(null, $case, $code, $codeExpiresAt, false, null);
+        $this->pairingRepository->createPairing($pairing);
+        return $pairing;
     }
 
     /**

@@ -6,7 +6,7 @@ namespace DBCO\Application\Actions;
 /**
  * Validation exception.
  *
- * @package App\Application\Actions
+ * @package DBCO\Application\Actions
  */
 class ValidationError
 {

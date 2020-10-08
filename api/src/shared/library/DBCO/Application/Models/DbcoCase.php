@@ -1,5 +1,5 @@
 <?php
-namespace App\Application\Models;
+namespace DBCO\Application\Models;
 
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -36,7 +36,7 @@ class DbcoCase
     {
         try {
             $this->id = $id;
-            $this->expiresAt = new DateTimeImmutable('@' . $expiresAt->getOffset());
+            $this->expiresAt = new DateTimeImmutable('@' . $expiresAt->getTimestamp());
         } catch (Exception $e) {
             throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
         }

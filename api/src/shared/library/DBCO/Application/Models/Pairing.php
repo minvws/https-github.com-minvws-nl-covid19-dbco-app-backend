@@ -1,5 +1,5 @@
 <?php
-namespace App\Application\Models;
+namespace DBCO\Application\Models;
 
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -16,14 +16,14 @@ class Pairing
      *
      * @var string
      */
-    public string $id;
+    public ?string $id;
 
     /**
-     * Case identifier from the GGD system.
+     * Case model.
      *
-     * @var string
+     * @var DbcoCase
      */
-    public string $caseId;
+    public DbcoCase $case;
 
     /**
      * Random generated link code that can be communicated out-of-band
@@ -50,22 +50,31 @@ class Pairing
     public bool $isPaired;
 
     /**
+     * Signing key.
+     *
+     * @var string|null
+     */
+    public ?string $signingKey;
+
+    /**
      * Pairing constructor.
      *
-     * @param string            $id
-     * @param string            $caseId
-     * @param string            $code
-     * @param DateTimeInterface $codeExpiresAt
-     * @param bool              $isPaired
+     * @param string                 $id
+     * @param DbcoCase|null          $case
+     * @param string|null            $code
+     * @param DateTimeInterface|null $codeExpiresAt
+     * @param bool                   $isPaired
+     * @param string|null            $signingKey
      */
-    public function __construct(string $id, string $caseId, string $code, DateTimeInterface $codeExpiresAt, bool $isPaired)
+    public function __construct(?string $id, ?DbcoCase $case, ?string $code, ?DateTimeInterface $codeExpiresAt, bool $isPaired, ?string $signingKey)
     {
         try {
             $this->id = $id;
-            $this->caseId = $caseId;
+            $this->case = $case;
             $this->code = $code;
-            $this->codeExpiresAt = new DateTimeImmutable('@' . $codeExpiresAt->getTimestamp());
+            $this->codeExpiresAt = $codeExpiresAt != null ? new DateTimeImmutable('@' . $codeExpiresAt->getTimestamp()) : null;
             $this->isPaired = $isPaired;
+            $this->signingKey = $signingKey;
         } catch (Exception $e) {
             // should not be possible
             throw new RuntimeException($e->getMessage(), $e->getCode(), $e);

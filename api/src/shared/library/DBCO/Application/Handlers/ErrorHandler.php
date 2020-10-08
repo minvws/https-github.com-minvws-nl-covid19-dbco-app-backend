@@ -10,7 +10,7 @@ use Slim\Handlers\ErrorHandler as SlimErrorHandler;
 /**
  * Error handler.
  *
- * @package App\Application\Handlers
+ * @package DBCO\Application\Handlers
  */
 class ErrorHandler extends SlimErrorHandler
 {
@@ -24,7 +24,7 @@ class ErrorHandler extends SlimErrorHandler
         if (!($exception instanceof ActionException)) {
             $message = 'An error occurred while processing your request. Please try again later.';
             if ($this->displayErrorDetails) {
-                $message .= "\n" . $exception->getMessage();
+                $message .= "\n" . $exception->getMessage() . "\n" . $exception->getTraceAsString();
             }
             $exception = new ActionException($this->request, 'internalError', $message, ActionException::INTERNAL_SERVER_ERROR, $exception);
         }
