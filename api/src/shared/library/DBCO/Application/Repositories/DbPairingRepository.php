@@ -74,7 +74,7 @@ class DbPairingRepository implements PairingRepository
                 $row->code,
                 $row->code_expires_at != null ? new DateTime($row->code_expires_at) : null,
                 $row->is_paired === 1,
-                $row->signature_key
+                $row->signing_key
             );
 
         return $pairing;
