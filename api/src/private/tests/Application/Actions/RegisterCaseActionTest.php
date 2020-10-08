@@ -20,17 +20,17 @@ class RegisterCaseActionTest extends TestCase
      * Add authentication header to request.
      *
      * @param Request     $request
+     * @param string      $caseId
      * @param string|null $secret
      *
      * @return ServerRequestInterface
      */
-    private function requestWithAuthorization(Request $request, ?string $secret = null): ServerRequestInterface
+    private function requestWithAuthorization(Request $request, string $caseId, ?string $secret = null): ServerRequestInterface
     {
         $payload = array(
-            "iss" => "http://example.org",
-            "aud" => "http://example.org",
             "iat" => time(),
-            "exp" => time() + 300
+            "exp" => time() + 300,
+            "http://ggdghor.nl/cid" => $caseId
         );
 
         $key = $secret ?? getenv('JWT_SECRET');
@@ -47,10 +47,12 @@ class RegisterCaseActionTest extends TestCase
      */
     public function testRegisterAction()
     {
+        $caseId = base64_encode(random_bytes(16));
+
         $request = $this->createRequest('POST', '/v1/cases');
-        $request = $request->withParsedBody(['caseId' => '123456', 'caseExpiresAt' => date('c', time() + 60)]);
+        $request = $request->withParsedBody(['caseId' => $caseId, 'caseExpiresAt' => date('c', time() + 60)]);
         $request = $request->withHeader('Content-Type', 'application/json');
-        $request = $this->requestWithAuthorization($request);
+        $request = $this->requestWithAuthorization($request, $caseId);
         $response = $this->app->handle($request);
         $this->assertEquals(201, $response->getStatusCode());
 
@@ -67,16 +69,18 @@ class RegisterCaseActionTest extends TestCase
      */
     public function testInvalidAuthorization()
     {
+        $caseId = base64_encode(random_bytes(16));
+
         // missing authorization
         $request = $this->createRequest('POST', '/v1/cases');
-        $request = $request->withParsedBody(['caseId' => '123456', 'caseExpiresAt' => date('c', time() + 60)]);
+        $request = $request->withParsedBody(['caseId' => $caseId, 'caseExpiresAt' => date('c', time() + 60)]);
         $request = $request->withHeader('Content-Type', 'application/json');
         $response = $this->app->handle($request);
         $this->assertEquals(401, $response->getStatusCode());
 
         // invalid authorization
         $request = $this->createRequest('POST', '/v1/cases');
-        $request = $request->withParsedBody(['caseId' => '123456', 'caseExpiresAt' => date('c', time() + 60)]);
+        $request = $request->withParsedBody(['caseId' => $caseId, 'caseExpiresAt' => date('c', time() + 60)]);
         $request = $request->withHeader('Content-Type', 'application/json');
         $request = $request->withHeader('Authorization', 'Bearer this.is.not.correct');
         $response = $this->app->handle($request);
@@ -84,23 +88,50 @@ class RegisterCaseActionTest extends TestCase
 
         // invalid secret
         $request = $this->createRequest('POST', '/v1/cases');
-        $request = $request->withParsedBody(['caseId' => '123456', 'caseExpiresAt' => date('c', time() + 60)]);
+        $request = $request->withParsedBody(['caseId' => $caseId, 'caseExpiresAt' => date('c', time() + 60)]);
         $request = $request->withHeader('Content-Type', 'application/json');
-        $request = $this->requestWithAuthorization($request, 'not.the.correct.secret');
+        $request = $this->requestWithAuthorization($request, $caseId, 'not.the.correct.secret');
         $response = $this->app->handle($request);
         $this->assertEquals(401, $response->getStatusCode());
     }
 
     /**
-     * Test validation.
+     * Case ID in JWT claim doesn't match case ID in body.
      *
      * @throws Exception
      */
-    public function testInvalidRegisterAction()
+    public function testWrongCaseIdClaim()
     {
+        $caseIdBody = base64_encode(random_bytes(16));
+        $caseIdClaim = base64_encode(random_bytes(16));
+
+        // wrong case ID in claim
+        $request = $this->createRequest('POST', '/v1/cases');
+        $request = $request->withParsedBody(['caseId' => $caseIdBody, 'caseExpiresAt' => date('c', time() + 60)]);
+        $request = $request->withHeader('Content-Type', 'application/json');
+        $request = $this->requestWithAuthorization($request, $caseIdClaim);
+        $response = $this->app->handle($request);
+        $this->assertEquals(400, $response->getStatusCode());
+
+        $payload = (string)$response->getBody();
+        $data = json_decode($payload);
+        $this->assertCount(1, $data->errors);
+        $this->assertEquals('invalid', $data->errors[0]->code);
+        $this->assertEquals(['caseId'], $data->errors[0]->path);
+    }
+
+    /**
+     * Test missing data.
+     *
+     * @throws Exception
+     */
+    public function testMissingData()
+    {
+        $caseId = base64_encode(random_bytes(16));
+
         $request = $this->createRequest('POST', '/v1/cases');
         $request = $request->withHeader('Content-Type', 'application/json');
-        $request = $this->requestWithAuthorization($request);
+        $request = $this->requestWithAuthorization($request, $caseId);
         $response = $this->app->handle($request);
 
         $this->assertEquals(400, $response->getStatusCode());
