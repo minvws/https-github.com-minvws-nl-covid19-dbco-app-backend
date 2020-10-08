@@ -8,7 +8,7 @@ use Slim\Psr7\Request;
 /**
  * Validation exception.
  *
- * @package App\Application\Actions
+ * @package DBCO\Application\Actions
  */
 class ValidationException extends ActionException
 {

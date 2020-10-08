@@ -46,7 +46,7 @@ return function (ContainerBuilder $containerBuilder) {
             TokenGenerator::class =>
                 autowire(SecureTokenGenerator::class)
                     ->constructorParameter('allowedChars', get('pairingCode.allowedChars'))
-                    ->constructorParameter('length', get('pairingCode.length'))
+                    ->constructorParameter('length', get('pairingCode.length')),
         ]
     );
 };

@@ -47,11 +47,11 @@ class RegisterCaseActionTest extends TestCase
      */
     public function testRegisterAction()
     {
-        $request = $this->createRequest('POST', '/cases');
+        $request = $this->createRequest('POST', '/v1/cases');
         $request = $request->withParsedBody(['caseId' => '123456', 'caseExpiresAt' => date('c', time() + 60)]);
         $request = $request->withHeader('Content-Type', 'application/json');
         $request = $this->requestWithAuthorization($request);
-        $response = $this->getAppInstance()->handle($request);
+        $response = $this->app->handle($request);
         $this->assertEquals(201, $response->getStatusCode());
 
         $payload = (string)$response->getBody();
@@ -68,26 +68,26 @@ class RegisterCaseActionTest extends TestCase
     public function testInvalidAuthorization()
     {
         // missing authorization
-        $request = $this->createRequest('POST', '/cases');
+        $request = $this->createRequest('POST', '/v1/cases');
         $request = $request->withParsedBody(['caseId' => '123456', 'caseExpiresAt' => date('c', time() + 60)]);
         $request = $request->withHeader('Content-Type', 'application/json');
-        $response = $this->getAppInstance()->handle($request);
+        $response = $this->app->handle($request);
         $this->assertEquals(401, $response->getStatusCode());
 
         // invalid authorization
-        $request = $this->createRequest('POST', '/cases');
+        $request = $this->createRequest('POST', '/v1/cases');
         $request = $request->withParsedBody(['caseId' => '123456', 'caseExpiresAt' => date('c', time() + 60)]);
         $request = $request->withHeader('Content-Type', 'application/json');
         $request = $request->withHeader('Authorization', 'Bearer this.is.not.correct');
-        $response = $this->getAppInstance()->handle($request);
+        $response = $this->app->handle($request);
         $this->assertEquals(401, $response->getStatusCode());
 
         // invalid secret
-        $request = $this->createRequest('POST', '/cases');
+        $request = $this->createRequest('POST', '/v1/cases');
         $request = $request->withParsedBody(['caseId' => '123456', 'caseExpiresAt' => date('c', time() + 60)]);
         $request = $request->withHeader('Content-Type', 'application/json');
         $request = $this->requestWithAuthorization($request, 'not.the.correct.secret');
-        $response = $this->getAppInstance()->handle($request);
+        $response = $this->app->handle($request);
         $this->assertEquals(401, $response->getStatusCode());
     }
 
@@ -98,10 +98,10 @@ class RegisterCaseActionTest extends TestCase
      */
     public function testInvalidRegisterAction()
     {
-        $request = $this->createRequest('POST', '/cases');
+        $request = $this->createRequest('POST', '/v1/cases');
         $request = $request->withHeader('Content-Type', 'application/json');
         $request = $this->requestWithAuthorization($request);
-        $response = $this->getAppInstance()->handle($request);
+        $response = $this->app->handle($request);
 
         $this->assertEquals(400, $response->getStatusCode());
 

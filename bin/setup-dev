@@ -9,6 +9,7 @@ echo
 echo "=====[ Setup database ]========================="
 docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm psql --host=postgres --user=postgres < $BASE_PATH/install/tables.sql
 docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER private_api PASSWORD '\$PRIVATE_API_DB_PASSWORD'"\"
+docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER public_api PASSWORD '\$PUBLIC_API_DB_PASSWORD'"\"
 docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER console PASSWORD '\$CONSOLE_DB_PASSWORD'"\"
 docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm psql --host=postgres --user=postgres < $BASE_PATH/install/permissions.sql
 
@@ -17,5 +18,9 @@ echo "=====[ SETUP CONSOLE ]====="
 docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint composer console install
 
 echo
-echo "=====[ SETUP API ]====="
+echo "=====[ SETUP PRIVATE API ]====="
 docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint composer private_api install
+
+echo
+echo "=====[ SETUP PUBLIC API ]====="
+docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint composer public_api install
