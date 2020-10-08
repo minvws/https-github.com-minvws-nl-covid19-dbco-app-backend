@@ -9,7 +9,7 @@ return function (App $app) {
     $app->addBodyParsingMiddleware();
     $app->addRoutingMiddleware();
 
-    //$app->add(new JwtAuthentication($app->getContainer()->get('jwt')));
+    $app->add(new JwtAuthentication($app->getContainer()->get('jwt')));
 
     $displayErrorDetails = $app->getContainer()->get('displayErrorDetails');
     $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, false, false);
