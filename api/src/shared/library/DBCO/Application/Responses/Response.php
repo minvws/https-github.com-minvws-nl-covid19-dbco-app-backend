@@ -8,7 +8,7 @@ use JsonSerializable;
 /**
  * Response.
  *
- * @package App\Application\Responses
+ * @package DBCO\Application\Responses
  */
 abstract class Response implements JsonSerializable
 {

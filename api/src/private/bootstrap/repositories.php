@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Repositories\DbPairingRepository;
-use App\Application\Repositories\PairingRepository;
-use App\Application\Repositories\CaseRepository;
-use App\Application\Repositories\DbCaseRepository;
 use App\Application\Helpers\RandomKeyGeneratorInterface;
+
+use DBCO\Application\Repositories\DbPairingRepository;
+use DBCO\Application\Repositories\PairingRepository;
+use DBCO\Application\Repositories\CaseRepository;
+use DBCO\Application\Repositories\DbCaseRepository;
 
 use DI\ContainerBuilder;
 use function DI\autowire;

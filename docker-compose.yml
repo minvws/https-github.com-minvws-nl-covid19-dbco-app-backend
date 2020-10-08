@@ -28,10 +28,29 @@ services:
             JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
             JWT_SECURE: ${PRIVATE_API_JWT_SECURE}
         ports:
-            - ${PRIVATE_API_PORT:-8080}:80
+            - ${PRIVATE_API_PORT:-8081}:80
         volumes:
             - ./api/src/shared:/shared
             - ./api/src/private:/src
+        depends_on:
+            - postgres
+
+    public_api:
+        build:
+            context: ./api
+            dockerfile: Dockerfile-public
+        environment:
+            APP_ENV: development
+            DEBUG: ${DEBUG:-0}
+            DB_HOST: postgres
+            DB_DATABASE: postgres
+            DB_USERNAME: ${PUBLIC_API_DB_USERNAME}
+            DB_PASSWORD: ${PUBLIC_API_DB_PASSWORD}
+        ports:
+            - ${PUBLIC_API_PORT:-8082}:80
+        volumes:
+            - ./api/src/shared:/shared
+            - ./api/src/public:/src
         depends_on:
             - postgres
 

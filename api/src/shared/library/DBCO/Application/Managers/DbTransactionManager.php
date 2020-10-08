@@ -1,6 +1,7 @@
 <?php
 namespace DBCO\Application\Managers;
 
+use Exception;
 use PDO;
 
 class DbTransactionManager implements TransactionManager
@@ -33,17 +34,39 @@ class DbTransactionManager implements TransactionManager
      *
      * @return mixed Callback result
      *
-     * @throws \Exception
+     * @throws Exception
      */
     function run(Callable $callback)
     {
+        // We support one nested level of transactions using savepoints.
+        // This is primarily used for running unit tests with database
+        // access in which case the transaction is controlled by the unit
+        // tests and transaction manager uses savepoints.
+        $inTransaction = $this->connection->inTransaction();
+
         try {
-            $this->connection->beginTransaction();
+            if ($inTransaction) {
+                $this->connection->exec('SAVEPOINT SP');
+            } else {
+                $this->connection->beginTransaction();
+            }
+
             $result = $callback();
-            $this->connection->commit();
+
+            if ($inTransaction) {
+                $this->connection->exec('RELEASE SAVEPOINT SP');
+            } else {
+                $this->connection->commit();
+            }
+
             return $result;
-        } catch (\Exception $ex) {
-            $this->connection->rollBack();
+        } catch (Exception $ex) {
+            if ($inTransaction) {
+                $this->connection->exec('ROLLBACK TO SAVEPOINT SP');
+            } else {
+                $this->connection->rollBack();
+            }
+
             throw $ex;
         }
     }
