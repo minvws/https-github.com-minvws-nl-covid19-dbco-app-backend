@@ -9,6 +9,7 @@ return function (App $app) {
     $app->addBodyParsingMiddleware();
     $app->addRoutingMiddleware();
 
+    // TODO: disabled for now, not sure yet if we need this
     //$app->add(new JwtAuthentication($app->getContainer()->get('jwt')));
 
     $displayErrorDetails = $app->getContainer()->get('displayErrorDetails');
