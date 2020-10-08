@@ -16,7 +16,7 @@ jobs:
         uses: docker/build-push-action@v1
         with:
           path: ./api
-          dockerfile: Dockefile-private
+          dockerfile: Dockerfile-private
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
@@ -26,7 +26,7 @@ jobs:
         uses: docker/build-push-action@v1
         with:
           path: ./api
-          dockerfile: Dockefile-public
+          dockerfile: Dockerfile-public
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
