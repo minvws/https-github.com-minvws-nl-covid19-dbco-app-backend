@@ -32,6 +32,16 @@ jobs:
           registry: docker.pkg.github.com
           repository: minvws/nl-covid19-dbco-app-backend-private/backend-public-api
           tag_with_ref: true
+      - name: Push Health Authority API container to GitHub Packages
+        uses: docker/build-push-action@v1
+        with:
+          path: ./api
+          dockerfile: Dockerfile-public
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: minvws/nl-covid19-dbco-app-backend-private/backend-healthauthority-api
+          tag_with_ref: true
       - name: Push Console container to GitHub Packages
         uses: docker/build-push-action@v1
         with:
