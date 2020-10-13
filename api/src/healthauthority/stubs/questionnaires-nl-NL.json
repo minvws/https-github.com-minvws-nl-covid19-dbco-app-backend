@@ -29,14 +29,6 @@
               "relevantForCategories": [ "1" ]
           },
           {
-              "id": "37d818ed-9499-4b9a-9771-725467368390",
-              "group": "contactdetails",
-              "questionType": "open",
-              "label": "Beroep",
-              "description": null,
-              "relevantForCategories": [ "1" ]
-          },
-          {
               "id": "37d818ed-9499-4b9a-9771-725467368391",
               "group": "contactdetails",
               "questionType": "multiplechoice",
