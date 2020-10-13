@@ -3,11 +3,12 @@ namespace App\Application\Responses;
 
 use DBCO\Application\Models\Pairing;
 use DBCO\Application\Responses\Response;
+use JsonSerializable;
 
 /**
  * Response for the register case action.
  */
-class RegisterCaseResponse extends Response
+class CaseRegisterResponse extends Response implements JsonSerializable
 {
     /**
      * @var Pairing
