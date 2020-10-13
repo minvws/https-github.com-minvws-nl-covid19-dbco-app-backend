@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Application\Helpers\JWTConfigHelper;
 use App\Application\Helpers\SecureTokenGenerator;
 use App\Application\Helpers\TokenGenerator;
 use DBCO\Application\Managers\DbTransactionManager;
@@ -47,6 +48,8 @@ return function (ContainerBuilder $containerBuilder) {
                 autowire(SecureTokenGenerator::class)
                     ->constructorParameter('allowedChars', get('pairingCode.allowedChars'))
                     ->constructorParameter('length', get('pairingCode.length')),
+            JWTConfigHelper::class =>
+                autowire(JWTConfigHelper::class)->constructor(get('jwt'))
         ]
     );
 };

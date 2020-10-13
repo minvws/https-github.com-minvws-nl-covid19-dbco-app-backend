@@ -25,6 +25,7 @@ services:
             DB_DATABASE: postgres
             DB_USERNAME: ${PRIVATE_API_DB_USERNAME}
             DB_PASSWORD: ${PRIVATE_API_DB_PASSWORD}
+            JWT_ENABLED: ${PRIVATE_API_JWT_ENABLED:-true}
             JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
             JWT_SECURE: ${PRIVATE_API_JWT_SECURE}
         ports:
