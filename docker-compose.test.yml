@@ -12,11 +12,20 @@ services:
             PGPASSWORD: ${POSTGRES_PASSWORD}
             PRIVATE_API_DB_PASSWORD: ${PRIVATE_API_DB_PASSWORD}
             PUBLIC_API_DB_PASSWORD: ${PUBLIC_API_DB_PASSWORD}
+            HEALTHAUTHORITY_API_DB_PASSWORD: ${HEALTHAUTHORITY_API_DB_PASSWORD}
             CONSOLE_DB_PASSWORD: ${CONSOLE_DB_PASSWORD}
         depends_on:
             - postgres
 
     private_api:
+        environment:
+            APP_ENV: test
+
+    public_api:
+        environment:
+            APP_ENV: test
+
+    healthauthority_api:
         environment:
             APP_ENV: test
 
