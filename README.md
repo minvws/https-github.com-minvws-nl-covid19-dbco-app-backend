@@ -15,11 +15,15 @@ This repository contains the backend implementation of the Dutch COVID-19 DBCO a
 
 ## Development
 
-To run a local development environment:
+Prerequisites: A working Docker environment
+
+Steps to run a local development environment:
 
 - Create an `.env` file (you can create a copy of `.env.example` to get started). 
 - Generate some passwords and enter them in the .env file, these will be used to create a local database
-- Run `bin/setup-dev` to set up the environment (initialize database, intall dependencies).
+- Run `bin/setup-dev` to set up the environment (initialize database, install dependencies).
+
+If the command has completed successfully, the private api will run on port 8081 on localhost, the public api will run on port 8082.
 
 ## Testing
 
