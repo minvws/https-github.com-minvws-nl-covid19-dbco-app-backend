@@ -110,7 +110,7 @@
                   },
                   {
                       "label": "Nee, ik denk het niet",
-                      "value": "Nee"
+                      "value": "Nee",
                       "trigger": "communication_index"
                   }
               ]
