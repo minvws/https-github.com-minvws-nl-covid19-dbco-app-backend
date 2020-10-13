@@ -37,12 +37,48 @@
               "relevantForCategories": [ "2a", "2b" ],
               "answerOptions": [
                   {
+                      "label": "Ouder",
+                      "value": "Ouder"
+                  },
+                  {
+                      "label": "Kind",
+                      "value": "Kind"
+                  },
+                  {
+                      "label": "Broer of zus",
+                      "value": "Broer of zus"
+                  },
+                  {
+                      "label": "Partner",
+                      "value": "Partner"
+                  },
+                  {
+                      "label": "Familielid (overig)",
+                      "value": "Familielid (overig)"
+                  },
+                  {
+                      "label": "Huisgenoot",
+                      "value": "Huisgenoot"
+                  },
+                  {
                       "label": "Vriend of kennis",
                       "value": "Vriend of kennis"
                   },
                   {
+                      "label": "Medestudent of leerling",
+                      "value": "Medestudent of leerling"
+                  },
+                  {
                       "label": "Collega",
                       "value": "Collega"
+                  },
+                  {
+                      "label": "Gezondheidszorg medewerker",
+                      "value": "Gezondheidszorg medewerker"
+                  },
+                  {
+                      "label": "Ex-partner",
+                      "value": "Ex-partner"
                   },
                   {
                       "label": "Overig",
