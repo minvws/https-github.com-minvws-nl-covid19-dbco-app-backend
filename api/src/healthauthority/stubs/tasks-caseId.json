@@ -5,7 +5,7 @@
       "taskType": "contact",
       "source": "portal",
       "label": "Lia B",
-      "context": "Partner",
+      "taskContext": "Partner",
       "category": "1",
       "communication": "index"
     },
@@ -15,7 +15,7 @@
       "taskType": "contact",
       "source": "portal",
       "label": "Aziz F.",
-      "context": "Voetbaltrainer",
+      "taskContext": "Voetbaltrainer",
       "category": "2a",
       "communication": "index"
     },
@@ -24,7 +24,7 @@
       "taskType": "contact",
       "source": "portal",
       "label": "Job J.",
-      "context": "Collega",
+      "taskContext": "Collega",
       "category": "2b",
       "communication": "staff"
     },
@@ -33,7 +33,7 @@
       "taskType": "contact",
       "source": "portal",
       "label": "Joris L.",
-      "context": "null",
+      "taskContext": "null",
       "category": "3",
       "communication": "index"
     },
@@ -42,7 +42,7 @@
       "taskType": "contact",
       "source": "portal",
       "label": "Peter V.",
-      "context": "Zakenrelatie",
+      "taskContext": "Zakenrelatie",
       "category": "3",
       "communication": "none"
     }
