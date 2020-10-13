@@ -1,23 +1,25 @@
-# COVID-19 BCO - backend
+# COVID-19 DBCO - backend
 
 ## Introduction
-This repository contains the backend implementation of the Dutch COVID-19 BCO.
+This repository contains the backend implementation of the Dutch COVID-19 DBCO app.
 
 * The backend is located in the repository you are currently viewing.
-* The iOS app can be found here: ...
-* The Android app can be found here: ...
+* The iOS app can be found here: http://github.com/minvws/nl-covid19-dbco-app-ios
+* The Android app can be found here: http://github.com/minvws/nl-covid19-dbco-app-android
+* Architecture documentation can be found here: http://github.com/minvws/nl-covid19-dbco-app-coordination
 
 ## Overview
 
 * console: implements a docker image that can be used to manually or periodically (e.g. cron) run commands
-* api: implements the API
+* api: implements the APIs
 
 ## Development
 
 To run a local development environment:
 
 - Create an `.env` file (you can create a copy of `.env.example` to get started). 
-- Run `bin/setup-dev`
+- Generate some passwords and enter them in the .env file, these will be used to create a local database
+- Run `bin/setup-dev` to set up the environment (initialize database, intall dependencies).
 
 ## Testing
 
