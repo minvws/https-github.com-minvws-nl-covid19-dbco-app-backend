@@ -105,11 +105,13 @@
               "answerOptions": [
                   {
                       "label": "Ja, één of meerdere dingen",
-                      "value": "Ja"
+                      "value": "Ja",
+                      "trigger": "communication_staff"
                   },
                   {
                       "label": "Nee, ik denk het niet",
                       "value": "Nee"
+                      "trigger": "communication_index"
                   }
               ]
           }
