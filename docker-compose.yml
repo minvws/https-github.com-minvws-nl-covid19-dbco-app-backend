@@ -55,6 +55,25 @@ services:
         depends_on:
             - postgres
 
+    healthauthority_api:
+        build:
+            context: ./api
+            dockerfile: Dockerfile-healthauthority
+        environment:
+            APP_ENV: development
+            DEBUG: ${DEBUG:-0}
+            DB_HOST: postgres
+            DB_DATABASE: postgres
+            DB_USERNAME: ${HEALTHAUTHORITY_API_DB_USERNAME}
+            DB_PASSWORD: ${HEALTHAUTHORITY_API_DB_PASSWORD}
+        ports:
+            - ${HEALTHAUTHORITY_API_PORT:-8083}:80
+        volumes:
+            - ./api/src/shared:/shared
+            - ./api/src/healthauthority:/src
+        depends_on:
+            - postgres
+
     console:
         build: console
         environment:
