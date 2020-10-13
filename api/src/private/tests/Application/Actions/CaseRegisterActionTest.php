@@ -14,7 +14,7 @@ use Tests\TestCase;
  *
  * @package Tests\Application\Actions
  */
-class RegisterCaseActionTest extends TestCase
+class CaseRegisterActionTest extends TestCase
 {
     /**
      * Add authentication header to request.
