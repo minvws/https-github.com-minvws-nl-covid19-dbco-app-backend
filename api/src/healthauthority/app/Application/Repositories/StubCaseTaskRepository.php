@@ -25,7 +25,7 @@ class StubCaseTaskRepository implements CaseTaskRepository
         $list = new TaskList();
 
         $task1 = new Task();
-        $task1->id = "123e4567-e89b-12d3-a456-426614172000";
+        $task1->uuid = "123e4567-e89b-12d3-a456-426614172000";
         $task1->taskType = "contact";
         $task1->source = "portal";
         $task1->label = "Lia B";

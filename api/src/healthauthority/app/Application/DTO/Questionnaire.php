@@ -34,7 +34,7 @@ class Questionnaire implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'id' => $this->questionnaire->id,
+            'uuid' => $this->questionnaire->uuid,
             'taskType' => $this->questionnaire->taskType,
             'questions' => array_map(fn($q) => new Question($q), $this->questionnaire->questions)
         ];
