@@ -1,56 +1,88 @@
 {
     "questionnaires": [
         {
-            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
             "taskType": "contact",
             "questions": [
                 {
-                    "id": "37d818ed-9499-4b9a-9771-725467368387",
-                    "group": "context",
+                    "uuid": "37d818ed-9499-4b9a-9771-725467368387",
+                    "group": "classification",
                     "questionType": "classificationdetails",
                     "label": "Vragen over jullie ontmoeting",
                     "description": null,
-                    "relevantForCategories": [ "1", "2a", "2b", "3" ]
+                    "relevantForCategories": [{
+                        "category": "1", 
+                    },{
+                        "category": "2a"
+                    },{
+                        "category": "2b"
+                    },{
+                        "category": "3"
+                    }]
                 },
                 {
-                    "id": "37d818ed-9499-4b9a-9772-725467368387",
-                    "group": "context",
+                    "uuid": "37d818ed-9499-4b9a-9772-725467368387",
+                    "group": "classification",
                     "questionType": "date",
                     "label": "Wanneer was de laatste ontmoeting?",
                     "description": null,
-                    "relevantForCategories": [ "1", "2a", "2b", "3" ]
+                    "relevantForCategories": [{
+                        "category": "1", 
+                    },{
+                        "category": "2a"
+                    },{
+                        "category": "2b"
+                    },{
+                        "category": "3"
+                    }]
                 },
                 {
-                    "id": "37d818ed-9499-4b9a-9770-725467368388",
+                    "uuid": "37d818ed-9499-4b9a-9770-725467368388",
                     "group": "contactdetails",
                     "questionType": "contactdetails",
                     "label": "Contactgegevens",
                     "description": null,
-                    "relevantForCategories": [ "1", "2a", "2b", "3" ]
+                    "relevantForCategories": [{
+                        "category": "1", 
+                    },{
+                        "category": "2a"
+                    },{
+                        "category": "2b"
+                    },{
+                        "category": "3"
+                    }]
                 },
                 {
-                    "id": "37d818ed-9499-4b9a-9771-725467368388",
+                    "uuid": "37d818ed-9499-4b9a-9771-725467368388",
                     "group": "contactdetails",
                     "questionType": "date",
                     "label": "Geboortedatum",
                     "description": null,
-                    "relevantForCategories": [ "1" ]
+                    "relevantForCategories": [{
+                        "category": "1", 
+                    }]
                 },
                 {
-                    "id": "37d818ed-9499-4b9a-9771-725467368389",
+                    "uuid": "37d818ed-9499-4b9a-9771-725467368389",
                     "group": "contactdetails",
                     "questionType": "open",
                     "label": "Beroep",
                     "description": null,
-                    "relevantForCategories": [ "1" ]
+                    "relevantForCategories": [{
+                        "category": "1", 
+                    }]
                 },
                 {
-                    "id": "37d818ed-9499-4b9a-9771-725467368391",
+                    "uuid": "37d818ed-9499-4b9a-9771-725467368391",
                     "group": "contactdetails",
                     "questionType": "multiplechoice",
                     "label": "Waar ken je deze persoon van?",
                     "description": null,
-                    "relevantForCategories": [ "2a", "2b" ],
+                    "relevantForCategories": [{
+                        "category": "2a"
+                    },{
+                        "category": "2b"
+                    }],
                     "answerOptions": [
                         {
                             "label": "Ouder",
@@ -104,12 +136,18 @@
 
                 },
                 {
-                    "id": "37d818ed-9499-4b9a-9771-725467368392",
+                    "uuid": "37d818ed-9499-4b9a-9771-725467368392",
                     "group": "contactdetails",
                     "questionType": "multiplechoice",
                     "label": "Is een of meerdere onderstaande zaken van toepassing voor deze persoon?",
                     "description": "* Is student\n* 70 jaar of ouder\n* Heeft gezondheidsklachten of loopt extra gezondheidsrisico's\n* Woont in een asielzoekerscentrum\n* Spreekt slecht of geen Nederlands",
-                    "relevantForCategories": [ "1", "2a", "2b" ],
+                    "relevantForCategories": [{
+                        "category": "1", 
+                    },{
+                        "category": "2a"
+                    },{
+                        "category": "2b"
+                    }],
                     "answerOptions": [
                         {
                             "label": "Ja, één of meerdere dingen",
