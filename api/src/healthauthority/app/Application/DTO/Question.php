@@ -36,12 +36,12 @@ class Question implements JsonSerializable
     public function jsonSerialize()
     {
         $result = [
-            'id' => $this->question->id,
+            'uuid' => $this->question->uuid,
             'group' => $this->question->group,
             'questionType' => $this->question->questionType,
             'label' => $this->question->label,
             'description' => $this->question->description,
-            'relevantForCategories' => $this->question->relevantForCategories
+            'relevantForCategories' => array_map(fn ($c) => ['category' => $c], $this->question->relevantForCategories)
         ];
 
         if ($this->question instanceof MultipleChoiceQuestion) {

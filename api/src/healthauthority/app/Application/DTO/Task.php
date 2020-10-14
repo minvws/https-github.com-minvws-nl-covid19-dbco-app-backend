@@ -34,7 +34,7 @@ class Task implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'id' => $this->task->id,
+            'uuid' => $this->task->uuid,
             'taskType' => $this->task->taskType,
             'source' => $this->task->source,
             'label' => $this->task->label,
