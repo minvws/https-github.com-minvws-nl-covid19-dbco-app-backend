@@ -1,0 +1,244 @@
+{
+  "infection": {
+    "dateOfSymptomOnset": "2020-10-12"
+  },
+  "tasks": [
+    {
+      "uuid": "123e4567-e89b-12d3-a456-426614172000",
+      "taskType": "contact",
+      "source": "portal",
+      "label": "Lia B",
+      "taskContext": "Partner",
+      "category": "1",
+      "communication": "index",
+      "questionnaireResult": {
+        "questionaireUuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "answers": [
+          {
+            "uuid": "37d818ed-9499-4b9a-9771-725467368111",
+            "lastModified": "2020-10-14T09:32:28Z",
+            "questionUuid": "37d818ed-9499-4b9a-9771-725467368387",
+            "livedTogetherRisk": true,
+            "durationRisk": true,
+            "distanceRisk": false,
+            "otherRisk": true
+          },
+          {
+            "uuid": "37d818ed-9499-4b9a-9771-725467368112",
+            "lastModified": "2020-10-14T09:32:28Z",
+            "questionUuid": "37d818ed-9499-4b9a-9772-725467368387",
+            "value": "2020-10-12"
+          },
+          {
+            "uuid": "37d818ed-9499-4b9a-9771-725467368113",
+            "lastModified": "2020-10-14T09:32:28Z",
+            "questionUuid": "37d818ed-9499-4b9a-9770-725467368388",
+            "firstName": "Lia",
+            "lastName": "Beba",
+            "email": "lia.b@emailprovider.tst",
+            "phoneNumber": "0612345678"
+          },
+          {
+            "uuid": "37d818ed-9499-4b9a-9771-725467368114",
+            "lastModified": "2020-10-14T09:32:28Z",
+            "questionUuid": "37d818ed-9499-4b9a-9771-725467368388",
+            "value": "1980-10-12"
+          },
+          {
+            "uuid": "37d818ed-9499-4b9a-9771-725467368115",
+            "lastModified": "2020-10-14T09:32:28Z",
+            "questionUuid": "37d818ed-9499-4b9a-9771-725467368389",
+            "value": "Researcher"
+          },
+          {
+            "uuid": "37d818ed-9499-4b9a-9771-725467368117",
+            "lastModified": "2020-10-14T09:32:28Z",
+            "questionUuid": "37d818ed-9499-4b9a-9771-725467368392",
+            "value": "Nee"
+          }
+        ]
+      },
+      "informedByIndex": true
+    },
+    {
+      "uuid": "123e4567-e89b-12d3-a456-426614172000",
+      "taskType": "contact",
+      "source": "portal",
+      "label": "Aziz F.",
+      "taskContext": "Voetbaltrainer",
+      "category": "2a",
+      "communication": "index",
+      "questionnaireResult": {
+        "questionaireUuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "answers": [
+            {
+              "uuid": "47d818ed-9499-4b9a-9771-725467368111",
+              "lastModified": "2020-10-14T09:32:28Z",
+              "questionUuid": "37d818ed-9499-4b9a-9771-725467368387",
+              "livedTogetherRisk": false,
+              "durationRisk": true,
+              "distanceRisk": true,
+              "otherRisk": true
+            },
+            {
+              "uuid": "47d818ed-9499-4b9a-9771-725467368112",
+              "lastModified": "2020-10-14T09:32:28Z",
+              "questionUuid": "37d818ed-9499-4b9a-9772-725467368387",
+              "value": "2020-10-12"
+            },
+            {
+              "uuid": "47d818ed-9499-4b9a-9771-725467368113",
+              "lastModified": "2020-10-14T09:32:28Z",
+              "questionUuid": "37d818ed-9499-4b9a-9770-725467368388",
+              "firstName": "Aziz",
+              "lastName": "Fibonacci",
+              "email": "aziz.f@emailprovider.tst",
+              "phoneNumber": "0623456781"
+            },
+            {
+              "uuid": "47d818ed-9499-4b9a-9771-725467368116",
+              "lastModified": "2020-10-14T09:32:28Z",
+              "questionUuid": "37d818ed-9499-4b9a-9771-725467368391",
+              "value": "Overig"
+            },
+            {
+              "uuid": "47d818ed-9499-4b9a-9771-725467368117",
+              "lastModified": "2020-10-14T09:32:28Z",
+              "questionUuid": "37d818ed-9499-4b9a-9771-725467368392",
+              "value": "Nee"
+            }
+          ]
+        },
+      "informedByIndex": false
+    },
+    {
+      "uuid": "123e4567-e89b-12d3-a456-426614172000",
+      "taskType": "contact",
+      "source": "portal",
+      "label": "Job J.",
+      "context": "Collega",
+      "category": "2b",
+      "communication": "staff",
+      "questionnaireResult": {
+          "questionaireUuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "answers": [
+            {
+              "uuid": "57d818ed-9499-4b9a-9771-725467368111",
+              "lastModified": "2020-10-14T09:32:28Z",
+              "questionUuid": "37d818ed-9499-4b9a-9771-725467368387",
+              "livedTogetherRisk": false,
+              "durationRisk": true,
+              "distanceRisk": false,
+              "otherRisk": true
+            },
+            {
+              "uuid": "57d818ed-9499-4b9a-9771-725467368112",
+              "lastModified": "2020-10-14T09:32:28Z",
+              "questionUuid": "37d818ed-9499-4b9a-9772-725467368387",
+              "value": "2020-10-12"
+            },
+            {
+              "uuid": "57d818ed-9499-4b9a-9771-725467368113",
+              "lastModified": "2020-10-14T09:32:28Z",
+              "questionUuid": "37d818ed-9499-4b9a-9770-725467368388",
+              "firstName": "Job",
+              "lastName": "Jeba",
+              "email": "job.j@emailprovider.tst",
+              "phoneNumber": "0634567812"
+            },
+            {
+              "uuid": "57d818ed-9499-4b9a-9771-725467368116",
+              "lastModified": "2020-10-14T09:32:28Z",
+              "questionUuid": "37d818ed-9499-4b9a-9771-725467368391",
+              "value": "Vriend of kennis"
+            },
+            {
+              "uuid": "57d818ed-9499-4b9a-9771-725467368117",
+              "lastModified": "2020-10-14T09:32:28Z",
+              "questionUuid": "37d818ed-9499-4b9a-9771-725467368392",
+              "value": "Nee"
+            }
+          ]
+        },
+        "informedByIndex": true
+    },
+    {
+      "uuid": "123e4567-e89b-12d3-a456-426614172000",
+      "taskType": "contact",
+      "source": "portal",
+      "label": "Joris L.",
+      "context": "null",
+      "category": "3",
+      "communication": "index",
+      "questionnaireResult": {
+          "questionaireUuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "answers": [
+            {
+              "uuid": "67d818ed-9499-4b9a-9771-725467368111",
+              "lastModified": "2020-10-14T09:32:28Z",
+              "questionUuid": "37d818ed-9499-4b9a-9771-725467368387",
+              "livedTogetherRisk": false,
+              "durationRisk": true,
+              "distanceRisk": false,
+              "otherRisk": false
+            },
+            {
+              "uuid": "67d818ed-9499-4b9a-9771-725467368112",
+              "lastModified": "2020-10-14T09:32:28Z",
+              "questionUuid": "37d818ed-9499-4b9a-9772-725467368387",
+              "value": "2020-10-12"
+            },
+            {
+              "uuid": "67d818ed-9499-4b9a-9771-725467368113",
+              "lastModified": "2020-10-14T09:32:28Z",
+              "questionUuid": "37d818ed-9499-4b9a-9770-725467368388",
+              "firstName": "Joris",
+              "lastName": "Leba",
+              "email": "joris.l@emailprovider.tst",
+              "phoneNumber": "0645678123"
+            }
+          ]
+        },
+      "informedByIndex": true
+    },
+    {
+      "uuid": "123e4567-e89b-12d3-a456-426614172000",
+      "taskType": "contact",
+      "source": "portal",
+      "label": "Peter V.",
+      "context": "Zakenrelatie",
+      "category": "3",
+      "communication": "none",
+      "questionnaireResult": {
+          "questionaireUuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "answers": [
+            {
+              "uuid": "77d818ed-9499-4b9a-9771-725467368111",
+              "lastModified": "2020-10-14T09:32:28Z",
+              "questionUuid": "37d818ed-9499-4b9a-9771-725467368387",
+              "livedTogetherRisk": false,
+              "durationRisk": false,
+              "distanceRisk": false,
+              "otherRisk": false
+            },
+            {
+              "uuid": "77d818ed-9499-4b9a-9771-725467368112",
+              "lastModified": "2020-10-14T09:32:28Z",
+              "questionUuid": "37d818ed-9499-4b9a-9772-725467368387",
+              "value": "2020-10-12"
+            },
+            {
+              "uuid": "77d818ed-9499-4b9a-9771-725467368113",
+              "lastModified": "2020-10-14T09:32:28Z",
+              "questionUuid": "37d818ed-9499-4b9a-9770-725467368388",
+              "firstName": "Peter",
+              "lastName": "Veva",
+              "email": "peter.v@emailprovider.tst",
+              "phoneNumber": "0656781234"
+            }
+          ]
+        },
+      "informedByIndex": true
+    }
+  ]
+}
