@@ -32,6 +32,10 @@ jobs:
       run: |
         docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer public_api install
 
+    - name: Health Authority Api - Run composer
+      run: |
+        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer healthauthority_api install
+
     - name: Console - Run phpunit Console
       run: |
         docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit console

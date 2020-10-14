@@ -33,9 +33,8 @@ class StubCaseTaskRepository implements CaseTaskRepository
       "category": "1",
       "communication": "index"
     },
-  
     {
-      "id": "123e4567-e89b-12d3-a456-426614172000",
+      "id": "123e4567-e89b-22d3-a456-426614172000",
       "taskType": "contact",
       "source": "portal",
       "label": "Aziz F.",
@@ -44,7 +43,7 @@ class StubCaseTaskRepository implements CaseTaskRepository
       "communication": "index"
     },
     {
-      "id": "123e4567-e89b-12d3-a456-426614172000",
+      "id": "123e4567-e89b-32d3-a456-426614172000",
       "taskType": "contact",
       "source": "portal",
       "label": "Job J.",
@@ -53,7 +52,7 @@ class StubCaseTaskRepository implements CaseTaskRepository
       "communication": "staff"
     },
     {
-      "id": "123e4567-e89b-12d3-a456-426614172000",
+      "id": "123e4567-e89b-42d3-a456-426614172000",
       "taskType": "contact",
       "source": "portal",
       "label": "Joris L.",
@@ -62,7 +61,7 @@ class StubCaseTaskRepository implements CaseTaskRepository
       "communication": "index"
     },
     {
-      "id": "123e4567-e89b-12d3-a456-426614172000",
+      "id": "123e4567-e89b-52d3-a456-426614172000",
       "taskType": "contact",
       "source": "portal",
       "label": "Peter V.",
