@@ -9,7 +9,7 @@ class Task
     /**
      * @var string
      */
-    public string $id;
+    public string $uuid;
 
     /**
      * @var string
