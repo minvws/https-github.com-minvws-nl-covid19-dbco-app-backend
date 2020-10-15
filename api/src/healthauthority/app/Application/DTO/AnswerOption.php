@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\DTO;
 
 use App\Application\Models\AnswerOption as AnswerOptionModel;
+use JsonSerializable;
 
 /**
  * Answer option DTO.
@@ -33,9 +34,15 @@ class AnswerOption implements JsonSerializable
      */
     public function jsonSerialize()
     {
-        return [
+        $result = [
             'label' => $this->answerOption->label,
             'value' => $this->answerOption->value
         ];
+
+        if (!empty($this->answerOption->trigger)) {
+            $result['trigger'] = $this->answerOption->trigger;
+        }
+
+        return $result;
     }
 }
