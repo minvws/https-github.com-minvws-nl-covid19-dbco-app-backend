@@ -1,8 +1,7 @@
 {
   "infection": {
-    "dateOfSymptomOnset": "2020-10-12"
-  },
-  "tasks": [
+    "dateOfSymptomOnset": "2020-10-12",
+    "tasks": [
     {
       "uuid": "123e4567-e89b-12d3-a456-426614172000",
       "taskType": "contact",
@@ -58,7 +57,8 @@
           }
         ]
       },
-      "informedByIndex": true
+      "informedByIndex": true,
+      "dateOfLastExposure": null
     },
     {
       "uuid": "123e4567-e89b-12d3-a456-426614172000",
@@ -109,7 +109,8 @@
             }
           ]
         },
-      "informedByIndex": false
+      "informedByIndex": false,
+      "dateOfLastExposure": "2020-10-03"
     },
     {
       "uuid": "123e4567-e89b-12d3-a456-426614172000",
@@ -160,7 +161,8 @@
             }
           ]
         },
-        "informedByIndex": true
+        "informedByIndex": true,
+        "dateOfLastExposure": "2020-10-03"
     },
     {
       "uuid": "123e4567-e89b-12d3-a456-426614172000",
@@ -199,7 +201,8 @@
             }
           ]
         },
-      "informedByIndex": true
+      "informedByIndex": true,
+      "dateOfLastExposure": "2020-10-15"
     },
     {
       "uuid": "123e4567-e89b-12d3-a456-426614172000",
@@ -238,7 +241,9 @@
             }
           ]
         },
-      "informedByIndex": true
-    }
-  ]
+        "informedByIndex": true,
+        "dateOfLastExposure": "2020-10-12"
+      }
+    ]
+  }
 }
