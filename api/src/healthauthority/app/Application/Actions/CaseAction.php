@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Application\Actions;
 
-use App\Application\Responses\CaseTaskSubmitResponse;
+use App\Application\Responses\CaseResponse;
 use App\Application\Services\TaskService;
 use DBCO\Application\Actions\Action;
 use DBCO\Application\Actions\ValidationError;
@@ -12,30 +12,30 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
 /**
- * Submit case specific task results.
+ * List case specific tasks.
  *
  * @package App\Application\Actions
  */
-class CaseTaskSubmitAction extends Action
+class CaseAction extends Action
 {
     /**
      * @var TaskService
      */
-    protected TaskService $taskService;
+    protected CaseService $caseService;
 
     /**
      * Constructor.
      *
      * @param LoggerInterface $logger
-     * @param TaskService     $taskService
+     * @param CaseService     $caseService
      */
     public function __construct(
         LoggerInterface $logger,
-        TaskService $taskService
+        CaseService $caseService
     )
     {
         parent::__construct($logger);
-        $this->taskService = $taskService;
+        $this->caseService = $caseService;
     }
 
     /**
@@ -43,23 +43,19 @@ class CaseTaskSubmitAction extends Action
      */
     protected function action(): Response
     {
-        $body = (string)$this->request->getBody();
-
         $errors = [];
 
         $caseId = $this->args['caseId'] ?? null;
         if (empty($caseId)) {
-            $errors = ValidationError::url('isRequired', 'caseId is required', 'caseId');
+            $errors[] = ValidationError::url('isRequired', 'caseId is required', 'caseId');
         }
-
-        // TODO: verify body is not empty, signature etc.
 
         if (count($errors) > 0) {
             throw new ValidationException($this->request, $errors);
         }
 
-        $this->taskService->submitCaseTasks($caseId, $body);
+        $case = $this->caseService->getCase($caseId);
 
-        return $this->respond(new CaseTaskSubmitResponse());
+        return $this->respond(new CaseResponse($case));
     }
 }

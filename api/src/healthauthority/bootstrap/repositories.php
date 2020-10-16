@@ -19,6 +19,6 @@ return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
         QuestionnaireRepository::class => autowire(StubQuestionnaireRepository::class),
         GeneralTaskRepository::class => autowire(StubGeneralTaskRepository::class),
-        CaseTaskRepository::class => autowire(StubCaseTaskRepository::class),
+        CaseRepository::class => autowire(StubCaseRepository::class),
     ]);
 };

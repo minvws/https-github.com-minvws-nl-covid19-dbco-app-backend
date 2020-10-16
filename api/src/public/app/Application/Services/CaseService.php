@@ -1,10 +1,8 @@
 <?php
 namespace App\Application\Services;
 
-use App\Application\Models\CaseTaskList;
+use App\Application\Models\CovidCase;
 use App\Application\Models\GeneralTaskList;
-use App\Application\Models\TaskList;
-use App\Application\Models\Infection;
 use App\Application\Repositories\CaseTaskRepository;
 use App\Application\Repositories\GeneralTaskRepository;
 use Exception;
@@ -15,7 +13,7 @@ use Psr\Log\LoggerInterface;
  *
  * @package App\Application\Services
  */
-class TaskService
+class CaseService
 {
     /**
      * @var GeneralTaskRepository
@@ -23,9 +21,9 @@ class TaskService
     private GeneralTaskRepository $generalTaskRepository;
 
     /**
-     * @var CaseTaskRepository
+     * @var CaseRepository
      */
-    private CaseTaskRepository $caseTaskRepository;
+    private CaseRepository $caseRepository;
 
     /**
      * @var LoggerInterface
@@ -36,41 +34,42 @@ class TaskService
      * Constructor.
      *
      * @param GeneralTaskRepository $generalTaskRepository
-     * @param CaseTaskRepository    $caseTaskRepository
+     * @param CaseRepository        $caseRepository
      * @param LoggerInterface       $logger
      */
     public function __construct(
         GeneralTaskRepository $generalTaskRepository,
-        CaseTaskRepository $caseTaskRepository,
+        CaseRepository $caseTaskRepository,
         LoggerInterface $logger
     )
     {
         $this->generalTaskRepository = $generalTaskRepository;
-        $this->caseTaskRepository = $caseTaskRepository;
+        $this->caseRepository = $caseRepository;
         $this->logger = $logger;
     }
 
     /**
      * Returns the general task list.
      *
-     * @return TaskList
+     * @return GeneralTaskList
      *
      * @throws Exception
      */
-    public function getGeneralTasks(): TaskList
+    public function getGeneralTasks(): GeneralTaskList
     {
         return $this->generalTaskRepository->getGeneralTasks();
     }
 
     /**
-     * Returns the case task list.
+     * Returns the case and its task list.
      *
      * @param string $caseId Case identifier.
      *
-     * @return Infection
+     * @return CovidCase
      */
-    public function getCaseTasks(string $caseId): Infection
+    public function getCase(string $caseId): CovidCase
     {
+        // TODO: verify access to case using signed otp
         return $this->caseTaskRepository->getCaseTasks($caseId);
     }
 
@@ -80,9 +79,9 @@ class TaskService
      * @param string $caseId Case identifier.
      * @param string $body   Encrypted body.
      */
-    public function submitCaseTasks(string $caseId, string $body): void
+    public function submitCase(string $caseId, string $body): void
     {
-        // TODO: decrypt
-        $this->caseTaskRepository->submitCaseTasks($caseId, $body);
+        // TODO: verify signature and access
+        $this->caseRepository->submitCase($caseId, $body);
     }
 }

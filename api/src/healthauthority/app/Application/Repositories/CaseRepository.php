@@ -1,23 +1,23 @@
 <?php
 namespace App\Application\Repositories;
 
-use App\Application\Models\CaseTaskList;
+use App\Application\Models\CovidCase;
 
 /**
  * Used for retrieving case specific tasks.
  *
  * @package App\Application\Repositories
  */
-interface CaseTaskRepository
+interface CaseRepository
 {
     /**
      * Returns the case task list.
      *
      * @param string $caseId Case identifier.
      *
-     * @return CaseTaskList
+     * @return CovidCase
      */
-    public function getCaseTasks(string $caseId): CaseTaskList;
+    public function getCase(string $caseId): CovidCase;
 
     /**
      * Submit case tasks.
@@ -27,5 +27,5 @@ interface CaseTaskRepository
      *
      * @return void
      */
-    public function submitCaseTasks(string $caseId, string $body): void;
+    public function submitCase(string $caseId, string $body): void;
 }
