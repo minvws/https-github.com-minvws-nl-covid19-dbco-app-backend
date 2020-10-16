@@ -14,7 +14,7 @@ class InfectionResponse extends Response implements JsonSerializable
     /**
      * @var Infection
      */
-    private Infectio $infection;
+    private Infection $infection;
 
     /**
      * Constructor.
