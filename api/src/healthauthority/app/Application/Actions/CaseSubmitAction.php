@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Application\Actions;
 
-use App\Application\Responses\CaseTaskSubmitResponse;
-use App\Application\Services\TaskService;
+use App\Application\Responses\CaseSubmitResponse;
+use App\Application\Services\CaseService;
 use DBCO\Application\Actions\Action;
 use DBCO\Application\Actions\ValidationError;
 use DBCO\Application\Actions\ValidationException;
@@ -27,7 +27,7 @@ class CaseSubmitAction extends Action
      * Constructor.
      *
      * @param LoggerInterface $logger
-     * @param TaskService     $taskService
+     * @param CaseService     $caseService
      */
     public function __construct(
         LoggerInterface $logger,
@@ -35,7 +35,7 @@ class CaseSubmitAction extends Action
     )
     {
         parent::__construct($logger);
-        $this->taskService = $taskService;
+        $this->caseService = $caseService;
     }
 
     /**
