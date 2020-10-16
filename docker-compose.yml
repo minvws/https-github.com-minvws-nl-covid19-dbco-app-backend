@@ -98,3 +98,21 @@ services:
             - postgres
             - redis
             - healthauthority_api
+            
+    portal:
+        build:
+            context: ./portal
+            dockerfile: Dockerfile
+        environment:
+            APP_ENV: development
+            DEBUG: ${DEBUG:-0}
+            DB_HOST: postgres
+            DB_DATABASE: postgres
+            DB_USERNAME: ${PORTAL_DB_USERNAME}
+            DB_PASSWORD: ${PORTAL_DB_PASSWORD}
+        ports:
+            - ${PORTAL_PORT:-8084}:80
+        volumes:
+            - ./portal/src:/src
+        depends_on:
+            - postgres
