@@ -4,6 +4,7 @@ namespace App\Application\Services;
 use App\Application\Models\CaseTaskList;
 use App\Application\Models\GeneralTaskList;
 use App\Application\Models\TaskList;
+use App\Application\Models\Infection;
 use App\Application\Repositories\CaseTaskRepository;
 use App\Application\Repositories\GeneralTaskRepository;
 use Exception;
@@ -66,9 +67,9 @@ class TaskService
      *
      * @param string $caseId Case identifier.
      *
-     * @return TaskList
+     * @return Infection
      */
-    public function getCaseTasks(string $caseId): TaskList
+    public function getCaseTasks(string $caseId): Infection
     {
         return $this->caseTaskRepository->getCaseTasks($caseId);
     }

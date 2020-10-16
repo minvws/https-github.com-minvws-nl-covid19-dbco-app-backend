@@ -20,9 +20,9 @@ class StubCaseTaskRepository implements CaseTaskRepository
      *
      * @return TaskList
      */
-    public function getCaseTasks(string $caseId): TaskList
+    public function getCaseTasks(string $caseId): Infection
     {
-        $list = new TaskList();
+        $list = new Infection();
 
         $task1 = new Task();
         $task1->uuid = "123e4567-e89b-12d3-a456-426614172000";
@@ -32,8 +32,10 @@ class StubCaseTaskRepository implements CaseTaskRepository
         $task1->context = "Partner";
         $task1->category = "1";
         $task1->communication = "index";
+        $task1->dateOfLastExposure = "2020-10-13";
 
         $list->tasks[] = $task1;
+        $list->dateOfSymptomOnset = "2020-10-14";
 
         return $list;
     }
