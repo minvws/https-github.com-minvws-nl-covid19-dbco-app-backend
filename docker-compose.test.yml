@@ -32,3 +32,8 @@ services:
     console:
         environment:
             APP_ENV: test
+  
+    portal:
+        environment:
+            APP_ENV: test
+       
