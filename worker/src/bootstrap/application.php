@@ -15,7 +15,7 @@ if (false) { // Should be set to true in production
 
 // Set up settings
 $settings = require __DIR__ . '/settings.php';
-$settings($containerBuilder);
+$containerBuilder->addDefinitions($settings);
 
 // Set up dependencies
 $dependencies = require __DIR__ . '/dependencies.php';
@@ -24,6 +24,10 @@ $dependencies($containerBuilder);
 // Set up repositories
 $repositories = require __DIR__ . '/repositories.php';
 $repositories($containerBuilder);
+
+// Set up services
+$services = require __DIR__ . '/services.php';
+$services($containerBuilder);
 
 // Build PHP-DI Container instance
 $container = $containerBuilder->build();
