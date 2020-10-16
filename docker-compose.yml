@@ -96,7 +96,8 @@ services:
             - ./worker/src:/src
         depends_on:
             - postgres
-<<<<<<< HEAD
+            - redis
+            - healthauthority_api
             
     portal:
         build:
@@ -115,7 +116,3 @@ services:
             - ./portal/src/dbcoportal:/src
         depends_on:
             - postgres
-=======
-            - redis
-            - healthauthority_api
->>>>>>> 1e1e9f111c9d631c32e7323454aa01b4232386fc
