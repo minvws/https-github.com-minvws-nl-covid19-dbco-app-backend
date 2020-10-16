@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Application\Actions;
 
 use App\Application\Responses\TaskListResponse;
-use App\Application\Services\TaskService;
+use App\Application\Services\CaseService;
 use DBCO\Application\Actions\Action;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
@@ -17,23 +17,23 @@ use Psr\Log\LoggerInterface;
 class GeneralTaskListAction extends Action
 {
     /**
-     * @var TaskService
+     * @var CaseService
      */
-    protected TaskService $taskService;
+    protected CaseService $caseService;
 
     /**
      * Constructor.
      *
      * @param LoggerInterface $logger
-     * @param TaskService     $taskService
+     * @param CaseService     $caseService
      */
     public function __construct(
         LoggerInterface $logger,
-        TaskService $taskService
+        CaseService $caseService
     )
     {
         parent::__construct($logger);
-        $this->taskService = $taskService;
+        $this->caseService = $caseService;
     }
 
     /**
@@ -41,7 +41,7 @@ class GeneralTaskListAction extends Action
      */
     protected function action(): Response
     {
-        $tasks = $this->taskService->getGeneralTasks();
+        $tasks = $this->caseService->getGeneralTasks();
         return $this->respond(new TaskListResponse($tasks));
     }
 }

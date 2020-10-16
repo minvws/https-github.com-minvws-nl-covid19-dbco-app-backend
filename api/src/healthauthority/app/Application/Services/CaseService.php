@@ -2,7 +2,6 @@
 namespace App\Application\Services;
 
 use App\Application\Models\CovidCase;
-use App\Application\Models\GeneralTaskList;
 use App\Application\Models\TaskList;
 use App\Application\Repositories\CaseRepository;
 use App\Application\Repositories\GeneralTaskRepository;
