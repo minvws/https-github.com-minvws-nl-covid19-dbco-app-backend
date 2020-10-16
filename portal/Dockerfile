@@ -30,7 +30,7 @@ COPY assets/apache2.conf /etc/apache2/apache2.conf
 COPY assets/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 COPY assets/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_default.conf
 
-COPY src/dbcoportal /src
+COPY src /src
 
 RUN cd /src && composer install && \
     usermod -u 1000 www-data

@@ -113,6 +113,6 @@ services:
         ports:
             - ${PORTAL_PORT:-8084}:80
         volumes:
-            - ./portal/src/dbcoportal:/src
+            - ./portal/src:/src
         depends_on:
             - postgres
