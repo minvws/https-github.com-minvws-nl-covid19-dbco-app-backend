@@ -6,10 +6,7 @@ use Monolog\Logger;
 $debug = filter_var(getenv('DEBUG'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false;
 
 return [
-    'displayErrorDetails' => $debug,
-    'logErrors' => true,
-    'logErrorDetails' => true,
-    'logger.name' => 'api',
+    'logger.name' => 'console',
     'logger.path' => 'php://stdout',
     'logger.level' => $debug ? Logger::DEBUG : Logger::ERROR,
     'db' => [
@@ -23,5 +20,7 @@ return [
         'host' => DI\env('REDIS_HOST'),
         'port' => DI\env('REDIS_PORT')
     ],
-    'signingKey.length' => 32
+    'healthAuthorityAPI' => [
+        'base_uri' => DI\env('HEALTHAUTHORITY_API_BASE_URI')
+    ]
 ];

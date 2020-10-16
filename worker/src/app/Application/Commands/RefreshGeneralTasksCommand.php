@@ -1,29 +1,29 @@
 <?php
 namespace App\Application\Commands;
 
-use App\Application\Services\ExampleService;
+use App\Application\Services\TaskService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ExampleCommand extends Command
+class RefreshGeneralTasksCommand extends Command
 {
-    protected static $defaultName = 'example';
+    protected static $defaultName = 'task:refresh-general';
 
     /**
-     * @var \App\Application\Services\ExampleService
+     * @var TaskService
      */
-    private ExampleService $exampleService;
+    private TaskService $taskService;
 
     /**
-     * ExampleCommand constructor.
+     * Constructor.
      *
-     * @param \App\Application\Services\ExampleService $exportService
+     * @param TaskService $taskService
      */
-    public function __construct(ExampleService $exportService)
+    public function __construct(TaskService $taskService)
     {
         parent::__construct();
-        $this->exampleService = $exportService;
+        $this->taskService = $taskService;
     }
 
     /**
@@ -32,8 +32,8 @@ class ExampleCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Example command')
-            ->setHelp('An example command');
+            ->setDescription('Refresh general tasks command')
+            ->setHelp('Can be used to retrieve a fresh list of general tasks from the health authority');
     }
 
     /**
@@ -46,8 +46,7 @@ class ExampleCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $example = $this->exampleService->example();
-        $output->writeln(print_r($example, true));
+        $this->taskService->refreshGeneralTasks();
         return Command::SUCCESS;
     }
 }
