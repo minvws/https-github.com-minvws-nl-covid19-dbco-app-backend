@@ -6,7 +6,7 @@ use DBCO\Application\Responses\Response;
 /**
  * Response for case task submit.
  */
-class CaseTaskSubmitResponse extends Response
+class CaseSubmitResponse extends Response
 {
     /**
      * @inheritDoc
