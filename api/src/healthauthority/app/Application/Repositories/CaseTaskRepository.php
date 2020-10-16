@@ -1,7 +1,7 @@
 <?php
 namespace App\Application\Repositories;
 
-use App\Application\Models\TaskList;
+use App\Application\Models\Infection;
 
 /**
  * Used for retrieving case specific tasks.
@@ -15,9 +15,9 @@ interface CaseTaskRepository
      *
      * @param string $caseId Case identifier.
      *
-     * @return TaskList
+     * @return Infection
      */
-    public function getCaseTasks(string $caseId): TaskList;
+    public function getCaseTasks(string $caseId): Infection;
 
     /**
      * Submit case tasks.

@@ -54,8 +54,8 @@ class CaseTaskListAction extends Action
             throw new ValidationException($this->request, $errors);
         }
 
-        $tasks = $this->taskService->getCaseTasks($caseId);
+        $infection = $this->taskService->getCaseTasks($caseId);
 
-        return $this->respond(new TaskListResponse($tasks));
+        return $this->respond(new InfectionResponse($infection));
     }
 }
