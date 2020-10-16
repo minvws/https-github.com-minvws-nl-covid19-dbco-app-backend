@@ -2,35 +2,41 @@
 BASE_PATH=$(dirname $0)/..
 PROJECT_NAME=dbco-test
 
-echo "=====[ Start containers ]======================="
+echo "=====[ SETUP ]====="
 docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml up -d
 sleep 5
-
-echo "=====[ Setup database ]========================="
 docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm psql --host=postgres --user=postgres < $BASE_PATH/install/tables.sql
 docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER private_api PASSWORD '\$PRIVATE_API_DB_PASSWORD'"\"
 docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER public_api PASSWORD '\$PUBLIC_API_DB_PASSWORD'"\"
 docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER healthauthority_api PASSWORD '\$HEALTHAUTHORITY_API_DB_PASSWORD'"\"
-docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER console PASSWORD '\$CONSOLE_DB_PASSWORD'"\"
+docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER worker PASSWORD '\$WORKER_DB_PASSWORD'"\"
 docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm psql --host=postgres --user=postgres < $BASE_PATH/install/permissions.sql
 
-#echo "=====[ CONSOLE ]====="
-#docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit console
-#echo
+if [ -z "$1" ] || [ "$1" == "worker" ]; then
+  echo "=====[ RUN TESTS FOR WORKER ]====="
+  docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit worker
+  echo
+fi
 
-echo "=====[ PRIVATE API ]====="
-docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit private_api
-echo
+if [ -z "$1" ] || [ "$1" == "private_api" ]; then
+  echo "=====[ RUN TESTS FOR PRIVATE API ]====="
+  docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit private_api
+  echo
+fi
 
-echo "=====[ PUBLIC API ]====="
-docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit public_api
-echo
+if [ -z "$1" ] || [ "$1" == "public_api" ]; then
+  echo "=====[ RUN TESTS FOR PUBLIC API ]====="
+  docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit public_api
+  echo
+fi
 
-echo "=====[ HEALTHAUTHORITY API ]====="
-docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority_api
-echo
+if [ -z "$1" ] || [ "$1" == "healthauthority_api" ]; then
+  echo "=====[ RUN TESTS FOR HEALTHAUTHORITY API ]====="
+  docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority_api
+  echo
+fi
 
-echo "=====[ Stop containers ]====="
+echo "=====[ CLEANUP ]====="
 docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml down
 docker volume rm "${PROJECT_NAME}_postgres-data"
 echo

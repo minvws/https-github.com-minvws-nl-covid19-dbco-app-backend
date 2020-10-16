@@ -19,8 +19,8 @@ class Header
     /**
      * Constructor.
      *
-     * @param string   $name
-     * @param string[] $values
+     * @param string $name
+     * @param array  $values
      */
     public function __construct(string $name, array $values)
     {

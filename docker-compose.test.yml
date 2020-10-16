@@ -13,7 +13,7 @@ services:
             PRIVATE_API_DB_PASSWORD: ${PRIVATE_API_DB_PASSWORD}
             PUBLIC_API_DB_PASSWORD: ${PUBLIC_API_DB_PASSWORD}
             HEALTHAUTHORITY_API_DB_PASSWORD: ${HEALTHAUTHORITY_API_DB_PASSWORD}
-            CONSOLE_DB_PASSWORD: ${CONSOLE_DB_PASSWORD}
+            WORKER_DB_PASSWORD: ${WORKER_DB_PASSWORD}
         depends_on:
             - postgres
 
@@ -29,6 +29,6 @@ services:
         environment:
             APP_ENV: test
 
-    console:
+    worker:
         environment:
             APP_ENV: test
