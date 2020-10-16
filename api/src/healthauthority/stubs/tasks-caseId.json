@@ -35,7 +35,7 @@
         "taskType": "contact",
         "source": "portal",
         "label": "Joris L.",
-        "taskContext": "null",
+        "taskContext": null,
         "category": "3",
         "communication": "index"
       },

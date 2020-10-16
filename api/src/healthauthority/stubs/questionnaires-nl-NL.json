@@ -27,7 +27,7 @@
                     "label": "Contactgegevens",
                     "description": null,
                     "relevantForCategories": [{
-                        "category": "1", 
+                        "category": "1"
                     },{
                         "category": "2a"
                     },{
@@ -43,7 +43,7 @@
                     "label": "Geboortedatum",
                     "description": null,
                     "relevantForCategories": [{
-                        "category": "1", 
+                        "category": "1"
                     }]
                 },
                 {
@@ -53,7 +53,7 @@
                     "label": "Beroep",
                     "description": null,
                     "relevantForCategories": [{
-                        "category": "1", 
+                        "category": "1" 
                     }]
                 },
                 {
