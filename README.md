@@ -10,7 +10,7 @@ This repository contains the backend implementation of the Dutch COVID-19 DBCO a
 
 ## Overview
 
-* console: implements a docker image that can be used to manually or periodically (e.g. cron) run commands
+* worker: implements a docker image that can be used to manually or periodically (e.g. cron) run commands
 * api: implements the APIs
 
 ## Development

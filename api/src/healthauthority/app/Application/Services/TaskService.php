@@ -1,8 +1,6 @@
 <?php
 namespace App\Application\Services;
 
-use App\Application\Models\CaseTaskList;
-use App\Application\Models\GeneralTaskList;
 use App\Application\Models\TaskList;
 use App\Application\Repositories\CaseTaskRepository;
 use App\Application\Repositories\GeneralTaskRepository;
