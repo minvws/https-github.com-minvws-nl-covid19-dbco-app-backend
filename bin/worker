@@ -2,4 +2,4 @@
 BASE_PATH=$(dirname $0)/..
 cd $BASE_PATH
 args=( "$@" )
-docker-compose run --rm console "${args[@]}"
+docker-compose run --rm worker "${args[@]}"

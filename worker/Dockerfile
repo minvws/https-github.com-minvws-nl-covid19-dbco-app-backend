@@ -27,4 +27,4 @@ RUN set -ex \
 
 WORKDIR /src
 
-ENTRYPOINT ["/src/console"]
+ENTRYPOINT ["/src/worker"]
