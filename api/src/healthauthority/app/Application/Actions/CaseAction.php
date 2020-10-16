@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Application\Actions;
 
 use App\Application\Responses\CaseResponse;
-use App\Application\Services\TaskService;
+use App\Application\Services\CaseService;
 use DBCO\Application\Actions\Action;
 use DBCO\Application\Actions\ValidationError;
 use DBCO\Application\Actions\ValidationException;
