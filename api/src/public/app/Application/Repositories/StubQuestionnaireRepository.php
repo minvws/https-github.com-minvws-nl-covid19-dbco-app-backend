@@ -65,7 +65,7 @@ class StubQuestionnaireRepository implements QuestionnaireRepository
                     "label": "Geboortedatum",
                     "description": null,
                     "relevantForCategories": [{
-                        "category": "1", 
+                        "category": "1" 
                     }]
                 },
                 {
@@ -75,7 +75,7 @@ class StubQuestionnaireRepository implements QuestionnaireRepository
                     "label": "Beroep",
                     "description": null,
                     "relevantForCategories": [{
-                        "category": "1", 
+                        "category": "1" 
                     }]
                 },
                 {
