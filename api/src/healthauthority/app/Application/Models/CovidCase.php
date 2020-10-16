@@ -2,9 +2,9 @@
 namespace App\Application\Models;
 
 /**
- * Infection.
+ * CovidCase.
  */
-class Infection
+class CovidCase
 {
     /**
      * Date of symptom onset

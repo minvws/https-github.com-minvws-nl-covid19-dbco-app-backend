@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Application\Actions;
 
-use App\Application\Responses\TaskListResponse;
-use App\Application\Services\TaskService;
+use App\Application\Responses\CaseResponse;
+use App\Application\Services\CaseService;
 use DBCO\Application\Actions\Action;
 use DBCO\Application\Actions\ValidationError;
 use DBCO\Application\Actions\ValidationException;
@@ -16,12 +16,12 @@ use Psr\Log\LoggerInterface;
  *
  * @package App\Application\Actions
  */
-class CaseTaskListAction extends Action
+class CaseAction extends Action
 {
     /**
-     * @var TaskService
+     * @var CaseService
      */
-    protected TaskService $taskService;
+    protected CaseService $caseService;
 
     /**
      * Constructor.
@@ -31,11 +31,11 @@ class CaseTaskListAction extends Action
      */
     public function __construct(
         LoggerInterface $logger,
-        TaskService $taskService
+        CaseService $caseService
     )
     {
         parent::__construct($logger);
-        $this->taskService = $taskService;
+        $this->caseService = $caseService;
     }
 
     /**
@@ -54,8 +54,8 @@ class CaseTaskListAction extends Action
             throw new ValidationException($this->request, $errors);
         }
 
-        $infection = $this->taskService->getCaseTasks($caseId);
+        $case = $this->caseService->getCase($caseId);
 
-        return $this->respond(new InfectionResponse($infection));
+        return $this->respond(new CaseResponse($case));
     }
 }

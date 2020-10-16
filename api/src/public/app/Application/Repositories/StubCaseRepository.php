@@ -1,29 +1,29 @@
 <?php
 namespace App\Application\Repositories;
 
-use App\Application\Models\CaseTaskList;
+use App\Application\Models\CovidCase;
 
 /**
- * Used for retrieving case specific tasks.
+ * Used for retrieving case and its specific tasks.
  *
  * Stub implementation.
  *
  * @package App\Application\Repositories
  */
-class StubCaseTaskRepository implements CaseTaskRepository
+class StubCaseRepository implements CaseRepository
 {
     /**
-     * Returns the case task list.
+     * Returns the case and its task list.
      *
      * @param string $caseId Case identifier.
      *
-     * @return CaseTaskList
+     * @return CovidCase
      */
-    public function getCaseTasks(string $caseId): CaseTaskList
+    public function getCase(string $caseId): CovidCase
     {
         $body = <<<'EOD'
 {
-  "infection": {
+  "case": {
       "dateOfSymptomOnset": "2020-10-12",
       "tasks": [
         {
@@ -81,18 +81,18 @@ class StubCaseTaskRepository implements CaseTaskRepository
 }
 EOD;
 
-        return new CaseTaskList([], $body);
+        return new CovidCase([], $body);
     }
 
     /**
-     * Submit case tasks.
+     * Submit case and its tasks.
      *
      * @param string $caseId
      * @param string $body
      *
      * @return void
      */
-    public function submitCaseTasks(string $caseId, string $body): void
+    public function submitCase(string $caseId, string $body): void
     {
 
     }

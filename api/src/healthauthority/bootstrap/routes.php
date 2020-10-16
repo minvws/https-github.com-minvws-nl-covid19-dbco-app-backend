@@ -19,8 +19,8 @@ return function (App $app) {
     $app->get('/v1/questionnaires', QuestionnaireListAction::class);
     $app->get('/v1/tasks', GeneralTaskListAction::class);
 
-    $app->get('/v1/cases/{caseId}/tasks', CaseTaskListAction::class);
-    $app->put('/v1/cases/{caseId}/tasks', CaseTaskSubmitAction::class);
+    $app->get('/v1/cases/{caseId}', CaseAction::class);
+    $app->put('/v1/cases/{caseId}', CaseSubmitAction::class);
 
     $app->get('/status', function (Request $request, Response $response) {
         return $response->withStatus(200);

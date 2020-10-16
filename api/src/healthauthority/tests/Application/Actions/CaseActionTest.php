@@ -11,7 +11,7 @@ use Tests\TestCase;
  *
  * @package Tests\Application\Actions
  */
-class CaseTaskListActionTest extends TestCase
+class CaseActionTest extends TestCase
 {
     /**
      * Test happy flow.
@@ -20,7 +20,7 @@ class CaseTaskListActionTest extends TestCase
      */
     public function testList()
     {
-        $request = $this->createRequest('GET', '/v1/cases/1234/tasks');
+        $request = $this->createRequest('GET', '/v1/cases/1234');
         $response = $this->app->handle($request);
         $this->assertEquals(200, $response->getStatusCode());
     }

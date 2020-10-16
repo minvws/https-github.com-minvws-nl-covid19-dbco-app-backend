@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Application\Actions;
 
-use App\Application\Responses\CaseTaskListResponse;
+use App\Application\Responses\CaseTaskSubmitResponse;
 use App\Application\Services\TaskService;
 use DBCO\Application\Actions\Action;
 use DBCO\Application\Actions\ValidationError;
@@ -12,16 +12,16 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
 /**
- * List case specific tasks.
+ * Submit case with its specific task results.
  *
  * @package App\Application\Actions
  */
-class CaseTaskListAction extends Action
+class CaseSubmitAction extends Action
 {
     /**
-     * @var TaskService
+     * @var CaseService
      */
-    protected TaskService $taskService;
+    protected CaseService $caseService;
 
     /**
      * Constructor.
@@ -31,7 +31,7 @@ class CaseTaskListAction extends Action
      */
     public function __construct(
         LoggerInterface $logger,
-        TaskService $taskService
+        CaseService $caseService
     )
     {
         parent::__construct($logger);
@@ -43,19 +43,23 @@ class CaseTaskListAction extends Action
      */
     protected function action(): Response
     {
+        $body = (string)$this->request->getBody();
+
         $errors = [];
 
         $caseId = $this->args['caseId'] ?? null;
         if (empty($caseId)) {
-            $errors[] = ValidationError::url('isRequired', 'caseId is required', 'caseId');
+            $errors = ValidationError::url('isRequired', 'caseId is required', 'caseId');
         }
+
+        // TODO: verify body is not empty, signature etc.
 
         if (count($errors) > 0) {
             throw new ValidationException($this->request, $errors);
         }
 
-        $tasks = $this->taskService->getCaseTasks($caseId);
+        $this->caseService->submitCase($caseId, $body);
 
-        return $this->respond(new CaseTaskListResponse($tasks));
+        return $this->respond(new CaseSubmitResponse());
     }
 }
