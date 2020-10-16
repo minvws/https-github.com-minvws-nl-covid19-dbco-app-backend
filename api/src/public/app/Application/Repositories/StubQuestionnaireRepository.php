@@ -43,22 +43,6 @@ class StubQuestionnaireRepository implements QuestionnaireRepository
                     }]
                 },
                 {
-                    "uuid": "37d818ed-9499-4b9a-9772-725467368387",
-                    "group": "classification",
-                    "questionType": "date",
-                    "label": "Wanneer was de laatste ontmoeting?",
-                    "description": null,
-                    "relevantForCategories": [{
-                        "category": "1", 
-                    },{
-                        "category": "2a"
-                    },{
-                        "category": "2b"
-                    },{
-                        "category": "3"
-                    }]
-                },
-                {
                     "uuid": "37d818ed-9499-4b9a-9770-725467368388",
                     "group": "contactdetails",
                     "questionType": "contactdetails",
