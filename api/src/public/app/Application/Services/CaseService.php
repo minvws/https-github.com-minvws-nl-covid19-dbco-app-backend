@@ -3,7 +3,7 @@ namespace App\Application\Services;
 
 use App\Application\Models\CovidCase;
 use App\Application\Models\GeneralTaskList;
-use App\Application\Repositories\CaseTaskRepository;
+use App\Application\Repositories\CaseRepository;
 use App\Application\Repositories\GeneralTaskRepository;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -39,7 +39,7 @@ class CaseService
      */
     public function __construct(
         GeneralTaskRepository $generalTaskRepository,
-        CaseRepository $caseTaskRepository,
+        CaseRepository $caseRepository,
         LoggerInterface $logger
     )
     {
@@ -70,7 +70,7 @@ class CaseService
     public function getCase(string $caseId): CovidCase
     {
         // TODO: verify access to case using signed otp
-        return $this->caseTaskRepository->getCaseTasks($caseId);
+        return $this->caseRepository->getCase($caseId);
     }
 
     /**

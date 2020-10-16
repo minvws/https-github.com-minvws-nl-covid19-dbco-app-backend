@@ -6,6 +6,7 @@ use DateTime;
 use DBCO\Application\Models\DbcoCase;
 use DBCO\Application\Models\Pairing;
 use DBCO\Application\Repositories\PairingRepository;
+use DBCO\Application\Repositories\CaseRepository;
 use DBCO\Application\Managers\TransactionManager;
 use Exception;
 use Psr\Log\LoggerInterface;
