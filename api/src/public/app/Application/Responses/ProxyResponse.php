@@ -32,14 +32,7 @@ class ProxyResponse extends Response
         $headers = [];
 
         foreach ($this->data->headers as $header) {
-            if (array_key_exists($header->name, $headers)) {
-                if (!is_array($headers[$header->name])) {
-                    $headers[$header->name] = [$headers[$header->name]];
-                }
-                $headers[$header->name][] = $headers[$header->name];
-            } else {
-                $headers[$header->name] = $header->value;
-            }
+            $headers[$header->name] = $header->values;
         }
 
         return $headers;
