@@ -2,6 +2,7 @@
 namespace App\Application\Repositories;
 
 use App\Application\Models\CovidCase;
+use App\Application\Repositories\CaseRepository;
 
 /**
  * Used for retrieving case and its specific tasks.

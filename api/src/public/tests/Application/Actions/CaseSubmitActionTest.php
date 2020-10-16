@@ -11,7 +11,7 @@ use Tests\TestCase;
  *
  * @package Tests\Application\Actions
  */
-class CaseTaskSubmitActionTest extends TestCase
+class CaseSubmitActionTest extends TestCase
 {
     /**
      * Test happy flow.
@@ -20,7 +20,7 @@ class CaseTaskSubmitActionTest extends TestCase
      */
     public function testSubmit()
     {
-        $request = $this->createRequest('PUT', '/v1/cases/1234/tasks');
+        $request = $this->createRequest('PUT', '/v1/cases/1234');
         $request = $request->withParsedBody(new \stdClass);
         $request = $request->withHeader('Content-Type', 'application/json');
         $response = $this->app->handle($request);
