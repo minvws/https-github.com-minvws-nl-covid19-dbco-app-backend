@@ -1,0 +1,27 @@
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 0 6px -0.125em 6px;
+
+  &--m0 {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  &--arrow-left {
+    background-image: url('../img/arrow-left.svg');
+  }
+
+  &--eye {
+    background-image: url('../img/icon-eye.svg');
+  }
+
+  &--delete {
+    background-image: url('../img/icon-delete.svg');
+  }
+
+}
