@@ -19,5 +19,9 @@ return [
         'database' => DI\env('DB_DATABASE'),
         'password' => DI\env('DB_PASSWORD'),
     ],
+    'redis' => [
+        'host' => DI\env('REDIS_HOST'),
+        'port' => DI\env('REDIS_PORT')
+    ],
     'signingKey.length' => 32
 ];

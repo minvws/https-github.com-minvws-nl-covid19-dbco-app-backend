@@ -14,6 +14,9 @@ services:
         ports:
             - ${POSTGRES_PORT:-5432}:5432
 
+    redis:
+        image: redis
+
     private_api:
         build:
             context: ./api
@@ -47,6 +50,8 @@ services:
             DB_DATABASE: postgres
             DB_USERNAME: ${PUBLIC_API_DB_USERNAME}
             DB_PASSWORD: ${PUBLIC_API_DB_PASSWORD}
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
         ports:
             - ${PUBLIC_API_PORT:-8082}:80
         volumes:
@@ -54,6 +59,7 @@ services:
             - ./api/src/public:/src
         depends_on:
             - postgres
+            - redis
 
     healthauthority_api:
         build:
@@ -74,16 +80,39 @@ services:
         depends_on:
             - postgres
 
-    console:
-        build: console
+    worker:
+        build: worker
         environment:
             APP_ENV: development
             DEBUG: ${DEBUG:-0}
             DB_HOST: postgres
             DB_DATABASE: postgres
-            DB_USERNAME: ${CONSOLE_DB_USERNAME}
-            DB_PASSWORD: ${CONSOLE_DB_PASSWORD}
+            DB_USERNAME: ${WORKER_DB_USERNAME}
+            DB_PASSWORD: ${WORKER_DB_PASSWORD}
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api/v1/
         volumes:
-            - ./console/src:/src
+            - ./worker/src:/src
+        depends_on:
+            - postgres
+            - redis
+            - healthauthority_api
+            
+    portal:
+        build:
+            context: ./portal
+            dockerfile: Dockerfile
+        environment:
+            APP_ENV: development
+            DEBUG: ${DEBUG:-0}
+            DB_HOST: postgres
+            DB_DATABASE: postgres
+            DB_USERNAME: ${PORTAL_DB_USERNAME}
+            DB_PASSWORD: ${PORTAL_DB_PASSWORD}
+        ports:
+            - ${PORTAL_PORT:-8084}:80
+        volumes:
+            - ./portal/src:/src
         depends_on:
             - postgres

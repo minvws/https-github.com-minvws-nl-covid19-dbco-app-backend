@@ -9,6 +9,7 @@ use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
+use Predis\Client as PredisClient;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use function DI\autowire;
@@ -42,6 +43,7 @@ return function (ContainerBuilder $containerBuilder) {
                 $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 return $pdo;
             },
+            PredisClient::class => autowire(PredisClient::class)->constructor(get('redis')),
             TransactionManager::class => autowire(DbTransactionManager::class),
             KeyGenerator::class => autowire(SecureKeyGenerator::class)->constructorParameter('length', get('signingKey.length'))
         ]
