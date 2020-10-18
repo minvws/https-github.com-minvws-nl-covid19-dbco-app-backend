@@ -2,7 +2,7 @@ FROM php:7.4-apache
 
 # Install packages and extensions
 RUN apt-get -qq update && \
-    apt-get -y install curl git wget vim unzip libzip-dev libpq-dev libicu-dev apt-transport-https apt-transport-https ca-certificates gnupg \
+    apt-get -y install curl git wget vim unzip libzip-dev libpq-dev libicu-dev apt-transport-https apt-transport-https ca-certificates gnupg npm \
     && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install zip && \
