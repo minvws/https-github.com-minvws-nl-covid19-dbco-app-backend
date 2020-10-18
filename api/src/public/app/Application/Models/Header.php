@@ -12,19 +12,19 @@ class Header
     public string $name;
 
     /**
-     * @var string
+     * @var string[]
      */
-    public string $value;
+    public array $values;
 
     /**
      * Constructor.
      *
-     * @param string $name
-     * @param string $value
+     * @param string   $name
+     * @param string[] $values
      */
-    public function __construct(string $name, string $value)
+    public function __construct(string $name, array $values)
     {
         $this->name = $name;
-        $this->value = $value;
+        $this->values = $values;
     }
 }
