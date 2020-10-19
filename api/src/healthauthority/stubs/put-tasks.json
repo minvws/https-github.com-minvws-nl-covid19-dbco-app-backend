@@ -1,8 +1,7 @@
 {
-  "infection": {
-    "dateOfSymptomOnset": "2020-10-12"
-  },
-  "tasks": [
+  "case": {
+    "dateOfSymptomOnset": "2020-10-12",
+    "tasks": [
     {
       "uuid": "123e4567-e89b-12d3-a456-426614172000",
       "taskType": "contact",
@@ -22,12 +21,6 @@
             "durationRisk": true,
             "distanceRisk": false,
             "otherRisk": true
-          },
-          {
-            "uuid": "37d818ed-9499-4b9a-9771-725467368112",
-            "lastModified": "2020-10-14T09:32:28Z",
-            "questionUuid": "37d818ed-9499-4b9a-9772-725467368387",
-            "value": "2020-10-12"
           },
           {
             "uuid": "37d818ed-9499-4b9a-9771-725467368113",
@@ -58,7 +51,8 @@
           }
         ]
       },
-      "informedByIndex": true
+      "informedByIndex": true,
+      "dateOfLastExposure": null
     },
     {
       "uuid": "123e4567-e89b-12d3-a456-426614172000",
@@ -79,12 +73,6 @@
               "durationRisk": true,
               "distanceRisk": true,
               "otherRisk": true
-            },
-            {
-              "uuid": "47d818ed-9499-4b9a-9771-725467368112",
-              "lastModified": "2020-10-14T09:32:28Z",
-              "questionUuid": "37d818ed-9499-4b9a-9772-725467368387",
-              "value": "2020-10-12"
             },
             {
               "uuid": "47d818ed-9499-4b9a-9771-725467368113",
@@ -109,7 +97,8 @@
             }
           ]
         },
-      "informedByIndex": false
+      "informedByIndex": false,
+      "dateOfLastExposure": "2020-10-03"
     },
     {
       "uuid": "123e4567-e89b-12d3-a456-426614172000",
@@ -130,12 +119,6 @@
               "durationRisk": true,
               "distanceRisk": false,
               "otherRisk": true
-            },
-            {
-              "uuid": "57d818ed-9499-4b9a-9771-725467368112",
-              "lastModified": "2020-10-14T09:32:28Z",
-              "questionUuid": "37d818ed-9499-4b9a-9772-725467368387",
-              "value": "2020-10-12"
             },
             {
               "uuid": "57d818ed-9499-4b9a-9771-725467368113",
@@ -160,7 +143,8 @@
             }
           ]
         },
-        "informedByIndex": true
+        "informedByIndex": true,
+        "dateOfLastExposure": "2020-10-03"
     },
     {
       "uuid": "123e4567-e89b-12d3-a456-426614172000",
@@ -183,12 +167,6 @@
               "otherRisk": false
             },
             {
-              "uuid": "67d818ed-9499-4b9a-9771-725467368112",
-              "lastModified": "2020-10-14T09:32:28Z",
-              "questionUuid": "37d818ed-9499-4b9a-9772-725467368387",
-              "value": "2020-10-12"
-            },
-            {
               "uuid": "67d818ed-9499-4b9a-9771-725467368113",
               "lastModified": "2020-10-14T09:32:28Z",
               "questionUuid": "37d818ed-9499-4b9a-9770-725467368388",
@@ -199,7 +177,8 @@
             }
           ]
         },
-      "informedByIndex": true
+      "informedByIndex": true,
+      "dateOfLastExposure": "2020-10-15"
     },
     {
       "uuid": "123e4567-e89b-12d3-a456-426614172000",
@@ -222,12 +201,6 @@
               "otherRisk": false
             },
             {
-              "uuid": "77d818ed-9499-4b9a-9771-725467368112",
-              "lastModified": "2020-10-14T09:32:28Z",
-              "questionUuid": "37d818ed-9499-4b9a-9772-725467368387",
-              "value": "2020-10-12"
-            },
-            {
               "uuid": "77d818ed-9499-4b9a-9771-725467368113",
               "lastModified": "2020-10-14T09:32:28Z",
               "questionUuid": "37d818ed-9499-4b9a-9770-725467368388",
@@ -238,7 +211,9 @@
             }
           ]
         },
-      "informedByIndex": true
-    }
-  ]
+        "informedByIndex": true,
+        "dateOfLastExposure": "2020-10-12"
+      }
+    ]
+  }
 }

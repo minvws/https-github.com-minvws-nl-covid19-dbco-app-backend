@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Application\Actions;
 
-use App\Application\Responses\CaseTaskSubmitResponse;
-use App\Application\Services\TaskService;
+use App\Application\Responses\CaseSubmitResponse;
+use App\Application\Services\CaseService;
 use DBCO\Application\Actions\Action;
 use DBCO\Application\Actions\ValidationError;
 use DBCO\Application\Actions\ValidationException;
@@ -12,30 +12,30 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
 /**
- * Submit case specific task results.
+ * Submit case with its specific task results.
  *
  * @package App\Application\Actions
  */
-class CaseTaskSubmitAction extends Action
+class CaseSubmitAction extends Action
 {
     /**
-     * @var TaskService
+     * @var CaseService
      */
-    protected TaskService $taskService;
+    protected CaseService $caseService;
 
     /**
      * Constructor.
      *
      * @param LoggerInterface $logger
-     * @param TaskService     $taskService
+     * @param CaseService     $caseService
      */
     public function __construct(
         LoggerInterface $logger,
-        TaskService $taskService
+        CaseService $caseService
     )
     {
         parent::__construct($logger);
-        $this->taskService = $taskService;
+        $this->caseService = $caseService;
     }
 
     /**
@@ -58,8 +58,8 @@ class CaseTaskSubmitAction extends Action
             throw new ValidationException($this->request, $errors);
         }
 
-        $this->taskService->submitCaseTasks($caseId, $body);
+        $this->caseService->submitCase($caseId, $body);
 
-        return $this->respond(new CaseTaskSubmitResponse());
+        return $this->respond(new CaseSubmitResponse());
     }
 }

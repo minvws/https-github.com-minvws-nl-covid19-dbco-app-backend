@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Repositories\CaseTaskRepository;
-use App\Application\Repositories\StubCaseTaskRepository;
+use App\Application\Repositories\CaseRepository;
+use App\Application\Repositories\StubCaseRepository;
 use App\Application\Repositories\StubGeneralTaskRepository;
 use App\Application\Repositories\StubQuestionnaireRepository;
 use App\Application\Repositories\GeneralTaskRepository;
@@ -15,6 +15,6 @@ return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
         QuestionnaireRepository::class => autowire(StubQuestionnaireRepository::class),
         GeneralTaskRepository::class => autowire(StubGeneralTaskRepository::class),
-        CaseTaskRepository::class => autowire(StubCaseTaskRepository::class),
+        CaseRepository::class => autowire(StubCaseRepository::class),
     ]);
 };
