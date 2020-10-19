@@ -1,0 +1,5 @@
+#!/bin/bash
+BASE_PATH=$(dirname $0)/..
+cd $BASE_PATH
+args=( "${@:2}" )
+docker-compose run --rm --entrypoint=composer $1 "${args[@]}"
