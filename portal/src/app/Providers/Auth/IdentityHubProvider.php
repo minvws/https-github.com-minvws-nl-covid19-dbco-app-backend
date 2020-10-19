@@ -34,9 +34,6 @@ class IdentityHubProvider extends AbstractProvider implements ProviderInterface
             'body'    => $this->getTokenFields($code),
         ]);
 
-        echo 'YEAH';
-        var_dump($response); die;
-
         return $this->parseAccessToken($response->getBody());
     }
 
