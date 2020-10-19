@@ -113,6 +113,9 @@ services:
             DB_DATABASE: postgres
             DB_USERNAME: ${PORTAL_DB_USERNAME}
             DB_PASSWORD: ${PORTAL_DB_PASSWORD}
+            TIH_CLIENT_ID: ${PORTAL_TIH_CLIENT_ID}
+            TIH_CLIENT_SECRET: ${PORTAL_TIH_CLIENT_SECRET}
+            TIH_REDIRECT_URL: ${PORTAL_TIH_REDIRECT_URL}
         ports:
             - ${PORTAL_PORT:-8084}:80
         volumes:
