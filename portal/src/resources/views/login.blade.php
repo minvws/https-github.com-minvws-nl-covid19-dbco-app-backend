@@ -25,7 +25,9 @@
         </div>
 
         <div class="card-footer">
-            <a href="/" class="btn  btn-primary  btn-block">Inloggen met IdentityHub</a>
+            <a href="/auth/identityhub" class="btn  btn-primary  btn-block">Inloggen met IdentityHub</a>
+
+            <a href="/auth/stub" class="btn  btn-primary  btn-block">Inloggen met development stub user</a>
         </div>
     </div>
 </div>

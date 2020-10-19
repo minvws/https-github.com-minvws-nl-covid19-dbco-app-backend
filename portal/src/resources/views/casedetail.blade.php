@@ -28,19 +28,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse  navbar-collapse" id="navbarToggler">
-            <ul class="navbar-nav  ml-auto  mt-2  mt-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Ingelogd als Mathijs Goense</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">eLearning</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Helpdesk</a>
-                </li>
-            </ul>
-        </div>
+        @include ('identitybar')
     </nav>
     <!-- End of navbar component -->
 

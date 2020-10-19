@@ -30,4 +30,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'identityhub' => [
+        'client_id' => env('TIH_CLIENT_ID'),
+        'client_secret' => env('TIH_CLIENT_SECRET'),
+        'redirect' => env('TIH_REDIRECT_URL')
+    ],
+
 ];
