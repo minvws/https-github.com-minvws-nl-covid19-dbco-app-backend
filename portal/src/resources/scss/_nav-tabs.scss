@@ -1,0 +1,18 @@
+.nav-tabs {
+  margin-bottom: 2rem;
+
+  .nav-link {
+    color: $grey-medium;
+
+    &.active, &:hover {
+      color: $black;
+      font-weight: bold;
+    }
+
+    &.active {
+      border-color: transparent;
+      border-bottom-color: $blue;
+      border-bottom-width: 2px;
+    }
+  }
+}

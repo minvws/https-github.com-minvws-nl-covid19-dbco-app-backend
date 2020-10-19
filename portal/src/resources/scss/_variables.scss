@@ -1,0 +1,87 @@
+/**********************************
+ * Sizes
+**********************************/
+
+$sizes: (
+        5: 5%,
+        10: 10%,
+        15: 15%,
+        20: 20%,
+        25: 25%,
+        30: 30%,
+        50: 50%,
+        55: 55%,
+        75: 75%,
+        100: 100%,
+        auto: auto
+);
+
+/**********************************
+ * Container widths
+**********************************/
+
+$container-max-widths: (
+        sm: 540px,
+        md: 720px,
+        lg: 960px,
+        xl: 1340px
+);
+
+/**********************************
+ * Fonts
+**********************************/
+
+$font-family-base: 'Roboto', sans-serif;
+
+/**********************************
+ * Colors
+**********************************/
+
+$blue: #3472F6;
+$orange: #FFB612;
+$black: #001E49;
+$grey: #42526E;
+$grey-medium: #616171;
+$light-grey: #576578;
+$lighter-grey: #A3AEBF;
+
+/**********************************
+ * Body
+**********************************/
+
+$body-bg: #F2F2F7;
+$body-color: $light-grey;
+
+/**********************************
+ * Tabs
+**********************************/
+
+$nav-tabs-link-active-bg: transparent;
+$nav-tabs-link-active-border-color: transparent transparent $blue transparant;
+$nav-tabs-link-hover-border-color: transparent;
+
+/**********************************
+ * Table
+**********************************/
+
+$table-hover-bg: rgba(0, 71, 255, 0.05);
+
+/**********************************
+ * Headings
+**********************************/
+
+$headings-color: $black;
+
+/**********************************
+ * Navbar
+**********************************/
+
+$navbar-light-color: $light-grey;
+$navbar-light-hover-color: $grey;
+$navbar-light-active-color: $grey;
+
+/**********************************
+ * Form
+**********************************/
+
+$custom-control-label-color: $light-grey;
