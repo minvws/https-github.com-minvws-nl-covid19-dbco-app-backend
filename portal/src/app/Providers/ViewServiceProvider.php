@@ -26,7 +26,7 @@ class ViewServiceProvider extends ServiceProvider
     {
         // Using class based composers...
         View::composer(
-        'identitybar', 'App\Http\View\Composers\IdentityBarComposer'
+            'identitybar', 'App\Http\View\Composers\IdentityBarComposer'
         );
     }
 }
