@@ -17,12 +17,12 @@ jobs:
         docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER private_api PASSWORD '\$PRIVATE_API_DB_PASSWORD'"\"
         docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER public_api PASSWORD '\$PUBLIC_API_DB_PASSWORD'"\"
         docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER healthauthority_api PASSWORD '\$HEALTHAUTHORITY_API_DB_PASSWORD'"\"
-        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER console PASSWORD '\$CONSOLE_PASSWORD'"\"
+        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER worker PASSWORD '\$WORKER_PASSWORD'"\"
         docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm psql --host=postgres --user=postgres < ./install/permissions.sql
 
-    - name: Console - Run composer
+    - name: Worker - Run composer
       run: |
-        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer console install
+        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer worker install
 
     - name: Private Api - Run composer
       run: |
@@ -36,9 +36,9 @@ jobs:
       run: |
         docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer healthauthority_api install
 
-    - name: Console - Run phpunit Console
+    - name: Worker - Run phpunit
       run: |
-        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit console
+        docker-compose --env-file ./.env.test -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit worker
 
     - name: Private Api - Run phpunit
       run: |
