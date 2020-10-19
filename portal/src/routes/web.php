@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +24,14 @@ Route::get('/colofon', function () {
 
 Route::get('/', function () {
     return view('caseoverview');
-})->middleware('auth');;
+})->middleware('sessionauth');;
 
 Route::get('/case', function () {
     return view('casedetail');
-})->middleware('auth');
+})->middleware('sessionauth');
 
+Route::get('auth/identityhub', [LoginController::class, 'redirectToProvider']);
+Route::get('auth/login', [LoginController::class, 'handleProviderCallback']);
+
+// Temporary development login stub so you can test the portal without ggd account.
+Route::get('auth/stub', [LoginController::class, 'stubAuthenticate']);
