@@ -1,0 +1,155 @@
+/**
+ * This file contains all the different table styles which are available for use.
+ */
+
+/**
+ * Table with custom styling for use within the GGD BCO portal.
+ */
+.table-ggd {
+  table-layout: fixed;
+  word-wrap: break-word;
+
+  background-color: $white;
+  border: $table-border-width solid $table-border-color;
+
+  th, td {
+    font-size: $font-size-sm;
+  }
+
+  thead th {
+    border-top: 0;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: $lighter-grey;
+    border-bottom: none;
+    vertical-align: middle;
+  }
+
+  tbody tr {
+    th, td {
+      vertical-align: middle;
+    }
+
+    th {
+      font-weight: 500;
+      color: $black;
+    }
+
+    td {
+      color: $light-grey;
+    }
+  }
+
+  &.table-bordered {
+    thead tr, tbody tr, tfoot tr {
+      th, td {
+        border-left: 0;
+      }
+
+      th:last-child, td:last-child {
+        border-right: 0;
+      }
+    }
+
+    tbody tr:not(:first-child) {
+      td, th {
+        border-top: 0;
+      }
+    }
+
+    tfoot tr:first-child {
+      td, th {
+        border-top: 0;
+      }
+    }
+
+    tfoot tr:last-child {
+      td, th {
+        border-bottom: 0;
+      }
+    }
+  }
+}
+
+/**
+ * Table with rounded borders.
+ */
+
+@mixin top-radius {
+  th:first-child, td:first-child {
+    border-top-left-radius: $border-radius;
+  }
+
+  th:last-child, td:last-child {
+    border-top-right-radius: $border-radius;
+  }
+}
+
+@mixin bottom-radius {
+  th:first-child, td:first-child {
+    border-bottom-left-radius: $border-radius;
+  }
+
+  th:last-child, td:last-child {
+    border-bottom-right-radius: $border-radius;
+  }
+}
+
+.table-rounded {
+  border-radius: $border-radius;
+  border-spacing: 0;
+  border-collapse: separate;
+
+  &.table-has-header thead {
+    @include top-radius;
+  }
+
+  &:not(.table-has-header) tbody tr:first-child {
+    @include top-radius;
+  }
+
+  &.table-has-footer tfoot tr:last-child {
+    @include bottom-radius;
+  }
+
+  &:not(.table-has-footer) tbody tr:last-child {
+    @include bottom-radius;
+  }
+}
+
+
+/**
+ * Table with inline form fields.
+ */
+.table-form {
+  tbody tr td {
+    position: relative;
+    padding-top: 0;
+    padding-bottom: 0;
+
+    input, select {
+      display: block;
+      border-radius: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+      border: none;
+
+      &:focus {
+        box-shadow: none;
+        outline: 1px solid $input-btn-focus-color;
+      }
+    }
+
+    select {
+      appearance: none;
+      background-color: $white;
+      background-image: url('../img/arrow-down.svg');
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+    }
+  }
+}

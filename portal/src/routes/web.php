@@ -13,6 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/colofon', function () {
     return view('welcome');
+});
+
+Route::get('/', function () {
+    return view('caseoverview');
+});
+
+Route::get('/case', function () {
+    return view('casedetail');
+});
+
+Route::get('/login', function() {
+   return view('login');
 });
