@@ -13,18 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/login', array('as' => 'login', function() {
+    return view('login');
+}));
+
 Route::get('/colofon', function () {
     return view('welcome');
 });
 
 Route::get('/', function () {
     return view('caseoverview');
-});
+})->middleware('auth');;
 
 Route::get('/case', function () {
     return view('casedetail');
-});
+})->middleware('auth');
 
-Route::get('/login', function() {
-   return view('login');
-});
