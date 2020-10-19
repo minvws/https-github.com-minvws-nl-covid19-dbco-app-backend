@@ -2,7 +2,7 @@
 namespace App\Application\Models;
 
 /**
- * Task list.
+ * TaskList
  */
 class TaskList
 {

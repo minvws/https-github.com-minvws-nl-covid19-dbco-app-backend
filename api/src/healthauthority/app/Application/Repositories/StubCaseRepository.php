@@ -2,7 +2,7 @@
 namespace App\Application\Repositories;
 
 use App\Application\Models\Task;
-use App\Application\Models\TaskList;
+use App\Application\Models\CovidCase;
 
 /**
  * Used for retrieving case specific tasks.
@@ -11,18 +11,18 @@ use App\Application\Models\TaskList;
  *
  * @package App\Application\Repositories
  */
-class StubCaseTaskRepository implements CaseTaskRepository
+class StubCaseRepository implements CaseRepository
 {
     /**
-     * Returns the case task list.
+     * Returns the case with its task list.
      *
      * @param string $caseId Case identifier.
      *
-     * @return TaskList
+     * @return CovidCase
      */
-    public function getCaseTasks(string $caseId): TaskList
+    public function getCase(string $caseId): CovidCase
     {
-        $list = new TaskList();
+        $case = new CovidCase();
 
         $task1 = new Task();
         $task1->uuid = "123e4567-e89b-12d3-a456-426614172000";
@@ -32,10 +32,12 @@ class StubCaseTaskRepository implements CaseTaskRepository
         $task1->context = "Partner";
         $task1->category = "1";
         $task1->communication = "index";
+        $task1->dateOfLastExposure = "2020-10-13";
 
-        $list->tasks[] = $task1;
+        $case->tasks[] = $task1;
+        $case->dateOfSymptomOnset = "2020-10-14";
 
-        return $list;
+        return $case;
     }
 
     /**
@@ -46,7 +48,7 @@ class StubCaseTaskRepository implements CaseTaskRepository
      *
      * @return void
      */
-    public function submitCaseTasks(string $caseId, string $body): void
+    public function submitCase(string $caseId, string $body): void
     {
 
     }

@@ -39,55 +39,47 @@ class StubQuestionnaireRepository implements QuestionnaireRepository
         $question1->relevantForCategories = Question::ALL_CATEGORIES;
         $questionnaire->questions[] = $question1;
 
-        $question2 = new DateQuestion();
-        $question2->uuid = "37d818ed-9499-4b9a-9771-725467368388";
-        $question2->group = "classification";
-        $question2->label = "Wanneer was de laatste ontmoeting?";
+        $question2 = new ContactDetailsQuestion();
+        $question2->uuid = "37d818ed-9499-4b9a-9770-725467368388";
+        $question2->group = "contactdetails";
+        $question2->label = "Contactgegevens";
         $question2->description = null;
-        $question2->relevantForCategories = Question::ALL_CATEGORIES;
+        $question2->relevantForCategories = Question::ALL_CATEGORIES;;
         $questionnaire->questions[] = $question2;
 
-        $question3 = new ContactDetailsQuestion();
-        $question3->uuid = "37d818ed-9499-4b9a-9770-725467368388";
+        $question3 = new OpenQuestion();
+        $question3->uuid = "37d818ed-9499-4b9a-9771-725467368389";
         $question3->group = "contactdetails";
-        $question3->label = "Contactgegevens";
+        $question3->label = "Beroep";
         $question3->description = null;
-        $question3->relevantForCategories = Question::ALL_CATEGORIES;;
+        $question3->relevantForCategories = ["1"];
         $questionnaire->questions[] = $question3;
 
-        $question4 = new OpenQuestion();
-        $question4->uuid = "37d818ed-9499-4b9a-9771-725467368389";
+        $question4 = new MultipleChoiceQuestion();
+        $question4->uuid = "37d818ed-9499-4b9a-9771-725467368391";
         $question4->group = "contactdetails";
-        $question4->label = "Beroep";
+        $question4->label = "Waar ken je deze persoon van?";
         $question4->description = null;
-        $question4->relevantForCategories = ["1"];
+        $question4->relevantForCategories = [Question::CATEGORY_2A, Question::CATEGORY_2B];
+        $question4->answerOptions[] = new AnswerOption('Ouder', 'Ouder');
+        $question4->answerOptions[] = new AnswerOption('Kind', 'Kind');
+        $question4->answerOptions[] = new AnswerOption('Broer of zus', 'Broer of zus');
+        $question4->answerOptions[] = new AnswerOption('Partner', 'Partner');
+        $question4->answerOptions[] = new AnswerOption('Familielid (overig)', 'Familielid (overig)');
+        $question4->answerOptions[] = new AnswerOption('Huisgenoot', 'Huisgenoot');
+        $question4->answerOptions[] = new AnswerOption('Vriend of kennis', 'Vriend of kennis');
+        $question4->answerOptions[] = new AnswerOption('Medestudent of leerling', 'Medestudent of leerling');
+        $question4->answerOptions[] = new AnswerOption('Collega', 'Collega');
+        $question4->answerOptions[] = new AnswerOption('Gezondheidszorg medewerker', 'Gezondheidszorg medewerker');
+        $question4->answerOptions[] = new AnswerOption('Ex-partner', 'Ex-partner');
+        $question4->answerOptions[] = new AnswerOption('Overig', 'Overig');
         $questionnaire->questions[] = $question4;
 
         $question5 = new MultipleChoiceQuestion();
         $question5->uuid = "37d818ed-9499-4b9a-9771-725467368391";
         $question5->group = "contactdetails";
-        $question5->label = "Waar ken je deze persoon van?";
-        $question5->description = null;
-        $question5->relevantForCategories = [Question::CATEGORY_2A, Question::CATEGORY_2B];
-        $question5->answerOptions[] = new AnswerOption('Ouder', 'Ouder');
-        $question5->answerOptions[] = new AnswerOption('Kind', 'Kind');
-        $question5->answerOptions[] = new AnswerOption('Broer of zus', 'Broer of zus');
-        $question5->answerOptions[] = new AnswerOption('Partner', 'Partner');
-        $question5->answerOptions[] = new AnswerOption('Familielid (overig)', 'Familielid (overig)');
-        $question5->answerOptions[] = new AnswerOption('Huisgenoot', 'Huisgenoot');
-        $question5->answerOptions[] = new AnswerOption('Vriend of kennis', 'Vriend of kennis');
-        $question5->answerOptions[] = new AnswerOption('Medestudent of leerling', 'Medestudent of leerling');
-        $question5->answerOptions[] = new AnswerOption('Collega', 'Collega');
-        $question5->answerOptions[] = new AnswerOption('Gezondheidszorg medewerker', 'Gezondheidszorg medewerker');
-        $question5->answerOptions[] = new AnswerOption('Ex-partner', 'Ex-partner');
-        $question5->answerOptions[] = new AnswerOption('Overig', 'Overig');
-        $questionnaire->questions[] = $question5;
-
-        $question6 = new MultipleChoiceQuestion();
-        $question6->uuid = "37d818ed-9499-4b9a-9771-725467368391";
-        $question6->group = "contactdetails";
-        $question6->label = "Is een of meerdere onderstaande zaken van toepassing voor deze persoon?";
-        $question6->description =
+        $question5->label = "Is een of meerdere onderstaande zaken van toepassing voor deze persoon?";
+        $question5->description =
             implode(
                 "\n",
                 [
@@ -98,10 +90,10 @@ class StubQuestionnaireRepository implements QuestionnaireRepository
                     "* Spreekt slecht of geen Nederlands"
                 ]
             );
-        $question6->relevantForCategories = [Question::CATEGORY_1, Question::CATEGORY_2A, Question::CATEGORY_2B];
-        $question6->answerOptions[] = new AnswerOption('Ja, één of meerdere dingen', 'Ja', 'communication_staff');
-        $question6->answerOptions[] = new AnswerOption('Nee, ik denk het niet', 'Nee', 'communication_index');
-        $questionnaire->questions[] = $question6;
+        $question5->relevantForCategories = [Question::CATEGORY_1, Question::CATEGORY_2A, Question::CATEGORY_2B];
+        $question5->answerOptions[] = new AnswerOption('Ja, één of meerdere dingen', 'Ja', 'communication_staff');
+        $question5->answerOptions[] = new AnswerOption('Nee, ik denk het niet', 'Nee', 'communication_index');
+        $questionnaire->questions[] = $question5;
 
         $list = new QuestionnaireList();
         $list->questionnaires[] = $questionnaire;

@@ -4,7 +4,7 @@ namespace App\Application\Responses;
 /**
  * Case task list response.
  */
-class CaseTaskListResponse extends ProxyResponse
+class CaseResponse extends ProxyResponse
 {
     /**
      * @inheritDoc

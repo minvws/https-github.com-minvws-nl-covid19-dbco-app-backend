@@ -1,9 +1,9 @@
 <?php
 namespace App\Application\Services;
 
-use App\Application\Models\CaseTaskList;
+use App\Application\Models\CovidCase;
 use App\Application\Models\GeneralTaskList;
-use App\Application\Repositories\CaseTaskRepository;
+use App\Application\Repositories\CaseRepository;
 use App\Application\Repositories\GeneralTaskRepository;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
  *
  * @package App\Application\Services
  */
-class TaskService
+class CaseService
 {
     /**
      * @var GeneralTaskRepository
@@ -21,9 +21,9 @@ class TaskService
     private GeneralTaskRepository $generalTaskRepository;
 
     /**
-     * @var CaseTaskRepository
+     * @var CaseRepository
      */
-    private CaseTaskRepository $caseTaskRepository;
+    private CaseRepository $caseRepository;
 
     /**
      * @var LoggerInterface
@@ -34,17 +34,17 @@ class TaskService
      * Constructor.
      *
      * @param GeneralTaskRepository $generalTaskRepository
-     * @param CaseTaskRepository    $caseTaskRepository
+     * @param CaseRepository        $caseRepository
      * @param LoggerInterface       $logger
      */
     public function __construct(
         GeneralTaskRepository $generalTaskRepository,
-        CaseTaskRepository $caseTaskRepository,
+        CaseRepository $caseRepository,
         LoggerInterface $logger
     )
     {
         $this->generalTaskRepository = $generalTaskRepository;
-        $this->caseTaskRepository = $caseTaskRepository;
+        $this->caseRepository = $caseRepository;
         $this->logger = $logger;
     }
 
@@ -61,16 +61,16 @@ class TaskService
     }
 
     /**
-     * Returns the case task list.
+     * Returns the case and its task list.
      *
      * @param string $caseId Case identifier.
      *
-     * @return CaseTaskList
+     * @return CovidCase
      */
-    public function getCaseTasks(string $caseId): CaseTaskList
+    public function getCase(string $caseId): CovidCase
     {
         // TODO: verify access to case using signed otp
-        return $this->caseTaskRepository->getCaseTasks($caseId);
+        return $this->caseRepository->getCase($caseId);
     }
 
     /**
@@ -79,9 +79,9 @@ class TaskService
      * @param string $caseId Case identifier.
      * @param string $body   Encrypted body.
      */
-    public function submitCaseTasks(string $caseId, string $body): void
+    public function submitCase(string $caseId, string $body): void
     {
         // TODO: verify signature and access
-        $this->caseTaskRepository->submitCaseTasks($caseId, $body);
+        $this->caseRepository->submitCase($caseId, $body);
     }
 }

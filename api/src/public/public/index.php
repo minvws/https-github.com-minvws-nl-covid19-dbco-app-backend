@@ -1,5 +1,11 @@
 <?php
+
 declare(strict_types=1);
+
+$debug = filter_var(getenv('DEBUG'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false;
+if ($debug) {
+    ini_set('display_errors', '1');
+}
 
 define('APP_ROOT', __DIR__ . '/..');
 
