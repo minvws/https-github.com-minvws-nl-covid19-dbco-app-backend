@@ -3,15 +3,20 @@
 ## Introduction
 This repository contains the backend implementation of the Dutch COVID-19 DBCO app.
 
-* The backend is located in the repository you are currently viewing.
-* The iOS app can be found here: http://github.com/minvws/nl-covid19-dbco-app-ios
-* The Android app can be found here: http://github.com/minvws/nl-covid19-dbco-app-android
-* Architecture documentation can be found here: http://github.com/minvws/nl-covid19-dbco-app-coordination
+* The backend (api and portal) is located in the repository you are currently viewing.
+* The iOS app can be found here: https://github.com/minvws/nl-covid19-dbco-app-ios
+* The Android app can be found here: https://github.com/minvws/nl-covid19-dbco-app-android
+* Designs can be found here: https://github.com/minvws/nl-covid19-dbco-app-design
+* Technical documentation can be found here: https://github.com/minvws/nl-covid19-dbco-app-coordination
 
 ## Overview
 
 * worker: implements a docker image that can be used to manually or periodically (e.g. cron) run commands
-* api: implements the APIs
+* api: implements the APIs 
+* portal: implements a (potentially temporary) portal for healthcare (BCO) workers.
+
+The workers and apis are developed using PHP 7 and the lightweight Slim framework (https://www.slimframework.com)
+The portal is developed using PHP 7 and the Laravel 8 framework (https://laravel.com)
 
 ## Development
 
@@ -20,14 +25,20 @@ Prerequisites: A working Docker environment
 Steps to run a local development environment:
 
 - Create an `.env` file (you can create a copy of `.env.example` to get started). 
-- Generate some passwords and enter them in the .env file, these will be used to create a local database
+- Generate some passwords and enter them in the various .env file settings that are passwords
 - Run `bin/setup-dev` to set up the environment (initialize database, install dependencies).
 
-If the command has completed successfully, the private api will run on port 8081 on localhost, the public api will run on port 8082.
+If the command has completed successfully, you will be running 4 docker instances:
+* The private api will run on port 8081 on localhost
+* The public api will run on port 8082
+* The healthcare api will run on port 8083
+* The healthcare portal will run on port 8084
+
+If your development environment gets messed up, run bin/reset-dev to rebuild the environment.
 
 ## Testing
 
-You can run the unit tests using `bin/phpunit`.
+You can run the unit tests using `bin/phpunit`. 
 
 ## Development & Contribution process
 
