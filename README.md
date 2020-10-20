@@ -15,6 +15,9 @@ This repository contains the backend implementation of the Dutch COVID-19 DBCO a
 * api: implements the APIs 
 * portal: implements a (potentially temporary) portal for healthcare (BCO) workers.
 
+The workers and apis are developed using PHP 7 and the lightweight Slim framework (https://www.slimframework.com)
+The portal is developed using PHP 7 and the Laravel 8 framework (https://laravel.com)
+
 ## Development
 
 Prerequisites: A working Docker environment
