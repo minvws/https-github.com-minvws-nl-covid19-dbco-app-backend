@@ -18,7 +18,7 @@ class CreateTasksTable extends Migration
             $table->uuid('case_uuid');
 
             $table->foreign('case_uuid')->references('uuid')
-                                                ->on('covidcase')
+                                                ->on('case')
                                                 ->onDelete('cascade');
             $table->string('task_type');
             $table->string('source');
