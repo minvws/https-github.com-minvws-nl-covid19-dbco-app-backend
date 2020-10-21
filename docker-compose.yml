@@ -120,8 +120,8 @@ services:
             APP_KEY: ${PORTAL_APP_KEY}
             DEBUG: ${DEBUG:-0}
             DB_CONNECTION: postgres
-            DB_HOST: postgres
-            DB_DATABASE: postgres
+            DB_HOST: oracle
+            DB_DATABASE: portaldb
             DB_USERNAME: ${PORTAL_DB_USERNAME}
             DB_PASSWORD: ${PORTAL_DB_PASSWORD}
             TIH_CLIENT_ID: ${PORTAL_TIH_CLIENT_ID}
