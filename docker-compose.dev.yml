@@ -15,3 +15,7 @@ services:
             PUBLIC_API_DB_PASSWORD: ${PUBLIC_API_DB_PASSWORD}
             HEALTHAUTHORITY_API_DB_PASSWORD: ${HEALTHAUTHORITY_API_DB_PASSWORD}
             WORKER_DB_PASSWORD: ${WORKER_DB_PASSWORD}
+
+    sqlplus:
+        image: ${ORACLE_IMAGE:-oracle/database:18.4.0-xe}
+        entrypoint: sqlplus -L SYSTEM/"${ORACLE_PASSWORD}"@oracle/XEPDB1

@@ -5,6 +5,7 @@ services:
     postgres:
         ports:
             - ${POSTGRES_PORT:-5432}:5432
+
     psql:
         image: postgres
         entrypoint: psql
@@ -16,6 +17,11 @@ services:
             WORKER_DB_PASSWORD: ${WORKER_DB_PASSWORD}
         depends_on:
             - postgres
+
+    oracle:
+        image: alpine
+        entrypoint: ["echo", "Oracle database disabled"]
+        restart: "no"
 
     private_api:
         environment:
