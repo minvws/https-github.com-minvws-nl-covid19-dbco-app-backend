@@ -13,8 +13,13 @@ class CreateCasesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cases', function (Blueprint $table) {
-            $table->id();
+        Schema::create('case', function (Blueprint $table) {
+            $table->uuid('uuid')->primary();
+            $table->string('name');
+            $table->string('case_id');
+            $table->string('owner');
+            $table->date('date_of_symptom_onset')->nullable();
+            $table->date('tested_at')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +31,6 @@ class CreateCasesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cases');
+        Schema::dropIfExists('case');
     }
 }
