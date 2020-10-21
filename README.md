@@ -26,6 +26,9 @@ Steps to run a local development environment:
 
 - Create an `.env` file (you can create a copy of `.env.example` to get started). 
 - Generate some passwords and enter them in the various .env file settings that are passwords
+- If you want to test the portal against an oracle database:
+  - Make sure your docker environment has sufficient memory (the default 2Gb in most docker installs won't be enough, choose 8Gb to be safe)
+  - Build a local oracle container using `./oracle-database/build-dev.sh`. 
 - Run `bin/setup-dev` to set up the environment (initialize database, install dependencies).
 
 If the command has completed successfully, you will be running 4 docker instances:
