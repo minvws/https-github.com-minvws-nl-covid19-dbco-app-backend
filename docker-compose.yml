@@ -3,6 +3,8 @@ version: '3.7'
 volumes:
     postgres-data:
         driver: local
+    oracle-data:
+        driver: local
 
 services:
     postgres:
@@ -13,6 +15,15 @@ services:
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         ports:
             - ${POSTGRES_PORT:-5432}:5432
+
+    oracle:
+        image: ${ORACLE_IMAGE:-oracle/database:18.4.0-xe}
+        volumes:
+            - oracle-data:/opt/oracle/oradata
+        environment:
+            ORACLE_PWD: ${ORACLE_PASSWORD}
+        ports:
+            - ${ORACLE_PORT:-1521}:1521
 
     redis:
         image: redis
