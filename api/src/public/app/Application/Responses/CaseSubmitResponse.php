@@ -1,7 +1,7 @@
 <?php
-namespace App\Application\Responses;
+namespace DBCO\PublicAPI\Application\Responses;
 
-use DBCO\Application\Responses\Response;
+use DBCO\Shared\Application\Responses\Response;
 
 /**
  * Response for case task submit.

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 $debug = filter_var(getenv('DEBUG'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false;
@@ -9,9 +8,9 @@ if ($debug) {
 
 define('APP_ROOT', __DIR__ . '/..');
 
-use DBCO\Application\Handlers\ErrorHandler;
-use DBCO\Application\Handlers\ShutdownHandler;
-use DBCO\Application\ResponseEmitter\ResponseEmitter;
+use DBCO\Shared\Application\Handlers\ErrorHandler;
+use DBCO\Shared\Application\Handlers\ShutdownHandler;
+use DBCO\Shared\Application\ResponseEmitter\ResponseEmitter;
 use Slim\Factory\ServerRequestCreatorFactory;
 
 $app = require APP_ROOT . '/bootstrap/application.php';

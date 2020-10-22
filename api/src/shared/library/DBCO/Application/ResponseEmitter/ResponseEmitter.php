@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DBCO\Application\ResponseEmitter;
+namespace DBCO\Shared\Application\ResponseEmitter;
 
 use Psr\Http\Message\ResponseInterface;
 use Slim\ResponseEmitter as SlimResponseEmitter;

@@ -1,4 +1,0 @@
-#!/bin/bash
-BASE_PATH=$(dirname $0)/..
-docker-compose up -d
-docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm psql --host=postgres --user=postgres

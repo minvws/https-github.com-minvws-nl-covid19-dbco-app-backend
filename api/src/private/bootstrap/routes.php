@@ -4,7 +4,7 @@ declare(strict_types=1);
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
-use App\Application\Actions\CaseRegisterAction;
+use DBCO\PrivateAPI\Application\Actions\CaseRegisterAction;
 
 return function (App $app) {
     $app->options('/{routes:.*}', function (Request $request, Response $response) {

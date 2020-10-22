@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\DTO;
+namespace DBCO\HealthAuthorityAPI\Application\DTO;
 
-use App\Application\Models\Questionnaire as QuestionnaireModel;
+use DBCO\HealthAuthorityAPI\Application\Models\Questionnaire as QuestionnaireModel;
 use JsonSerializable;
 
 /**
  * Questionnaire DTO.
  *
- * @package App\Application\Actions
+ * @package DBCO\HealthAuthorityAPI\Application\Actions
  */
 class Questionnaire implements JsonSerializable
 {

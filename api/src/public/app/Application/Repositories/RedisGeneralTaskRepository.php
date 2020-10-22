@@ -1,15 +1,15 @@
 <?php
-namespace App\Application\Repositories;
+namespace DBCO\PublicAPI\Application\Repositories;
 
-use App\Application\Models\GeneralTaskList;
-use App\Application\Models\Header;
+use DBCO\PublicAPI\Application\Models\GeneralTaskList;
+use DBCO\PublicAPI\Application\Models\Header;
 use Predis\Client as PredisClient;
 use RuntimeException;
 
 /**
  * Used for retrieving general tasks from Redis.
  *
- * @package App\Application\Repositories
+ * @package DBCO\PublicAPI\Application\Repositories
  */
 class RedisGeneralTaskRepository implements GeneralTaskRepository
 {

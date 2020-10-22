@@ -1,10 +1,8 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Helpers\KeyGenerator;
-use App\Application\Helpers\SecureKeyGenerator;
-use DBCO\Application\Managers\DbTransactionManager;
-use DBCO\Application\Managers\TransactionManager;
+use DBCO\Shared\Application\Managers\DbTransactionManager;
+use DBCO\Shared\Application\Managers\TransactionManager;
 use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -42,8 +40,7 @@ return function (ContainerBuilder $containerBuilder) {
                 $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 return $pdo;
             },
-            TransactionManager::class => autowire(DbTransactionManager::class),
-            KeyGenerator::class => autowire(SecureKeyGenerator::class)->constructorParameter('length', get('signingKey.length'))
+            TransactionManager::class => autowire(DbTransactionManager::class)
         ]
     );
 };

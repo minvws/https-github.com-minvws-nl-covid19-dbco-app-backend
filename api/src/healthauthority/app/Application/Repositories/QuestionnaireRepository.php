@@ -1,12 +1,12 @@
 <?php
-namespace App\Application\Repositories;
+namespace DBCO\HealthAuthorityAPI\Application\Repositories;
 
-use App\Application\Models\QuestionnaireList;
+use DBCO\HealthAuthorityAPI\Application\Models\QuestionnaireList;
 
 /**
  * Used for retrieving questionnaires.
  *
- * @package App\Application\Repositories
+ * @package DBCO\HealthAuthorityAPI\Application\Repositories
  */
 interface QuestionnaireRepository
 {

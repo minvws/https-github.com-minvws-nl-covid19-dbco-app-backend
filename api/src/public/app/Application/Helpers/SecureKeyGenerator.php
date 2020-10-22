@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Helpers;
+namespace DBCO\PublicAPI\Application\Helpers;
 
 use Exception;
 use RuntimeException;
@@ -9,7 +9,7 @@ use RuntimeException;
 /**
  * Secure key generator.
  *
- * @package App\Application\Helpers
+ * @package DBCO\PublicAPI\Application\Helpers
  */
 final class SecureKeyGenerator implements KeyGenerator {
     /**

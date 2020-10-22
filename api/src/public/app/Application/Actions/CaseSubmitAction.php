@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Actions;
+namespace DBCO\PublicAPI\Application\Actions;
 
-use App\Application\Responses\CaseSubmitResponse;
-use App\Application\Services\CaseService;
-use DBCO\Application\Actions\Action;
-use DBCO\Application\Actions\ValidationError;
-use DBCO\Application\Actions\ValidationException;
+use DBCO\PublicAPI\Application\Responses\CaseSubmitResponse;
+use DBCO\PublicAPI\Application\Services\CaseService;
+use DBCO\Shared\Application\Actions\Action;
+use DBCO\Shared\Application\Actions\ValidationError;
+use DBCO\Shared\Application\Actions\ValidationException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
 /**
  * Submit case with specific task results.
  *
- * @package App\Application\Actions
+ * @package DBCO\PublicAPI\Application\Actions
  */
 class CaseSubmitAction extends Action
 {

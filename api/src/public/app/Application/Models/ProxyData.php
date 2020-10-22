@@ -1,5 +1,5 @@
 <?php
-namespace App\Application\Models;
+namespace DBCO\PublicAPI\Application\Models;
 
 /**
  * Used for forwarding a body and headers 1:1 from the middleware.

@@ -1,10 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace DBCO\Tests;
+namespace DBCO\Shared\Tests;
 
 use Exception;
-use PDO;
 use PHPUnit\Framework\TestCase as PHPUnit_TestCase;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
@@ -26,7 +25,6 @@ class TestCase extends PHPUnit_TestCase
      * @var App
      */
     protected ?App $app = null;
-
 
     /**
      * Returns the per test app instance.
@@ -102,11 +100,6 @@ class TestCase extends PHPUnit_TestCase
         parent::setUp();
 
         $this->app = $this->createAppInstance();
-
-        // start transaction
-        /** @var $db PDO */
-        $db = $this->app->getContainer()->get(PDO::class);
-        $db->beginTransaction();
     }
 
     /**
@@ -115,11 +108,6 @@ class TestCase extends PHPUnit_TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-
-        // rollback transaction
-        /** @var $db PDO */
-        $db = $this->app->getContainer()->get(PDO::class);
-        $db->rollBack();
 
         $this->app = null;
     }
