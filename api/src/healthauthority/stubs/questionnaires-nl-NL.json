@@ -124,7 +124,7 @@
                     "group": "contactdetails",
                     "questionType": "multiplechoice",
                     "label": "Is een of meerdere onderstaande zaken van toepassing voor deze persoon?",
-                    "description": "<ul><li>Is student</li><li>70 jaar of ouder</li><li>Heeft gezondheidsklachten of loopt extra gezondheidsrisico's</li><li>Woont in een asielzoekerscentrum</li><li>Spreekt slecht of geen Nederlands</li></ul>",
+                    "description": "<ul><li>Is student</li><li>70 jaar of ouder</li><li>Gezondheidsklachten of extra gezondheidsrisico's</li><li>Woont in een asielzoekerscentrum</li><li>Spreekt slecht of geen Nederlands</li><li>Werkt in de zorg, onderwijs of een contactberoep (bijvoorbeeld kapper)</li></ul>",
                     "relevantForCategories": [{
                         "category": "1", 
                     },{
