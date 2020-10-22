@@ -119,11 +119,12 @@ services:
             APP_URL: ${PORTAL_APP_URL}
             APP_KEY: ${PORTAL_APP_KEY}
             DEBUG: ${DEBUG:-0}
-            DB_CONNECTION: postgres
-            DB_HOST: postgres
-            DB_DATABASE: postgres
+            DB_CONNECTION: oracle
+            DB_HOST: oracle
+            DB_DATABASE: portal
             DB_USERNAME: ${PORTAL_DB_USERNAME}
             DB_PASSWORD: ${PORTAL_DB_PASSWORD}
+            DB_TNS: oracle/XEPDB1
             TIH_CLIENT_ID: ${PORTAL_TIH_CLIENT_ID}
             TIH_CLIENT_SECRET: ${PORTAL_TIH_CLIENT_SECRET}
             TIH_REDIRECT_URL: ${PORTAL_TIH_REDIRECT_URL}
