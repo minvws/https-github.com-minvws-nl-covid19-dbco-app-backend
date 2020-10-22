@@ -1,5 +1,5 @@
 <?php
-namespace App\Application\Models;
+namespace DBCO\PublicAPI\Application\Models;
 
 /**
  * Represents an HTTP header.

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Services\CaseService;
+use DBCO\PrivateAPI\Application\Services\CaseService;
 
 use DI\ContainerBuilder;
 use function DI\autowire;

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Application\Services;
+namespace DBCO\PublicAPI\Application\Services;
 
 use Exception;
 
 /**
  * Pairing doesn't exist or is expired.
  *
- * @package App\Application\Services
+ * @package DBCO\PublicAPI\Application\Services
  */
 class InvalidPairingCodeException extends Exception
 {

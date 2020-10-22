@@ -2,6 +2,5 @@
 BASE_PATH=$(dirname $0)/..
 docker-compose stop
 docker-compose rm --force
-docker volume rm nl-covid19-dbco-app-backend-private_postgres-data
 docker volume rm nl-covid19-dbco-app-backend-private_oracle-data
 $BASE_PATH/bin/setup-dev

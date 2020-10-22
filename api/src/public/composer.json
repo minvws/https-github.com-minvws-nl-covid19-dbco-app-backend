@@ -24,8 +24,6 @@
     "require": {
         "php": "^7.4",
         "ext-json": "*",
-        "ext-pdo": "*",
-        "ext-pdo_pgsql": "*",
         "ext-zip": "*",
         "monolog/monolog": "^2.0",
         "php-di/php-di": "^6.1",
@@ -44,13 +42,13 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
-            "DBCO\\": "../shared/library/DBCO/"
+            "DBCO\\PublicAPI\\": "app/",
+            "DBCO\\Shared\\": "../shared/library/DBCO/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "DBCO\\PublicAPI\\Tests\\": "tests/"
         }
     },
     "scripts": {

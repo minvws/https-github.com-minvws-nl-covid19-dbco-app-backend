@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Actions;
+namespace DBCO\HealthAuthorityAPI\Application\Actions;
 
-use App\Application\Helpers\TranslationHelper;
-use App\Application\Responses\QuestionnaireListResponse;
-use App\Application\Services\QuestionnaireService;
-use DBCO\Application\Actions\Action;
+use DBCO\HealthAuthorityAPI\Application\Helpers\TranslationHelper;
+use DBCO\HealthAuthorityAPI\Application\Responses\QuestionnaireListResponse;
+use DBCO\HealthAuthorityAPI\Application\Services\QuestionnaireService;
+use DBCO\Shared\Application\Actions\Action;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
 /**
  * List questionnaires.
  *
- * @package App\Application\Actions
+ * @package DBCO\HealthAuthorityAPI\Application\Actions
  */
 class QuestionnaireListAction extends Action
 {

@@ -1,15 +1,15 @@
 <?php
-namespace App\Application\Services;
+namespace DBCO\PublicAPI\Application\Services;
 
-use App\Application\Models\QuestionnaireList;
-use App\Application\Repositories\QuestionnaireRepository;
+use DBCO\PublicAPI\Application\Models\QuestionnaireList;
+use DBCO\PublicAPI\Application\Repositories\QuestionnaireRepository;
 use Exception;
 use Psr\Log\LoggerInterface;
 
 /**
  * Responsible for listing questionnaires.
  *
- * @package App\Application\Services
+ * @package DBCO\PublicAPI\Application\Services
  */
 class QuestionnaireService
 {

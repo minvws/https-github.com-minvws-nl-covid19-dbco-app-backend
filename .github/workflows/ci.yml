@@ -13,35 +13,12 @@ jobs:
 
     - name: Build / start the stack
       env:
-        POSTGRES_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         ORACLE_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PRIVATE_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         PRIVATE_API_JWT_SECRET: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PUBLIC_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         HEALTHAUTHORITY_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        WORKER_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
       run: docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml up -d
-
-    - name: Setup db
-      env:
-        POSTGRES_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        ORACLE_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PRIVATE_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PRIVATE_API_JWT_SECRET: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PUBLIC_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        HEALTHAUTHORITY_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        WORKER_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
-      run: |
-        docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm psql --host=postgres --user=postgres < ./install/postgres/tables.sql
-        docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER private_api PASSWORD '\$PRIVATE_API_DB_PASSWORD'"\"
-        docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER public_api PASSWORD '\$PUBLIC_API_DB_PASSWORD'"\"
-        docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER healthauthority_api PASSWORD '\$HEALTHAUTHORITY_API_DB_PASSWORD'"\"
-        docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint bash psql -c "psql --host=postgres --user=postgres -c \"CREATE USER worker PASSWORD '\$WORKER_PASSWORD'"\"
-        docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm psql --host=postgres --user=postgres < ./install/postgres/permissions.sql
 
     - name: Run composer
       run: |
@@ -52,13 +29,9 @@ jobs:
 
     - name: Worker - Run phpunit
       env:
-        POSTGRES_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         ORACLE_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PRIVATE_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         PRIVATE_API_JWT_SECRET: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PUBLIC_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         HEALTHAUTHORITY_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        WORKER_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
       run: |
@@ -66,41 +39,33 @@ jobs:
 
     - name: Private Api - Run phpunit
       env:
-        POSTGRES_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         ORACLE_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PRIVATE_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         PRIVATE_API_JWT_SECRET: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PUBLIC_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         HEALTHAUTHORITY_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        WORKER_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
+        PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
+
       run: |
         docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit private_api
 
     - name: Public Api - Run phpunit
       env:
-        POSTGRES_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         ORACLE_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PRIVATE_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         PRIVATE_API_JWT_SECRET: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PUBLIC_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         HEALTHAUTHORITY_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        WORKER_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
+
       run: |
         docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit public_api
 
     - name: Health Authority Api - Run phpunit
       env:
-        POSTGRES_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         ORACLE_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PRIVATE_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         PRIVATE_API_JWT_SECRET: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PUBLIC_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         HEALTHAUTHORITY_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        WORKER_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
         PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
+
       run: |
         docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority_api

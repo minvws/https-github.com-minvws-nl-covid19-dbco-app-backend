@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DBCO\Application\Responses;
+namespace DBCO\Shared\Application\Responses;
 
 use JsonSerializable;
 use RuntimeException;
@@ -11,7 +11,7 @@ use Slim\Psr7\Response as SlimResponse;
 /**
  * Simple response builder.
  *
- * @package DBCO\Application\Responses
+ * @package DBCO\Shared\Application\Responses
  */
 abstract class Response
 {

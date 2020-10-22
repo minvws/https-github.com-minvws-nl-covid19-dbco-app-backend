@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DBCO\Application\Actions;
+namespace DBCO\Shared\Application\Actions;
 
 use JsonSerializable;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -66,11 +66,11 @@ abstract class Action
     /**
      * Respond with response object.
      *
-     * @param \DBCO\Application\Responses\Response $response Response.
+     * @param \DBCO\Shared\Application\Responses\Response $response Response.
      *
      * @return Response
      */
-    protected function respond(\DBCO\Application\Responses\Response $response): Response
+    protected function respond(\DBCO\Shared\Application\Responses\Response $response): Response
     {
         return $response->respond($this->response);
     }
