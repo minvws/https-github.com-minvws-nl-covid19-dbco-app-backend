@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Services\QuestionnaireService;
-use App\Application\Services\CaseService;
+use DBCO\HealthAuthorityAPI\Application\Services\QuestionnaireService;
+use DBCO\HealthAuthorityAPI\Application\Services\CaseService;
 use DI\ContainerBuilder;
 use function DI\autowire;
 

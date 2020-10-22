@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Application\DTO;
+namespace DBCO\HealthAuthorityAPI\Application\DTO;
 
-use App\Application\Models\MultipleChoiceQuestion;
-use App\Application\Models\Question as QuestionModel;
+use DBCO\HealthAuthorityAPI\Application\Models\MultipleChoiceQuestion;
+use DBCO\HealthAuthorityAPI\Application\Models\Question as QuestionModel;
 use JsonSerializable;
 
 /**
  * Question DTO.
  *
- * @package App\Application\Actions
+ * @package DBCO\HealthAuthorityAPI\Application\Actions
  */
 class Question implements JsonSerializable
 {

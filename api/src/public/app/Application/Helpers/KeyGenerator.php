@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Helpers;
+namespace DBCO\PublicAPI\Application\Helpers;
 
 /**
  * Key generator, mainly used to generate signing keys.
  *
- * @package App\Application\Helpers
+ * @package DBCO\PublicAPI\Application\Helpers
  */
 interface KeyGenerator
 {

@@ -1,5 +1,5 @@
 <?php
-namespace App\Application\Responses;
+namespace DBCO\PublicAPI\Application\Responses;
 
 /**
  * Questionnaire list response.

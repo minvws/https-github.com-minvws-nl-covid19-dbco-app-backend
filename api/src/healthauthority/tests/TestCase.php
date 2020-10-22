@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests;
+namespace DBCO\HealthAuthorityAPI\Tests;
 
-use DBCO\Tests\TestCase as DBCO_TestCase;
+use DBCO\Shared\Tests\TestCase as DBCOTestCase;
 
 /**
  * Base class for test cases.
  *
  * @package Tests
  */
-class TestCase extends DBCO_TestCase
+class TestCase extends DBCOTestCase
 {
 }

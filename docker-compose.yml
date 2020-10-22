@@ -1,21 +1,10 @@
 version: '3.7'
 
 volumes:
-    postgres-data:
-        driver: local
     oracle-data:
         driver: local
 
 services:
-    postgres:
-        image: postgres
-        volumes:
-            - postgres-data:/var/lib/postgresql/data
-        environment:
-            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        ports:
-            - ${POSTGRES_PORT:-5432}:5432
-
     oracle:
         image: ${ORACLE_IMAGE:-oracle/database:18.4.0-xe}
         volumes:
@@ -35,10 +24,8 @@ services:
         environment:
             APP_ENV: development
             DEBUG: ${DEBUG:-0}
-            DB_HOST: postgres
-            DB_DATABASE: postgres
-            DB_USERNAME: ${PRIVATE_API_DB_USERNAME}
-            DB_PASSWORD: ${PRIVATE_API_DB_PASSWORD}
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
             JWT_ENABLED: ${PRIVATE_API_JWT_ENABLED:-true}
             JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
             JWT_SECURE: ${PRIVATE_API_JWT_SECURE}
@@ -48,7 +35,7 @@ services:
             - ./api/src/shared:/shared
             - ./api/src/private:/src
         depends_on:
-            - postgres
+            - redis
 
     public_api:
         build:
@@ -57,10 +44,6 @@ services:
         environment:
             APP_ENV: development
             DEBUG: ${DEBUG:-0}
-            DB_HOST: postgres
-            DB_DATABASE: postgres
-            DB_USERNAME: ${PUBLIC_API_DB_USERNAME}
-            DB_PASSWORD: ${PUBLIC_API_DB_PASSWORD}
             REDIS_HOST: redis
             REDIS_PORT: 6379
         ports:
@@ -69,8 +52,21 @@ services:
             - ./api/src/shared:/shared
             - ./api/src/public:/src
         depends_on:
-            - postgres
             - redis
+
+    worker:
+        build: worker
+        environment:
+            APP_ENV: development
+            DEBUG: ${DEBUG:-0}
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api/v1/
+        volumes:
+            - ./worker/src:/src
+        depends_on:
+            - redis
+            - healthauthority_api
 
     healthauthority_api:
         build:
@@ -79,37 +75,14 @@ services:
         environment:
             APP_ENV: development
             DEBUG: ${DEBUG:-0}
-            DB_HOST: postgres
-            DB_DATABASE: postgres
-            DB_USERNAME: ${HEALTHAUTHORITY_API_DB_USERNAME}
-            DB_PASSWORD: ${HEALTHAUTHORITY_API_DB_PASSWORD}
         ports:
             - ${HEALTHAUTHORITY_API_PORT:-8083}:80
         volumes:
             - ./api/src/shared:/shared
             - ./api/src/healthauthority:/src
         depends_on:
-            - postgres
+          - oracle
 
-    worker:
-        build: worker
-        environment:
-            APP_ENV: development
-            DEBUG: ${DEBUG:-0}
-            DB_HOST: postgres
-            DB_DATABASE: postgres
-            DB_USERNAME: ${WORKER_DB_USERNAME}
-            DB_PASSWORD: ${WORKER_DB_PASSWORD}
-            REDIS_HOST: redis
-            REDIS_PORT: 6379
-            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api/v1/
-        volumes:
-            - ./worker/src:/src
-        depends_on:
-            - postgres
-            - redis
-            - healthauthority_api
-            
     portal:
         build:
             context: ./portal
@@ -133,4 +106,4 @@ services:
         volumes:
             - ./portal/src:/src
         depends_on:
-            - postgres
+          - oracle

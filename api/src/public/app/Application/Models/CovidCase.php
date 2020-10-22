@@ -1,5 +1,5 @@
 <?php
-namespace App\Application\Models;
+namespace DBCO\PublicAPI\Application\Models;
 
 /**
  * Used for 1:1 forwarding of the case and its task list body and headers.

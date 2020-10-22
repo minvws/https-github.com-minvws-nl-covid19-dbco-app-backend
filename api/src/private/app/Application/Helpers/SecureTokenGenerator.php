@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Helpers;
+namespace DBCO\PrivateAPI\Application\Helpers;
 
 /**
  * Secure token generator.
  *
  * Uses PHP's random_int function which generates secure pseudo-random integers.
  *
- * @package App\Application\Helpers
+ * @package DBCO\PrivateAPI\Application\Helpers
  */
 final class SecureTokenGenerator implements TokenGenerator {
     /**

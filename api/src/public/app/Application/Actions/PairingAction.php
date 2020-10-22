@@ -1,24 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Actions;
+namespace DBCO\PublicAPI\Application\Actions;
 
-use App\Application\Responses\PairingResponse;
-use App\Application\Services\InvalidPairingCodeException;
-use App\Application\Services\PairingService;
-use DBCO\Application\Actions\Action;
-use DBCO\Application\Actions\ActionException;
-use DBCO\Application\Actions\ValidationError;
-use DBCO\Application\Actions\ValidationException;
-use Exception;
+use DBCO\PublicAPI\Application\Responses\PairingResponse;
+use DBCO\PublicAPI\Application\Services\InvalidPairingCodeException;
+use DBCO\PublicAPI\Application\Services\PairingService;
+use DBCO\Shared\Application\Actions\Action;
+use DBCO\Shared\Application\Actions\ValidationError;
+use DBCO\Shared\Application\Actions\ValidationException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
-use RuntimeException;
 
 /**
  * Link device to case.
  *
- * @package App\Application\Actions
+ * @package DBCO\PublicAPI\Application\Actions
  */
 class PairingAction extends Action
 {
@@ -76,8 +73,6 @@ class PairingAction extends Action
         } catch (InvalidPairingCodeException $e) {
             $error = ValidationError::body('invalid', 'Invalid or expired pairing code', ['pairingCode']);
             throw new ValidationException($this->request, [$error]);
-        } catch (Exception $e) {
-            throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
         }
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace DBCO\Application\Managers;
+namespace DBCO\Shared\Application\Managers;
 
 use Exception;
 

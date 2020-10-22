@@ -1,22 +1,22 @@
 <?php
-namespace App\Application\Repositories;
+namespace DBCO\HealthAuthorityAPI\Application\Repositories;
 
-use App\Application\Models\AnswerOption;
-use App\Application\Models\ClassificationDetailsQuestion;
-use App\Application\Models\ContactDetailsQuestion;
-use App\Application\Models\DateQuestion;
-use App\Application\Models\MultipleChoiceQuestion;
-use App\Application\Models\OpenQuestion;
-use App\Application\Models\Question;
-use App\Application\Models\Questionnaire;
-use App\Application\Models\QuestionnaireList;
+use DBCO\HealthAuthorityAPI\Application\Models\AnswerOption;
+use DBCO\HealthAuthorityAPI\Application\Models\ClassificationDetailsQuestion;
+use DBCO\HealthAuthorityAPI\Application\Models\ContactDetailsQuestion;
+use DBCO\HealthAuthorityAPI\Application\Models\DateQuestion;
+use DBCO\HealthAuthorityAPI\Application\Models\MultipleChoiceQuestion;
+use DBCO\HealthAuthorityAPI\Application\Models\OpenQuestion;
+use DBCO\HealthAuthorityAPI\Application\Models\Question;
+use DBCO\HealthAuthorityAPI\Application\Models\Questionnaire;
+use DBCO\HealthAuthorityAPI\Application\Models\QuestionnaireList;
 
 /**
  * Used for retrieving questionnaires.
  *
  * Stub implementation.
  *
- * @package App\Application\Repositories
+ * @package DBCO\HealthAuthorityAPI\Application\Repositories
  */
 class StubQuestionnaireRepository implements QuestionnaireRepository
 {

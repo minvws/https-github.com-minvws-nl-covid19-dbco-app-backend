@@ -1,17 +1,17 @@
 <?php
-namespace App\Application\Services;
+namespace DBCO\HealthAuthorityAPI\Application\Services;
 
-use App\Application\Models\CovidCase;
-use App\Application\Models\TaskList;
-use App\Application\Repositories\CaseRepository;
-use App\Application\Repositories\GeneralTaskRepository;
+use DBCO\HealthAuthorityAPI\Application\Models\CovidCase;
+use DBCO\HealthAuthorityAPI\Application\Models\TaskList;
+use DBCO\HealthAuthorityAPI\Application\Repositories\CaseRepository;
+use DBCO\HealthAuthorityAPI\Application\Repositories\GeneralTaskRepository;
 use Exception;
 use Psr\Log\LoggerInterface;
 
 /**
  * Responsible for listing tasks.
  *
- * @package App\Application\Services
+ * @package DBCO\HealthAuthorityAPI\Application\Services
  */
 class CaseService
 {

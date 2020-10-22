@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\Application\Actions;
+namespace DBCO\HealthAuthorityAPI\Tests\Application\Actions;
 
 use Exception;
-use Tests\TestCase;
+use DBCO\HealthAuthorityAPI\Tests\TestCase;
 
 /**
  * List case tasks tests.
  *
- * @package Tests\Application\Actions
+ * @package DBCO\HealthAuthorityAPI\Tests\Application\Actions
  */
 class CaseActionTest extends TestCase
 {

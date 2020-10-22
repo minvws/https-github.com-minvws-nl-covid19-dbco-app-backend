@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DBCO\Application\Actions;
+namespace DBCO\Shared\Application\Actions;
 
 use Exception;
 use JsonSerializable;
@@ -11,7 +11,7 @@ use Throwable;
 /**
  * Action exception.
  *
- * @package DBCO\Application\Actions
+ * @package DBCO\Shared\Application\Actions
  */
 class ActionException extends Exception implements JsonSerializable
 {

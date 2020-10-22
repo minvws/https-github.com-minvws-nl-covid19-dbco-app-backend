@@ -1,32 +1,27 @@
 <?php
-namespace App\Application\Services;
+namespace DBCO\PrivateAPI\Application\Services;
 
-use App\Application\Helpers\TokenGenerator;
+use DBCO\PrivateAPI\Application\Helpers\TokenGenerator;
+use DBCO\PrivateAPI\Application\Models\PairingCase;
+use DBCO\PrivateAPI\Application\Models\PairingRequest;
+use DBCO\PrivateAPI\Application\Repositories\PairingRequestRepository;
+use DateTime;
 use DateTimeInterface;
-use DBCO\Application\Models\DbcoCase;
-use DBCO\Application\Models\Pairing;
-use DBCO\Application\Repositories\CaseRepository;
-use DBCO\Application\Repositories\PairingRepository;
-use DBCO\Application\Managers\TransactionManager;
 use Exception;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 
 /**
  * Responsible for registering cases and managing pairings.
  *
- * @package App\Application\Services
+ * @package DBCO\PrivateAPI\Application\Services
  */
 class CaseService
 {
     /**
-     * @var CaseRepository
+     * @var PairingRequestRepository
      */
-    private CaseRepository $caseRepository;
-
-    /**
-     * @var PairingRepository
-     */
-    private PairingRepository $pairingRepository;
+    private PairingRequestRepository $pairingRequestRepository;
 
     /**
      * @var TokenGenerator
@@ -39,11 +34,6 @@ class CaseService
     private int $pairingCodeTimeToLive;
 
     /**
-     * @var TransactionManager
-     */
-    private TransactionManager $transactionManager;
-
-    /**
      * @var LoggerInterface
      */
     private LoggerInterface $logger;
@@ -51,25 +41,19 @@ class CaseService
     /**
      * Constructor.
      *
-     * @param CaseRepository     $caseRepository
-     * @param PairingRepository  $pairingRepository
-     * @param TokenGenerator     $pairingCodeGenerator
-     * @param int                $pairingCodeTimeToLive
-     * @param TransactionManager $transactionManager
-     * @param LoggerInterface    $logger
+     * @param PairingRequestRepository $pairingRequestRepository
+     * @param TokenGenerator           $pairingCodeGenerator
+     * @param int                      $pairingCodeTimeToLive
+     * @param LoggerInterface          $logger
      */
     public function __construct(
-        CaseRepository $caseRepository,
-        PairingRepository $pairingRepository,
+        PairingRequestRepository $pairingRequestRepository,
         TokenGenerator $pairingCodeGenerator,
         int $pairingCodeTimeToLive,
-        TransactionManager $transactionManager,
         LoggerInterface $logger
     )
     {
-        $this->transactionManager = $transactionManager;
-        $this->caseRepository = $caseRepository;
-        $this->pairingRepository = $pairingRepository;
+        $this->pairingRequestRepository = $pairingRequestRepository;
         $this->pairingCodeGenerator = $pairingCodeGenerator;
         $this->pairingCodeTimeToLive = $pairingCodeTimeToLive;
         $this->logger = $logger;
@@ -78,31 +62,20 @@ class CaseService
     /**
      * Create case.
      *
-     * @param string            $caseId
-     * @param DateTimeInterface $caseExpiresAt
+     * @param string            $id
+     * @param DateTimeInterface $expiresAt
      *
-     * @return DbcoCase
+     * @return PairingCase
      *
      * @throws Exception
      */
-    protected function createCase(string $caseId, DateTimeInterface $caseExpiresAt): DbcoCase
+    protected function createCase(string $id, DateTimeInterface $expiresAt): PairingCase
     {
-        $case = new DbcoCase($caseId, $caseExpiresAt);
-        $this->caseRepository->createCase($case);
-        return $case;
-    }
+        if ($expiresAt <= new DateTime()) {
+            throw new RuntimeException('Case has already expired');
+        }
 
-    /**
-     * Is active pairing code?
-     *
-     * @param string $code
-     *
-     * @return bool
-     */
-    protected function isActivePairingCode(string $code): bool
-    {
-        $pairing = $this->pairingRepository->getPairingByCode($code);
-        return $pairing !== null && $pairing->codeExpiresAt > new DateTime();
+        return new PairingCase($id, $expiresAt);
     }
 
     /**
@@ -114,50 +87,62 @@ class CaseService
     {
         do {
             $code = $this->pairingCodeGenerator->generateToken();
-        } while ($this->isActivePairingCode($code));
+        } while ($this->pairingRequestRepository->isActivePairingCode($code));
 
         return $code;
     }
 
     /**
-     * Create pairing.
+     * Create pairing request.
      *
-     * @param DbcoCase $case
+     * @param PairingCase $case
      *
-     * @return Pairing
+     * @return PairingRequest
      *
      * @throws Exception
      */
-    protected function createPairing(DbcoCase $case): Pairing
+    protected function createPairingRequest(PairingCase $case): PairingRequest
     {
         $code = $this->generatePairingCode();
-        $codeExpiresAt = new \DateTime('+' . $this->pairingCodeTimeToLive . ' seconds');
-        $pairing = new Pairing(null, $case, $code, $codeExpiresAt, false, null);
-        $this->pairingRepository->createPairing($pairing);
-        return $pairing;
+        $codeExpiresAt = min($case->expiresAt, new DateTime('+' . $this->pairingCodeTimeToLive . ' seconds'));
+        return new PairingRequest($case, $code, $codeExpiresAt);
     }
 
     /**
-     * Registers case and returns pairing information.
+     * Store pairing request.
+     *
+     * @param PairingRequest $request
+     *
+     * @throws Exception
+     */
+    protected function storePairingRequest(PairingRequest $request)
+    {
+        $this->pairingRequestRepository->storePairingRequest($request);
+    }
+
+    /**
+     * Registers case and returns pairing request.
      *
      * @param string            $id        Case identifier.
      * @param DateTimeInterface $expiresAt Case expiry.
      *
-     * @return Pairing
+     * @return PairingRequest
      *
      * @throws Exception
      */
-    public function registerCase(string $id, DateTimeInterface $expiresAt): Pairing
+    public function registerCase(string $id, DateTimeInterface $expiresAt): PairingRequest
     {
-        $this->logger->debug('Register case ' . $id);
+        $this->logger->debug('Create case ' . $id);
+        $case = $this->createCase($id, $expiresAt);
 
-        $pairing = $this->transactionManager->run(function () use ($id, $expiresAt) {
-            $case = $this->createCase($id, $expiresAt);
-            return $this->createPairing($case);
-        });
+        $this->logger->debug('Create pairing request for case ' . $id);
+        $pairingRequest = $this->createPairingRequest($case);
 
-        $this->logger->debug('Created pairing ' . $pairing->id . ' for case ' . $id . ', code: ' . $pairing->code);
+        $this->logger->debug('Store pairing request for case ' . $id . ', code: ' . $pairingRequest->code);
+        $this->storePairingRequest($pairingRequest);;
 
-        return $pairing;
+        $this->logger->debug('Stored pairing request for case ' . $id);
+
+        return $pairingRequest;
     }
 }

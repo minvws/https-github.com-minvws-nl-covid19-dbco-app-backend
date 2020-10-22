@@ -1,9 +1,9 @@
 <?php
-namespace App\Application\Responses;
+namespace DBCO\HealthAuthorityAPI\Application\Responses;
 
-use App\Application\DTO\Questionnaire;
-use App\Application\Models\QuestionnaireList;
-use DBCO\Application\Responses\Response;
+use DBCO\HealthAuthorityAPI\Application\DTO\Questionnaire;
+use DBCO\HealthAuthorityAPI\Application\Models\QuestionnaireList;
+use DBCO\Shared\Application\Responses\Response;
 use JsonSerializable;
 
 /**

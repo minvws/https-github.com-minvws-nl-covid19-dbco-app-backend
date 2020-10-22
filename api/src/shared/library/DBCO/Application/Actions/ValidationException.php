@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DBCO\Application\Actions;
+namespace DBCO\Shared\Application\Actions;
 
 use Slim\Psr7\Request;
 
 /**
  * Validation exception.
  *
- * @package DBCO\Application\Actions
+ * @package DBCO\Shared\Application\Actions
  */
 class ValidationException extends ActionException
 {

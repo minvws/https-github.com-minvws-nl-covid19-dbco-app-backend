@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Actions;
+namespace DBCO\PublicAPI\Application\Actions;
 
-use App\Application\Responses\GeneralTaskListResponse;
-use App\Application\Services\CaseService;
-use DBCO\Application\Actions\Action;
+use DBCO\PublicAPI\Application\Responses\GeneralTaskListResponse;
+use DBCO\PublicAPI\Application\Services\CaseService;
+use DBCO\Shared\Application\Actions\Action;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
 /**
  * List general tasks.
  *
- * @package App\Application\Actions
+ * @package DBCO\PublicAPI\Application\Actions
  */
 class GeneralTaskListAction extends Action
 {

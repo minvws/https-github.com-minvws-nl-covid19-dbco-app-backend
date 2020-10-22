@@ -1,5 +1,5 @@
 <?php
-namespace App\Application\Responses;
+namespace DBCO\PublicAPI\Application\Responses;
 
 /**
  * General task list response.
