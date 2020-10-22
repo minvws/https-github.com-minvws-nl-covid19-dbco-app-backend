@@ -1,8 +1,8 @@
 <?php
-namespace App\Application\Responses;
+namespace DBCO\PublicAPI\Application\Responses;
 
-use DBCO\Application\Models\Pairing;
-use DBCO\Application\Responses\Response;
+use DBCO\PublicAPI\Application\Models\Pairing;
+use DBCO\Shared\Application\Responses\Response;
 use JsonSerializable;
 
 /**

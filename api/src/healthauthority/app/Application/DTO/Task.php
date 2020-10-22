@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\DTO;
+namespace  DBCO\HealthAuthorityAPI\Application\DTO;
 
-use App\Application\Models\Task as TaskModel;
+use  DBCO\HealthAuthorityAPI\Application\Models\Task as TaskModel;
 use JsonSerializable;
 
 /**
  * Task DTO.
  *
- * @package App\Application\Actions
+ * @package  DBCO\HealthAuthorityAPI\Application\Actions
  */
 class Task implements JsonSerializable
 {

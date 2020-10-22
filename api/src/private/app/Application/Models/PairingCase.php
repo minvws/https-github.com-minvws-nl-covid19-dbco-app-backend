@@ -1,5 +1,5 @@
 <?php
-namespace DBCO\Application\Models;
+namespace DBCO\PrivateAPI\Application\Models;
 
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -9,7 +9,7 @@ use RuntimeException;
 /**
  * Case model.
  */
-class DbcoCase
+class PairingCase
 {
     /**
      * Case identifier from the GGD system

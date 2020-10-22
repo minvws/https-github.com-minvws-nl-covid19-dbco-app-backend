@@ -1,12 +1,12 @@
 <?php
-namespace App\Application\Repositories;
+namespace DBCO\PublicAPI\Application\Repositories;
 
-use App\Application\Models\GeneralTaskList;
+use DBCO\PublicAPI\Application\Models\GeneralTaskList;
 
 /**
  * Used for retrieving general tasks.
  *
- * @package App\Application\Repositories
+ * @package DBCO\PublicAPI\Application\Repositories
  */
 interface GeneralTaskRepository
 {

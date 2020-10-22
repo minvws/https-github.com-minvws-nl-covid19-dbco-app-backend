@@ -1,9 +1,9 @@
 <?php
-namespace App\Application\Responses;
+namespace DBCO\HealthAuthorityAPI\Application\Responses;
 
-use App\Application\DTO\Task;
-use App\Application\Models\CovidCase;
-use DBCO\Application\Responses\Response;
+use DBCO\HealthAuthorityAPI\Application\DTO\Task;
+use DBCO\HealthAuthorityAPI\Application\Models\CovidCase;
+use DBCO\Shared\Application\Responses\Response;
 use JsonSerializable;
 
 /**

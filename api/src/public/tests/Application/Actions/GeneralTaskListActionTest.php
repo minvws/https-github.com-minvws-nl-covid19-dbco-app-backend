@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\Application\Actions;
+namespace DBCO\PublicAPI\Tests\Application\Actions;
 
 use Exception;
-use Tests\TestCase;
+use DBCO\PublicAPI\Tests\TestCase;
 use Predis\Client as PredisClient;
 
 /**
  * List general tasks tests.
  *
- * @package Tests\Application\Actions
+ * @package DBCO\PublicAPI\Tests\Application\Actions
  */
 class GeneralTaskListActionTest extends TestCase
 {

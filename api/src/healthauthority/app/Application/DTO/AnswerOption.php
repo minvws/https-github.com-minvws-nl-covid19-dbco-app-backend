@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Application\DTO;
+namespace DBCO\HealthAuthorityAPI\Application\DTO;
 
-use App\Application\Models\AnswerOption as AnswerOptionModel;
+use DBCO\HealthAuthorityAPI\Application\Models\AnswerOption as AnswerOptionModel;
 use JsonSerializable;
 
 /**
  * Answer option DTO.
  *
- * @package App\Application\Actions
+ * @package  DBCO\HealthAuthorityAPI\Application\Actions
  */
 class AnswerOption implements JsonSerializable
 {

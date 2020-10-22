@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Helpers;
+namespace DBCO\PrivateAPI\Application\Helpers;
 
 /**
  * Utility methods for helping with the JWT configuration.
  *
- * @package App\Application\Helpers
+ * @package DBCO\PrivateAPI\Application\Helpers
  */
 class JWTConfigHelper
 {

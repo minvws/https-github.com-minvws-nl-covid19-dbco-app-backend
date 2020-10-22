@@ -1,8 +1,8 @@
 <?php
-namespace App\Application\Responses;
+namespace DBCO\PublicAPI\Application\Responses;
 
-use App\Application\Models\ProxyData;
-use DBCO\Application\Responses\Response;
+use DBCO\PublicAPI\Application\Models\ProxyData;
+use DBCO\Shared\Application\Responses\Response;
 
 /**
  * Proxy response.
