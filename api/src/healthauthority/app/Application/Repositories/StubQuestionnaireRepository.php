@@ -78,18 +78,13 @@ class StubQuestionnaireRepository implements QuestionnaireRepository
         $question5 = new MultipleChoiceQuestion();
         $question5->uuid = "37d818ed-9499-4b9a-9771-725467368391";
         $question5->group = "contactdetails";
-        $question5->label = "Is een of meerdere onderstaande zaken van toepassing voor deze persoon?";
-        $question5->description =
-            implode(
-                "\n",
-                [
-                    "* Is student",
-                    "* 70 jaar of ouder",
-                    "* Heeft gezondheidsklachten of loopt extra gezondheidsrisico's",
-                    "* Woont in een asielzoekerscentrum",
-                    "* Spreekt slecht of geen Nederlands"
-                ]
-            );
+        $question5->label = "Geldt een of meer van deze dingen voor deze persoon?";
+        $question5->description = "<ul><li>Student</li>".
+                                  "<li>70 jaar of ouder</li>".
+                                  "<li>Gezondheidsklachten of extra gezondheidsrisico's</li>".
+                                  "<li>Woont in een zorginstelling of asielzoekerscentrum (bijvoorbeeld bejaardentehuis)</li>".
+                                  "<li>Spreekt slecht of geen Nederlands</li></ul>".
+                                  "<li>Werkt in de zorg, onderwijs of een contactberoep (bijvoorbeeld kapper)</li></ul>";
         $question5->relevantForCategories = [Question::CATEGORY_1, Question::CATEGORY_2A, Question::CATEGORY_2B];
         $question5->answerOptions[] = new AnswerOption('Ja, één of meerdere dingen', 'Ja', 'communication_staff');
         $question5->answerOptions[] = new AnswerOption('Nee, ik denk het niet', 'Nee', 'communication_index');
