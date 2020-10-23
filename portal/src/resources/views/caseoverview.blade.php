@@ -34,9 +34,9 @@
 
     <!-- Start of add button component -->
     <nav class="nav  mb-2">
-        <button type="button" class="btn btn-primary  ml-auto" data-toggle="modal" data-target="#createCaseModal">
+        <a href="/newcase" class="btn  btn-primary  ml-auto">
             Case openen
-        </button>
+        </a>
     </nav>
     <!-- End of add button component -->
 
@@ -215,7 +215,7 @@
   START OF MODALS
 ---------------------------->
 
-<!-- Start of create case modal -->
+<!-- Start of create case modal (deprecated, replaced by /newcase form) -->
 <div class="modal fade" id="createCaseModal" tabindex="-1" aria-labelledby="createCaseModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -230,18 +230,18 @@
                     <div class="form-group">
                         <label for="name" class="col-form-label">Casenaam</label>
                         <input type="text" class="form-control" id="name" placeholder="Voer casenaam in">
+                        <label for="caseid" class="col-form-label">Case ID</label>
+                        <input type="text" class="form-control" id="caseId" placeholder="Voer casenummer in">
                     </div>
                 </form>
             </div>
             <div class="modal-footer  border-top-0  pt-0">
-                <button type="button" class="btn btn-primary  mr-auto">Case toevoegen</button>
+                <button type="button" class="btn btn-primary  mr-auto" data-dismiss="modal">Case toevoegen</button>
             </div>
         </div>
     </div>
 </div>
 <!-- End of create case modal -->
 
-
-<!-- Bootstrap core JavaScript -->
 </body>
 </html>
