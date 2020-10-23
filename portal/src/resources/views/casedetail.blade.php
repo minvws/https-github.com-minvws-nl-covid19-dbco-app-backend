@@ -15,7 +15,7 @@
 
     <!-- Start of navbar component -->
     <nav class="navbar  navbar-expand-lg  navbar-light  bg-transparent  pl-0  pr-0  w-100">
-        <a href="/case" class="btn  btn-light  rounded-pill">
+        <a href="/" class="btn  btn-light  rounded-pill">
             <i class="icon  icon--arrow-left  icon--m0"></i> Terug naar Cases
         </a>
 

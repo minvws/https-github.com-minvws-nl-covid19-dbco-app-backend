@@ -1,0 +1,30 @@
+.questionform {
+
+    .mb3 {
+        margin-top: 200px;
+    }
+
+    .question-nr {
+        width: 28px;
+        height: 28px;
+        display: inline-block;
+
+        font-style: normal;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 28px;
+        align-items: center;
+        text-align: center;
+        letter-spacing: 0.5px;
+
+        background-color: $button-color;
+
+        border-radius: 4px;
+
+        color: #FFFFFF;
+    }
+
+    H3 {
+        font-size: 22px;
+    }
+}
