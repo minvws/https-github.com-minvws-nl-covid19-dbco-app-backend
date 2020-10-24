@@ -37,4 +37,4 @@ docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev
 echo
 echo "=====[ SETUP PORTAL ]====="
 docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint composer portal install
-docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint php artisan migrate
+docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint php portal artisan migrate
