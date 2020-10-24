@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class BaseModel extends Model
+class EloquentBaseModel extends Model
 {
     protected $primaryKey = "uuid";
     protected $keyType = "string";

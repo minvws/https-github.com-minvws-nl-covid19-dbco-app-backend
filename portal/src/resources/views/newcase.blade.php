@@ -11,10 +11,12 @@
 </head>
 <body>
 
+<?php $questionNr = 1; ?>
+
 <div class="container-xl questionform">
     <form action="/savecase" method="POST">
         @csrf
-        <input type="hidden" name="caseId" value="{{ $case->uuid }}">
+        <input type="hidden" name="uuid" value="{{ $case->uuid }}">
 
         <!-- Start of navbar component -->
         <nav class="navbar  navbar-expand-lg  navbar-light  bg-transparent  pl-0  pr-0  w-100">
@@ -37,23 +39,32 @@
 
         <!-- Start of question title component -->
         <div class="align-items-end  mb-3 mt-3">
-            <h3 class="mb-0"><div class="question-nr">1</div> Hoe heet de index?</h3>
+            <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Hoe heet de index?</h3>
         </div>
         <!-- End of question title component -->
-        <input type="text" class="form-control" id="name" name="name" value="">
+        <input type="text" class="form-control" id="name" name="name" value="{{ $case->name }}">
 
         <!-- Start of question title component -->
         <div class="align-items-end  mb-3 mt-3">
-            <h3 class="mb-0"><div class="question-nr">2</div> Wat is de eerste ziektedag van de index?</h3>
+            <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Heb je een case nummer als referentie?</h3>
+            <p class="mt-2 mb-0  ml-auto">Bijvoorbeeld een case id uit HPZone, zodat je later makkelijk kunt zien bij wie deze gegevens horen.</p>
+        </div>
+        <!-- End of question title component -->
+        <input type="text" class="form-control" id="caseId" name="caseId" value="{{ $case->caseId }}">
+
+
+        <!-- Start of question title component -->
+        <div class="align-items-end  mb-3 mt-3">
+            <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Wat is de eerste ziektedag van de index?</h3>
             <p class="mt-2 mb-0  ml-auto">De besmettelijke periode is twee dagen voor de eerste ziektedag tot en met vandaag</p>
         </div>
         <!-- End of question title component -->
         <!-- TODO DATE PICKER CONFORM DESIGN -->
-        <input type="text" class="form-control" id="dateofsymptomonset" name="dateofsymptomonset" value="">
+        <input type="text" class="form-control" id="dateofsymptomonset" name="dateOfSymptomOnset" value="{{ $case->dateOfSymptomOnset }}">
 
         <!-- Start of table title component -->
         <div class="align-items-end  mb-3 mt-3">
-            <h3 class="mb-0"><div class="question-nr">3</div> Ga je nu samen met de index de contacten in kaart brengen?</h3>
+            <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Ga je nu samen met de index de contacten in kaart brengen?</h3>
             <p class="mt-2 mb-0  ml-auto">Als je wilt dat de index zelf een begin maakt met het in kaart brengen van mensen die misschien besmet zijn, dan kan dat met de app.</p>
         </div>
         <!-- End of table title component -->
@@ -183,19 +194,19 @@
 
         <!-- Start of table title component -->
         <div class="align-items-end  mb-3 mt-3">
-            <h3 class="mb-0"><div class="question-nr">4</div> Vertel de index welke app ze moeten downloaden</h3>
+            <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Vertel de index welke app ze moeten downloaden</h3>
             <p class="mt-2 mb-0  ml-auto">De index heeft een app nodig die ze kunnen downloaden in de Play of AppStore waarmee ze de gegevens op een veilige manier met de GGD kunnen delen.</p>
         </div>
         <!-- End of table title component -->
 
         <!-- Start of table title component -->
         <div class="align-items-end  mb-3 mt-3">
-            <h3 class="mb-0"><div class="question-nr">5</div> Deel de code met de index</h3>
+            <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Deel de code met de index</h3>
             <p class="mt-2 mb-0  ml-auto">Met deze code heeft de index toegang tot de contacten uit de aanleverlijst.</p>
         </div>
         <!-- End of table title component -->
         <div class="pairingcode">
-            <span>{{ $case->pairingCode }}</span>
+            <span>TODO pairingcode</span>
         </div>
 
         <div class="btn-group">
