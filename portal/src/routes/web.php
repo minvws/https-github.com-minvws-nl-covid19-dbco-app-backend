@@ -23,15 +23,14 @@ Route::get('/colofon', function () {
     return view('welcome');
 });
 
-Route::get('/', function () {
-    return view('caseoverview');
-})->middleware('sessionauth');;
+Route::get('/', [CaseController::class, 'listCases'])->middleware('sessionauth');;
 
 Route::get('/case', function () {
     return view('casedetail');
 })->middleware('sessionauth');
 
-Route::get('/newcase', [CaseController::class, 'newCase'])->middleware('sessionauth');
+Route::get('/newcase', [Casecontroller::class, 'newCase'])->middleware('sessionauth');
+Route::get('/newcaseedit/{uuid}', [CaseController::class, 'newCaseEdit'])->middleware('sessionauth');
 
 Route::get('auth/identityhub', [LoginController::class, 'redirectToProvider']);
 Route::get('auth/login', [LoginController::class, 'handleProviderCallback']);

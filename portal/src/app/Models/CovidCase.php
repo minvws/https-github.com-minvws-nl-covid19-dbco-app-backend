@@ -2,21 +2,26 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Session;
-use App\Models\User;
+use Jenssegers\Date\Date;
 
-class CovidCase extends BaseModel
+class CovidCase
 {
-    protected $table = "case";
+    public const STATUS_DRAFT = 'draft';
+    public const STATUS_OPEN = 'open';
+    public const STATUS_CLOSED = 'closed';
 
-    protected static function boot()
-    {
-        parent::boot();
+    public string $uuid;
 
-        static::creating(function ($case) {
-            $user = Session::get('user');
-            $case->owner = $user->id;
-        });
-    }
+    public string $owner;
+
+    public string $status;
+
+    public ?string $name;
+
+    public ?string $caseId;
+
+    public ?Date $dateOfSymptomOnset;
+
+    public ?Date $updatedAt;
 
 }

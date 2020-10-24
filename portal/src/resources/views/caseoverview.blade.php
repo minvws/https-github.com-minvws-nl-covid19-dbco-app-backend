@@ -73,42 +73,23 @@
                 </colgroup>
                 <thead>
                 <tr>
-                    <th scope="col">Naam index</th>
+                    <th scope="col">Naam</th>
                     <th scope="col">Casenr.</th>
-                    <th scope="col">Bco-er</th>
-                    <th scope="col">Datum test</th>
+                    <th scope="col">Eerste ziektedag</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Laatst bewerkt</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr role="button" class="custom-link" data-href="/case">
-                    <th scope="row">Joris Leker</th>
-                    <td>7593067-BA</td>
-                    <td>Mathijs Groense</td>
-                    <td>Zo 4 okt</td>
-                    <td>51 minuten geleden</td>
-                </tr>
-                <tr>
-                    <th scope="row">Emiel Janson</th>
-                    <td>7593067-BA</td>
-                    <td>Mathijs Groense</td>
-                    <td>Zo 4 okt</td>
-                    <td>11 minuten geleden</td>
-                </tr>
-                <tr role="button" class="custom-link" data-href="/case">
-                    <th scope="row">Lia Bardoel</th>
-                    <td>7593067-BA</td>
-                    <td>Mathijs Groense</td>
-                    <td>ma 5 okt</td>
-                    <td>2 uur geleden</td>
-                </tr>
-                <tr>
-                    <th scope="row">Tobias van Geijn</th>
-                    <td>AMS/C20. 354921</td>
-                    <td>Mathijs Groense</td>
-                    <td>ma 5 okt</td>
-                    <td>7 uur geleden</td>
-                </tr>
+                @foreach($cases as $case)
+                    <tr role="button" class="custom-link" data-href="/case">
+                        <th scope="row">{{ $case->name }}</th>
+                        <td>{{ $case->caseId }}</td>
+                        <td>{{ $case->dateOfSymptomOnset != NULL ? $case->dateOfSymptomOnset->format('l j M') : '' }}</td>
+                        <td>{{ $case->status }}</td>
+                        <td>{{ $case->updatedAt->diffForHumans() }}</td>
+                    </tr>
+                @endforeach
             </table>
             <!-- End of table component -->
         </div>
