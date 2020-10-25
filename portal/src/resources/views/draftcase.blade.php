@@ -38,14 +38,14 @@
         <!-- End of navbar component -->
 
         <!-- Start of question title component -->
-        <div class="align-items-end  mb-3 mt-3">
+        <div class="align-items-end  mb-3 mt-5">
             <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Hoe heet de index?</h3>
         </div>
         <!-- End of question title component -->
         <input type="text" class="form-control" id="name" name="name" value="{{ $case->name }}">
 
         <!-- Start of question title component -->
-        <div class="align-items-end  mb-3 mt-3">
+        <div class="align-items-end  mb-3 mt-5">
             <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Heb je een case nummer als referentie?</h3>
             <p class="mt-2 mb-0  ml-auto">Bijvoorbeeld een case id uit HPZone, zodat je later makkelijk kunt zien bij wie deze gegevens horen.</p>
         </div>
@@ -54,7 +54,7 @@
 
 
         <!-- Start of question title component -->
-        <div class="align-items-end  mb-3 mt-3">
+        <div class="align-items-end  mb-3 mt-5">
             <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Wat is de eerste ziektedag van de index?</h3>
             <p class="mt-2 mb-0  ml-auto">De besmettelijke periode is twee dagen voor de eerste ziektedag tot en met vandaag</p>
         </div>
@@ -63,16 +63,17 @@
         <input type="text" class="form-control" id="dateofsymptomonset" name="dateOfSymptomOnset" value="{{ $case->dateOfSymptomOnset }}">
 
         <!-- Start of table title component -->
-        <div class="align-items-end  mb-3 mt-3">
+        <div class="align-items-end  mb-3 mt-5">
             <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Ga je nu samen met de index de contacten in kaart brengen?</h3>
             <p class="mt-2 mb-0  ml-auto">Als je wilt dat de index zelf een begin maakt met het in kaart brengen van mensen die misschien besmet zijn, dan kan dat met de app.</p>
         </div>
         <!-- End of table title component -->
-
-        Ja|Nee
-
+        <p>
+            <button class="button" type="button" onClick="$('#taskTable').show();">Ja</button>
+            <button class="button" type="button" onClick="$('#taskTable').hide();">Nee</button>
+        </p>
         <!-- Start of table component -->
-        <table class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-hover  table-form  table-ggd">
+        <table id="taskTable" class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-hover  table-form  table-ggd">
             <!--
                 Modify the col definitions in the colgroup below to change the widths of the the columns.
                 The w-* classes will be automatically generated based on the $sizes array which is defined in the scss/_variables.scss
@@ -149,14 +150,14 @@
         <!-- End of table component -->
 
         <!-- Start of table title component -->
-        <div class="align-items-end  mb-3 mt-3">
+        <div class="align-items-end  mb-3 mt-5">
             <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Vertel de index welke app ze moeten downloaden</h3>
             <p class="mt-2 mb-0  ml-auto">De index heeft een app nodig die ze kunnen downloaden in de Play of AppStore waarmee ze de gegevens op een veilige manier met de GGD kunnen delen.</p>
         </div>
         <!-- End of table title component -->
 
         <!-- Start of table title component -->
-        <div class="align-items-end  mb-3 mt-3">
+        <div class="align-items-end  mb-3 mt-5">
             <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Deel de code met de index</h3>
             <p class="mt-2 mb-0  ml-auto">Met deze code heeft de index toegang tot de contacten uit de aanleverlijst.</p>
         </div>
