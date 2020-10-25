@@ -101,25 +101,25 @@
             <tr>
                 <td>
                     <label class="sr-only" for="label">Label</label>
-                    <input type="text" class="form-control auto-row-clone" id="label" name="label[]" value="" placeholder="Voeg contact toe">
+                    <input type="text" class="form-control auto-row-clone" id="label" name="tasks[0][label]" value="" placeholder="Voeg contact toe">
                 </td>
                 <td>
                     <label class="sr-only" for="context1">Context</label>
-                    <input type="text" class="form-control" id="context1" name="context[]" value="" placeholder="Bijv. collega of trainer">
+                    <input type="text" class="form-control" id="context1" name="tasks[0][context]" value="" placeholder="Bijv. collega of trainer">
                 </td>
                 <td>
                     <label class='sr-only' for="categorie1">Categorie</label>
-                    <select class="form-control" id="category1" name="category[]">
+                    <select class="form-control" id="category1" name="tasks[0][category]">
                         <option disabled selected>Selecteer</option>
                         <option>1</option>
+                        <option>2a</option>
                         <option>2b</option>
-                        <option>2c</option>
                         <option>3</option>
                     </select>
                 </td>
                 <td>
                     <label class="sr-only" for="date1">Laatste contact</label>
-                    <select class="form-control" id="lastcontact1" name="dateOfLastExposure[]">
+                    <select class="form-control" id="lastcontact1" name="tasks[0][dateOfLastExposure]">
                         <option disabled selected>Selecteer</option>
                         @for ($i = 0; $i < 14; $i++)
                             <?php
@@ -132,10 +132,10 @@
                 </td>
                 <td>
                     <label class='sr-only' for="informeren1">Wie informeert</label>
-                    <select class="form-control" id="informeren1" name="communication[]">
+                    <select class="form-control" id="informeren1" name="tasks[0][communication]">
                         <option disabled selected>Selecteer</option>
-                        <option>GGD</option>
-                        <option>Index</option>
+                        <option value="ggd">GGD</option>
+                        <option value="index">Index</option>
                     </select>
                 </td>
                 <td class="text-center">
