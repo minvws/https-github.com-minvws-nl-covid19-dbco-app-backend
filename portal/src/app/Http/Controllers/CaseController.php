@@ -34,7 +34,9 @@ class CaseController extends Controller
         $case = $this->caseRepository->getCase($caseUuid);
 
         if ($case != null && $this->verifyCaseAccess($case)) {
-            return view('draftcase', ['case' => $case]);
+            $tasks = $this->taskRepository->getTasks($caseUuid);
+            $tasks[] = new Task(); // one empty placeholder
+            return view('draftcase', ['case' => $case, 'tasks' => $tasks]);
         } else {
             return redirect()->intended('/');
         }
