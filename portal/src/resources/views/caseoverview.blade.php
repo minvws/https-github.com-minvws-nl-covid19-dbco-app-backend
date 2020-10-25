@@ -82,7 +82,7 @@
                 </thead>
                 <tbody>
                 @foreach($cases as $case)
-                    <tr role="button" class="custom-link" data-href="/case">
+                    <tr role="button" class="custom-link clickable-row" data-href="/{{ $case->editCommand }}/{{ $case->uuid }}">
                         <th scope="row">{{ $case->name }}</th>
                         <td>{{ $case->caseId }}</td>
                         <td>{{ $case->dateOfSymptomOnset != NULL ? $case->dateOfSymptomOnset->format('l j M') : '' }}</td>

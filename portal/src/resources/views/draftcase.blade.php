@@ -101,51 +101,7 @@
             <tr>
                 <td>
                     <label class="sr-only" for="label">Label</label>
-                    <input type="text" class="form-control" id="label" name="label[]" value="" placeholder="Voeg contact toe">
-                </td>
-                <td>
-                    <label class="sr-only" for="context1">Context</label>
-                    <input type="text" class="form-control" id="context1" name="context[]" value="" placeholder="Bijv. collega of trainer">
-                </td>
-                <td>
-                    <label class='sr-only' for="categorie1">Categorie</label>
-                    <select class="form-control" id="category1" name="category[]">
-                        <option disabled selected>Selecteer</option>
-                        <option>1</option>
-                        <option>2b</option>
-                        <option>2c</option>
-                        <option>3</option>
-                    </select>
-                </td>
-                <td>
-                    <label class="sr-only" for="date1">Laatste contact</label>
-                    <select class="form-control" id="lastcontact1" name="dateOfLastExposure[]">
-                        <option disabled selected>Selecteer</option>
-                        @for ($i = 0; $i < 14; $i++)
-                            <?php
-                            $date = Date::parse("-$i days")->format("Y-m-d");
-                            $label = Date::parse("-$i days")->format('l j M');
-                            ?>
-                            <option value="{{ $date }}">{{ $label }}</option>
-                        @endfor
-                    </select>
-                </td>
-                <td>
-                    <label class='sr-only' for="informeren1">Wie informeert</label>
-                    <select class="form-control" id="informeren1" name="communication[]">
-                        <option disabled selected>Selecteer</option>
-                        <option>GGD</option>
-                        <option>Index</option>
-                    </select>
-                </td>
-                <td class="text-center">
-                    <button class="btn"><i class="icon  icon--delete  icon--m0"></i></button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label class="sr-only" for="label">Label</label>
-                    <input type="text" class="form-control" id="label" name="label[]" value="" placeholder="Voeg contact toe">
+                    <input type="text" class="form-control auto-row-clone" id="label" name="label[]" value="" placeholder="Voeg contact toe">
                 </td>
                 <td>
                     <label class="sr-only" for="context1">Context</label>
