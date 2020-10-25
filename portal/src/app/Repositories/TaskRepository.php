@@ -27,6 +27,13 @@ interface TaskRepository
     public function getTask(string $taskUuid): Task;
 
     /**
+     * Update a task in the db
+     *
+     * @param Task $task The updated task
+     */
+    public function updateTask(Task $task);
+
+    /**
      * Create a new task
      *
      * @return Task

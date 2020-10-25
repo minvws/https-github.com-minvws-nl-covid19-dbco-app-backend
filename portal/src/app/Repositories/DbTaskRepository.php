@@ -40,9 +40,32 @@ class DbTaskRepository implements TaskRepository
      */
     public function getTask(string $taskUuid): Task
     {
-        $tasks = EloquentTask::where('uuid', $taskUuid)->get();
-        $dbTask = $tasks->first();
+        $dbTask = $this->getTaskFromDb($taskUuid);
         return $dbTask != null ? $this->taskFromEloquentModel($dbTask): null;
+    }
+
+    private function getTaskFromDb(string $taskUuid): EloquentTask
+    {
+        $tasks = EloquentTask::where('uuid', $taskUuid)->get();
+        return $tasks->first();
+    }
+
+    /**
+     * Update case.
+     *
+     * @param Task $task Task to update
+     */
+    public function updateTask(Task $task)
+    {
+        // TODO fixme: this retrieves the object from the db, again; but eloquent won't let us easily instantiate
+        // an object directly from a Task.
+        $dbTask = $this->getTaskFromDb($task->uuid);
+        $dbTask->label = $task->label;
+        $dbTask->task_context = $task->taskContext;
+        $dbTask->communication = $task->communication;
+        $dbTask->category = $task->category;
+        $dbTask->date_of_last_exposure = $task->dateOfLastExposure != null? $task->dateOfLastExposure->toDateTimeImmutable() : null;
+        $dbTask->save();
     }
 
     /**
