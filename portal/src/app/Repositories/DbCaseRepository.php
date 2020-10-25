@@ -13,15 +13,20 @@ class DbCaseRepository implements CaseRepository
     /**
      * Returns the case and its task list.
      *
-     * @param string $caseId Case identifier.
+     * @param string $caseUuid Case identifier.
      *
      * @return CovidCase The found case (or null if not found)
      */
-    public function getCase(string $caseId): ?CovidCase
+    public function getCase(string $caseUuid): ?CovidCase
     {
-        $cases = EloquentCase::where('uuid', $caseId)->get();
-        $dbCase = $cases->first();
+        $dbCase = $this->getCaseFromDb($caseUuid);
         return $dbCase != null ? $this->caseFromEloquentModel($dbCase): null;
+    }
+
+    private function getCaseFromDb(string $caseUuid): EloquentCase
+    {
+        $cases = EloquentCase::where('uuid', $caseUuid)->get();
+        return $cases->first();
     }
 
     /**
@@ -69,7 +74,13 @@ class DbCaseRepository implements CaseRepository
      */
     public function updateCase(CovidCase $case)
     {
-        $dbCase = $this->eloquentModelFromCase($case);
+        // TODO fixme: this retrieves the object from the db, again; but eloquent won't let us easily instantiate
+        // an object directly from a CovidCase.
+        $dbCase = $this->getCaseFromDb($case->uuid);
+        $dbCase->case_id = $case->caseId;
+        $dbCase->name = $case->name;
+        $dbCase->status = $case->status;
+        $dbCase->date_of_symptom_onset = $case->dateOfSymptomOnset != null ? $case->dateOfSymptomOnset->toDateTimeImmutable() : null;
         $dbCase->save();
     }
 
@@ -85,21 +96,6 @@ class DbCaseRepository implements CaseRepository
         $case->updatedAt = new Date($dbCase->updated_at);
 
         return $case;
-    }
-
-    private function eloquentModelFromCase(CovidCase $case): EloquentCase
-    {
-        $dbCase = new EloquentCase();
-        $dbCase->uuid = $case->uuid;
-        $dbCase->case_id = $case->caseId;
-        $dbCase->date_of_symptom_onset = new \DateTimeImmutable($dbCase->dateOfSymptomOnset);
-        $dbCase->name = $case->name;
-        $dbCase->owner = $case->owner;
-        $dbCase->status = $case->status;
-
-        // Don't set updatedAt, will be auto updated by eloquent.
-
-        return $dbCase;
     }
 
     /**

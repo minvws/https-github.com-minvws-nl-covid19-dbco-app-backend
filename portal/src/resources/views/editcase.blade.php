@@ -39,66 +39,72 @@
     <!-- End of page title component -->
     <p>
         Casenr: {{ $case->caseId }}
-        <br/>Eerste ziektedag: {{ $case->dateOfSymptomOnset->format('l j F') }}
+        <br/>Eerste ziektedag: {{ $case->dateOfSymptomOnset != null ? $case->dateOfSymptomOnset->format('l j F') : ''}}
     </p>
 
-    <!-- Start of table title component -->
-    <div class="d-flex  align-items-end  mb-3 mt-4">
-        <h2 class="mb-0">Contacten</h2>
-        <p class="mb-0  ml-auto">Velden met een <i class="icon  icon--eye"></i> zijn in de app zichtbaar voor de index</p>
-    </div>
-    <!-- End of table title component -->
+    <?php
+        $groups = array('ggd' => 'GGD Informeert', 'index' => 'Index Informeert', 'other' => 'Overige contacten')
+    ?>
 
-    <!-- Start of table component -->
-    <table class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-hover  table-form  table-ggd">
-        <!--
-            Modify the col definitions in the colgroup below to change the widths of the the columns.
-            The w-* classes will be automatically generated based on the $sizes array which is defined in the scss/_variables.scss
-        -->
-        <colgroup>
-            <col class="w-25">
-            <col class="w-10">
-            <col class="w-25">
-            <col class="w-15">
-            <col class="w-15">
-            <col class="w-10">
-        </colgroup>
-        <thead>
-        <tr>
-            <th scope="col">Naam <i class="icon  icon--eye"></i></th>
-            <th scope="col">Categorie <i class="icon  icon--eye"></i></th>
-            <th scope="col">Context <i class="icon  icon--eye"></i></th>
-            <th scope="col">Gegevens</th>
-            <th scope="col">Geinformeerd</th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
+    @foreach ($taskgroups as $taskgroup => $tasks)
+        <!-- Start of table title component -->
+        <div class="d-flex  align-items-end  mb-3 mt-4">
+            <h2 class="mb-0">{{ $groups[$taskgroup] }}</h2>
+            <p class="mb-0  ml-auto">Velden met een <i class="icon  icon--eye"></i> zijn in de app zichtbaar voor de index</p>
+        </div>
+        <!-- End of table title component -->
 
-        <tbody>
-        @foreach ($case->tasks as $task)
-        <tr>
-            <th scope="row">{{ $task->label }}</th>
-            <td>
-                {{ $task->category }}
-            </td>
-            <td>
-                {{ $task->context }}
-            </td>
-            <td>
-                ...
-            </td>
-            <td>
-                ...
-            </td>
-            <td class="text-center">
-                >
-            </td>
-        </tr>
-        @endforeach
-        </tbody>
+        <!-- Start of table component -->
+        <table class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-hover  table-form  table-ggd">
+            <!--
+                Modify the col definitions in the colgroup below to change the widths of the the columns.
+                The w-* classes will be automatically generated based on the $sizes array which is defined in the scss/_variables.scss
+            -->
+            <colgroup>
+                <col class="w-25">
+                <col class="w-12">
+                <col class="w-30">
+                <col class="w-11">
+                <col class="w-11">
+                <col class="w-5">
+            </colgroup>
+            <thead>
+            <tr>
+                <th scope="col">Naam <i class="icon  icon--eye"></i></th>
+                <th scope="col">Categorie <i class="icon  icon--eye"></i></th>
+                <th scope="col">Context <i class="icon  icon--eye"></i></th>
+                <th scope="col">Gegevens</th>
+                <th scope="col">Geinformeerd</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
 
-    </table>
-    <!-- End of table component -->
+            <tbody>
+            @foreach ($tasks as $task)
+            <tr>
+                <th scope="row">{{ $task->label }}</th>
+                <td>
+                    {{ $task->category }}
+                </td>
+                <td>
+                    {{ $task->taskContext }}
+                </td>
+                <td>
+                    ...
+                </td>
+                <td>
+                    ...
+                </td>
+                <td class="text-center">
+                    >
+                </td>
+            </tr>
+            @endforeach
+            </tbody>
+
+        </table>
+        <!-- End of table component -->
+    @endforeach
 
 </div>
 

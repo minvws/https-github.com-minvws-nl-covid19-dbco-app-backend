@@ -60,7 +60,7 @@
         </div>
         <!-- End of question title component -->
         <!-- TODO DATE PICKER CONFORM DESIGN -->
-        <input type="text" class="form-control" id="dateofsymptomonset" name="dateOfSymptomOnset" value="{{ $case->dateOfSymptomOnset }}">
+        <input type="text" class="form-control" id="dateofsymptomonset" name="dateOfSymptomOnset" value="{{ $case->dateOfSymptomOnset }}" placeholder="Y-m-d graag totdat we een datepicker hebben">
 
         <!-- Start of table title component -->
         <div class="align-items-end  mb-3 mt-5">
@@ -101,6 +101,7 @@
             <tbody>
             <tr>
                 <td>
+                    <input class="form-control" type="hidden" name="tasks[0][uuid]" value="">
                     <label class="sr-only" for="label">Label</label>
                     <input type="text" class="form-control auto-row-clone" id="label" name="tasks[0][label]" value="" placeholder="Voeg contact toe">
                 </td>

@@ -3,17 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\CovidCase;
+use App\Models\Task;
 use App\Repositories\CaseRepository;
+use App\Repositories\TaskRepository;
 use Illuminate\Http\Request;
+use Jenssegers\Date\Date;
 
 
 class CaseController extends Controller
 {
     private CaseRepository $caseRepository;
+    private TaskRepository $taskRepository;
 
-    public function __construct(CaseRepository $caseRepository)
+    public function __construct(CaseRepository $caseRepository, TaskRepository $taskRepository)
     {
         $this->caseRepository = $caseRepository;
+        $this->taskRepository = $taskRepository;
     }
 
     public function newCase()
@@ -40,7 +45,14 @@ class CaseController extends Controller
         $case = $this->caseRepository->getCase($caseUuid);
 
         if ($case != null && $this->verifyCaseAccess($case)) {
-            return view('editcase', ['case' => $case]);
+            $tasks = $this->taskRepository->getTasks($caseUuid);
+
+            $taskgroups = array();
+            foreach ($tasks as $task) {
+                $taskgroups[$task->communication][] = $task;
+            }
+
+            return view('editcase', [ 'case' => $case, 'taskgroups' => $taskgroups ]);
         } else {
             return redirect()->intended('/');
         }
@@ -68,9 +80,32 @@ class CaseController extends Controller
 
             $case->name = $request->input('name');
             $case->caseId = $request->input('caseId');
-            $case->status = 'open';
+            $case->dateOfSymptomOnset = Date::parse($request->input('dateOfSymptomOnset'));
+            $case->status = 'open'; // TODO: only set to open once a pairing code was assigned
 
             $this->caseRepository->updateCase($case);
+
+            foreach ($request->input('tasks') as $rawTask) {
+                if (!empty($rawTask['label'])) { // skip empty auto-added table rows
+                    if (isset($rawTask['uuid'])) {
+                        $task = $this->taskRepository->getTask($rawTask['uuid']);
+                        $task->label = $rawTask['label'];
+                        $task->taskContext = $rawTask['context'];
+                        $task->category = $rawTask['category'];
+                        $task->dateOfLastExposure = Date::parse($rawTask['dateOfLastExposure']);
+                        $task->communication = $rawTask['communication'];
+                        $this->taskRepository->updateTask($task);
+                    } else {
+                        $this->taskRepository->createTask($case->uuid,
+                            $rawTask['label'],
+                            $rawTask['context'],
+                            $rawTask['category'],
+                            Date::parse($rawTask['dateOfLastExposure']),
+                            $rawTask['communication']);
+
+                    }
+                }
+            }
         }
 
         return redirect()->intended('/');
