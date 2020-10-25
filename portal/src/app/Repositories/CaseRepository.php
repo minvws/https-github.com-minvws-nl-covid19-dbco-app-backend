@@ -8,13 +8,13 @@ use Illuminate\Support\Collection;
 interface CaseRepository
 {
     /**
-     * Returns the case and its task list.
+     * Returns the case
      *
-     * @param string $caseId Case identifier.
+     * @param string $caseUuid Case identifier.
      *
      * @return CovidCase The case (or null if not found)
      */
-    public function getCase(string $caseId): ?CovidCase;
+    public function getCase(string $caseUuid): ?CovidCase;
 
     /**
      * Returns all the cases of the current user
