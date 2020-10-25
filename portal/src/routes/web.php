@@ -23,14 +23,19 @@ Route::get('/colofon', function () {
     return view('welcome');
 });
 
-Route::get('/', [CaseController::class, 'listCases'])->middleware('sessionauth');;
+// All pages that are behind auth
+Route::middleware('sessionauth')->group(function() {
+    // Home (case overview)
+    Route::get('/', [CaseController::class, 'listCases']);
 
-Route::get('/case', function () {
-    return view('casedetail');
-})->middleware('sessionauth');
+    // Creating cases
+    Route::get('/newcase', [Casecontroller::class, 'newCase']);
+    Route::get('/newcaseedit/{uuid}', [CaseController::class, 'draftCase']);
+    Route::post('/savecase', [CaseController::class, 'saveCase']);
 
-Route::get('/newcase', [Casecontroller::class, 'newCase'])->middleware('sessionauth');
-Route::get('/newcaseedit/{uuid}', [CaseController::class, 'newCaseEdit'])->middleware('sessionauth');
+    // Editing open cases
+    Route::get('/case/{uuid}', [CaseController::class, 'editCase']);
+});
 
 Route::get('auth/identityhub', [LoginController::class, 'redirectToProvider']);
 Route::get('auth/login', [LoginController::class, 'handleProviderCallback']);
@@ -38,4 +43,3 @@ Route::get('auth/login', [LoginController::class, 'handleProviderCallback']);
 // Temporary development login stub so you can test the portal without ggd account.
 Route::get('auth/stub', [LoginController::class, 'stubAuthenticate']);
 
-Route::post('/savecase', [CaseController::class, 'saveCase'])->middleware('sessionauth');

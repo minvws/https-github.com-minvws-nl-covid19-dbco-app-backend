@@ -24,4 +24,6 @@ class CovidCase
 
     public ?Date $updatedAt;
 
+    public array $tasks = array();
+
 }

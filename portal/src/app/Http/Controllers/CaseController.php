@@ -24,12 +24,23 @@ class CaseController extends Controller
         return redirect()->intended('/newcaseedit/'.$case->uuid);
     }
 
-    public function newCaseEdit($caseUuid)
+    public function draftCase($caseUuid)
     {
         $case = $this->caseRepository->getCase($caseUuid);
 
         if ($case != null && $this->verifyCaseAccess($case)) {
-            return view('newcase', ['case' => $case]);
+            return view('draftcase', ['case' => $case]);
+        } else {
+            return redirect()->intended('/');
+        }
+    }
+
+    public function editCase($caseUuid)
+    {
+        $case = $this->caseRepository->getCase($caseUuid);
+
+        if ($case != null && $this->verifyCaseAccess($case)) {
+            return view('editcase', ['case' => $case]);
         } else {
             return redirect()->intended('/');
         }
@@ -38,6 +49,11 @@ class CaseController extends Controller
     public function listCases()
     {
         $cases = $this->caseRepository->myCases();
+
+        // Enrich dat with some view level helper data
+        foreach ($cases as $case) {
+            $case->editCommand = ($case->status == CovidCase::STATUS_DRAFT ? 'newcaseedit' : 'case');
+        }
 
         return view('caseoverview', ['cases' => $cases]);
     }
