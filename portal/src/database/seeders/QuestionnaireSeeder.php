@@ -33,7 +33,7 @@ class QuestionnaireSeeder extends Seeder
         $questionnaireUuid = (string)Str::uuid();
 
         if (App::environment() == 'development') {
-            // in development fix the questionaire uuid so the dummy date knows
+            // in development we fixate the questionnaire uuid so the dummy data knows
             // what questionnaire to use
             $questionnaireUuid = 'facade01-feed-dead-c0de-defacedc0c0a';
         }
@@ -78,6 +78,19 @@ class QuestionnaireSeeder extends Seeder
                 'label' => 'Contactgegevens',
                 'description' => null,
                 'relevant_for_categories' => QuestionnaireSeeder::ALL_CATEGORIES,
+                'created_at' => $now,
+                'updated_at' => $now
+            ]);
+
+            $questionUuid = (string)Str::uuid();
+            DB::table('question')->insert([
+                'uuid' => $questionUuid,
+                'questionnaire_uuid' => $questionnaireUuid,
+                'group' => 'contactdetails',
+                'question_type' => 'date',
+                'label' => 'Geboortedatum',
+                'description' => null,
+                'relevant_for_categories' => '1',
                 'created_at' => $now,
                 'updated_at' => $now
             ]);
