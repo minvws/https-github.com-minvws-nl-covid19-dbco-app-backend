@@ -20,9 +20,9 @@ class DatabaseSeeder extends Seeder
 
         if (App::environment() == 'development') {
             // In development, also populate some test data
-            //$this->call([
-            //    DummySeeder::class
-            //]);
+            $this->call([
+                DummySeeder::class
+            ]);
         }
     }
 }
