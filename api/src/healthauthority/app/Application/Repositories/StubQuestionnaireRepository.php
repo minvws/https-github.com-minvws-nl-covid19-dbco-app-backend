@@ -83,7 +83,7 @@ class StubQuestionnaireRepository implements QuestionnaireRepository
                                   "<li>70 jaar of ouder</li>".
                                   "<li>Gezondheidsklachten of extra gezondheidsrisico's</li>".
                                   "<li>Woont in een zorginstelling of asielzoekerscentrum (bijvoorbeeld bejaardentehuis)</li>".
-                                  "<li>Spreekt slecht of geen Nederlands</li></ul>".
+                                  "<li>Spreekt slecht of geen Nederlands</li>".
                                   "<li>Werkt in de zorg, onderwijs of een contactberoep (bijvoorbeeld kapper)</li></ul>";
         $question5->relevantForCategories = [Question::CATEGORY_1, Question::CATEGORY_2A, Question::CATEGORY_2B];
         $question5->answerOptions[] = new AnswerOption('Ja, één of meerdere dingen', 'Ja', 'communication_staff');
