@@ -34,9 +34,9 @@
 
     <!-- Start of add button component -->
     <nav class="nav  mb-2">
-        <button type="button" class="btn btn-primary  ml-auto" data-toggle="modal" data-target="#createCaseModal">
+        <a href="/newcase" class="btn  btn-primary  ml-auto">
             Case openen
-        </button>
+        </a>
     </nav>
     <!-- End of add button component -->
 
@@ -73,42 +73,23 @@
                 </colgroup>
                 <thead>
                 <tr>
-                    <th scope="col">Naam index</th>
+                    <th scope="col">Naam</th>
                     <th scope="col">Casenr.</th>
-                    <th scope="col">Bco-er</th>
-                    <th scope="col">Datum test</th>
+                    <th scope="col">Eerste ziektedag</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Laatst bewerkt</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr role="button" class="custom-link" data-href="/case">
-                    <th scope="row">Joris Leker</th>
-                    <td>7593067-BA</td>
-                    <td>Mathijs Groense</td>
-                    <td>Zo 4 okt</td>
-                    <td>51 minuten geleden</td>
-                </tr>
-                <tr>
-                    <th scope="row">Emiel Janson</th>
-                    <td>7593067-BA</td>
-                    <td>Mathijs Groense</td>
-                    <td>Zo 4 okt</td>
-                    <td>11 minuten geleden</td>
-                </tr>
-                <tr role="button" class="custom-link" data-href="/case">
-                    <th scope="row">Lia Bardoel</th>
-                    <td>7593067-BA</td>
-                    <td>Mathijs Groense</td>
-                    <td>ma 5 okt</td>
-                    <td>2 uur geleden</td>
-                </tr>
-                <tr>
-                    <th scope="row">Tobias van Geijn</th>
-                    <td>AMS/C20. 354921</td>
-                    <td>Mathijs Groense</td>
-                    <td>ma 5 okt</td>
-                    <td>7 uur geleden</td>
-                </tr>
+                @foreach($cases as $case)
+                    <tr role="button" class="custom-link clickable-row" data-href="/{{ $case->editCommand }}/{{ $case->uuid }}">
+                        <th scope="row">{{ $case->name }}</th>
+                        <td>{{ $case->caseId }}</td>
+                        <td>{{ $case->dateOfSymptomOnset != NULL ? $case->dateOfSymptomOnset->format('l j M') : '' }}</td>
+                        <td>{{ $case->status }}</td>
+                        <td>{{ $case->updatedAt->diffForHumans() }}</td>
+                    </tr>
+                @endforeach
             </table>
             <!-- End of table component -->
         </div>
@@ -215,7 +196,7 @@
   START OF MODALS
 ---------------------------->
 
-<!-- Start of create case modal -->
+<!-- Start of create case modal (deprecated, replaced by /newcase form) -->
 <div class="modal fade" id="createCaseModal" tabindex="-1" aria-labelledby="createCaseModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -230,18 +211,18 @@
                     <div class="form-group">
                         <label for="name" class="col-form-label">Casenaam</label>
                         <input type="text" class="form-control" id="name" placeholder="Voer casenaam in">
+                        <label for="caseid" class="col-form-label">Case ID</label>
+                        <input type="text" class="form-control" id="caseId" placeholder="Voer casenummer in">
                     </div>
                 </form>
             </div>
             <div class="modal-footer  border-top-0  pt-0">
-                <button type="button" class="btn btn-primary  mr-auto">Case toevoegen</button>
+                <button type="button" class="btn btn-primary  mr-auto" data-dismiss="modal">Case toevoegen</button>
             </div>
         </div>
     </div>
 </div>
 <!-- End of create case modal -->
 
-
-<!-- Bootstrap core JavaScript -->
 </body>
 </html>
