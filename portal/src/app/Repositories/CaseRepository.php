@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\BCOUser;
 use App\Models\CovidCase;
 use Illuminate\Support\Collection;
 
@@ -17,17 +18,17 @@ interface CaseRepository
     public function getCase(string $caseUuid): ?CovidCase;
 
     /**
-     * Returns all the cases of the current user
+     * Returns all the cases of a user
      * @return Collection
      */
-    public function myCases(): Collection;
+    public function getCasesByUser(BCOUser $user): Collection;
 
     /**
-     * Create a new, empty case in draft status.
+     * Create a new, empty case
      *
      * @return CovidCase
      */
-    public function createDraftCase(): CovidCase;
+    public function createCase(BCOUser $owner, string $initialStatus): CovidCase;
 
     /**
      * Update case.
@@ -36,9 +37,4 @@ interface CaseRepository
      */
     public function updateCase(CovidCase $case);
 
-    /**
-     * @param CovidCase $case
-     * @return bool True if the currently logged in user is the owner of this case.
-     */
-    public function isOwner(CovidCase $case): bool;
 }

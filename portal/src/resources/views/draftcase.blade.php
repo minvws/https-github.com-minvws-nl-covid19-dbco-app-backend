@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>GGD BCO portaal - Case detail</title>
 
     <!-- Stylesheet -->
@@ -16,7 +17,7 @@
 <div class="container-xl questionform">
     <form action="/savecase" method="POST">
         @csrf
-        <input type="hidden" name="uuid" value="{{ $case->uuid }}">
+        <input type="hidden" id="caseUuid" name="caseUuid" value="{{ $case->uuid }}">
 
         <!-- Start of navbar component -->
         <nav class="navbar  navbar-expand-lg  navbar-light  bg-transparent  pl-0  pr-0  w-100">
@@ -69,8 +70,8 @@
         </div>
         <!-- End of table title component -->
         <p>
-            <button class="button" type="button" onClick="$('#taskTable').show();">Ja</button>
-            <button class="button" type="button" onClick="$('#taskTable').hide();">Nee</button>
+            <button class="btn-outline-primary" type="button" onClick="$('#taskTable').show();">Ja</button>
+            <button class="btn-outline-primary" type="button" onClick="$('#taskTable').hide();">Nee</button>
         </p>
         <!-- Start of table component -->
         <table id="taskTable" class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-hover  table-form  table-ggd">
@@ -99,52 +100,11 @@
             </thead>
 
             <tbody>
-            <tr>
-                <td>
-                    <input class="form-control" type="hidden" name="tasks[0][uuid]" value="">
-                    <label class="sr-only" for="label">Label</label>
-                    <input type="text" class="form-control auto-row-clone" id="label" name="tasks[0][label]" value="" placeholder="Voeg contact toe">
-                </td>
-                <td>
-                    <label class="sr-only" for="context1">Context</label>
-                    <input type="text" class="form-control" id="context1" name="tasks[0][context]" value="" placeholder="Bijv. collega of trainer">
-                </td>
-                <td>
-                    <label class='sr-only' for="categorie1">Categorie</label>
-                    <select class="form-control" id="category1" name="tasks[0][category]">
-                        <option disabled selected>Selecteer</option>
-                        <option>1</option>
-                        <option>2a</option>
-                        <option>2b</option>
-                        <option>3</option>
-                    </select>
-                </td>
-                <td>
-                    <label class="sr-only" for="date1">Laatste contact</label>
-                    <select class="form-control" id="lastcontact1" name="tasks[0][dateOfLastExposure]">
-                        <option disabled selected>Selecteer</option>
-                        @for ($i = 0; $i < 14; $i++)
-                            <?php
-                            $date = Date::parse("-$i days")->format("Y-m-d");
-                            $label = Date::parse("-$i days")->format('l j M');
-                            ?>
-                            <option value="{{ $date }}">{{ $label }}</option>
-                        @endfor
-                    </select>
-                </td>
-                <td>
-                    <label class='sr-only' for="informeren1">Wie informeert</label>
-                    <select class="form-control" id="informeren1" name="tasks[0][communication]">
-                        <option disabled selected>Selecteer</option>
-                        <option value="ggd">GGD</option>
-                        <option value="index">Index</option>
-                    </select>
-                </td>
-                <td class="text-center">
-                    <button class="btn"><i class="icon  icon--delete  icon--m0"></i></button>
-                </td>
-            </tr>
-
+            <?php $row=0; ?>
+                @foreach ($tasks as $task)
+                    @include ('draftcase_row')
+                    <?php $row++; ?>
+                @endforeach
             </tbody>
 
         </table>
@@ -163,12 +123,12 @@
             <p class="mt-2 mb-0  ml-auto">Met deze code heeft de index toegang tot de contacten uit de aanleverlijst.</p>
         </div>
         <!-- End of table title component -->
-        <div class="pairingcode">
-            <span>TODO pairingcode</span>
+        <div class=" mb-3">
+            <button type="button" class="pairingcode btn btn-light">&#128274; Genereer koppelcode</button>
         </div>
 
         <div class="btn-group">
-            <input type="submit" class="btn btn-primary" value="Case aanmaken" />
+            <input type="submit" class="btn btn-primary" value="Case opslaan" />
         </div>
 
     </form>
