@@ -25,4 +25,5 @@ class Task
     public string $communication;
 
     public bool $informedByIndex;
+
 }
