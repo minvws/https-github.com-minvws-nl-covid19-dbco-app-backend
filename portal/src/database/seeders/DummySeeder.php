@@ -115,8 +115,9 @@ class DummySeeder extends Seeder
             'date_of_last_exposure' => date('Y-m-d'),
             'communication' => 'ggd',
             'informed_by_index' => false,
+            'questionnaire_uuid' => $questionnaireUuid,
             'created_at' => $now,
-            'updated_at' => $now
+            'updated_at' => $now,
         ],[
             'uuid' => $taskUuidLois,
             'case_uuid' => $caseUuid,
@@ -128,6 +129,7 @@ class DummySeeder extends Seeder
             'date_of_last_exposure' => date('Y-m-d'),
             'communication' => 'ggd',
             'informed_by_index' => false,
+            'questionnaire_uuid' => $questionnaireUuid,
             'created_at' => $now,
             'updated_at' => $now
         ]]);
