@@ -4,39 +4,38 @@ namespace App\Http\Controllers;
 
 use App\Models\CovidCase;
 use App\Models\Task;
-use App\Repositories\CaseRepository;
-use App\Repositories\TaskRepository;
+use App\Services\CaseService;
+use App\Services\PairingService;
 use Illuminate\Http\Request;
 use Jenssegers\Date\Date;
 
 
 class CaseController extends Controller
 {
-    private CaseRepository $caseRepository;
-    private TaskRepository $taskRepository;
+    private CaseService $caseService;
+    private PairingService $pairingService;
 
-    public function __construct(CaseRepository $caseRepository, TaskRepository $taskRepository)
+    public function __construct(CaseService $caseService, PairingService $pairingService)
     {
-        $this->caseRepository = $caseRepository;
-        $this->taskRepository = $taskRepository;
+        $this->caseService = $caseService;
+        $this->pairingService = $pairingService;
     }
 
     public function newCase()
     {
         // Because we want to show the new case immediately, we create a draft case.
-        $case = $this->caseRepository->createDraftCase();
+        $case = $this->caseService->createDraftCase();
 
         return redirect()->intended('/newcaseedit/'.$case->uuid);
     }
 
     public function draftCase($caseUuid)
     {
-        $case = $this->caseRepository->getCase($caseUuid);
+        $case = $this->caseService->getCase($caseUuid);
 
-        if ($case != null && $this->verifyCaseAccess($case)) {
-            $tasks = $this->taskRepository->getTasks($caseUuid);
-            $tasks[] = new Task(); // one empty placeholder
-            return view('draftcase', ['case' => $case, 'tasks' => $tasks]);
+        if ($case != null && $this->caseService->canAccess($case)) {
+            $case->tasks[] = new Task(); // one empty placeholder
+            return view('draftcase', ['case' => $case, 'tasks' => $case->tasks]);
         } else {
             return redirect()->intended('/');
         }
@@ -44,13 +43,12 @@ class CaseController extends Controller
 
     public function editCase($caseUuid)
     {
-        $case = $this->caseRepository->getCase($caseUuid);
+        $case = $this->caseService->getCase($caseUuid);
 
-        if ($case != null && $this->verifyCaseAccess($case)) {
-            $tasks = $this->taskRepository->getTasks($caseUuid);
+        if ($case != null && $this->caseService->canAccess($case)) {
 
             $taskgroups = array();
-            foreach ($tasks as $task) {
+            foreach ($case->tasks as $task) {
                 $taskgroups[$task->communication][] = $task;
             }
 
@@ -62,7 +60,7 @@ class CaseController extends Controller
 
     public function listCases()
     {
-        $cases = $this->caseRepository->myCases();
+        $cases = $this->caseService->myCases();
 
         // Enrich dat with some view level helper data
         foreach ($cases as $case) {
@@ -74,38 +72,22 @@ class CaseController extends Controller
 
     public function saveCase(Request $request)
     {
-        $uuid = $request->input('uuid');
+        $caseUuid = $request->input('caseUuid');
 
-        $case = $this->caseRepository->getCase($uuid);
+        $case = $this->caseService->getCase($caseUuid);
 
-        if ($case != null && $this->verifyCaseAccess($case)) {
+        if ($case != null && $this->caseService->canAccess($case)) {
 
             $case->name = $request->input('name');
             $case->caseId = $request->input('caseId');
             $case->dateOfSymptomOnset = Date::parse($request->input('dateOfSymptomOnset'));
             $case->status = 'open'; // TODO: only set to open once a pairing code was assigned
 
-            $this->caseRepository->updateCase($case);
+            $this->caseService->updateCase($case);
 
             foreach ($request->input('tasks') as $rawTask) {
                 if (!empty($rawTask['label'])) { // skip empty auto-added table rows
-                    if (isset($rawTask['uuid'])) {
-                        $task = $this->taskRepository->getTask($rawTask['uuid']);
-                        $task->label = $rawTask['label'];
-                        $task->taskContext = $rawTask['context'];
-                        $task->category = $rawTask['category'];
-                        $task->dateOfLastExposure = Date::parse($rawTask['dateOfLastExposure']);
-                        $task->communication = $rawTask['communication'];
-                        $this->taskRepository->updateTask($task);
-                    } else {
-                        $this->taskRepository->createTask($case->uuid,
-                            $rawTask['label'],
-                            $rawTask['context'],
-                            $rawTask['category'],
-                            Date::parse($rawTask['dateOfLastExposure']),
-                            $rawTask['communication']);
-
-                    }
+                    $this->caseService->createOrUpdateTask($caseUuid, $rawTask);
                 }
             }
         }
@@ -114,14 +96,15 @@ class CaseController extends Controller
 
     }
 
-    /**
-     * Check if the current user has access to a case
-     * @param $case The case to check
-     * @return bool True if access is ok
-     */
-    private function verifyCaseAccess($case)
+    public function initPairing($caseUuid)
     {
-        // Todo: in the future we might want to have people edit each other's cases
-        return $this->caseRepository->isOwner($case);
+        $case = $this->caseService->getCase($caseUuid);
+        if ($this->caseService->canAccess($case)) {
+            $pairingCode = $this->pairingService->getPairingCodeForCase($caseUuid);
+            return response()->json(['pairingCode' => $pairingCode]);
+        }
+        return response()->json(['pairingCode' => null]);
     }
+
+
 }

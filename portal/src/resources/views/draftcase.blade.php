@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>GGD BCO portaal - Case detail</title>
 
     <!-- Stylesheet -->
@@ -16,7 +17,7 @@
 <div class="container-xl questionform">
     <form action="/savecase" method="POST">
         @csrf
-        <input type="hidden" name="uuid" value="{{ $case->uuid }}">
+        <input type="hidden" id="caseUuid" name="caseUuid" value="{{ $case->uuid }}">
 
         <!-- Start of navbar component -->
         <nav class="navbar  navbar-expand-lg  navbar-light  bg-transparent  pl-0  pr-0  w-100">
@@ -122,8 +123,8 @@
             <p class="mt-2 mb-0  ml-auto">Met deze code heeft de index toegang tot de contacten uit de aanleverlijst.</p>
         </div>
         <!-- End of table title component -->
-        <div class="pairingcode mb-3">
-            <button type="button" class="btn btn-light">&#128274; Genereer koppelcode</button>
+        <div class=" mb-3">
+            <button type="button" class="pairingcode btn btn-light">&#128274; Genereer koppelcode</button>
         </div>
 
         <div class="btn-group">
