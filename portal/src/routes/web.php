@@ -35,6 +35,9 @@ Route::middleware('sessionauth')->group(function() {
 
     // Editing open cases
     Route::get('/case/{uuid}', [CaseController::class, 'editCase']);
+
+    // Create a pairing code
+    Route::post('/pairing/{caseUuid}', [CaseController::class, 'initPairing']);
 });
 
 Route::get('auth/identityhub', [LoginController::class, 'redirectToProvider']);

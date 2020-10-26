@@ -3,12 +3,21 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\BCOUser;
+use App\Services\AuthenticationService;
 use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
 
 class LoginController extends Controller
 {
+    private AuthenticationService $authService;
+
+    public function __construct(AuthenticationService $authService)
+    {
+        $this->authService = $authService;
+    }
+
     /**
      * Redirect the user to the IdentityHub authentication page.
      *
@@ -26,21 +35,23 @@ class LoginController extends Controller
      */
     public function handleProviderCallback()
     {
-        $user = Socialite::driver('identityhub')->user();
+        $socialiteUser = Socialite::driver('identityhub')->user();
+        $user = new BCOUser();
+        $user->id = $socialiteUser->getId();
+        $user->name = $socialiteUser->getName();
 
-        Session::put('user', $user);
+        $this->authService->setAuthenticatedUser($user);
 
         return redirect()->intended('/');
     }
 
     public function stubAuthenticate()
     {
-        $user = new \stdClass();
+        $user = new BCOUser();
         $user->id = 0;
-        $user->nickname = 'stub';
-        $user->name = 'Stub User';
+        $user->name = 'Dummy User';
 
-        Session::put('user', $user);
+        $this->authService->setAuthenticatedUser($user);
 
         return redirect()->intended('/');
     }

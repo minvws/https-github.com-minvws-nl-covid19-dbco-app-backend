@@ -2,10 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Models\BCOUser;
 use App\Models\Eloquent\EloquentCase;
 use App\Models\CovidCase;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Session;
 use Jenssegers\Date\Date;
 
 class DbCaseRepository implements CaseRepository
@@ -30,13 +30,11 @@ class DbCaseRepository implements CaseRepository
     }
 
     /**
-     * Returns all the cases of the current user
+     * Returns all the cases of a specicic user
      * @return Collection
      */
-    public function myCases(): Collection
+    public function getCasesByUser(BCOUser $user): Collection
     {
-        $user = Session::get('user');
-
         $dbCases = EloquentCase::where('owner', $user->id)->orderBy('updated_at', 'desc')->get();
 
         $cases = array();
@@ -49,19 +47,16 @@ class DbCaseRepository implements CaseRepository
     }
 
     /**
-     * Create a new, empty case in draft status.
+     * Create a new, empty case.
      *
      * @return CovidCase
      */
-    public function createDraftCase(): CovidCase
+    public function createCase(BCOUser $owner, string $initialStatus): CovidCase
     {
         $dbCase = new EloquentCase();
 
-        // TODO: this isn't strictly 'db case specific', where should this go? abstract case repository?
-        $user = Session::get('user');
-        $dbCase->owner = $user->id;
-
-        $dbCase->status = CovidCase::STATUS_DRAFT;
+        $dbCase->owner = $owner->id;
+        $dbCase->status = $initialStatus;
 
         $dbCase->save();
         return $this->caseFromEloquentModel($dbCase);
@@ -98,14 +93,4 @@ class DbCaseRepository implements CaseRepository
         return $case;
     }
 
-    /**
-     * @param CovidCase $case
-     * @return bool True if the currently logged in user is the owner of this case.
-     */
-    public function isOwner(CovidCase $case): bool
-    {
-        // TODO: this isn't strictly 'db case specific', where should this go? abstract case repository?
-        $user = Session::get('user');
-        return $user->id == $case->owner;
-    }
 }
