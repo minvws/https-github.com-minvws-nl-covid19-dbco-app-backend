@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,16 +23,23 @@ Route::get('/colofon', function () {
     return view('welcome');
 });
 
-Route::get('/', function () {
-    return view('caseoverview');
-})->middleware('sessionauth');;
+// All pages that are behind auth
+Route::middleware('sessionauth')->group(function() {
+    // Home (case overview)
+    Route::get('/', [CaseController::class, 'listCases']);
 
-Route::get('/case', function () {
-    return view('casedetail');
-})->middleware('sessionauth');
+    // Creating cases
+    Route::get('/newcase', [Casecontroller::class, 'newCase']);
+    Route::get('/newcaseedit/{uuid}', [CaseController::class, 'draftCase']);
+    Route::post('/savecase', [CaseController::class, 'saveCase']);
+
+    // Editing open cases
+    Route::get('/case/{uuid}', [CaseController::class, 'editCase']);
+});
 
 Route::get('auth/identityhub', [LoginController::class, 'redirectToProvider']);
 Route::get('auth/login', [LoginController::class, 'handleProviderCallback']);
 
 // Temporary development login stub so you can test the portal without ggd account.
 Route::get('auth/stub', [LoginController::class, 'stubAuthenticate']);
+
