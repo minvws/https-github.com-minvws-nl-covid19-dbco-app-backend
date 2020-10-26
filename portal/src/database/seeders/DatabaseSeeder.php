@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\App;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,5 +17,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             QuestionnaireSeeder::class,
         ]);
+
+        if (App::environment() == 'development') {
+            // In development, also populate some test data
+            //$this->call([
+            //    DummySeeder::class
+            //]);
+        }
     }
 }
