@@ -91,7 +91,7 @@ services:
             APP_ENV: development
             APP_URL: ${PORTAL_APP_URL}
             APP_KEY: ${PORTAL_APP_KEY}
-            DEBUG: ${DEBUG:-0}
+            APP_DEBUG: ${DEBUG:-0}
             DB_CONNECTION: oracle
             DB_HOST: oracle
             DB_DATABASE: portal
@@ -101,6 +101,8 @@ services:
             TIH_CLIENT_ID: ${PORTAL_TIH_CLIENT_ID}
             TIH_CLIENT_SECRET: ${PORTAL_TIH_CLIENT_SECRET}
             TIH_REDIRECT_URL: ${PORTAL_TIH_REDIRECT_URL}
+            PRIVATE_API_BASE_URI: http://private_api/v1/
+            PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
         ports:
             - ${PORTAL_PORT:-8084}:80
         volumes:

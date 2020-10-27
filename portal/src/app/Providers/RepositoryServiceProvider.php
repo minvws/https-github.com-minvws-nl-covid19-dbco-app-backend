@@ -15,6 +15,7 @@ use App\Repositories\QuestionRepository;
 use App\Repositories\TaskRepository;
 use App\Repositories\DbTaskRepository;
 use Illuminate\Support\ServiceProvider;
+use GuzzleHttp\Client as GuzzleClient;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -31,6 +32,14 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(QuestionnaireRepository::class, DbQuestionnaireRepository::class);
         $this->app->bind(AnswerRepository::class, DbAnswerRepository::class);
         $this->app->bind(QuestionRepository::class, DbQuestionRepository::class);
+
+        $this->app->when(ApiPairingRepository::class)
+                  ->needs(GuzzleClient::class)
+                  ->give(fn () => new GuzzleClient(config('services.private_api.client_options')));
+
+        $this->app->when(ApiPairingRepository::class)
+            ->needs('$jwtSecret')
+            ->give(fn () => config('services.private_api.jwt_secret'));
     }
 
 }
