@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\CovidCase;
 use App\Models\Task;
 use App\Services\CaseService;
-use App\Services\PairingService;
 use App\Services\QuestionnaireService;
 use Illuminate\Http\Request;
 use Jenssegers\Date\Date;
@@ -14,15 +13,12 @@ use Jenssegers\Date\Date;
 class CaseController extends Controller
 {
     private CaseService $caseService;
-    private PairingService $pairingService;
     private QuestionnaireService $questionnaireService;
 
     public function __construct(CaseService $caseService,
-                                PairingService $pairingService,
                                 QuestionnaireService $questionnaireService)
     {
         $this->caseService = $caseService;
-        $this->pairingService = $pairingService;
         $this->questionnaireService = $questionnaireService;
     }
 
@@ -31,7 +27,7 @@ class CaseController extends Controller
         // Because we want to show the new case immediately, we create a draft case.
         $case = $this->caseService->createDraftCase();
 
-        return redirect()->intended('/newcaseedit/'.$case->uuid);
+        return redirect()->intended('/newcaseedit/' . $case->uuid);
     }
 
     public function draftCase($caseUuid)
@@ -57,7 +53,7 @@ class CaseController extends Controller
                 $taskgroups[$task->communication][] = $task;
             }
 
-            return view('editcase', [ 'case' => $case, 'taskgroups' => $taskgroups ]);
+            return view('editcase', ['case' => $case, 'taskgroups' => $taskgroups]);
         } else {
             return redirect()->intended('/');
         }
@@ -113,15 +109,16 @@ class CaseController extends Controller
 
     }
 
+    /**
+     * Start pairing process.
+     *
+     * @param $caseUuid
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function initPairing($caseUuid)
     {
-        $case = $this->caseService->getCase($caseUuid);
-        if ($this->caseService->canAccess($case)) {
-            $pairingCode = $this->pairingService->getPairingCodeForCase($caseUuid);
-            return response()->json(['pairingCode' => $pairingCode]);
-        }
-        return response()->json(['pairingCode' => null]);
+        $pairingCode = $this->caseService->createPairingCodeForCase($caseUuid);
+        return response()->json(['pairingCode' => $pairingCode]);
     }
-
-
 }
