@@ -117,18 +117,8 @@
         </div>
         <!-- End of table title component -->
 
-        <!-- Start of table title component -->
-        <div class="align-items-end  mb-3 mt-5">
-            <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Deel de code met de index</h3>
-            <p class="mt-2 mb-0  ml-auto">Met deze code heeft de index toegang tot de contacten uit de aanleverlijst.</p>
-        </div>
-        <!-- End of table title component -->
-        <div class=" mb-3">
-            <button type="button" class="pairingcode btn btn-light">&#128274; Genereer koppelcode</button>
-        </div>
-
         <div class="btn-group">
-            <input type="submit" class="btn btn-primary" value="Case opslaan" />
+            <input type="submit" class="btn btn-primary" value="Case openen" />
         </div>
 
     </form>

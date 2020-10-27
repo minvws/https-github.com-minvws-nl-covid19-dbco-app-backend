@@ -110,6 +110,12 @@ class CaseService
         $this->caseRepository->updateCase($case);
     }
 
+    public function openCase(CovidCase $case)
+    {
+        $case->status = CovidCase::STATUS_OPEN;
+        $this->updateCase($case);
+    }
+
     public function createOrUpdateTask($caseUuid, $taskFormValues)
     {
         if (isset($taskFormValues['uuid'])) {
