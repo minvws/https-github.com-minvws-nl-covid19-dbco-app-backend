@@ -48,7 +48,7 @@
     <div class="btn-group">
         <a href="/" class="btn btn-primary">Terug naar case overzicht</a>
     </div>
-    
+
 </div>
 
 <!-- Bootstrap core JavaScript -->
