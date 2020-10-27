@@ -7,7 +7,11 @@ use Illuminate\Support\Facades\Session;
 
 class AuthenticationService
 {
-    public function getAuthenticatedUser(): BCOUser
+    /**
+     * Returns the currently logged in user, or null if not logged in.
+     * @return BCOUser|null
+     */
+    public function getAuthenticatedUser(): ?BCOUser
     {
         return Session::get('user');
     }
