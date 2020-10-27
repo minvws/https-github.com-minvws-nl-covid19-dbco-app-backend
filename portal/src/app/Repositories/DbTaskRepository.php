@@ -104,6 +104,7 @@ class DbTaskRepository implements TaskRepository
         $task->source = $dbTask->source;
         $task->taskContext = $dbTask->task_context;
         $task->taskType = $dbTask->task_type;
+        $task->questionnaireUuid = $dbTask->questionnaire_uuid;
 
         return $task;
     }

@@ -29,10 +29,12 @@ class CaseService
         return $this->caseRepository->createCase($owner, CovidCase::STATUS_DRAFT);
     }
 
-    public function getCase($caseUuid): CovidCase
+    public function getCase($caseUuid): ?CovidCase
     {
         $case = $this->caseRepository->getCase($caseUuid);
-        $case->tasks = $this->taskRepository->getTasks($caseUuid)->all();
+        if ($case) {
+            $case->tasks = $this->taskRepository->getTasks($caseUuid)->all();
+        }
         return $case;
     }
 
