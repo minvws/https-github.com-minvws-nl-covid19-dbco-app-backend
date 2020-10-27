@@ -31,8 +31,12 @@ class QuestionnaireService
         // Hypothetically each task could've used a different questionnaire (once we have
         // more than one taks type). For now this isn't supported and we assume all tasks have
         // used the same questionnaire.
-        $questions = $this->questionRepository->getQuestions($tasks->first()->questionnaireUuid);
-
+        $task = $tasks->first();
+        $questions = [];
+        if ($task->questionnaireUuid) {
+            // Do we have filled out questions?
+            $questions = $this->questionRepository->getQuestions($task->questionnaireUuid);
+        }
         $questionTypeByQuestionUuid = [];
 
         $headers = [
