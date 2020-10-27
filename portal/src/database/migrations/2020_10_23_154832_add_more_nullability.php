@@ -34,14 +34,6 @@ class AddMoreNullability extends Migration
      */
     public function down()
     {
-        Schema::table('case', function (Blueprint $table) {
-            $table->dropColumn('name');
-            $table->dropColumn('case_id');
-        });
-
-        Schema::table('case', function (Blueprint $table) {
-            $table->string('name');
-            $table->string('case_id');
-        });
+        // Can't add non-nullable columns if db is not empty. Keep 'm nullable
     }
 }
