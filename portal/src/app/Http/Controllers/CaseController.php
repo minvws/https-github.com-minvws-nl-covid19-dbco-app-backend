@@ -105,7 +105,7 @@ class CaseController extends Controller
             }
         }
 
-        return redirect()->intended('/');
+        return redirect()->intended('/paircase/' . $caseUuid);
 
     }
 
@@ -113,12 +113,21 @@ class CaseController extends Controller
      * Start pairing process.
      *
      * @param $caseUuid
-     *
-     * @return \Illuminate\Http\JsonResponse
+
      */
-    public function initPairing($caseUuid)
+    public function pairCase($caseUuid)
     {
-        $pairingCode = $this->caseService->createPairingCodeForCase($caseUuid);
-        return response()->json(['pairingCode' => $pairingCode]);
+        $case = $this->caseService->getCase($caseUuid);
+
+        if ($case != null && $this->caseService->canAccess($case)) {
+
+            $pairingCode = $this->caseService->createPairingCodeForCase($caseUuid);
+
+            // When we show the pairingcode, we mark the case as 'open'.
+            $this->caseService->openCase($case);
+
+            return view('paircase', ['case' => $case, 'pairingCode' => $pairingCode]);
+        }
+        return redirect()->intended('/');
     }
 }

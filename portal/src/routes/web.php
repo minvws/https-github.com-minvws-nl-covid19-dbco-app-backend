@@ -37,7 +37,7 @@ Route::middleware('sessionauth')->group(function() {
     Route::get('/case/{uuid}', [CaseController::class, 'editCase']);
 
     // Create a pairing code
-    Route::post('/pairing/{caseUuid}', [CaseController::class, 'initPairing']);
+    Route::get('/paircase/{caseUuid}', [CaseController::class, 'pairCase']);
 
     // Dump data for export to HPZone
     Route::get('/dumpcase/{uuid}', [CaseController::class, 'dumpCase']);
