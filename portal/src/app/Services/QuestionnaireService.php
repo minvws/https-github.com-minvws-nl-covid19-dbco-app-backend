@@ -76,7 +76,7 @@ class QuestionnaireService
                 'task.label' => $task->label,
                 'task.source' => $task->source,
                 'task.context' => $task->taskContext,
-                'task.dateoflastexposure' => Date::parse($task->dateOfLastExposure)->format("Y-m-d"),
+                'task.dateoflastexposure' => $task->dateOfLastExposure != null ? Date::parse($task->dateOfLastExposure)->format("Y-m-d"): '',
                 'task.communication' => $task->communication
             ];
 
