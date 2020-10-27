@@ -2,14 +2,20 @@
 
 namespace App\Http\Middleware;
 
-use App\Providers\RouteServiceProvider;
+use App\Services\AuthenticationService;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
+
 
 class SessionAuth
 {
+    private AuthenticationService $authenticationService;
+
+    public function __construct(AuthenticationService $authenticationService)
+    {
+        $this->authenticationService = $authenticationService;
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -20,8 +26,8 @@ class SessionAuth
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {
-        $user = Session::get('user');
-        if (!isset($user)) {
+        $user = $this->authenticationService->getAuthenticatedUser();
+        if (!$user) {
             return redirect('login');
         }
 
