@@ -26,4 +26,9 @@ class Task
 
     public bool $informedByIndex;
 
+    public ?array $answers;
+
+    // Filled upon submit, indicates which questionnaire the user filled
+    public ?string $questionnaireUuid;
+
 }

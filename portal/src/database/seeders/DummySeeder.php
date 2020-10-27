@@ -142,6 +142,8 @@ class DummySeeder extends Seeder
                 $contactQuestionUuid = (string)$question->uuid;
             } else if ($question->question_type == 'classificationdetails') {
                 $classificationQuestionUuid = (string)$question->uuid;
+            } else if ($question->label == 'Geboortedatum') {
+                $birthdateQuestionUuid = (string)$question->uuid;
             }
         }
 
@@ -185,6 +187,22 @@ class DummySeeder extends Seeder
             'ctd_lastname' => 'Lane',
             'ctd_email' => 'lane.lois@dailyplanet.dc',
             'ctd_phonenumber' => '06987654321',
+            'created_at' => $now,
+            'updated_at' => $now
+        ]]);
+
+        DB::table('answer')->insert([[
+            'uuid' => (string)Str::uuid(),
+            'task_uuid' => $taskUuidLois,
+            'question_uuid' => $birthdateQuestionUuid,
+            'spv_value' => Date('1976-10-12'),
+            'created_at' => $now,
+            'updated_at' => $now
+        ],[
+            'uuid' => (string)Str::uuid(),
+            'task_uuid' => $taskUuidLex,
+            'question_uuid' => $birthdateQuestionUuid,
+            'spv_value' => Date('1970-10-11'),
             'created_at' => $now,
             'updated_at' => $now
         ]]);

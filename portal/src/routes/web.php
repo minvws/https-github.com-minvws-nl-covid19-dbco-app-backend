@@ -38,6 +38,9 @@ Route::middleware('sessionauth')->group(function() {
 
     // Create a pairing code
     Route::post('/pairing/{caseUuid}', [CaseController::class, 'initPairing']);
+
+    // Dump data for export to HPZone
+    Route::get('/dumpcase/{uuid}', [CaseController::class, 'dumpCase']);
 });
 
 Route::get('auth/identityhub', [LoginController::class, 'redirectToProvider']);
