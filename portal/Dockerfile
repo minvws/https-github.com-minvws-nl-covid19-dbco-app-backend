@@ -33,9 +33,8 @@ RUN a2enmod rewrite && \
 
 # Install Composer and prestissimo globally for increased performance
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
-    composer self-update && \
-    composer global require hirak/prestissimo 
-    
+    composer self-update
+
 # Copy assets and sources
 COPY assets/default.conf /etc/apache2/sites-available/000-default.conf
 COPY assets/entrypoint.sh /entrypoint.sh
