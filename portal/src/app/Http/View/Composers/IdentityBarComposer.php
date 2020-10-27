@@ -2,11 +2,18 @@
 
 namespace App\Http\View\Composers;
 
-use Illuminate\Support\Facades\Session;
+use App\Services\AuthenticationService;
 use Illuminate\View\View;
 
 class IdentityBarComposer
 {
+    private AuthenticationService $authenticationService;
+
+    public function __construct(AuthenticationService $authenticationService)
+    {
+        $this->authenticationService = $authenticationService;
+    }
+
     /**
      * Bind data to the view.
      *
@@ -15,7 +22,7 @@ class IdentityBarComposer
      */
     public function compose(View $view)
     {
-        $user = Session::get('user');
+        $user = $this->authenticationService->getAuthenticatedUser();
         $view->with('userName', $user->name);
     }
 }

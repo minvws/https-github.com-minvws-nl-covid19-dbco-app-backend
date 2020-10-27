@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CovidCase;
 use App\Models\Task;
 use App\Services\CaseService;
+use App\Services\QuestionnaireService;
 use Illuminate\Http\Request;
 use Jenssegers\Date\Date;
 
@@ -12,10 +13,13 @@ use Jenssegers\Date\Date;
 class CaseController extends Controller
 {
     private CaseService $caseService;
+    private QuestionnaireService $questionnaireService;
 
-    public function __construct(CaseService $caseService)
+    public function __construct(CaseService $caseService,
+                                QuestionnaireService $questionnaireService)
     {
         $this->caseService = $caseService;
+        $this->questionnaireService = $questionnaireService;
     }
 
     public function newCase()
@@ -55,11 +59,23 @@ class CaseController extends Controller
         }
     }
 
+    public function dumpCase($caseUuid)
+    {
+        $case = $this->caseService->getCase($caseUuid);
+
+        if ($case != null && $this->caseService->canAccess($case)) {
+            $tasks = $this->questionnaireService->getRobotFriendlyTaskExport($caseUuid);
+            return view('dumpcase', [ 'case' => $case, 'headers' => $tasks['headers'], 'taskcategories' => $tasks['categories'] ]);
+        } else {
+            return redirect()->intended('/');
+        }
+    }
+
     public function listCases()
     {
         $cases = $this->caseService->myCases();
 
-        // Enrich dat with some view level helper data
+        // Enrich data with some view level helper data
         foreach ($cases as $case) {
             $case->editCommand = ($case->status == CovidCase::STATUS_DRAFT ? 'newcaseedit' : 'case');
         }

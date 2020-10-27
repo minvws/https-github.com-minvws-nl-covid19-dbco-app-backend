@@ -23,7 +23,11 @@ class DbCaseRepository implements CaseRepository
         return $dbCase != null ? $this->caseFromEloquentModel($dbCase): null;
     }
 
-    private function getCaseFromDb(string $caseUuid): EloquentCase
+    /**
+     * @param string $caseUuid
+     * @return EloquentCase|null
+     */
+    private function getCaseFromDb(string $caseUuid): ?EloquentCase
     {
         $cases = EloquentCase::where('uuid', $caseUuid)->get();
         return $cases->first();

@@ -80,10 +80,12 @@ class CaseService
         return implode('-', str_split($code, 3));
     }
 
-    public function getCase($caseUuid): CovidCase
+    public function getCase($caseUuid): ?CovidCase
     {
         $case = $this->caseRepository->getCase($caseUuid);
-        $case->tasks = $this->taskRepository->getTasks($caseUuid)->all();
+        if ($case) {
+            $case->tasks = $this->taskRepository->getTasks($caseUuid)->all();
+        }
         return $case;
     }
 

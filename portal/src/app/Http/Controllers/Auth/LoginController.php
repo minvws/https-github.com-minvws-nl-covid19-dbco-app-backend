@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\BCOUser;
 use App\Services\AuthenticationService;
-use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
-use Laravel\Socialite\Two\User;
 
 class LoginController extends Controller
 {

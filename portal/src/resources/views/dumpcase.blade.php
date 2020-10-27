@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GGD BCO portaal - Case detail</title>
+    <title>GGD BCO portaal - Case export</title>
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
@@ -11,12 +11,13 @@
 </head>
 <body>
 
+<!-- todo make something here that is horitontally scrollable -->
 <div class="container-xl">
 
     <!-- Start of navbar component -->
     <nav class="navbar  navbar-expand-lg  navbar-light  bg-transparent  pl-0  pr-0  w-100">
-        <a href="/" class="btn  btn-light  rounded-pill">
-            <i class="icon  icon--arrow-left  icon--m0"></i> Terug naar Cases
+        <a href="/case/{{ $case->uuid }}" class="btn  btn-light  rounded-pill">
+            <i class="icon  icon--arrow-left  icon--m0"></i> Terug naar case
         </a>
 
         <button class="navbar-toggler  ml-auto  bg-white"
@@ -35,7 +36,6 @@
     <!-- Start of page title component -->
     <h2 class="mt-4  mb-4  font-weight-normal d-flex align-items-end">
         <span class="font-weight-bold">{{ $case->name }}</span>
-        <a class="btn btn-primary ml-auto" role="button" href="/dumpcase/{{ $case->uuid }}">Zet in HPZone</a>
     </h2>
     <!-- End of page title component -->
     <p>
@@ -43,15 +43,19 @@
         <br/>Eerste ziektedag: {{ $case->dateOfSymptomOnset != null ? $case->dateOfSymptomOnset->format('l j F') : ''}}
     </p>
 
-    <?php
-        $groups = array('ggd' => 'GGD Informeert', 'index' => 'Index Informeert', 'other' => 'Overige contacten')
-    ?>
+<?php
+$groupTitles = [
+    '1' => '1 - Huisgenoten',
+    '2a' => '2a - Nauwe contacten',
+    '2b' => '2b - Nauwe contacten',
+    '3' => '3 - Overige contacten'
+];
+?>
 
-    @foreach ($taskgroups as $taskgroup => $tasks)
-        <!-- Start of table title component -->
+@foreach ($taskcategories as $category => $tasks)
+    <!-- Start of table title component -->
         <div class="d-flex  align-items-end  mb-3 mt-4">
-            <h2 class="mb-0">{{ $groups[$taskgroup] }}</h2>
-            <p class="mb-0  ml-auto">Velden met een <i class="icon  icon--eye"></i> zijn in de app zichtbaar voor de index</p>
+            <h2 class="mb-0">{{ $groupTitles[$category] }}</h2>
         </div>
         <!-- End of table title component -->
 
@@ -62,47 +66,29 @@
                 The w-* classes will be automatically generated based on the $sizes array which is defined in the scss/_variables.scss
             -->
             <colgroup>
-                <col class="w-25">
-                <col class="w-12">
-                <col class="w-30">
-                <col class="w-11">
-                <col class="w-11">
-                <col class="w-5">
+                @foreach ($headers as $fieldUuid => $header)
+                    <col class="w-auto">
+                @endforeach
             </colgroup>
             <thead>
             <tr>
-                <th scope="col">Naam <i class="icon  icon--eye"></i></th>
-                <th scope="col">Categorie <i class="icon  icon--eye"></i></th>
-                <th scope="col">Context <i class="icon  icon--eye"></i></th>
-                <th scope="col">Gegevens</th>
-                <th scope="col">Geinformeerd</th>
-                <th scope="col"></th>
+                @foreach ($headers as $fieldUuid => $header)
+                    <th scope="col">{{ $header }}</i></th>
+                @endforeach
+
             </tr>
             </thead>
-
             <tbody>
             @foreach ($tasks as $task)
-            <tr>
-                <th scope="row">{{ $task->label }}</th>
-                <td>
-                    {{ $task->category }}
-                </td>
-                <td>
-                    {{ $task->taskContext }}
-                </td>
-                <td>
-                    ...
-                </td>
-                <td>
-                    ...
-                </td>
-                <td class="text-center">
-                    >
-                </td>
-            </tr>
+                <tr>
+                    @foreach ($headers as $fieldUuid => $header)
+                    <td>
+                        {{ $task[$fieldUuid] ?? ''}}
+                    </td>
+                    @endforeach
+                </tr>
             @endforeach
             </tbody>
-
         </table>
         <!-- End of table component -->
     @endforeach

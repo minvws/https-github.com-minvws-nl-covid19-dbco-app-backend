@@ -50,14 +50,15 @@
                role="tab"
                aria-controls="nav-own-cases"
                aria-selected="true">Mijn cases</a>
-
+<!-- disabled because not yet functional
             <a class="nav-item nav-link"
                id="nav-all-cases-tab"
                data-toggle="tab"
                href="#nav-all-cases"
                role="tab"
                aria-controls="nav-all-cases"
-               aria-selected="false">Alles cases</a>
+               aria-selected="false">Alle cases</a>
+     end disabled -->
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
