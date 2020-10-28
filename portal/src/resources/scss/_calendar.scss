@@ -1,0 +1,134 @@
+@import "~litepicker/dist/css/style.css";
+
+
+
+
+:root {
+    --litepickerDayWidth: 40px;
+    --litepickerMonthWidth: calc(var(--litepickerDayWidth) * 7);
+}
+
+/**
+ * Global styling.
+ */
+
+.litepicker {
+    .container__months {
+        padding: 12px 24px;
+
+        .month-item-header {
+            padding-left: 12px;
+            padding-right: 12px;
+
+            .button-previous-month {
+                cursor: pointer;
+                background-image: url('../img/arrow-left.svg');
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: contain;
+                width: 18px;
+                height: 18px;
+
+                svg {
+                    display: none;
+                }
+            }
+
+            .button-next-month {
+                cursor: pointer;
+                background-image: url('../img/arrow-right.svg');
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: contain;
+                width: 18px;
+                height: 18px;
+
+                svg {
+                    display: none;
+                }
+            }
+
+            .month-item-name {
+                font-weight: normal;
+                font-size: 16px;
+            }
+
+            .month-item-year {
+                display: none;
+            }
+        }
+
+        .month-item-weekdays-row {
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .container__days {
+            div, a {
+                height: var(--litepickerDayWidth);
+            }
+
+            .day-item {
+                margin: 2px 0;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                &.is-today {
+                    color: $black;
+                }
+
+                &.is-start-date, &.is-end-date, &.is-in-range, &:hover {
+                    color: $white !important;
+                    box-shadow: none;
+                    background: transparent;
+                    position: relative;
+                    z-index: 1;
+                }
+
+                &.is-start-date, &.is-end-date, &:hover {
+                    &:after {
+                        background: $red;
+                        content: '';
+                        width: 36px;
+                        height: 36px;
+                        position: absolute;
+                        left: 50%;
+                        border-radius: 50%;
+                        transform: translate(-50%, -50%);
+                        top: 50%;
+                        z-index: -1;
+                    }
+                }
+
+                &.is-start-range {
+                    &:before {
+                        border-top-left-radius: 50%;
+                        border-bottom-left-radius: 50%;
+                    }
+                }
+
+                &.is-end-range {
+                    &:before {
+                        border-top-right-radius: 50%;
+                        border-bottom-right-radius: 50%;
+                    }
+                }
+
+                &.is-start-date, &.is-end-date, &.is-in-range {
+                    &:before {
+                        content: '';
+                        background-color: rgba($red, 0.2);
+                        position: absolute;
+                        z-index: -1;
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                        bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+}
