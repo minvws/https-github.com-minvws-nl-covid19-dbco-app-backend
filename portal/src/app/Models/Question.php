@@ -12,6 +12,8 @@ class Question
 
     public string $label;
 
+    public ?string $header;
+
     public ?string $description;
 
     public array $relevantForCategories;
