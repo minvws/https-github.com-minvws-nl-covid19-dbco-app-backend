@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="14px" viewBox="0 0 18 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>arrow-right</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="arrow-right" transform="translate(9.000000, 7.000000) scale(-1, 1) translate(-9.000000, -7.000000) translate(1.000000, 1.000000)" stroke="#576578" stroke-width="2">
+            <path d="M6,0 L0,6 M6,12 L0,6 M0,6 L16,6" id="Shape"></path>
+        </g>
+    </g>
+</svg>
