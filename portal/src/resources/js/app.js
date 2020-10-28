@@ -22,6 +22,9 @@ jQuery(document).ready(function($) {
                 });
                 input.value = '';
             });
+
+            // Also, the current TR now gets its 'delete' button unhidden.
+            tr.find('.btn-delete').removeClass('invisible');
         }
     }
 
@@ -29,6 +32,10 @@ jQuery(document).ready(function($) {
     $(".auto-row-clone").one("keypress", function() {
         cloneRow($(this));
     });
-    
+
+    $(".btn-delete").click(function() {
+       $(this).closest('tr').remove();
+    });
+
 });
 

@@ -79,7 +79,7 @@
             <button class="btn-outline-primary" type="button" onClick="$('#taskTable').hide();">Nee</button>
         </p>
         <!-- Start of table component -->
-        <table id="taskTable" class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-hover  table-form  table-ggd">
+        <table id="taskTable" class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-form  table-ggd">
             <!--
                 Modify the col definitions in the colgroup below to change the widths of the the columns.
                 The w-* classes will be automatically generated based on the $sizes array which is defined in the scss/_variables.scss
