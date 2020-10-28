@@ -109,4 +109,9 @@ class DbTaskRepository implements TaskRepository
         return $task;
     }
 
+    public function deleteRemovedTasks(string $caseUuid, array $keep)
+    {
+        EloquentTask::where('case_uuid', $caseUuid)->whereNotIn('uuid', $keep)->delete();
+    }
+
 }
