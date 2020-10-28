@@ -65,8 +65,9 @@
             <p class="mt-2 mb-0  ml-auto">De besmettelijke periode is twee dagen voor de eerste ziektedag tot en met vandaag</p>
         </div>
         <!-- End of question title component -->
-        <!-- TODO DATE PICKER CONFORM DESIGN -->
-        <input type="text" class="form-control" id="dateofsymptomonset" name="dateOfSymptomOnset" value="{{ old('dateOfSymptomOnset', $case->dateOfSymptomOnset) }}" placeholder="Y-m-d graag totdat we een datepicker hebben">
+        <div>
+            <input type="hidden" class="form-control" id="dateofsymptomonset" name="dateOfSymptomOnset" value="{{ old('dateOfSymptomOnset', $case->dateOfSymptomOnset) }}" />
+        </div>
 
         <!-- Start of table title component -->
         <div class="align-items-end  mb-3 mt-5">
