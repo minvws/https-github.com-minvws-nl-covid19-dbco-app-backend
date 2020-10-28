@@ -41,6 +41,6 @@
         </select>
     </td>
     <td class="text-center">
-        <button class="btn btn-delete invisible"><i class="icon  icon--delete  icon--m0"></i></button>
+        <button class="btn btn-delete @if(!isset($task['label'])) invisible @endif"><i class="icon  icon--delete  icon--m0"></i></button>
     </td>
 </tr>

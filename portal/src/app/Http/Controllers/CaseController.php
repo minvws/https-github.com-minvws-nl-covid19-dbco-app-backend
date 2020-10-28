@@ -103,11 +103,15 @@ class CaseController extends Controller
 
             $this->caseService->updateCase($case);
 
+            $keep = array();
             foreach ($request->input('tasks') as $rawTask) {
                 if (!empty($rawTask['label'])) { // skip empty auto-added table rows
+                    $keep[] = $rawTask['uuid'];
                     $this->caseService->createOrUpdateTask($caseUuid, $rawTask);
                 }
             }
+            // Delete tasks that are no longer in the posted form
+            $this->caseService->deleteRemovedTasks($caseUuid, $keep);
         }
 
         return redirect()->intended('/paircase/' . $caseUuid);
