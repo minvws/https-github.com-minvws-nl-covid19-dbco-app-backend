@@ -36,7 +36,7 @@
         <label class='sr-only' for="informeren1">Wie informeert</label>
         <select class="form-control" id="informeren1" name="tasks[{{ $row }}][communication]">
             <option disabled selected>Selecteer</option>
-            <option value="ggd" {{ (!isset($task['communication']) || $task['communication'] != 'ggd') ?: 'selected="selected"' }}>GGD</option>
+            <option value="staff" {{ (!isset($task['communication']) || $task['communication'] != 'staff') ?: 'selected="selected"' }}>GGD</option>
             <option value="index" {{ (!isset($task['communication']) || $task['communication'] != 'index') ?: 'selected="selected"' }}>Index</option>
         </select>
     </td>

@@ -44,7 +44,7 @@
     </p>
 
     <?php
-        $groups = array('ggd' => 'GGD Informeert', 'index' => 'Index Informeert', 'other' => 'Overige contacten')
+        $groups = array('staff' => 'GGD Informeert', 'index' => 'Index Informeert', 'other' => 'Overige contacten')
     ?>
 
     @foreach ($taskgroups as $taskgroup => $tasks)
