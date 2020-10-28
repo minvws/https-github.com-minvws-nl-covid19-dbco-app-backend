@@ -43,7 +43,7 @@ class DummySeeder extends Seeder
             'task_context' => 'Business partner',
             'category' => '2a',
             'date_of_last_exposure' => date('Y-m-d'),
-            'communication' => 'ggd',
+            'communication' => 'staff',
             'informed_by_index' => false,
             'created_at' => $now,
             'updated_at' => $now
@@ -56,7 +56,7 @@ class DummySeeder extends Seeder
             'task_context' => 'Butler',
             'category' => '1',
             'date_of_last_exposure' => date('Y-m-d'),
-            'communication' => 'ggd',
+            'communication' => 'staff',
             'informed_by_index' => false,
             'created_at' => $now,
             'updated_at' => $now
@@ -82,7 +82,7 @@ class DummySeeder extends Seeder
             'task_context' => 'Friend',
             'category' => '2b',
             'date_of_last_exposure' => date('Y-m-d'),
-            'communication' => 'ggd',
+            'communication' => 'staff',
             'informed_by_index' => false,
             'created_at' => $now,
             'updated_at' => $now
@@ -113,7 +113,7 @@ class DummySeeder extends Seeder
             'task_context' => 'Arch enemy',
             'category' => '2b',
             'date_of_last_exposure' => date('Y-m-d'),
-            'communication' => 'ggd',
+            'communication' => 'staff',
             'informed_by_index' => false,
             'questionnaire_uuid' => $questionnaireUuid,
             'created_at' => $now,
@@ -127,7 +127,7 @@ class DummySeeder extends Seeder
             'task_context' => "It's complicated",
             'category' => '1',
             'date_of_last_exposure' => date('Y-m-d'),
-            'communication' => 'ggd',
+            'communication' => 'staff',
             'informed_by_index' => false,
             'questionnaire_uuid' => $questionnaireUuid,
             'created_at' => $now,
@@ -229,7 +229,7 @@ class DummySeeder extends Seeder
             'task_context' => 'Ally',
             'category' => '2a',
             'date_of_last_exposure' => date('Y-m-d'),
-            'communication' => 'ggd',
+            'communication' => 'staff',
             'informed_by_index' => false,
             'created_at' => $now,
             'updated_at' => $now
