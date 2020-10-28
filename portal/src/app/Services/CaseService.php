@@ -123,7 +123,7 @@ class CaseService
             $task->label = $taskFormValues['label'];
             $task->taskContext = $taskFormValues['taskContext'];
             $task->category = $taskFormValues['category'];
-            $task->dateOfLastExposure = Date::parse($taskFormValues['dateOfLastExposure']);
+            $task->dateOfLastExposure = isset($taskFormValues['dateOfLastExposure']) ? Date::parse($taskFormValues['dateOfLastExposure']) : null;
             $task->communication = $taskFormValues['communication'] ?? 'ggd'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ;
             $this->taskRepository->updateTask($task);
         } else {
@@ -135,6 +135,15 @@ class CaseService
                 isset($taskFormValues['dateOfLastExposure']) ? Date::parse($taskFormValues['dateOfLastExposure']) : null,
                 );
         }
+    }
+
+    /**
+     * @param string $caseUuid case to clean up
+     * @param array $keep array of task uuids to keep
+     */
+    public function deleteRemovedTasks(string $caseUuid, array $keep)
+    {
+        $this->taskRepository->deleteRemovedTasks($caseUuid, $keep);
     }
 
 }

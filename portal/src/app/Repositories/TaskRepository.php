@@ -39,4 +39,10 @@ interface TaskRepository
      * @return Task
      */
     public function createTask(string $caseUuid, string $label, ?string $context, string $category, string $communication, ?Date $dateOfLastExposure): Task;
+
+    /**
+     * @param string $caseUuid Case to clean up
+     * @param array $keep Task uuids to keep
+     */
+    public function deleteRemovedTasks(string $caseUuid, array $keep);
 }
