@@ -124,7 +124,8 @@ class CaseService
             $task->taskContext = $taskFormValues['taskContext'];
             $task->category = $taskFormValues['category'];
             $task->dateOfLastExposure = isset($taskFormValues['dateOfLastExposure']) ? Date::parse($taskFormValues['dateOfLastExposure']) : null;
-            $task->communication = $taskFormValues['communication'] ?? 'staff'                                                                                                                                                                                                                                                                                                                                                                                            $this->taskRepository->updateTask($task);
+            $task->communication = $taskFormValues['communication'] ?? 'staff';
+            $this->taskRepository->updateTask($task);
         } else {
             $this->taskRepository->createTask($caseUuid,
                 $taskFormValues['label'],
