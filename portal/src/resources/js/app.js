@@ -1,8 +1,18 @@
 require('./bootstrap');
 
-jQuery(document).ready(function($) {
-    //  Make clickable rows in tables actually clickable
-    $(".clickable-row").click(function() {
+
+jQuery(document).ready(function ($) {
+
+    ////////////////////////////////////////////////////
+    //  Initialize calendars.
+    ////////////////////////////////////////////////////
+    require('./calendar');
+
+    ////////////////////////////////////////////////////
+    //  Make clickable rows in tables actually
+    //  clickable
+    ////////////////////////////////////////////////////
+    $(".clickable-row").click(function () {
         window.location = $(this).data("href");
     });
 
