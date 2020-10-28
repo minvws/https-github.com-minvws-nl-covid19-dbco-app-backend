@@ -16,47 +16,6 @@ try {
 }
 
 /**
- * Helper functions to get previous and next siblings.
- */
-
-function getPreviousSiblings(element, max) {
-    // Get all the previous elements.
-    let prevElements = [];
-    let prevElement = element.previousElementSibling;
-    let prevCount = 1;
-
-    while (prevElement) {
-        if (max !== undefined && prevCount > max) {
-            break;
-        }
-
-        prevElements.push(prevElement);
-        prevElement = prevElement.previousElementSibling;
-        prevCount++;
-    }
-
-    return prevElements.reverse();
-}
-
-function getNextSiblings(element, max) {
-    let nextElements = [];
-    let nextElement = element.nextElementSibling;
-    let nextCount = 1;
-
-    while (nextElement) {
-        if (max !== undefined && nextCount > max) {
-            break;
-        }
-
-        nextElements.push(nextElement);
-        nextElement = nextElement.nextElementSibling;
-        nextCount++;
-    }
-
-    return nextElements;
-}
-
-/**
  * Factory to build datepicker.
  *
  * @param id
@@ -72,29 +31,37 @@ const datePickerFactory = (id, inline = false) => {
     return new Litepicker({
         lang: 'nl',
         moveByOneMonth: true,
+        maxDate: Date.now(),
         numberOfMonths: 2,
         numberOfColumns: 2,
         inlineMode: inline,
         element: element,
         onRender: (element) => {
-            const selectedElement = element.querySelector('.is-start-date.is-end-date');
+            const el = $('.is-start-date.is-end-date');
+            if (el) {
+                let stamp = el.attr('data-time');
+                let stepSize = 1000 * 60 * 60 * 24;
+                let startStamp = stamp - 2 * stepSize;
 
-            if (selectedElement !== null) {
-                const previousElements = getPreviousSiblings(selectedElement, 2);
-                const nextElements = getNextSiblings(selectedElement, 8);
-
-                const dateElements = [...previousElements, selectedElement, ...nextElements];
-                const dateElementsLength = dateElements.length;
-
-                dateElements.forEach((dateElement, index) => {
-                    dateElement.classList.add('is-in-range');
-
-                    if (index === 0) {
-                        dateElement.classList.add('is-start-range');
-                    } else if (index === dateElementsLength - 1) {
-                        dateElement.classList.add('is-end-range');
+                let endEl = $('.is-today');
+                let endStamp = null;
+                if (endEl) {
+                    endEl.addClass('is-end-range is-in-range');
+                    endStamp = endEl.attr('data-time');
+                }
+                let dayItems = $(element).find('.day-item');
+                let first = true;
+                dayItems.each(function () {
+                    let stamp = $(this).attr('data-time');
+                    if (stamp >= startStamp && stamp <= endStamp) {
+                        $(this).addClass('is-in-range');
+                        if (first) {
+                            $(this).addClass('is-start-range');
+                            first = false;
+                        }
                     }
                 });
+
             }
         }
     });
