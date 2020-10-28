@@ -73,7 +73,7 @@ class DbTaskRepository implements TaskRepository
      *
      * @return Task
      */
-    public function createTask(string $caseUuid, string $label, string $context, string $category, Date $dateOfLastExposure, string $communication): Task
+    public function createTask(string $caseUuid, string $label, ?string $context, string $category, string $communication, ?Date $dateOfLastExposure): Task
     {
         $dbTask = new EloquentTask();
 
@@ -81,7 +81,7 @@ class DbTaskRepository implements TaskRepository
         $dbTask->label = $label;
         $dbTask->task_context = $context;
         $dbTask->category = $category;
-        $dbTask->date_of_last_exposure = $dateOfLastExposure->toDateTimeImmutable();
+        $dbTask->date_of_last_exposure = ($dateOfLastExposure != null ? $dateOfLastExposure->toDateTimeImmutable() : null);
         $dbTask->communication = $communication;
         $dbTask->source = 'portal';
         $dbTask->task_type = 'contact';

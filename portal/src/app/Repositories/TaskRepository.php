@@ -38,5 +38,5 @@ interface TaskRepository
      *
      * @return Task
      */
-    public function createTask(string $caseUuid, string $label, string $context, string $category, Date $dateOfLastExposure, string $communication): Task;
+    public function createTask(string $caseUuid, string $label, ?string $context, string $category, string $communication, ?Date $dateOfLastExposure): Task;
 }
