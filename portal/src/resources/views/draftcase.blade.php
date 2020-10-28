@@ -43,7 +43,12 @@
             <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Hoe heet de index?</h3>
         </div>
         <!-- End of question title component -->
-        <input type="text" class="form-control" id="name" name="name" value="{{ $case->name }}">
+        @error('name')
+            <div class="alert alert-danger" role="alert">
+                Vul minimaal een naam in om de case te openen.
+            </div>
+        @enderror
+        <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $case->name) }}">
 
         <!-- Start of question title component -->
         <div class="align-items-end  mb-3 mt-5">
@@ -51,7 +56,7 @@
             <p class="mt-2 mb-0  ml-auto">Bijvoorbeeld een case id uit HPZone, zodat je later makkelijk kunt zien bij wie deze gegevens horen.</p>
         </div>
         <!-- End of question title component -->
-        <input type="text" class="form-control" id="caseId" name="caseId" value="{{ $case->caseId }}">
+        <input type="text" class="form-control" id="caseId" name="caseId" value="{{ old('caseId', $case->caseId) }}">
 
 
         <!-- Start of question title component -->
@@ -61,7 +66,7 @@
         </div>
         <!-- End of question title component -->
         <!-- TODO DATE PICKER CONFORM DESIGN -->
-        <input type="text" class="form-control" id="dateofsymptomonset" name="dateOfSymptomOnset" value="{{ $case->dateOfSymptomOnset }}" placeholder="Y-m-d graag totdat we een datepicker hebben">
+        <input type="text" class="form-control" id="dateofsymptomonset" name="dateOfSymptomOnset" value="{{ old('dateOfSymptomOnset', $case->dateOfSymptomOnset) }}" placeholder="Y-m-d graag totdat we een datepicker hebben">
 
         <!-- Start of table title component -->
         <div class="align-items-end  mb-3 mt-5">
@@ -100,8 +105,15 @@
             </thead>
 
             <tbody>
-            <?php $row=0; ?>
-                @foreach ($tasks as $task)
+            <?php
+                $oldTasks = old('tasks');
+                if (is_array($oldTasks) && count($oldTasks)) {
+                    $tasks = $oldTasks;
+                }
+                $row=0;
+            ?>
+                @foreach ($tasks as $taskObj)
+                    <?php $task = (array)$taskObj; ?>
                     @include ('draftcase_row')
                     <?php $row++; ?>
                 @endforeach
@@ -117,18 +129,8 @@
         </div>
         <!-- End of table title component -->
 
-        <!-- Start of table title component -->
-        <div class="align-items-end  mb-3 mt-5">
-            <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Deel de code met de index</h3>
-            <p class="mt-2 mb-0  ml-auto">Met deze code heeft de index toegang tot de contacten uit de aanleverlijst.</p>
-        </div>
-        <!-- End of table title component -->
-        <div class=" mb-3">
-            <button type="button" class="pairingcode btn btn-light">&#128274; Genereer koppelcode</button>
-        </div>
-
         <div class="btn-group">
-            <input type="submit" class="btn btn-primary" value="Case opslaan" />
+            <input type="submit" class="btn btn-primary" value="Case openen" />
         </div>
 
     </form>

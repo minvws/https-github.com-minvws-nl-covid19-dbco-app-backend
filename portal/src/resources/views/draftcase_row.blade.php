@@ -1,12 +1,12 @@
 <tr>
     <td>
-        <input class="form-control" type="hidden" name="tasks[{{ $row }}][uuid]" value="{{ $task->uuid ?? '' }}">
+        <input class="form-control" type="hidden" name="tasks[{{ $row }}][uuid]" value="{{ $task['uuid'] ?? '' }}">
         <label class="sr-only" for="label">Label</label>
-        <input type="text" class="form-control auto-row-clone" id="label" name="tasks[{{ $row }}][label]" value="{{ $task->label ?? '' }}" placeholder="Voeg contact toe">
+        <input type="text" class="form-control auto-row-clone" id="label" name="tasks[{{ $row }}][label]" value="{{ $task['label'] ?? '' }}" placeholder="Voeg contact toe">
     </td>
     <td>
         <label class="sr-only" for="context1">Context</label>
-        <input type="text" class="form-control" id="context1" name="tasks[{{ $row }}][context]" value="{{ $task->taskContext ?? '' }}" placeholder="Bijv. collega of trainer">
+        <input type="text" class="form-control" id="context1" name="tasks[{{ $row }}][taskContext]" value="{{ $task['taskContext'] ?? '' }}" placeholder="Bijv. collega of trainer">
     </td>
     <td>
         <label class='sr-only' for="categorie1">Categorie</label>
@@ -14,7 +14,7 @@
             <option disabled selected>Selecteer</option>
             <?php $options = array('1', '2a', '2b', '3'); ?>
             @foreach ($options as $option)
-                <option {{ (isset($task->category) && $option == $task->category) ? 'selected="selected"' : '' }}>{{ $option }}</option>
+                <option {{ (isset($task['category']) && $option == $task['category']) ? 'selected="selected"' : '' }}>{{ $option }}</option>
             @endforeach
         </select>
     </td>
@@ -26,7 +26,7 @@
                 <?php
                 $date = Date::parse("-$i days")->format("Y-m-d");
                 $label = Date::parse("-$i days")->format('l j M');
-                $selected = (!isset($task->dateOfLastExposure) || $date != $task->dateOfLastExposure->format("Y-m-d") ?: 'selected="selected"')
+                $selected = (!isset($task['dateOfLastExposure']) || $date != $task['dateOfLastExposure'] ?: 'selected="selected"')
                 ?>
                 <option value="{{ $date }}" {{ $selected }}>{{ $label }}</option>
             @endfor
@@ -36,8 +36,8 @@
         <label class='sr-only' for="informeren1">Wie informeert</label>
         <select class="form-control" id="informeren1" name="tasks[{{ $row }}][communication]">
             <option disabled selected>Selecteer</option>
-            <option value="ggd" {{ (!isset($task->communication) || $task->communication != 'ggd') ?: 'selected="selected"' }}>GGD</option>
-            <option value="index" {{ (!isset($task->communication) || $task->communication != 'index') ?: 'selected="selected"' }}>Index</option>
+            <option value="ggd" {{ (!isset($task['communication']) || $task['communication'] != 'ggd') ?: 'selected="selected"' }}>GGD</option>
+            <option value="index" {{ (!isset($task['communication']) || $task['communication'] != 'index') ?: 'selected="selected"' }}>Index</option>
         </select>
     </td>
     <td class="text-center">
