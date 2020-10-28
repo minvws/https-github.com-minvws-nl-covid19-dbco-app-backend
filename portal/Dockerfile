@@ -7,6 +7,9 @@ RUN apt-get -qq update && \
     apt-get -y install curl git wget vim unzip libzip-dev libpq-dev libicu-dev apt-transport-https apt-transport-https ca-certificates gnupg npm libaio1 \
     && rm -rf /var/lib/apt/lists/*
 
+# Update npm to latest version because package bundle version is outdated
+RUN npm install npm@6 -g
+
 RUN cd /tmp && curl -L https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip -O
 RUN cd /tmp && curl -L https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip -O
 
