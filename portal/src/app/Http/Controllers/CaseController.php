@@ -91,7 +91,12 @@ class CaseController extends Controller
 
         if ($case != null && $this->caseService->canAccess($case)) {
 
-            $case->name = $request->input('name');
+            $validatedData = $request->validate([
+                'name' => 'required'
+            ]);
+
+            $case->name = $validatedData['name'];
+
             $case->caseId = $request->input('caseId');
             $case->dateOfSymptomOnset = Date::parse($request->input('dateOfSymptomOnset'));
             $case->status = 'open'; // TODO: only set to open once a pairing code was assigned
