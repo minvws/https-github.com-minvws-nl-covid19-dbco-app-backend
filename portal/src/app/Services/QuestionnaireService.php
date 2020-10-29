@@ -33,7 +33,7 @@ class QuestionnaireService
         // used the same questionnaire.
         $task = $tasks->first();
         $questions = [];
-        if ($task->questionnaireUuid) {
+        if ($task && $task->questionnaireUuid) {
             // Do we have filled out questions?
             $questions = $this->questionRepository->getQuestions($task->questionnaireUuid);
         }
