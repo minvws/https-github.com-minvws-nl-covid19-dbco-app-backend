@@ -25,6 +25,6 @@ $DOCKER_COMPOSE run --rm --entrypoint composer healthauthority_api install
 echo
 echo "=====[ UPDATE PORTAL ]====="
 $DOCKER_COMPOSE run --rm --entrypoint composer portal install
-$DOCKER_COMPOSE run --rm --entrypoint npm portal install dev
+$DOCKER_COMPOSE run --rm --entrypoint npm portal install
 $DOCKER_COMPOSE run --rm --entrypoint npm portal run dev
 $DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
