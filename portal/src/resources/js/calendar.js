@@ -31,25 +31,33 @@ const datePickerFactory = (id, inline = false) => {
     return new Litepicker({
         lang: 'nl',
         moveByOneMonth: true,
+        minDate: new Date(Date.now() - 12096e5), // current date minus 14 days
         maxDate: Date.now(),
         numberOfMonths: 2,
         numberOfColumns: 2,
         inlineMode: inline,
         element: element,
         onRender: (element) => {
-            const el = $('.is-start-date.is-end-date');
-            if (el) {
-                let stamp = el.attr('data-time');
+            const selectedElement = $('.is-start-date.is-end-date');
+            let dayItems = $(element).find('.day-item');
+
+            /** Remove default selection classes because we will add them later on. */
+            dayItems.each(() => {
+                $(this).removeClass('is-in-range').removeClass('.is-start-range').removeClass('.is-end-range');
+            });
+
+            /*  Mark contamination period when date is selected. */
+            if (selectedElement.length) {
+                let stamp = selectedElement.attr('data-time');
                 let stepSize = 1000 * 60 * 60 * 24;
                 let startStamp = stamp - 2 * stepSize;
 
-                let endEl = $('.is-today');
+                let endEl = $(element).find('.is-today');
                 let endStamp = null;
                 if (endEl) {
                     endEl.addClass('is-end-range is-in-range');
                     endStamp = endEl.attr('data-time');
                 }
-                let dayItems = $(element).find('.day-item');
                 let first = true;
                 dayItems.each(function () {
                     let stamp = $(this).attr('data-time');
@@ -61,7 +69,8 @@ const datePickerFactory = (id, inline = false) => {
                         }
                     }
                 });
-
+            } else {
+                $(element).find('.is-today').removeClass('is-end-range').removeClass('is-in-range');
             }
         }
     });
