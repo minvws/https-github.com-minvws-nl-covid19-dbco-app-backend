@@ -62,7 +62,7 @@
         <!-- Start of question title component -->
         <div class="align-items-end  mb-3 mt-5">
             <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Wat is de eerste ziektedag van de index?</h3>
-            <p class="mt-2 mb-0  ml-auto">De besmettelijke periode is twee dagen voor de eerste ziektedag tot en met vandaag</p>
+            <p class="mt-2 mb-0  ml-auto">De besmettelijke periode is twee dagen voor de eerste ziektedag tot en met vandaag.</p>
         </div>
         <!-- End of question title component -->
         <div>
