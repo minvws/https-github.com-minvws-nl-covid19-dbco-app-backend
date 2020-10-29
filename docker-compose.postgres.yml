@@ -1,0 +1,30 @@
+version: '3.7'
+
+volumes:
+    postgres-data:
+        driver: local
+
+services:
+    postgres:
+        image: postgres
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_DB: portal
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        ports:
+            - ${POSTGRES_PORT:-5432}:5432
+
+    psql:
+        image: postgres
+        entrypoint: ["psql", "--host=postgres", "--user=postgres", "portal"]
+        environment:
+            PGPASSWORD: ${POSTGRES_PASSWORD}
+
+    healthauthority_api:
+        depends_on:
+          - postgres
+
+    portal:
+        depends_on:
+          - postgres

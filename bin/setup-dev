@@ -1,42 +1,39 @@
 #!/bin/bash
 BASE_PATH=$(dirname $0)/..
+DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
 
 . $BASE_PATH/.env
 
-echo "=====[ Start containers ]======================="
-docker-compose up -d
+echo "=====[ SETUP CONTAINERS ]======================="
+$DOCKER_COMPOSE up -d --remove-orphans
+
+if [ $DATABASE_TYPE = "postgres" ]; then
+  echo
+  echo "=====[ SETUP POSTGRES DATABASE ]========================="
+  echo "Waiting for PostgreSQL to launch on ${POSTGRES_PORT:-5432}..."
+  while ! nc -z localhost ${POSTGRES_PORT:-5432}; do
+    sleep 0.5
+  done
+  $DOCKER_COMPOSE run --rm psql -c "CREATE USER portal PASSWORD '$PORTAL_DB_PASSWORD'"
+  $DOCKER_COMPOSE run --rm psql -c "CREATE USER healthauthority_api PASSWORD '$HEALTHAUTHORITY_API_DB_PASSWORD'"
+  $DOCKER_COMPOSE run --rm psql < $BASE_PATH/install/postgres/permissions.sql
+fi
+
+if [ $DATABASE_TYPE = "oracle" ]; then
+  echo
+  echo "=====[ SETUP ORACLE DATABASE ]========================="
+  echo "Waiting for Oracle to launch on ${ORACLE_PORT:-1521}..."
+  while ! echo "SELECT 1 FROM dual" | $DOCKER_COMPOSE run --rm sqlplus > /dev/null 2>&1; do
+    sleep 1
+  done
+
+  echo "CREATE USER healthauthority_api IDENTIFIED BY \"$HEALTHAUTHORITY_API_DB_PASSWORD\";" | $DOCKER_COMPOSE run --rm sqlplus
+  echo "CREATE USER portal IDENTIFIED BY \"$PORTAL_DB_PASSWORD\";" | $DOCKER_COMPOSE run --rm sqlplus
+  $DOCKER_COMPOSE run --rm sqlplus < $BASE_PATH/install/oracle/permissions.sql
+fi
+
+$BASE_PATH/bin/update-dev
 
 echo
-echo "=====[ Setup Oracle database ]========================="
-
-echo "Waiting for Oracle to launch on ${ORACLE_PORT:-1521}..."
-while ! echo "SELECT 1 FROM dual" | docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm sqlplus > /dev/null 2>&1; do
-  sleep 1
-done
-
-echo "CREATE USER healthauthority_api IDENTIFIED BY \"$HEALTHAUTHORITY_API_DB_PASSWORD\";" | docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm sqlplus
-echo "CREATE USER portal IDENTIFIED BY \"$PORTAL_DB_PASSWORD\";" | docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm sqlplus
-docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm sqlplus < $BASE_PATH/install/oracle/permissions.sql
-
-echo
-echo "=====[ SETUP WORKER ]====="
-docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint composer worker install
-
-echo
-echo "=====[ SETUP PRIVATE API ]====="
-docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint composer private_api install
-
-echo
-echo "=====[ SETUP PUBLIC API ]====="
-docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint composer public_api install
-
-echo
-echo "=====[ SETUP HEALTHAUTHORITY API ]====="
-docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint composer healthauthority_api install
-
-echo
-echo "=====[ SETUP PORTAL ]====="
-docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint composer portal install
-docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint npm portal run dev
-docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint php portal artisan migrate
-docker-compose -f $BASE_PATH/docker-compose.yml -f $BASE_PATH/docker-compose.dev.yml run --rm --entrypoint php portal artisan db:seed
+echo "=====[ SEED PORTAL ]====="
+$DOCKER_COMPOSE run --rm --entrypoint php portal artisan db:seed

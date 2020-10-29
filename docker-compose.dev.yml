@@ -1,7 +1,44 @@
 version: '3.7'
 
-# development extras
 services:
-    sqlplus:
-        image: ${ORACLE_IMAGE:-oracle/database:18.4.0-xe}
-        entrypoint: sqlplus -L SYSTEM/"${ORACLE_PASSWORD}"@oracle/XEPDB1
+    private_api:
+        environment:
+            APP_ENV: development
+        ports:
+            - ${PRIVATE_API_PORT:-8081}:80
+        volumes:
+            - ./api/src/shared:/shared
+            - ./api/src/private:/src
+
+    public_api:
+        environment:
+            APP_ENV: development
+        ports:
+            - ${PUBLIC_API_PORT:-8082}:80
+        volumes:
+            - ./api/src/shared:/shared
+            - ./api/src/public:/src
+
+    worker:
+        build: worker
+        environment:
+            APP_ENV: development
+        volumes:
+            - ./worker/src:/src
+
+    healthauthority_api:
+        environment:
+            APP_ENV: development
+        ports:
+            - ${HEALTHAUTHORITY_API_PORT:-8083}:80
+        volumes:
+            - ./api/src/shared:/shared
+            - ./api/src/healthauthority:/src
+
+    portal:
+        environment:
+            APP_ENV: development
+        ports:
+            - ${PORTAL_PORT:-8084}:80
+        volumes:
+            - ./portal/src:/src

@@ -1,39 +1,41 @@
 #!/bin/bash
 BASE_PATH=$(dirname $0)/..
-PROJECT_NAME=dbco-test
+export DATABASE_TYPE=`source $BASE_PATH/.env && echo $DATABASE_TYPE`
+PROJECT_NAME=dbco-test-${DATABASE_TYPE}
+DOCKER_COMPOSE="docker-compose --project-directory=$BASE_PATH -p $PROJECT_NAME --env-file .env.test -f docker-compose.main.yml -f docker-compose.test.yml -f docker-compose.${DATABASE_TYPE}.yml"
 
 echo "=====[ SETUP ]====="
-docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml up -d --remove-orphans
+$DOCKER_COMPOSE up -d --remove-orphans
 
 if [ -z "$1" ] || [ "$1" == "worker" ]; then
   echo
   echo "=====[ RUN TESTS FOR WORKER ]====="
-  docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit worker
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit worker
   echo
 fi
 
 if [ -z "$1" ] || [ "$1" == "private_api" ]; then
   echo
   echo "=====[ RUN TESTS FOR PRIVATE API ]====="
-  docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit private_api
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit private_api
   echo
 fi
 
 if [ -z "$1" ] || [ "$1" == "public_api" ]; then
   echo
   echo "=====[ RUN TESTS FOR PUBLIC API ]====="
-  docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit public_api
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit public_api
   echo
 fi
 
 if [ -z "$1" ] || [ "$1" == "healthauthority_api" ]; then
   echo
   echo "=====[ RUN TESTS FOR HEALTHAUTHORITY API ]====="
-  docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority_api
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority_api
   echo
 fi
 
 echo
 echo "=====[ CLEANUP ]====="
-docker-compose --env-file ./.env.test -p $PROJECT_NAME -f docker-compose.yml -f docker-compose.test.yml down
-docker volume rm "${PROJECT_NAME}_oracle-data"
+$DOCKER_COMPOSE down
+docker volume rm "${PROJECT_NAME}_${DATABASE_TYPE}-data"
