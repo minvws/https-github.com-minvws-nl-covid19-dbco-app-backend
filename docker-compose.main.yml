@@ -57,6 +57,7 @@ services:
             APP_URL: ${PORTAL_APP_URL}
             APP_KEY: ${PORTAL_APP_KEY}
             APP_DEBUG: ${DEBUG:-0}
+            REDIS_HOST: redis
             DB_CONNECTION: ${DATABASE_TYPE}
             DB_HOST: ${DATABASE_TYPE}
             DB_DATABASE: portal
