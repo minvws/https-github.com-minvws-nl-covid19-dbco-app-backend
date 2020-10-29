@@ -2,28 +2,35 @@ version: '3.7'
 
 # test overrides
 services:
-    oracle:
-        image: alpine
-        entrypoint: ["echo", "Oracle database disabled"]
-        restart: "no"
-
     private_api:
         environment:
             APP_ENV: test
+        volumes:
+            - ./api/src/shared:/shared
+            - ./api/src/private:/src
 
     public_api:
         environment:
             APP_ENV: test
+        volumes:
+            - ./api/src/shared:/shared
+            - ./api/src/public:/src
 
     worker:
         environment:
             APP_ENV: test
+        volumes:
+            - ./worker/src:/src
 
     healthauthority_api:
         environment:
             APP_ENV: test
+        volumes:
+            - ./api/src/shared:/shared
+            - ./api/src/healthauthority:/src
 
     portal:
         environment:
             APP_ENV: test
-       
+        volumes:
+            - ./portal/src:/src
