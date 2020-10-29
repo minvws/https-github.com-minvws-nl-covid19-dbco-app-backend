@@ -1,19 +1,6 @@
 version: '3.7'
 
-volumes:
-    oracle-data:
-        driver: local
-
 services:
-    oracle:
-        image: ${ORACLE_IMAGE:-oracle/database:18.4.0-xe}
-        volumes:
-            - oracle-data:/opt/oracle/oradata
-        environment:
-            ORACLE_PWD: ${ORACLE_PASSWORD}
-        ports:
-            - ${ORACLE_PORT:-1521}:1521
-
     redis:
         image: redis
 
@@ -22,18 +9,12 @@ services:
             context: ./api
             dockerfile: Dockerfile-private
         environment:
-            APP_ENV: development
             DEBUG: ${DEBUG:-0}
             REDIS_HOST: redis
             REDIS_PORT: 6379
             JWT_ENABLED: ${PRIVATE_API_JWT_ENABLED:-true}
             JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
             JWT_SECURE: ${PRIVATE_API_JWT_SECURE}
-        ports:
-            - ${PRIVATE_API_PORT:-8081}:80
-        volumes:
-            - ./api/src/shared:/shared
-            - ./api/src/private:/src
         depends_on:
             - redis
 
@@ -42,28 +23,19 @@ services:
             context: ./api
             dockerfile: Dockerfile-public
         environment:
-            APP_ENV: development
             DEBUG: ${DEBUG:-0}
             REDIS_HOST: redis
             REDIS_PORT: 6379
-        ports:
-            - ${PUBLIC_API_PORT:-8082}:80
-        volumes:
-            - ./api/src/shared:/shared
-            - ./api/src/public:/src
         depends_on:
             - redis
 
     worker:
         build: worker
         environment:
-            APP_ENV: development
             DEBUG: ${DEBUG:-0}
             REDIS_HOST: redis
             REDIS_PORT: 6379
             HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api/v1/
-        volumes:
-            - ./worker/src:/src
         depends_on:
             - redis
             - healthauthority_api
@@ -73,39 +45,27 @@ services:
             context: ./api
             dockerfile: Dockerfile-healthauthority
         environment:
-            APP_ENV: development
             DEBUG: ${DEBUG:-0}
         ports:
             - ${HEALTHAUTHORITY_API_PORT:-8083}:80
-        volumes:
-            - ./api/src/shared:/shared
-            - ./api/src/healthauthority:/src
-        depends_on:
-          - oracle
 
     portal:
         build:
             context: ./portal
             dockerfile: Dockerfile
         environment:
-            APP_ENV: development
             APP_URL: ${PORTAL_APP_URL}
             APP_KEY: ${PORTAL_APP_KEY}
             APP_DEBUG: ${DEBUG:-0}
-            DB_CONNECTION: oracle
-            DB_HOST: oracle
+            REDIS_HOST: redis
+            DB_CONNECTION: ${DATABASE_TYPE}
+            DB_HOST: ${DATABASE_TYPE}
             DB_DATABASE: portal
             DB_USERNAME: ${PORTAL_DB_USERNAME}
             DB_PASSWORD: ${PORTAL_DB_PASSWORD}
-            DB_TNS: oracle/XEPDB1
+            DB_TNS: ${PORTAL_DB_TNS:-oracle/XEPDB1}
             TIH_CLIENT_ID: ${PORTAL_TIH_CLIENT_ID}
             TIH_CLIENT_SECRET: ${PORTAL_TIH_CLIENT_SECRET}
             TIH_REDIRECT_URL: ${PORTAL_TIH_REDIRECT_URL}
             PRIVATE_API_BASE_URI: http://private_api/v1/
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
-        ports:
-            - ${PORTAL_PORT:-8084}:80
-        volumes:
-            - ./portal/src:/src
-        depends_on:
-          - oracle
