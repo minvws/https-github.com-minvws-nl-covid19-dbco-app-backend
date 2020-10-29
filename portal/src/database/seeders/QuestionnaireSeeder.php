@@ -46,7 +46,6 @@ class QuestionnaireSeeder extends Seeder
 
         if (is_null($versionedQuestionnaire)) {
 
-
             DB::table('questionnaire')->insert([
                 'name' => 'Default questionnaire voor contacten',
                 'uuid' => $questionnaireUuid,
@@ -89,6 +88,7 @@ class QuestionnaireSeeder extends Seeder
                 'group' => 'contactdetails',
                 'question_type' => 'date',
                 'label' => 'Geboortedatum',
+                'header' => 'Geb. dat.',
                 'description' => null,
                 'relevant_for_categories' => '1',
                 'created_at' => $now,
@@ -115,6 +115,7 @@ class QuestionnaireSeeder extends Seeder
                 'group' => 'contactdetails',
                 'question_type' => 'multiplechoice',
                 'label' => 'Waar ken je deze persoon van?',
+                'header' => 'Relatie',
                 'description' => null,
                 'relevant_for_categories' => '2a,2b',
                 'created_at' => $now,
@@ -214,6 +215,7 @@ class QuestionnaireSeeder extends Seeder
                 'group' => 'contactdetails',
                 'question_type' => 'multiplechoice',
                 'label' => 'Is een of meerdere onderstaande zaken van toepassing voor deze persoon?',
+                'header' => 'Prioriteit',
                 'description' => "<ul><li>Student</li>" .
                     "<li>70 jaar of ouder</li>" .
                     "<li>Gezondheidsklachten of extra gezondheidsrisico's</li>" .

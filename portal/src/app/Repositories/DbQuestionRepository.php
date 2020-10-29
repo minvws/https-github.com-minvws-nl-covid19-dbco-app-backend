@@ -25,6 +25,7 @@ class DbQuestionRepository implements QuestionRepository
         $question = new Question();
         $question->uuid = $dbQuestion->uuid;
         $question->label = $dbQuestion->label;
+        $question->header = $dbQuestion->header;
         $question->group = $dbQuestion->group;
         $question->description = $dbQuestion->description;
         $question->questionType = $dbQuestion->question_type;
