@@ -2,70 +2,41 @@ name: CI
 
 on: [pull_request]
 
+env:
+  POSTGRES_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
+  PRIVATE_API_JWT_SECRET: ${{ secrets.CI_SERVICE_PASSWORD }}
+  HEALTHAUTHORITY_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
+  PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
+  PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v1
 
-    - name: Docker login for GitHub Package Registry
-      run: docker login docker.pkg.github.com -u ${GITHUB_ACTOR} -p ${{ secrets.GITHUB_TOKEN }}
+      - name: Build / start the stack
+        run: docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml up -d
 
-    - name: Build / start the stack
-      env:
-        ORACLE_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PRIVATE_API_JWT_SECRET: ${{ secrets.CI_SERVICE_PASSWORD }}
-        HEALTHAUTHORITY_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
-      run: docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml up -d
+      - name: Run composer
+        run: |
+          docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml run --rm --entrypoint composer worker install
+          docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml run --rm --entrypoint composer private_api install
+          docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml run --rm --entrypoint composer public_api install
+          docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml run --rm --entrypoint composer healthauthority_api install
 
-    - name: Run composer
-      run: |
-        docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer worker install
-        docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer private_api install
-        docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer public_api install
-        docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint composer healthauthority_api install
+      - name: Worker - Run phpunit
+        run: |
+          docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml run --rm --entrypoint=/src/vendor/bin/phpunit worker
 
-    - name: Worker - Run phpunit
-      env:
-        ORACLE_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PRIVATE_API_JWT_SECRET: ${{ secrets.CI_SERVICE_PASSWORD }}
-        HEALTHAUTHORITY_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
-      run: |
-        docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit worker
+      - name: Private Api - Run phpunit
+        run: |
+          docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml run --rm --entrypoint=/src/vendor/bin/phpunit private_api
 
-    - name: Private Api - Run phpunit
-      env:
-        ORACLE_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PRIVATE_API_JWT_SECRET: ${{ secrets.CI_SERVICE_PASSWORD }}
-        HEALTHAUTHORITY_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
+      - name: Public Api - Run phpunit
+        run: |
+          docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml run --rm --entrypoint=/src/vendor/bin/phpunit public_api
 
-      run: |
-        docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit private_api
-
-    - name: Public Api - Run phpunit
-      env:
-        ORACLE_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PRIVATE_API_JWT_SECRET: ${{ secrets.CI_SERVICE_PASSWORD }}
-        HEALTHAUTHORITY_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
-
-      run: |
-        docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit public_api
-
-    - name: Health Authority Api - Run phpunit
-      env:
-        ORACLE_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PRIVATE_API_JWT_SECRET: ${{ secrets.CI_SERVICE_PASSWORD }}
-        HEALTHAUTHORITY_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
-        PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
-
-      run: |
-        docker-compose --env-file ./.env.ci -p test -f docker-compose.yml -f docker-compose.test.yml run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority_api
+      - name: Health Authority Api - Run phpunit
+        run: |
+          docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority_api
