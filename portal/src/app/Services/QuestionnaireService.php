@@ -62,7 +62,7 @@ class QuestionnaireService
                     $headers[$question->uuid.'.otherrisk'] = 'Overig risico';
                     break;
                 default:
-                    $headers[$question->uuid] = $question->label;
+                    $headers[$question->uuid] = $question->header ?? $question->label;
             }
             $questionTypeByQuestionUuid[$question->uuid] = $question->questionType;
         }
