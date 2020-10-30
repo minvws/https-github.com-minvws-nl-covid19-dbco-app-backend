@@ -19,7 +19,7 @@ class CaseResponse extends Response implements JsonSerializable
     /**
      * Constructor.
      *
-     * @param Case $case
+     * @param CovidCase $case
      */
     public function __construct(CovidCase $case)
     {
@@ -32,7 +32,10 @@ class CaseResponse extends Response implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'dateOfSymptomOnset' => $this->case->dateOfSymptomOnset,
+            'dateOfSymptomOnset' =>
+                $this->case->dateOfSymptomOnset !== null ?
+                    $this->case->dateOfSymptomOnset->format('Y-m-d') :
+                    null,
             'tasks' => array_map(fn ($t) => new Task($t), $this->case->tasks)
         ];
     }

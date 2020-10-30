@@ -7,6 +7,7 @@ use DBCO\HealthAuthorityAPI\Application\Repositories\CaseRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\GeneralTaskRepository;
 use Exception;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Responsible for listing tasks.
@@ -66,10 +67,17 @@ class CaseService
      * @param string $caseId Case identifier.
      *
      * @return CovidCase
+     *
+     * @throws CaseNotFoundException
      */
     public function getCase(string $caseId): CovidCase
     {
-        return $this->caseRepository->getCase($caseId);
+        $case = $this->caseRepository->getCase($caseId);
+        if ($case === null) {
+            throw new CaseNotFoundException('Case does not exist!');
+        }
+
+        return $case;
     }
 
     /**
