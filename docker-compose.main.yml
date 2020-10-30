@@ -46,8 +46,12 @@ services:
             dockerfile: Dockerfile-healthauthority
         environment:
             DEBUG: ${DEBUG:-0}
-        ports:
-            - ${HEALTHAUTHORITY_API_PORT:-8083}:80
+            DB_TYPE: ${DATABASE_TYPE}
+            DB_HOST: ${DATABASE_TYPE}
+            DB_DATABASE: portal
+            DB_USERNAME: ${HEALTHAUTHORITY_API_DB_USERNAME}
+            DB_PASSWORD: ${HEALTHAUTHORITY_API_DB_PASSWORD}
+            DB_TNS: ${HEALTHAUTHORITY_API_DB_TNS:-oracle/XEPDB1}
 
     portal:
         build:

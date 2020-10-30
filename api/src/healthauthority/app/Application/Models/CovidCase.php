@@ -1,6 +1,8 @@
 <?php
 namespace DBCO\HealthAuthorityAPI\Application\Models;
 
+use DateTimeImmutable;
+
 /**
  * CovidCase.
  */
@@ -9,9 +11,9 @@ class CovidCase
     /**
      * Date of symptom onset
      *
-     * @var $dateOfSymptomOnset
+     * @var DateTimeImmutable
      */
-    public string $dateOfSymptomOnset;
+    public DateTimeImmutable $dateOfSymptomOnset;
      
     /**
      * Tasks.
