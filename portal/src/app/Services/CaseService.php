@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Answer;
+use App\Repositories\AnswerRepository;
 use App\Repositories\CaseRepository;
 use App\Repositories\PairingRepository;
 use App\Repositories\TaskRepository;
@@ -33,23 +35,35 @@ class CaseService
     private PairingRepository $pairingRepository;
 
     /**
+     * @var AnswerRepository
+     */
+    private AnswerRepository $answerRepository;
+
+    /**
      * @var AuthenticationService
      */
     private AuthenticationService $authService;
 
+
     /**
      * Constructor.
      *
-     * @param CaseRepository        $caseRepository
-     * @param TaskRepository        $taskRepository
-     * @param PairingRepository     $pairingRepository
+     * @param CaseRepository $caseRepository
+     * @param TaskRepository $taskRepository
+     * @param PairingRepository $pairingRepository
+     * @param AnswerRepository $answerRepository
      * @param AuthenticationService $authService
      */
-    public function __construct(CaseRepository $caseRepository, TaskRepository $taskRepository, PairingRepository $pairingRepository, AuthenticationService $authService)
+    public function __construct(CaseRepository $caseRepository,
+                                TaskRepository $taskRepository,
+                                PairingRepository $pairingRepository,
+                                AnswerRepository $answerRepository,
+                                AuthenticationService $authService)
     {
         $this->caseRepository = $caseRepository;
         $this->taskRepository = $taskRepository;
         $this->pairingRepository = $pairingRepository;
+        $this->answerRepository =$answerRepository;
         $this->authService = $authService;
     }
 
@@ -80,11 +94,20 @@ class CaseService
         return implode('-', str_split($code, 3));
     }
 
-    public function getCase($caseUuid): ?CovidCase
+    /**
+     * @param $caseUuid
+     * @param false $includeProgress If true, loads the progress of the case (significantly slower)
+     * @return CovidCase|null
+     */
+    public function getCase($caseUuid, $includeProgress = false): ?CovidCase
     {
         $case = $this->caseRepository->getCase($caseUuid);
         if ($case) {
             $case->tasks = $this->taskRepository->getTasks($caseUuid)->all();
+
+            if ($includeProgress) {
+                $this->applyProgress($caseUuid, $case->tasks);
+            }
         }
         return $case;
     }
@@ -144,6 +167,25 @@ class CaseService
     public function deleteRemovedTasks(string $caseUuid, array $keep)
     {
         $this->taskRepository->deleteRemovedTasks($caseUuid, $keep);
+    }
+
+    private function applyProgress($caseUuid, &$tasks)
+    {
+        $tasksByTaskUuid = [];
+        foreach ($tasks as $task) {
+            $task->progress += ($task->dateOfLastExposure != null ? 20 : 0);
+            $task->progress += ($task->category != null ? 20 : 0);
+            $tasksByTaskUuid[$task->uuid] = $task;
+        }
+
+        $answers = $this->answerRepository->getAllAnswersByCase($caseUuid);
+        foreach ($answers as $answer) {
+            // Todo: this assumes a task's questionnaire has one ClassificationDetails object
+            // and one ContactDetails object. This may not always be the case.
+            $tasksByTaskUuid[$answer->taskUuid]->progress += $answer->progressContribution();
+        }
+
+        $tasks = array_values($tasksByTaskUuid);
     }
 
 }

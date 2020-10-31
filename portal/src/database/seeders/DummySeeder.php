@@ -127,8 +127,8 @@ class DummySeeder extends Seeder
             'task_context' => "It's complicated",
             'category' => '1',
             'date_of_last_exposure' => date('Y-m-d'),
-            'communication' => 'staff',
-            'informed_by_index' => false,
+            'communication' => 'index',
+            'informed_by_index' => true,
             'questionnaire_uuid' => $questionnaireUuid,
             'created_at' => $now,
             'updated_at' => $now
@@ -173,8 +173,8 @@ class DummySeeder extends Seeder
             'uuid' => (string)Str::uuid(),
             'task_uuid' => $taskUuidLex,
             'question_uuid' => $contactQuestionUuid,
-            'ctd_firstname' => 'Lex',
-            'ctd_lastname' => 'Luthor',
+            'ctd_firstname' => null,
+            'ctd_lastname' => null,
             'ctd_email' => 'lex@luthor.dc',
             'ctd_phonenumber' => '0612345678',
             'created_at' => $now,
@@ -184,9 +184,9 @@ class DummySeeder extends Seeder
             'task_uuid' => $taskUuidLois,
             'question_uuid' => $contactQuestionUuid,
             'ctd_firstname' => 'Lois',
-            'ctd_lastname' => 'Lane',
+            'ctd_lastname' => null,
             'ctd_email' => 'lane.lois@dailyplanet.dc',
-            'ctd_phonenumber' => '06987654321',
+            'ctd_phonenumber' => null,
             'created_at' => $now,
             'updated_at' => $now
         ]]);
