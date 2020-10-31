@@ -44,7 +44,7 @@ class CaseController extends Controller
 
     public function editCase($caseUuid)
     {
-        $case = $this->caseService->getCase($caseUuid);
+        $case = $this->caseService->getCase($caseUuid, true);
 
         if ($case != null && $this->caseService->canAccess($case)) {
 

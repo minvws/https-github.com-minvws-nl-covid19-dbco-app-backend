@@ -8,4 +8,9 @@ class ClassificationDetailsAnswer extends Answer
     public bool $durationRisk = false;
     public bool $distanceRisk = false;
     public bool $otherRisk = false;
+
+    function progressContribution()
+    {
+        return 0;
+    }
 }
