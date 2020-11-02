@@ -90,11 +90,15 @@
                 <td>
                     {{ $task->taskContext }}
                 </td>
-                <td>
-                    ...
+                <td class="text-center">
+                    <img src="{{ asset('images/progress-'.$task->progress.'.svg') }}">
                 </td>
-                <td>
-                    ...
+                <td class="text-center">
+                    @if ($task->informedByIndex)
+                        <img src="{{ asset('images/done.svg') }}">
+                    @elseif ($task->communication == 'index')
+                        Nog niet
+                    @endif
                 </td>
                 <td class="text-center">
                     >
