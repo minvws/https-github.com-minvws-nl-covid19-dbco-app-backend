@@ -8,6 +8,7 @@ env:
   HEALTHAUTHORITY_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
   PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
   PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
+  DOCKER_COMPOSE: docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml -f docker-compose.postgres.yml
 
 jobs:
   build:
@@ -16,20 +17,24 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Build / start the stack
-        run: docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml up -d
+        run: $DOCKER_COMPOSE up -d
+
+      - name: Setup database
+        run: |
+          sleep 1
+          $DOCKER_COMPOSE run --rm psql -c "CREATE USER portal PASSWORD '$PORTAL_DB_PASSWORD'"
+          $DOCKER_COMPOSE run --rm psql -c "CREATE USER healthauthority_api PASSWORD '$HEALTHAUTHORITY_API_DB_PASSWORD'"
+          $DOCKER_COMPOSE run --rm psql < install/postgres/permissions.sql
+          $DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
 
       - name: Worker - Run phpunit
-        run: |
-          docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml run --rm --entrypoint=/src/vendor/bin/phpunit worker
+        run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit worker
 
       - name: Private Api - Run phpunit
-        run: |
-          docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml run --rm --entrypoint=/src/vendor/bin/phpunit private_api
+        run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit private_api
 
       - name: Public Api - Run phpunit
-        run: |
-          docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml run --rm --entrypoint=/src/vendor/bin/phpunit public_api
+        run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit public_api
 
       - name: Health Authority Api - Run phpunit
-        run: |
-          docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority_api
+        run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority_api

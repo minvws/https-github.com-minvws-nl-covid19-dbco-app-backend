@@ -48,11 +48,11 @@ class CaseAction extends Action
     {
         $errors = [];
 
-        $caseId = $this->args['caseId'] ?? null;
-        if (empty($caseId)) {
-            $errors[] = ValidationError::url('isRequired', 'caseId is required', 'caseId');
-        } else if (!Uuid::isValid($caseId)) {
-            $errors[] = ValidationError::url('invalid', 'caseId should be valid UUID', 'caseId');
+        $caseUuid = $this->args['caseUuid'] ?? null;
+        if (empty($caseUuid)) {
+            $errors[] = ValidationError::url('isRequired', 'caseUuid is required', 'caseUuid');
+        } else if (!Uuid::isValid($caseUuid)) {
+            $errors[] = ValidationError::url('invalid', 'caseUuid should be valid UUID', 'caseUuid');
         }
 
         if (count($errors) > 0) {
@@ -60,7 +60,7 @@ class CaseAction extends Action
         }
 
         try {
-            $case = $this->caseService->getCase($caseId);
+            $case = $this->caseService->getCase($caseUuid);
         } catch (CaseNotFoundException $e) {
             throw new ActionException($this->request, 'caseNotFoundError', $e->getMessage(), ActionException::NOT_FOUND);
         }

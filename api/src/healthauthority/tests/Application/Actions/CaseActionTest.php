@@ -41,15 +41,15 @@ class CaseActionTest extends TestCase
      */
     public function testGet()
     {
-        $caseId = Uuid::uuid4();
+        $caseUuid = Uuid::uuid4();
 
         $pdo = $this->getAppInstance()->getContainer()->get(PDO::class);
         $pdo->query("
             INSERT INTO covidcase (uuid, owner, date_of_symptom_onset, status)
-            VALUES ('{$caseId}', 'Test', TO_DATE('2020-10-30', 'YYYY-MM-DD'), 'open')
+            VALUES ('{$caseUuid}', 'Test', TO_DATE('2020-10-30', 'YYYY-MM-DD'), 'open')
         ");
 
-        $request = $this->createRequest('GET', '/v1/cases/' . $caseId);
+        $request = $this->createRequest('GET', '/v1/cases/' . $caseUuid);
         $response = $this->app->handle($request);
         $this->assertEquals(200, $response->getStatusCode());
     }
@@ -61,15 +61,15 @@ class CaseActionTest extends TestCase
      */
     public function testClosed()
     {
-        $caseId = Uuid::uuid4();
+        $caseUuid = Uuid::uuid4();
 
         $pdo = $this->getAppInstance()->getContainer()->get(PDO::class);
         $pdo->query("
             INSERT INTO covidcase (uuid, owner, date_of_symptom_onset, status)
-            VALUES ('{$caseId}', 'Test', TO_DATE('2020-10-30', 'YYYY-MM-DD'), 'closed')
+            VALUES ('{$caseUuid}', 'Test', TO_DATE('2020-10-30', 'YYYY-MM-DD'), 'closed')
         ");
 
-        $request = $this->createRequest('GET', '/v1/cases/' . $caseId);
+        $request = $this->createRequest('GET', '/v1/cases/' . $caseUuid);
         $response = $this->app->handle($request);
         $this->assertEquals(404, $response->getStatusCode());
     }

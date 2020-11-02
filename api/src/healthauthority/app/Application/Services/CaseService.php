@@ -64,15 +64,15 @@ class CaseService
     /**
      * Returns the case with task list.
      *
-     * @param string $caseId Case identifier.
+     * @param string $caseUuid Case identifier.
      *
      * @return CovidCase
      *
      * @throws CaseNotFoundException
      */
-    public function getCase(string $caseId): CovidCase
+    public function getCase(string $caseUuid): CovidCase
     {
-        $case = $this->caseRepository->getCase($caseId);
+        $case = $this->caseRepository->getCase($caseUuid);
         if ($case === null) {
             throw new CaseNotFoundException('Case does not exist!');
         }
@@ -83,12 +83,12 @@ class CaseService
     /**
      * Submit case with tasks.
      *
-     * @param string $caseId Case identifier.
-     * @param string $body   Encrypted body.
+     * @param string $caseUuid Case identifier.
+     * @param string $body     Encrypted body.
      */
-    public function submitCase(string $caseId, string $body): void
+    public function submitCase(string $caseUuid, string $body): void
     {
         // TODO: decrypt
-        $this->caseRepository->submitCase($caseId, $body);
+        $this->caseRepository->submitCase($caseUuid, $body);
     }
 }

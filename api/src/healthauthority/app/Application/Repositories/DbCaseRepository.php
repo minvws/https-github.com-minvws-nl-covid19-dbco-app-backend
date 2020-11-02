@@ -31,20 +31,20 @@ class DbCaseRepository implements CaseRepository
     /**
      * Returns the case with its task list.
      *
-     * @param string $caseId Case identifier.
+     * @param string $caseUuid Case identifier.
      *
      * @return CovidCase|null
      */
-    public function getCase(string $caseId): ?CovidCase
+    public function getCase(string $caseUuid): ?CovidCase
     {
         $stmt = $this->client->prepare("
             SELECT c.date_of_symptom_onset
             FROM covidcase c
-            WHERE c.uuid = :caseId
+            WHERE c.uuid = :caseUuid
             AND c.status = 'open'
         ");
 
-        $stmt->execute([ 'caseId' => $caseId ]);
+        $stmt->execute([ 'caseUuid' => $caseUuid ]);
 
         $dateOfSymptomOnsetStr = $stmt->fetchColumn();
         if ($dateOfSymptomOnsetStr === false) {
@@ -58,10 +58,10 @@ class DbCaseRepository implements CaseRepository
         $stmt = $this->client->prepare("
             SELECT t.*
             FROM task t
-            WHERE t.case_uuid = :caseId
+            WHERE t.case_uuid = :caseUuid
         ");
 
-        $stmt->execute([ 'caseId' => $caseId ]);
+        $stmt->execute([ 'caseUuid' => $caseUuid ]);
 
         while ($row = $stmt->fetchObject()) {
             $task = new Task();
@@ -84,12 +84,12 @@ class DbCaseRepository implements CaseRepository
     /**
      * Submit case tasks.
      *
-     * @param string $caseId
+     * @param string $caseUuid
      * @param string $body
      *
      * @return void
      */
-    public function submitCase(string $caseId, string $body): void
+    public function submitCase(string $caseUuid, string $body): void
     {
 
     }
