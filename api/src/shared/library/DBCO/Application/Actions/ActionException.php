@@ -16,6 +16,7 @@ use Throwable;
 class ActionException extends Exception implements JsonSerializable
 {
     public const BAD_REQUEST           = 400;
+    public const NOT_FOUND             = 404;
     public const INTERNAL_SERVER_ERROR = 501;
 
     /**

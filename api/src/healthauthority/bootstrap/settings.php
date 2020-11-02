@@ -13,11 +13,13 @@ return [
     'logger.path' => 'php://stdout',
     'logger.level' => $debug ? Logger::DEBUG : Logger::ERROR,
     'db' => [
-        'driver' => 'pgsql',
+        'type' => DI\env('DB_TYPE'),
         'host' => DI\env('DB_HOST'),
         'username' => DI\env('DB_USERNAME'),
         'database' => DI\env('DB_DATABASE'),
         'password' => DI\env('DB_PASSWORD'),
+        'tns' => DI\env('DB_TNS', null)
     ],
-    'signingKey.length' => 32
+    'signingKey.length' => 32,
+    'useStubs' => DI\env('USE_STUBS', false)
 ];

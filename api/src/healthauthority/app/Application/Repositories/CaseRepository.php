@@ -15,9 +15,9 @@ interface CaseRepository
      *
      * @param string $caseId Case identifier.
      *
-     * @return CovidCase
+     * @return CovidCase|null
      */
-    public function getCase(string $caseId): CovidCase;
+    public function getCase(string $caseId): ?CovidCase;
 
     /**
      * Submit case tasks.
