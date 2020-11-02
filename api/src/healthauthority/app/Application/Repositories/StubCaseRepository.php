@@ -1,6 +1,7 @@
 <?php
 namespace DBCO\HealthAuthorityAPI\Application\Repositories;
 
+use DateTimeImmutable;
 use DBCO\HealthAuthorityAPI\Application\Models\Task;
 use DBCO\HealthAuthorityAPI\Application\Models\CovidCase;
 
@@ -32,10 +33,10 @@ class StubCaseRepository implements CaseRepository
         $task1->context = "Partner";
         $task1->category = "1";
         $task1->communication = "index";
-        $task1->dateOfLastExposure = "2020-10-13";
+        $task1->dateOfLastExposure = new DateTimeImmutable("2020-10-13");
 
         $case->tasks[] = $task1;
-        $case->dateOfSymptomOnset = "2020-10-14";
+        $case->dateOfSymptomOnset = new DateTimeImmutable("2020-10-14");
 
         return $case;
     }

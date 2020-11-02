@@ -1,6 +1,8 @@
 <?php
 namespace  DBCO\HealthAuthorityAPI\Application\Models;
 
+use DateTimeImmutable;
+
 /**
  * Task.
  */
@@ -40,4 +42,9 @@ class Task
      * @var string
      */
     public string $communication;
+
+    /**
+     * @var DateTimeImmutable|null
+     */
+    public ?DateTimeImmutable $dateOfLastExposure;
 }

@@ -30,14 +30,33 @@ return function (ContainerBuilder $containerBuilder) {
                     ),
             PDO::class => function (ContainerInterface $c) {
                 $settings = $c->get('db');
-                $host = $settings['host'];
-                $dbname = $settings['database'];
+
+                if ($settings['type'] === 'postgres') {
+                    $host = $settings['host'];
+                    $db = $settings['database'];
+                    $dsn = "pgsql:host=$host;dbname=$db";
+                } else { // oracle
+                    if (!empty($settings['tns'])) {
+                        $tns = $settings['tns'];
+                        $dsn = "oci:dbname=$tns";
+                    } else {
+                        $host = $settings['host'];
+                        $db = $settings['database'];
+                        $dsn = "oci:dbname=//$host:1521/$db";
+                    }
+                }
+
                 $username = $settings['username'];
                 $password = $settings['password'];
-                $driver = $settings['driver'];
-                $dsn = "$driver:host=$host;dbname=$dbname";
+
                 $pdo = new PDO($dsn, $username, $password);
                 $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+                if ($settings['type'] === 'oracle') {
+                    $db = $settings['database'];
+                    $pdo->query('ALTER SESSION SET CURRENT_SCHEMA = ' . $db);
+                }
+
                 return $pdo;
             },
             TransactionManager::class => autowire(DbTransactionManager::class)
