@@ -91,7 +91,11 @@
                     {{ $task->taskContext }}
                 </td>
                 <td class="text-center">
-                    <img src="{{ asset('images/progress-'.$task->progress.'.svg') }}">
+                    @if ($task->submittedByUser())
+                        <img src="{{ asset('images/progress-'.$task->progress.'.svg') }}">
+                    @else
+                        <img src="{{ asset('images/progress-warn.svg') }}">
+                    @endif
                 </td>
                 <td class="text-center">
                     @if ($task->informedByIndex)
