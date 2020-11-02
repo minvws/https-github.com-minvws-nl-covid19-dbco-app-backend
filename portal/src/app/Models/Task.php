@@ -31,4 +31,6 @@ class Task
     // Filled upon submit, indicates which questionnaire the user filled
     public ?string $questionnaireUuid;
 
+    public int $progress = 0;
+
 }
