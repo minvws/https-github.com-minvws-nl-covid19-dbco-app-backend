@@ -47,9 +47,9 @@ class CaseSubmitAction extends Action
 
         $errors = [];
 
-        $caseId = $this->args['caseId'] ?? null;
-        if (empty($caseId)) {
-            $errors = ValidationError::url('isRequired', 'caseId is required', 'caseId');
+        $caseUuid = $this->args['caseUuid'] ?? null;
+        if (empty($caseUuid)) {
+            $errors = ValidationError::url('isRequired', 'caseUuid is required', 'caseUuid');
         }
 
         // TODO: verify body is not empty, signature etc.
@@ -58,7 +58,7 @@ class CaseSubmitAction extends Action
             throw new ValidationException($this->request, $errors);
         }
 
-        $this->caseService->submitCase($caseId, $body);
+        $this->caseService->submitCase($caseUuid, $body);
 
         return $this->respond(new CaseSubmitResponse());
     }
