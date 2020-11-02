@@ -1,12 +1,12 @@
 <?php
-namespace App\Application\Repositories;
+namespace DBCO\HealthAuthorityAPI\Application\Repositories;
 
-use App\Application\Models\TaskList;
+use DBCO\HealthAuthorityAPI\Application\Models\TaskList;
 
 /**
  * Used for retrieving general tasks.
  *
- * @package App\Application\Repositories
+ * @package DBCO\HealthAuthorityAPI\Application\Repositories
  */
 interface GeneralTaskRepository
 {

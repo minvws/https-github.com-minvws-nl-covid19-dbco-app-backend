@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Helpers;
+namespace DBCO\PrivateAPI\Application\Helpers;
 
 /**
  * Token generator, mainly used to generate pairing codes.
  *
- * @package App\Application\Helpers
+ * @package DBCO\PrivateAPI\Application\Helpers
  */
 interface TokenGenerator
 {

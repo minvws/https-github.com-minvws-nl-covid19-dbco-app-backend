@@ -1,0 +1,30 @@
+#!/bin/bash
+BASE_PATH=$(dirname $0)/..
+DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
+
+. $BASE_PATH/.env
+
+$DOCKER_COMPOSE up -d --remove-orphans
+
+echo
+echo "=====[ UPDATE WORKER ]====="
+$DOCKER_COMPOSE run --rm --entrypoint composer worker install
+
+echo
+echo "=====[ UPDATE PRIVATE API ]====="
+$DOCKER_COMPOSE run --rm --entrypoint composer private_api install
+
+echo
+echo "=====[ UPDATE PUBLIC API ]====="
+$DOCKER_COMPOSE run --rm --entrypoint composer public_api install
+
+echo
+echo "=====[ UPDATE HEALTHAUTHORITY API ]====="
+$DOCKER_COMPOSE run --rm --entrypoint composer healthauthority_api install
+
+echo
+echo "=====[ UPDATE PORTAL ]====="
+$DOCKER_COMPOSE run --rm --entrypoint composer portal install
+$DOCKER_COMPOSE run --rm --entrypoint npm portal install
+$DOCKER_COMPOSE run --rm --entrypoint npm portal run dev
+$DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate

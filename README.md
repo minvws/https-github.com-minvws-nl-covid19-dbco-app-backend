@@ -26,6 +26,10 @@ Steps to run a local development environment:
 
 - Create an `.env` file (you can create a copy of `.env.example` to get started). 
 - Generate some passwords and enter them in the various .env file settings that are passwords
+- If you want to test the portal against an oracle database:
+  - Make sure your docker environment has sufficient memory (the default 2Gb in most docker installs won't be enough, choose 8Gb to be safe)
+  - Build a local oracle container using `./oracle-database/build-dev.sh`.
+  - Set the DATABASE_TYPE environment variable to "oracle" in the `.env` file. 
 - Run `bin/setup-dev` to set up the environment (initialize database, install dependencies).
 
 If the command has completed successfully, you will be running 4 docker instances:
@@ -34,7 +38,13 @@ If the command has completed successfully, you will be running 4 docker instance
 * The healthcare api will run on port 8083
 * The healthcare portal will run on port 8084
 
-If your development environment gets messed up, run bin/reset-dev to rebuild the environment.
+To start-up the development environment manually (outside of the setup process) you can use
+`bin/docker-compose-dev up`. This command uses a docker-compose wrapper script that makes sure the
+correct database is attached and adds some other development specific settings. 
+
+To update your environment (e.g. run database migrations etc.) you can use `bin/update-dev`.
+
+If your development environment gets messed up, run `bin/reset-dev` to rebuild the environment.
 
 ## Testing
 

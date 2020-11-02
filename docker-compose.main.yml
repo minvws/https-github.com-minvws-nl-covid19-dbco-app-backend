@@ -1,0 +1,71 @@
+version: '3.7'
+
+services:
+    redis:
+        image: redis
+
+    private_api:
+        build:
+            context: ./api
+            dockerfile: Dockerfile-private
+        environment:
+            DEBUG: ${DEBUG:-0}
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            JWT_ENABLED: ${PRIVATE_API_JWT_ENABLED:-true}
+            JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
+            JWT_SECURE: ${PRIVATE_API_JWT_SECURE}
+        depends_on:
+            - redis
+
+    public_api:
+        build:
+            context: ./api
+            dockerfile: Dockerfile-public
+        environment:
+            DEBUG: ${DEBUG:-0}
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+        depends_on:
+            - redis
+
+    worker:
+        build: worker
+        environment:
+            DEBUG: ${DEBUG:-0}
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api/v1/
+        depends_on:
+            - redis
+            - healthauthority_api
+
+    healthauthority_api:
+        build:
+            context: ./api
+            dockerfile: Dockerfile-healthauthority
+        environment:
+            DEBUG: ${DEBUG:-0}
+        ports:
+            - ${HEALTHAUTHORITY_API_PORT:-8083}:80
+
+    portal:
+        build:
+            context: ./portal
+            dockerfile: Dockerfile
+        environment:
+            APP_URL: ${PORTAL_APP_URL}
+            APP_KEY: ${PORTAL_APP_KEY}
+            APP_DEBUG: ${DEBUG:-0}
+            REDIS_HOST: redis
+            DB_CONNECTION: ${DATABASE_TYPE}
+            DB_HOST: ${DATABASE_TYPE}
+            DB_DATABASE: portal
+            DB_USERNAME: ${PORTAL_DB_USERNAME}
+            DB_PASSWORD: ${PORTAL_DB_PASSWORD}
+            DB_TNS: ${PORTAL_DB_TNS:-oracle/XEPDB1}
+            TIH_CLIENT_ID: ${PORTAL_TIH_CLIENT_ID}
+            TIH_CLIENT_SECRET: ${PORTAL_TIH_CLIENT_SECRET}
+            TIH_REDIRECT_URL: ${PORTAL_TIH_REDIRECT_URL}
+            PRIVATE_API_BASE_URI: http://private_api/v1/
+            PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}

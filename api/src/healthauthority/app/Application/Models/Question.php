@@ -1,5 +1,5 @@
 <?php
-namespace App\Application\Models;
+namespace  DBCO\HealthAuthorityAPI\Application\Models;
 
 /**
  * Question.

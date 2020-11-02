@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Helpers\JWTConfigHelper;
-use DBCO\Application\Handlers\ErrorHandler;
+use DBCO\PrivateAPI\Application\Helpers\JWTConfigHelper;
+use DBCO\Shared\Application\Handlers\ErrorHandler;
 use Slim\App;
 use Tuupola\Middleware\JwtAuthentication;
 

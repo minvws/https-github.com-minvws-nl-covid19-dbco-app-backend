@@ -1,15 +1,15 @@
 <?php
-namespace App\Application\Repositories;
+namespace DBCO\PublicAPI\Application\Repositories;
 
-use App\Application\Models\Header;
-use App\Application\Models\QuestionnaireList;
+use DBCO\PublicAPI\Application\Models\Header;
+use DBCO\PublicAPI\Application\Models\QuestionnaireList;
 use Predis\Client as PredisClient;
 use RuntimeException;
 
 /**
  * Used for retrieving questionnaires from Redis.
  *
- * @package App\Application\Repositories
+ * @package DBCO\PublicAPI\Application\Repositories
  */
 class RedisQuestionnaireRepository implements QuestionnaireRepository
 {

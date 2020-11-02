@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DBCO\Application\Handlers;
+namespace DBCO\Shared\Application\Handlers;
 
-use DBCO\Application\Actions\ActionException;
-use DBCO\Application\ResponseEmitter\ResponseEmitter;
+use DBCO\Shared\Application\Actions\ActionException;
+use DBCO\Shared\Application\ResponseEmitter\ResponseEmitter;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * Handle PHP errors on shutdown.
  *
- * @package DBCO\Application\Handlers
+ * @package DBCO\Shared\Application\Handlers
  */
 class ShutdownHandler
 {

@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Services\PairingService;
-
-use App\Application\Services\CaseService;
+use DBCO\PublicAPI\Application\Services\PairingService;
+use DBCO\PublicAPI\Application\Services\CaseService;
 use DI\ContainerBuilder;
 use function DI\autowire;
 use function DI\get;

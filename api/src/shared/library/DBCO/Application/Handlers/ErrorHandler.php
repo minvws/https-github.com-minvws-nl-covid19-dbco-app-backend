@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace DBCO\Application\Handlers;
+namespace DBCO\Shared\Application\Handlers;
 
-use DBCO\Application\Actions\ActionException;
+use DBCO\Shared\Application\Actions\ActionException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Handlers\ErrorHandler as SlimErrorHandler;
 
 /**
  * Error handler.
  *
- * @package DBCO\Application\Handlers
+ * @package DBCO\Shared\Application\Handlers
  */
 class ErrorHandler extends SlimErrorHandler
 {

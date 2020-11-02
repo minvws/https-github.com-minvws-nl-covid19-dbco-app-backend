@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\Application\Actions;
+namespace DBCO\PrivateAPI\Tests\Application\Actions;
 
 use Exception;
 use Firebase\JWT\JWT;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Request;
-use Tests\TestCase;
+use DBCO\PrivateAPI\Tests\TestCase;
 
 /**
  * Register case tests.
  *
- * @package Tests\Application\Actions
+ * @package DBCO\PrivateAPI\Tests\Application\Actions
  */
 class CaseRegisterActionTest extends TestCase
 {

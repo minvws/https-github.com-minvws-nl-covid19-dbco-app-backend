@@ -1,8 +1,9 @@
 <?php
-namespace App\Application\Responses;
+namespace DBCO\PrivateAPI\Application\Responses;
 
-use DBCO\Application\Models\Pairing;
-use DBCO\Application\Responses\Response;
+use DBCO\PrivateAPI\Application\Models\PairingRequest;
+use DBCO\Shared\Application\Responses\Response;
+use DateTimeZone;
 use JsonSerializable;
 
 /**
@@ -11,18 +12,18 @@ use JsonSerializable;
 class CaseRegisterResponse extends Response implements JsonSerializable
 {
     /**
-     * @var Pairing
+     * @var PairingRequest
      */
-    private Pairing $pairing;
+    private PairingRequest $pairingRequest;
 
     /**
      * Constructor.
      *
-     * @param Pairing $pairing Pairing.
+     * @param PairingRequest $pairingRequest Pairing request.
      */
-    public function __construct(Pairing $pairing)
+    public function __construct(PairingRequest $pairingRequest)
     {
-        $this->pairing = $pairing;
+        $this->pairingRequest = $pairingRequest;
     }
 
     /**
@@ -32,10 +33,10 @@ class CaseRegisterResponse extends Response implements JsonSerializable
     {
         return [
             'pairingCode' =>
-                $this->pairing->code,
+                $this->pairingRequest->code,
             'pairingCodeExpiresAt' =>
-                $this->pairing->codeExpiresAt
-                    ->setTimezone(new \DateTimeZone('UTC'))
+                $this->pairingRequest->codeExpiresAt
+                    ->setTimezone(new DateTimeZone('UTC'))
                     ->format('Y-m-d\TH:i:s\Z')
         ];
     }

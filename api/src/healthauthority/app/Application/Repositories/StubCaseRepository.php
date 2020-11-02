@@ -1,15 +1,15 @@
 <?php
-namespace App\Application\Repositories;
+namespace DBCO\HealthAuthorityAPI\Application\Repositories;
 
-use App\Application\Models\Task;
-use App\Application\Models\CovidCase;
+use DBCO\HealthAuthorityAPI\Application\Models\Task;
+use DBCO\HealthAuthorityAPI\Application\Models\CovidCase;
 
 /**
  * Used for retrieving case specific tasks.
  *
  * Stub implementation.
  *
- * @package App\Application\Repositories
+ * @package DBCO\HealthAuthorityAPI\Application\Repositories
  */
 class StubCaseRepository implements CaseRepository
 {
