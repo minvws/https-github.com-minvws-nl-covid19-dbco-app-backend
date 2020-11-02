@@ -17,11 +17,11 @@ class StubCaseRepository implements CaseRepository
     /**
      * Returns the case with its task list.
      *
-     * @param string $caseId Case identifier.
+     * @param string $caseUuid Case identifier.
      *
      * @return CovidCase
      */
-    public function getCase(string $caseId): CovidCase
+    public function getCase(string $caseUuid): CovidCase
     {
         $case = new CovidCase();
 
@@ -44,12 +44,12 @@ class StubCaseRepository implements CaseRepository
     /**
      * Submit case tasks.
      *
-     * @param string $caseId
+     * @param string $caseUuid
      * @param string $body
      *
      * @return void
      */
-    public function submitCase(string $caseId, string $body): void
+    public function submitCase(string $caseUuid, string $body): void
     {
 
     }
