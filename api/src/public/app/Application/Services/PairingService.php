@@ -1,27 +1,26 @@
 <?php
-namespace App\Application\Services;
+namespace DBCO\PublicAPI\Application\Services;
 
-use App\Application\Helpers\KeyGenerator;
-use DateTime;
-use DBCO\Application\Models\DbcoCase;
-use DBCO\Application\Models\Pairing;
-use DBCO\Application\Repositories\PairingRepository;
-use DBCO\Application\Repositories\CaseRepository;
-use DBCO\Application\Managers\TransactionManager;
+use DBCO\PublicAPI\Application\Helpers\KeyGenerator;
+use DBCO\PublicAPI\Application\Models\PairingCase;
+use DBCO\PublicAPI\Application\Models\Pairing;
+use DBCO\PublicAPI\Application\Repositories\CaseRepository;
+use DBCO\PublicAPI\Application\Repositories\PairingRepository;
+use DBCO\PublicAPI\Application\Repositories\PairingRequestRepository;
 use Exception;
 use Psr\Log\LoggerInterface;
 
 /**
  * Responsible for linking devices and cases.
  *
- * @package App\Application\Services
+ * @package DBCO\PublicAPI\Application\Services
  */
 class PairingService
 {
     /**
-     * @var CaseRepository
+     * @var PairingRequestRepository
      */
-    private CaseRepository $caseRepository;
+    private PairingRequestRepository $pairingRequestRepository;
 
     /**
      * @var PairingRepository
@@ -34,11 +33,6 @@ class PairingService
     private KeyGenerator $keyGenerator;
 
     /**
-     * @var TransactionManager
-     */
-    private TransactionManager $transactionManager;
-
-    /**
      * @var LoggerInterface
      */
     private LoggerInterface $logger;
@@ -46,41 +40,41 @@ class PairingService
     /**
      * Constructor.
      *
-     * @param PairingRepository  $pairingRepository
-     * @param KeyGenerator       $keyGenerator
-     * @param TransactionManager $transactionManager
-     * @param LoggerInterface    $logger
+     * @param PairingRequestRepository $pairingRequestRepository
+     * @param PairingRepository        $pairingRepository
+     * @param KeyGenerator             $keyGenerator
+     * @param LoggerInterface          $logger
      */
     public function __construct(
+        PairingRequestRepository $pairingRequestRepository,
         PairingRepository $pairingRepository,
         KeyGenerator $keyGenerator,
-        TransactionManager $transactionManager,
         LoggerInterface $logger
     )
     {
+        $this->pairingRequestRepository = $pairingRequestRepository;
         $this->pairingRepository = $pairingRepository;
         $this->keyGenerator = $keyGenerator;
-        $this->transactionManager = $transactionManager;
         $this->logger = $logger;
     }
 
     /**
-     * Get pairing.
+     * Create pairing.
      *
-     * @param string $code
+     * @param string $code Pairing code
      *
-     * @return Pairing
+     * @return PairingCase
      *
      * @throws InvalidPairingCodeException
      */
-    protected function getPairingByCode(string $code): Pairing
+    protected function completePairingRequest(string $code): PairingCase
     {
-        $pairing = $this->pairingRepository->getPairingByCode($code);
-        if ($pairing === null || $pairing->codeExpiresAt < new DateTime()) {
-            throw new InvalidPairingCodeException();
-        } else {
-            return $pairing;
+        $case = $this->pairingRequestRepository->completePairingRequest($code);
+        if ($case === null) {
+            throw new InvalidPairingCodeException('Invalid pairing code');
         }
+
+        return $case;
     }
 
     /**
@@ -94,16 +88,26 @@ class PairingService
     }
 
     /**
-     * Update pairing.
+     * Create pairing.
      *
-     * @param Pairing  $pairing
-     * @param string[] $fields
+     * @param PairingCase $case
      *
-     * @throws Exception
+     * @return Pairing
      */
-    protected function updatePairing(Pairing $pairing, array $fields)
+    protected function createPairing(PairingCase $case): Pairing
     {
-        $this->pairingRepository->updatePairing($pairing, $fields);
+        $signingKey = $this->generateSigningKey(); // TODO: should be provided by app
+        return new Pairing($case, $signingKey);
+    }
+
+    /**
+     * Store pairing.
+     *
+     * @param Pairing $pairing
+     */
+    protected function storePairing(Pairing $pairing)
+    {
+        $this->pairingRepository->storePairing($pairing);
     }
 
     /**
@@ -115,22 +119,18 @@ class PairingService
      *
      * @return Pairing
      *
-     * @throws Exception
+     * @throws InvalidPairingCodeException
      */
     public function completePairing(string $pairingCode, string $deviceType, string $deviceName): Pairing
     {
         $this->logger->debug('Complete pairing with code ' . $pairingCode);
 
-        $pairing = $this->transactionManager->run(function () use ($pairingCode, $deviceType, $deviceName) {
-            $pairing = $this->getPairingByCode($pairingCode);
-            $pairing->code = null;
-            $pairing->isPaired = true;
-            $pairing->signingKey = $this->generateSigningKey();
-            $this->updatePairing($pairing, ['code', 'isPaired', 'signingKey']);
-            return $pairing;
-        });
+        $case = $this->completePairingRequest($pairingCode);
+        $pairing = $this->createPairing($case);
+        $this->storePairing($pairing);
 
-        $this->logger->debug('Finished pairing ' . $pairingCode . ' / ' .  $pairing->id . ' for case ' . $pairing->case->id);
+        $this->logger->debug('Completed pairing with code ' . $pairingCode . ' for case ' . $case->id);
+        $this->logger->debug('Case ' . $case->id . ' paired to ' . $deviceName . '(' . $deviceType . ')');
 
         return $pairing;
     }

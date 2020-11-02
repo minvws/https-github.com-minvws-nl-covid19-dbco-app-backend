@@ -1,0 +1,23 @@
+version: '3.7'
+
+# ci overrides
+services:
+    private_api:
+        environment:
+            APP_ENV: test
+
+    public_api:
+        environment:
+            APP_ENV: test
+
+    worker:
+        environment:
+            APP_ENV: test
+
+    healthauthority_api:
+        environment:
+            APP_ENV: test
+
+    portal:
+        environment:
+            APP_ENV: test

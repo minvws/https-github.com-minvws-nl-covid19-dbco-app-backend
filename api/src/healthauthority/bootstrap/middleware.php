@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use DBCO\Application\Handlers\ErrorHandler;
+use DBCO\Shared\Application\Handlers\ErrorHandler;
 use Slim\App;
 use Tuupola\Middleware\JwtAuthentication;
 

@@ -1,0 +1,2 @@
+docker build -t docker.pkg.github.com/minvws/nl-covid19-dbco-app-backend-private/oracle-database:18.4.0-xe ./base
+docker push docker.pkg.github.com/minvws/nl-covid19-dbco-app-backend-private/oracle-database:18.4.0-xe

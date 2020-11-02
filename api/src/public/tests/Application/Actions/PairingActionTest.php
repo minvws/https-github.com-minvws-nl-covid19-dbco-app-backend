@@ -1,19 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\Application\Actions;
+namespace DBCO\PublicAPI\Tests\Application\Actions;
 
-use DBCO\Application\Models\DbcoCase;
-use DBCO\Application\Models\Pairing;
-use DBCO\Application\Repositories\CaseRepository;
-use DBCO\Application\Repositories\PairingRepository;
+use DateTime;
 use Exception;
-use Tests\TestCase;
+use DBCO\PublicAPI\Tests\TestCase;
+use Predis\Client as PredisClient;
 
 /**
  * Pairing tests.
  *
- * @package Tests\Application\Actions
+ * @package DBCO\PublicAPI\Tests\Application\Actions
  */
 class PairingActionTest extends TestCase
 {
@@ -27,16 +25,18 @@ class PairingActionTest extends TestCase
     {
         parent::setUp();
 
-        /** @var $caseRepository CaseRepository */
-        $caseRepository = $this->app->getContainer()->get(CaseRepository::class);
-        $case = new DbcoCase(self::CASE_ID, new \DateTime('+1 day'));
-        $caseRepository->createCase($case);
+        /** @var $redis PredisClient */
+        $redis = $this->app->getContainer()->get(PredisClient::class);
 
-        /** @var $pairingRepository PairingRepository */
-        $pairingRepository = $this->app->getContainer()->get(PairingRepository::class);
-        $pairing = new Pairing(null, $case, self::PAIRING_CODE, new \DateTime('+15 minutes'), false, null);
-        $pairingRepository->createPairing($pairing);
-        $this->assertNotNull($pairing->id);
+        // store pairing request
+        $pairingRequest = [
+            'case' => [
+                'id' => self::CASE_ID,
+                'expiresAt' => (new DateTime('+1 day'))->format(DateTime::ATOM)
+            ]
+        ];
+
+        $redis->setex('pairing-request:' . self::PAIRING_CODE, 60 * 15, json_encode($pairingRequest));
     }
 
     /**

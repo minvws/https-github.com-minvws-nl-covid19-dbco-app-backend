@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Actions\CaseAction;
-use App\Application\Actions\CaseSubmitAction;
-use App\Application\Actions\GeneralTaskListAction;
-use App\Application\Actions\QuestionnaireListAction;
+use DBCO\HealthAuthorityAPI\Application\Actions\CaseAction;
+use DBCO\HealthAuthorityAPI\Application\Actions\CaseSubmitAction;
+use DBCO\HealthAuthorityAPI\Application\Actions\GeneralTaskListAction;
+use DBCO\HealthAuthorityAPI\Application\Actions\QuestionnaireListAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;

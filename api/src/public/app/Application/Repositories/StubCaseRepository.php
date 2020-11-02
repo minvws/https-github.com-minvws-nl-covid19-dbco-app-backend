@@ -1,15 +1,14 @@
 <?php
-namespace App\Application\Repositories;
+namespace DBCO\PublicAPI\Application\Repositories;
 
-use App\Application\Models\CovidCase;
-use App\Application\Repositories\CaseRepository;
+use DBCO\PublicAPI\Application\Models\CovidCase;
 
 /**
- * Used for retrieving case and its specific tasks.
+ * Used for syncing case details.
  *
  * Stub implementation.
  *
- * @package App\Application\Repositories
+ * @package DBCO\PublicAPI\Application\Repositories
  */
 class StubCaseRepository implements CaseRepository
 {

@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Actions;
+namespace DBCO\PrivateAPI\Application\Actions;
 
-use App\Application\Helpers\JWTConfigHelper;
-use App\Application\Responses\CaseRegisterResponse;
-use App\Application\Services\CaseService;
 use DateTime;
-use DBCO\Application\Actions\Action;
-use DBCO\Application\Actions\ValidationError;
-use DBCO\Application\Actions\ValidationException;
+use DBCO\PrivateAPI\Application\Helpers\JWTConfigHelper;
+use DBCO\PrivateAPI\Application\Responses\CaseRegisterResponse;
+use DBCO\PrivateAPI\Application\Services\CaseService;
+use DBCO\Shared\Application\Actions\Action;
+use DBCO\Shared\Application\Actions\ValidationError;
+use DBCO\Shared\Application\Actions\ValidationException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
 /**
  * Register a new DBCO case.
  *
- * @package App\Application\Actions
+ * @package DBCO\PrivateAPI\Application\Actions
  */
 class CaseRegisterAction extends Action
 {

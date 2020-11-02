@@ -1,6 +1,12 @@
 #!/bin/bash
 BASE_PATH=$(dirname $0)/..
-docker-compose stop
-docker-compose rm --force
-docker volume rm nl-covid19-dbco-app-backend-private_postgres-data
+DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
+DATABASE_TYPE=`source $BASE_PATH/.env && echo $DATABASE_TYPE`
+PROJECT_NAME=dbco-dev-${DATABASE_TYPE}
+
+echo "=====[ REMOVE CONTAINERS AND VOLUMES ]======================="
+$DOCKER_COMPOSE stop
+$DOCKER_COMPOSE rm --force
+docker volume rm ${PROJECT_NAME}_${DATABASE_TYPE}-data
+echo ""
 $BASE_PATH/bin/setup-dev

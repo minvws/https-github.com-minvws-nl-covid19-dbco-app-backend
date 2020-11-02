@@ -1,0 +1,5 @@
+GRANT CONNECT TO healthauthority_api;
+GRANT CREATE SESSION TO healthauthority_api;
+
+GRANT CONNECT, RESOURCE, DBA TO portal;
+GRANT CREATE SESSION TO portal;

@@ -2,38 +2,35 @@ version: '3.7'
 
 # test overrides
 services:
-    postgres:
-        ports:
-            - ${POSTGRES_PORT:-5432}:5432
-    psql:
-        image: postgres
-        entrypoint: psql
-        environment:
-            PGPASSWORD: ${POSTGRES_PASSWORD}
-            PRIVATE_API_DB_PASSWORD: ${PRIVATE_API_DB_PASSWORD}
-            PUBLIC_API_DB_PASSWORD: ${PUBLIC_API_DB_PASSWORD}
-            HEALTHAUTHORITY_API_DB_PASSWORD: ${HEALTHAUTHORITY_API_DB_PASSWORD}
-            WORKER_DB_PASSWORD: ${WORKER_DB_PASSWORD}
-        depends_on:
-            - postgres
-
     private_api:
         environment:
             APP_ENV: test
+        volumes:
+            - ./api/src/shared:/shared
+            - ./api/src/private:/src
 
     public_api:
         environment:
             APP_ENV: test
-
-    healthauthority_api:
-        environment:
-            APP_ENV: test
+        volumes:
+            - ./api/src/shared:/shared
+            - ./api/src/public:/src
 
     worker:
         environment:
             APP_ENV: test
-  
+        volumes:
+            - ./worker/src:/src
+
+    healthauthority_api:
+        environment:
+            APP_ENV: test
+        volumes:
+            - ./api/src/shared:/shared
+            - ./api/src/healthauthority:/src
+
     portal:
         environment:
             APP_ENV: test
-       
+        volumes:
+            - ./portal/src:/src

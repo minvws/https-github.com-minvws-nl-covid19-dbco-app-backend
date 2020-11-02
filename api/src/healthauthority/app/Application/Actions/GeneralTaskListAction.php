@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Actions;
+namespace DBCO\HealthAuthorityAPI\Application\Actions;
 
-use App\Application\Responses\TaskListResponse;
-use App\Application\Services\CaseService;
-use DBCO\Application\Actions\Action;
+use DBCO\HealthAuthorityAPI\Application\Responses\TaskListResponse;
+use DBCO\HealthAuthorityAPI\Application\Services\CaseService;
+use DBCO\Shared\Application\Actions\Action;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
 /**
  * List general tasks.
  *
- * @package App\Application\Actions
+ * @package DBCO\HealthAuthorityAPI\Application\Actions
  */
 class GeneralTaskListAction extends Action
 {
