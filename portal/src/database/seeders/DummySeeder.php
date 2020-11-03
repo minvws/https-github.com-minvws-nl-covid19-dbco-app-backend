@@ -23,7 +23,7 @@ class DummySeeder extends Seeder
 
         $caseUuid = (string)Str::uuid();
         // Create a case for the dummy user (id 0), with tasks. Case is open, not yet submitted.
-        DB::table('case')->insert([
+        DB::table('covidcase')->insert([
             'name' => 'Bruce Wayne',
             'uuid' => $caseUuid,
             'owner' => 0,
@@ -90,7 +90,7 @@ class DummySeeder extends Seeder
 
         $caseUuid = (string)Str::uuid();
         // Create another case for the dummy user (id 0), with tasks. Case is open, not yet closed.
-        DB::table('case')->insert([
+        DB::table('covidcase')->insert([
             'name' => 'Clark Kent',
             'uuid' => $caseUuid,
             'owner' => 0,
@@ -209,7 +209,7 @@ class DummySeeder extends Seeder
 
         $caseUuid = (string)Str::uuid();
         // Create a final case for the dummy user (id 0), some tasks. Case is closed by ggdd.
-        DB::table('case')->insert([
+        DB::table('covidcase')->insert([
             'name' => 'Carol Danvers',
             'uuid' => $caseUuid,
             'owner' => 0,
