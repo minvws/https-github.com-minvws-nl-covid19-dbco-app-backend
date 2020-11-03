@@ -13,7 +13,9 @@ interface QuestionnaireRepository
     /**
      * Returns the questionnaire list.
      *
+     * @param string $language Language.
+     *
      * @return QuestionnaireList
      */
-    public function getQuestionnaires(): QuestionnaireList;
+    public function getQuestionnaires(string $language): QuestionnaireList;
 }
