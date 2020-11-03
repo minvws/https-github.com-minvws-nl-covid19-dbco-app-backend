@@ -33,6 +33,8 @@ class Task
 
     public int $progress = 0;
 
+    public ?string $hpzoneId;
+
     /**
      * @return bool true if the task has submitted answers by the user.
      */
@@ -42,5 +44,4 @@ class Task
         // is no longer empty
         return $this->questionnaireUuid != null;
     }
-
 }
