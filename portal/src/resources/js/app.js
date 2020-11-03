@@ -47,5 +47,34 @@ jQuery(document).ready(function ($) {
        $(this).closest('tr').remove();
     });
 
-});
+    function markUploadCompleted(taskId, remoteId) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: 'POST',
+            url: '/markupload',
+            data: {
+                'taskId': taskId,
+                'remoteId': remoteId
+            },
+            dataType: 'json',
+            success: function (data) {
+                console.log("linked " + taskId + " to " + remoteId);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
 
+    $(".chk-upload-completed").click(function() {
+        if ($(this).is(':checked') && $(this).attr('id').indexOf('upload_') !== -1) {
+            taskId = $(this).attr('id').substr(7);
+            remoteId = $('#remote_' + taskId).val() ?? '';
+            markUploadCompleted(taskId, remoteId);
+        }
+    });
+});
