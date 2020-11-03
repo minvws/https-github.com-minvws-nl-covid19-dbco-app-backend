@@ -63,10 +63,14 @@ class RedisQuestionnaireRepository implements QuestionnaireRepository
     /**
      * Returns the questionnaire list.
      *
+     * @param string Language.
+     *
      * @return QuestionnaireList
      */
-    public function getQuestionnaires(): QuestionnaireList
+    public function getQuestionnaires(string $language): QuestionnaireList
     {
+        // TODO: retrieve language specific version
+
         $json = $this->client->get(self::KEY_QUESTIONNAIRES);
         if ($json === null) {
             throw new RuntimeException('Questionnaires not available in Redis!');

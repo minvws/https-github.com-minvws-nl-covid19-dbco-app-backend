@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace DBCO\PublicAPI\Application\Helpers;
+namespace DBCO\Shared\Application\Helpers;
 
 /**
  * Utility methods for helping with translations.
  *
- * @package DBCO\PublicAPI\Application\Helpers
+ * @package DBCO\Shared\Application\Helpers
  */
 class TranslationHelper
 {

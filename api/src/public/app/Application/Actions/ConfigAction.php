@@ -3,25 +3,24 @@ declare(strict_types=1);
 
 namespace DBCO\PublicAPI\Application\Actions;
 
-use DBCO\PublicAPI\Application\Responses\QuestionnaireListResponse;
-use DBCO\PublicAPI\Application\Services\QuestionnaireService;
+use DBCO\PublicAPI\Application\Responses\ConfigResponse;
+use DBCO\PublicAPI\Application\Services\ConfigService;
 use DBCO\Shared\Application\Actions\Action;
 use DBCO\Shared\Application\Helpers\TranslationHelper;
-use Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
 /**
- * List questionnaires.
+ * Returns the app config.
  *
  * @package DBCO\PublicAPI\Application\Actions
  */
-class QuestionnaireListAction extends Action
+class ConfigAction extends Action
 {
     /**
-     * @var QuestionnaireService
+     * @var ConfigService
      */
-    private QuestionnaireService $questionnaireService;
+    private ConfigService $configService;
 
     /**
      * @var TranslationHelper
@@ -30,32 +29,26 @@ class QuestionnaireListAction extends Action
 
     /**
      * Constructor.
-     *
-     * @param LoggerInterface      $logger
-     * @param QuestionnaireService $questionnaireService
-     * @param TranslationHelper    $translationHelper
      */
     public function __construct(
         LoggerInterface $logger,
-        QuestionnaireService $questionnaireService,
+        ConfigService $configService,
         TranslationHelper $translationHelper
     )
     {
         parent::__construct($logger);
-        $this->questionnaireService = $questionnaireService;
+        $this->configService = $configService;
         $this->translationHelper = $translationHelper;
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @throws Exception
      */
     protected function action(): Response
     {
         $acceptLanguage = $this->request->getHeader('Accept-Language');
         $language = $this->translationHelper->getLanguageForAcceptLanguageHeader($acceptLanguage);
-        $data = $this->questionnaireService->getQuestionnaires($language);
-        return $this->respond(new QuestionnaireListResponse($data));
+        $config = $this->configService->getConfig($language);
+        return $this->respond(new ConfigResponse($config));
     }
 }
