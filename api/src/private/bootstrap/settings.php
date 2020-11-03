@@ -24,9 +24,10 @@ return [
     ],
 
     'jwt' => [
-        'enabled' => filter_var(getenv('JWT_ENABLED'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? true,
-        'path' => ['/v1'],
-        'secure' => filter_var(getenv('JWT_SECURE'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? true,
-        'secret' => getenv('JWT_SECRET')
+        'enabled'   => filter_var(getenv('JWT_ENABLED'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? true,
+        'attribute' => 'jwtClaims',
+        'path'      => ['/v1'],
+        'secure'    => filter_var(getenv('JWT_SECURE'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? true,
+        'secret'    => getenv('JWT_SECRET')
     ]
 ];
