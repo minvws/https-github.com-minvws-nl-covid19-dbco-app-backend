@@ -42,7 +42,7 @@ Route::middleware('sessionauth')->group(function() {
 
     // Dump data for export to HPZone
     Route::get('/dumpcase/{uuid}', [CaseController::class, 'dumpCase']);
-    Route::post('/markupload', [TaskController::class, 'markUpload']);
+    Route::post('/mark-task-exported', [TaskController::class, 'linkTaskToExport']);
 });
 
 Route::get('auth/identityhub', [LoginController::class, 'redirectToProvider']);
