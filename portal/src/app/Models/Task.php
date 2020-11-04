@@ -33,4 +33,14 @@ class Task
 
     public int $progress = 0;
 
+    /**
+     * @return bool true if the task has submitted answers by the user.
+     */
+    public function submittedByUser(): bool
+    {
+        // If the user filled out a questionnaire, we know he submitted this task because the questionnaireUuid
+        // is no longer empty
+        return $this->questionnaireUuid != null;
+    }
+
 }

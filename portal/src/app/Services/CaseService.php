@@ -173,8 +173,7 @@ class CaseService
     {
         $tasksByTaskUuid = [];
         foreach ($tasks as $task) {
-            $task->progress += ($task->dateOfLastExposure != null ? 20 : 0);
-            $task->progress += ($task->category != null ? 20 : 0);
+            $task->progress += ($task->dateOfLastExposure != null ? 25 : 0);
             $tasksByTaskUuid[$task->uuid] = $task;
         }
 
