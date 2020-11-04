@@ -30,11 +30,11 @@ Route::middleware('sessionauth')->group(function() {
 
     // Creating cases
     Route::get('/newcase', [Casecontroller::class, 'newCase']);
-    Route::get('/newcaseedit/{uuid}', [CaseController::class, 'draftCase']);
+    Route::get('/editcase/{uuid}', [CaseController::class, 'editCase']);
     Route::post('/savecase', [CaseController::class, 'saveCase']);
 
     // Editing open cases
-    Route::get('/case/{uuid}', [CaseController::class, 'editCase']);
+    Route::get('/case/{uuid}', [CaseController::class, 'viewCase']);
 
     // Create a pairing code
     Route::get('/paircase/{caseUuid}', [CaseController::class, 'pairCase']);

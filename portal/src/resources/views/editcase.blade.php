@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>GGD BCO portaal - Case detail</title>
 
     <!-- Stylesheet -->
@@ -11,109 +12,146 @@
 </head>
 <body>
 
-<div class="container-xl">
+<?php $questionNr = 1; ?>
 
-    <!-- Start of navbar component -->
-    <nav class="navbar  navbar-expand-lg  navbar-light  bg-transparent  pl-0  pr-0  w-100">
-        <a href="/" class="btn  btn-light  rounded-pill">
-            <i class="icon  icon--arrow-left  icon--m0"></i> Terug naar Cases
-        </a>
+<div class="container-xl questionform">
+    <form action="/savecase" method="POST">
+        @csrf
+        <input type="hidden" id="caseUuid" name="caseUuid" value="{{ $case->uuid }}">
 
-        <button class="navbar-toggler  ml-auto  bg-white"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarToggler"
-                aria-controls="navbarToggler"
-                aria-expanded="false" aria-label="Navigatie tonen">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <!-- Start of navbar component -->
+        <nav class="navbar  navbar-expand-lg  navbar-light  bg-transparent  pl-0  pr-0  w-100">
+            <a href="/" class="btn  btn-light  rounded-pill">
+                <i class="icon  icon--arrow-left  icon--m0"></i> Terug naar Cases
+            </a>
 
-        @include ('identitybar')
-    </nav>
-    <!-- End of navbar component -->
+            <button class="navbar-toggler  ml-auto  bg-white"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#navbarToggler"
+                    aria-controls="navbarToggler"
+                    aria-expanded="false" aria-label="Navigatie tonen">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    <!-- Start of page title component -->
-    <h2 class="mt-4  mb-4  font-weight-normal d-flex align-items-end">
-        <span class="font-weight-bold">{{ $case->name }}</span>
-        <a class="btn btn-primary ml-auto" role="button" href="/dumpcase/{{ $case->uuid }}">Zet in HPZone</a>
-    </h2>
-    <!-- End of page title component -->
-    <p>
-        Casenr: {{ $case->caseId }}
-        <br/>Eerste ziektedag: {{ $case->dateOfSymptomOnset != null ? $case->dateOfSymptomOnset->format('l j F') : ''}}
-    </p>
+            @include ('identitybar')
+        </nav>
+        <!-- End of navbar component -->
 
-    <?php
-        $groups = array('staff' => 'GGD Informeert', 'index' => 'Index Informeert', 'other' => 'Overige contacten')
-    ?>
+        <!-- Start of question title component -->
+        <div class="align-items-end  mb-3 mt-5">
+            <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Hoe heet de index?</h3>
+        </div>
+        <!-- End of question title component -->
+        @error('name')
+            <div class="alert alert-danger" role="alert">
+                Vul minimaal een naam in om de case te openen.
+            </div>
+        @enderror
+        <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $case->name) }}">
 
-    @foreach ($taskgroups as $taskgroup => $tasks)
+        <!-- Start of question title component -->
+        <div class="align-items-end  mb-3 mt-5">
+            <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Heb je een case nummer als referentie?</h3>
+            <p class="mt-2 mb-0  ml-auto">Bijvoorbeeld een case id uit HPZone, zodat je later makkelijk kunt zien bij wie deze gegevens horen.</p>
+        </div>
+        <!-- End of question title component -->
+        <input type="text" class="form-control" id="caseId" name="caseId" value="{{ old('caseId', $case->caseId) }}">
+
+
+        <!-- Start of question title component -->
+        <div class="align-items-end  mb-3 mt-5">
+            <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Wat is de eerste ziektedag van de index?</h3>
+            <p class="mt-2 mb-0  ml-auto">De besmettelijke periode is twee dagen voor de eerste ziektedag tot en met vandaag.</p>
+        </div>
+        <!-- End of question title component -->
+        <div>
+            <input type="hidden" class="form-control" id="dateofsymptomonset" name="dateOfSymptomOnset" value="{{ old('dateOfSymptomOnset', $case->dateOfSymptomOnset) }}" />
+        </div>
+
         <!-- Start of table title component -->
-        <div class="d-flex  align-items-end  mb-3 mt-4">
-            <h2 class="mb-0">{{ $groups[$taskgroup] }}</h2>
-            <p class="mb-0  ml-auto">Velden met een <i class="icon  icon--eye"></i> zijn in de app zichtbaar voor de index</p>
+        <div class="align-items-end  mb-3 mt-5">
+            <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Ga je nu samen met de index de contacten in kaart brengen?</h3>
+            <p class="mt-2 mb-0  ml-auto">Als je wilt dat de index zelf een begin maakt met het in kaart brengen van mensen die misschien besmet zijn, dan kan dat met de app.</p>
         </div>
         <!-- End of table title component -->
-
+        <p>
+            <button class="btn btn-outline-primary" type="button" onClick="$('#taskTable').show();">Ja</button>
+            <button class="btn btn-outline-primary" type="button" onClick="$('#taskTable').hide();">Nee</button>
+        </p>
         <!-- Start of table component -->
-        <table class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-hover  table-form  table-ggd">
+        <table id="taskTable" class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-form  table-ggd">
             <!--
                 Modify the col definitions in the colgroup below to change the widths of the the columns.
                 The w-* classes will be automatically generated based on the $sizes array which is defined in the scss/_variables.scss
             -->
             <colgroup>
                 <col class="w-25">
-                <col class="w-12">
-                <col class="w-30">
-                <col class="w-11">
-                <col class="w-11">
+                <col class="w-25">
+                <col class="w-8">
+                <col class="w-15">
+                <col class="w-15">
                 <col class="w-5">
             </colgroup>
             <thead>
             <tr>
                 <th scope="col">Naam <i class="icon  icon--eye"></i></th>
-                <th scope="col">Categorie <i class="icon  icon--eye"></i></th>
-                <th scope="col">Context <i class="icon  icon--eye"></i></th>
-                <th scope="col">Gegevens</th>
-                <th scope="col">Geinformeerd</th>
+                <th scope="col">Context (optioneel) <i class="icon  icon--eye"></i></th>
+                <th scope="col">Categorie</th>
+                <th scope="col">Laatste contact</th>
+                <th scope="col">Wie informeert</th>
                 <th scope="col"></th>
+
             </tr>
             </thead>
 
             <tbody>
-            @foreach ($tasks as $task)
-            <tr>
-                <th scope="row">{{ $task->label }}</th>
-                <td>
-                    {{ $task->category }}
-                </td>
-                <td>
-                    {{ $task->taskContext }}
-                </td>
-                <td class="text-center">
-                    @if ($task->submittedByUser())
-                        <img src="{{ asset('images/progress-'.$task->progress.'.svg') }}">
-                    @else
-                        <img src="{{ asset('images/progress-warn.svg') }}">
-                    @endif
-                </td>
-                <td class="text-center">
-                    @if ($task->informedByIndex)
-                        <img src="{{ asset('images/done.svg') }}">
-                    @elseif ($task->communication == 'index')
-                        Nog niet
-                    @endif
-                </td>
-                <td class="text-center">
-                    >
-                </td>
-            </tr>
-            @endforeach
+            <?php
+                $oldTasks = old('tasks');
+                if (is_array($oldTasks) && count($oldTasks)) {
+                    $tasks = $oldTasks;
+                }
+                $row=0;
+            ?>
+                @foreach ($tasks as $taskObj)
+                    <?php
+                        $task = (array)$taskObj;
+                        if (isset($task['dateOfLastExposure']) && is_object($task['dateOfLastExposure'])) {
+                            // template can't handle object because after validation 'old' is always an array, so we need
+                            // to be able to populate the field in both old and new cases, we use the stirng format.
+                            $task['dateOfLastExposure'] = $task['dateOfLastExposure']->format('Y-m-d');
+                        }
+                    ?>
+                    @include ('editcase_row')
+                    <?php $row++; ?>
+                @endforeach
             </tbody>
 
         </table>
         <!-- End of table component -->
-    @endforeach
+
+        <!-- Start of table title component -->
+        @if ($case->status == 'draft')
+        <div class="align-items-end  mb-3 mt-5">
+            <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Vertel de index welke app ze moeten downloaden</h3>
+            <p class="mt-2 mb-0  ml-auto">De index heeft een app nodig die ze kunnen downloaden in de Play of AppStore waarmee ze de gegevens op een veilige manier met de GGD kunnen delen.</p>
+        </div>
+        @endif
+        <!-- End of table title component -->
+
+        <div class="btn-group">
+            <input type="submit" class="btn btn-primary" value=
+                @if ($case->status == 'draft')
+                    "Case openen"
+                @else
+                    "Case opslaan"
+                @endif
+            />
+        </div>
+
+        <p></p>
+
+    </form>
 
 </div>
 
