@@ -91,8 +91,12 @@ $groupTitles = [
                     @endforeach
 
                     <td>
-                        <input style="width: auto; display: inline; position: relative;" type="text" size="10" id="remote_{{ $task['task.uuid'] }}" />
-                        <input style="width: auto; display: inline; position: relative;" type="checkbox" class="chk-upload-completed" id="upload_{{ $task['task.uuid'] }}" />
+                        @if ($task['task.hpzone_id'] !== null)
+                            {{ $task['task.hpzone_id'] }}
+                        @else
+                            <input style="width: auto; display: inline; position: relative;" type="text" size="10" id="remote_{{ $task['task.uuid'] }}" />
+                            <input style="width: auto; display: inline; position: relative;" type="checkbox" class="chk-upload-completed" id="upload_{{ $task['task.uuid'] }}" />
+                        @endif
                     </td>
                 </tr>
             @endforeach

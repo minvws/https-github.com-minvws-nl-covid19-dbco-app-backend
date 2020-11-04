@@ -38,7 +38,7 @@ class DbTaskRepository implements TaskRepository
      *
      * @return Task The task (or null if not found)
      */
-    public function getTask(string $taskUuid): Task
+    public function getTask(string $taskUuid): ?Task
     {
         $dbTask = $this->getTaskFromDb($taskUuid);
         return $dbTask != null ? $this->taskFromEloquentModel($dbTask): null;
@@ -64,7 +64,9 @@ class DbTaskRepository implements TaskRepository
         $dbTask->task_context = $task->taskContext;
         $dbTask->communication = $task->communication;
         $dbTask->category = $task->category;
-        $dbTask->date_of_last_exposure = $task->dateOfLastExposure != null? $task->dateOfLastExposure->toDateTimeImmutable() : null;
+        $dbTask->date_of_last_exposure = $task->dateOfLastExposure ?? $task->dateOfLastExposure->toDateTimeImmutable();
+        $dbTask->hpzone_id = $task->hpzoneId;
+
         $dbTask->save();
     }
 
@@ -73,15 +75,21 @@ class DbTaskRepository implements TaskRepository
      *
      * @return Task
      */
-    public function createTask(string $caseUuid, string $label, ?string $context, string $category, string $communication, ?Date $dateOfLastExposure): Task
-    {
+    public function createTask(
+        string $caseUuid,
+        string $label,
+        ?string $context,
+        string $category,
+        string $communication,
+        ?Date $dateOfLastExposure
+    ): Task {
         $dbTask = new EloquentTask();
 
         $dbTask->case_uuid = $caseUuid;
         $dbTask->label = $label;
         $dbTask->task_context = $context;
         $dbTask->category = $category;
-        $dbTask->date_of_last_exposure = ($dateOfLastExposure != null ? $dateOfLastExposure->toDateTimeImmutable() : null);
+        $dbTask->date_of_last_exposure = ($dateOfLastExposure !== null ? $dateOfLastExposure->toDateTimeImmutable() : null);
         $dbTask->communication = $communication;
         $dbTask->source = 'portal';
         $dbTask->task_type = 'contact';
@@ -97,7 +105,7 @@ class DbTaskRepository implements TaskRepository
         $task->uuid = $dbTask->uuid;
         $task->category = $dbTask->category;
         $task->communication = $dbTask->communication;
-        $task->dateOfLastExposure = $dbTask->date_of_last_exposure != NULL ? new Date($dbTask->date_of_last_exposure) : null;
+        $task->dateOfLastExposure = $dbTask->date_of_last_exposure !== NULL ? new Date($dbTask->date_of_last_exposure) : null;
         $task->informedByIndex = $dbTask->informed_by_index;
         $task->label = $dbTask->label;
         $task->nature = $dbTask->nature;
@@ -105,6 +113,7 @@ class DbTaskRepository implements TaskRepository
         $task->taskContext = $dbTask->task_context;
         $task->taskType = $dbTask->task_type;
         $task->questionnaireUuid = $dbTask->questionnaire_uuid;
+        $task->hpzoneId = $dbTask->hpzone_id;
 
         return $task;
     }

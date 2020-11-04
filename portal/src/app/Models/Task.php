@@ -33,7 +33,7 @@ class Task
 
     public int $progress = 0;
 
-    public ?string $hpzoneId;
+    public ?string $hpzoneId = null;
 
     /**
      * @return bool true if the task has submitted answers by the user.
