@@ -80,6 +80,7 @@ $groupTitles = [
 
                 <th>HPZone</th>
             </tr>
+
             </thead>
             <tbody>
             @foreach ($tasks as $task)
@@ -91,11 +92,11 @@ $groupTitles = [
                     @endforeach
 
                     <td>
-                        @if ($task['task.hpzone_id'] !== null)
-                            {{ $task['task.hpzone_id'] }}
-                        @else
-                            <input style="width: auto; display: inline; position: relative;" type="text" size="10" id="remote_{{ $task['task.uuid'] }}" />
+                        @if ($task['task.enableExport'])
+                            <input style="width: auto; display: inline; position: relative;" type="text" size="10" id="remote_{{ $task['task.uuid'] }}" value="{{ $task['task.exportId'] }}"/>
                             <input style="width: auto; display: inline; position: relative;" type="checkbox" class="chk-upload-completed" id="upload_{{ $task['task.uuid'] }}" />
+                        @else
+                            {{ $task['task.exportId'] }}
                         @endif
                     </td>
                 </tr>

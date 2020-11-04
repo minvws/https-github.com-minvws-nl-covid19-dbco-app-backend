@@ -79,7 +79,8 @@ class QuestionnaireService
                 'task.context' => $task->taskContext,
                 'task.dateoflastexposure' => $task->dateOfLastExposure !== null ? Date::parse($task->dateOfLastExposure)->format("Y-m-d"): '',
                 'task.communication' => $task->communication,
-                'task.hpzone_id' => $task->hpzoneId
+                'task.exportId' => $task->exportId,
+                'task.enableExport' => $task->exportedAt === null || $task->exportedAt < $task->updatedAt
             ];
 
         }
