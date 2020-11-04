@@ -4,6 +4,7 @@ namespace DBCO\PrivateAPI\Application\Services;
 use DBCO\PrivateAPI\Application\Helpers\TokenGenerator;
 use DBCO\PrivateAPI\Application\Models\PairingCase;
 use DBCO\PrivateAPI\Application\Models\PairingRequest;
+use DBCO\PrivateAPI\Application\Repositories\CaseRepository;
 use DBCO\PrivateAPI\Application\Repositories\PairingRequestRepository;
 use DateTime;
 use DateTimeInterface;
@@ -24,6 +25,11 @@ class CaseService
     private PairingRequestRepository $pairingRequestRepository;
 
     /**
+     * @var CaseRepository
+     */
+    private CaseRepository $caseRepository;
+
+    /**
      * @var TokenGenerator
      */
     private TokenGenerator $pairingCodeGenerator;
@@ -42,18 +48,21 @@ class CaseService
      * Constructor.
      *
      * @param PairingRequestRepository $pairingRequestRepository
+     * @param CaseRepository           $caseRepository
      * @param TokenGenerator           $pairingCodeGenerator
      * @param int                      $pairingCodeTimeToLive
      * @param LoggerInterface          $logger
      */
     public function __construct(
         PairingRequestRepository $pairingRequestRepository,
+        CaseRepository  $caseRepository,
         TokenGenerator $pairingCodeGenerator,
         int $pairingCodeTimeToLive,
         LoggerInterface $logger
     )
     {
         $this->pairingRequestRepository = $pairingRequestRepository;
+        $this->caseRepository = $caseRepository;
         $this->pairingCodeGenerator = $pairingCodeGenerator;
         $this->pairingCodeTimeToLive = $pairingCodeTimeToLive;
         $this->logger = $logger;
@@ -144,5 +153,17 @@ class CaseService
         $this->logger->debug('Stored pairing request for case ' . $id);
 
         return $pairingRequest;
+    }
+
+    /**
+     * Store encrypted case payload for client retrieval.
+     *
+     * @param string $token                Case token.
+     * @param string $payload              Encrypted payload.
+     * @param DateTimeInterface $expiresAt Data should automatically be wiped after expiry date.
+     */
+    public function storeCase(string $token, string $payload, DateTimeInterface $expiresAt)
+    {
+        $this->caseRepository->storeCase($token, $payload, $expiresAt);
     }
 }

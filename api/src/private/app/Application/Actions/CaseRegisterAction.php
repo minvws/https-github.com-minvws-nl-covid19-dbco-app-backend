@@ -57,8 +57,8 @@ class CaseRegisterAction extends Action
     {
         $claimCaseId = null;
         if ($this->jwtConfigHelper->isEnabled()) {
-            $token = $this->request->getAttribute("token");
-            $claimCaseId = $token[self::CLAIM_CASE_ID];
+            $jwtClaims = $this->request->getAttribute("jwtClaims");
+            $claimCaseId = $jwtClaims[self::CLAIM_CASE_ID];
         }
 
         $body = $this->request->getParsedBody();
