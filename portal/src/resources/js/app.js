@@ -62,10 +62,11 @@ jQuery(document).ready(function ($) {
             },
             dataType: 'json',
             success: function (data) {
-                console.log("linked " + taskId + " to " + remoteId);
+                $('#upload_' + taskId).attr('disabled', true);
+                $('#remote_' + taskId).attr('disabled', true);
             },
             error: function (data) {
-                console.log(data);
+                // No UX, the robot only needs the HTTP status codes
             }
         });
     }
