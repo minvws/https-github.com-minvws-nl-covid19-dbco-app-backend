@@ -26,6 +26,10 @@ class Task
 
     public bool $informedByIndex;
 
+    public ?Date $createdAt = null;
+
+    public ?Date $updatedAt = null;
+
     public ?array $answers;
 
     // Filled upon submit, indicates which questionnaire the user filled
@@ -33,7 +37,9 @@ class Task
 
     public int $progress = 0;
 
-    public ?string $hpzoneId = null;
+    public ?string $exportId = null;
+
+    public ?Date $exportedAt = null;
 
     /**
      * @return bool true if the task has submitted answers by the user.

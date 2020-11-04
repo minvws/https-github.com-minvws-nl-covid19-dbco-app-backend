@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Task;
 use App\Repositories\TaskRepository;
+use Jenssegers\Date\Date;
 
 class TaskService
 {
@@ -19,7 +20,8 @@ class TaskService
 
     public function linkTaskToExport(Task $task, string $exportId): void
     {
-        $task->hpzoneId = $exportId;
+        $task->exportId = $exportId;
+        $task->exportedAt = Date::now();
         $this->taskRepository->updateTask($task);
     }
 }

@@ -14,9 +14,11 @@ class AddTaskHpzoneFk extends Migration
     public function up()
     {
         Schema::table('task', function (Blueprint $table) {
-            $table->string('hpzone_id')
-                ->nullable()
-                ->default(null);
+            $table->string('export_id')
+                ->nullable();
+
+            $table->dateTime('exported_at')
+                ->nullable();
         });
     }
 
@@ -28,7 +30,8 @@ class AddTaskHpzoneFk extends Migration
     public function down()
     {
         Schema::table('task', function (Blueprint $table) {
-            $table->dropColumn('hpzone_id');
+            $table->dropColumn('export_id');
+            $table->dropColumn('exported_at');
         });
     }
 }
