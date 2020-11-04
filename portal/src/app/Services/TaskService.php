@@ -17,9 +17,9 @@ class TaskService
         return $this->taskRepository->getTask($taskUuid);
     }
 
-    public function linkTaskToHpzone(Task $task, string $hpzoneId): void
+    public function linkTaskToExport(Task $task, string $exportId): void
     {
-        $task->hpzoneId = $hpzoneId;
+        $task->hpzoneId = $exportId;
         $this->taskRepository->updateTask($task);
     }
 }

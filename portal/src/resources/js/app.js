@@ -55,10 +55,10 @@ jQuery(document).ready(function ($) {
         });
         $.ajax({
             type: 'POST',
-            url: '/markupload',
+            url: '/mark-task-exported',
             data: {
                 'taskId': taskId,
-                'remoteId': remoteId
+                'exportId': remoteId
             },
             dataType: 'json',
             success: function (data) {
@@ -74,8 +74,8 @@ jQuery(document).ready(function ($) {
     $(".chk-upload-completed").click(function() {
         if ($(this).is(':checked') && $(this).attr('id').indexOf('upload_') !== -1) {
             taskId = $(this).attr('id').substr(7);
-            remoteId = $('#remote_' + taskId).val() ?? '';
-            markUploadCompleted(taskId, remoteId);
+            exportId = $('#remote_' + taskId).val() ?? '';
+            markUploadCompleted(taskId, exportId);
         }
     });
 });

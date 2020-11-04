@@ -16,11 +16,11 @@ class TaskController extends Controller
         $this->taskService = $taskService;
     }
 
-    public function markUpload(Request $request)
+    public function linkTaskToExport(Request $request)
     {
-        $remoteId = trim($request->input('remoteId'));
-        if (empty($remoteId)) {
-            return response()->json(['error' => "Hpzone ID is invalid"], Response::HTTP_BAD_REQUEST);
+        $exportId = trim($request->input('exportId'));
+        if (empty($exportId)) {
+            return response()->json(['error' => "Export ID is invalid"], Response::HTTP_BAD_REQUEST);
         }
 
         $taskUuid = $request->input('taskId');
@@ -30,7 +30,7 @@ class TaskController extends Controller
             return response()->json(['error' => "Task $taskUuid is invalid"], Response::HTTP_BAD_REQUEST);
         }
 
-        $this->taskService->linkTaskToHpzone($task, $remoteId);
+        $this->taskService->linkTaskToExport($task, $exportId);
 
         return response()->json(['success' => 'success'], Response::HTTP_OK);
     }
