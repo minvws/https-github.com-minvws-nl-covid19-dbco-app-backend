@@ -21,7 +21,7 @@ jQuery(document).ready(function ($) {
         if (!el.val()) {
             var tr = el.closest('tr');
             var clone = tr.clone(true);
-            clone.insertAfter(tr).find('.auto-row-clone').one("keypress", function () {
+            clone.insertAfter(tr).find('.auto-row-clone').one("focus", function () {
                 cloneRow($(this));
             });
 
@@ -39,7 +39,7 @@ jQuery(document).ready(function ($) {
     }
 
     // Make auto row clone fields actually clone a row (upon the first keypress in the input field)
-    $(".auto-row-clone").one("keypress", function() {
+    $(".auto-row-clone").one("focus", function() {
         cloneRow($(this));
     });
 
