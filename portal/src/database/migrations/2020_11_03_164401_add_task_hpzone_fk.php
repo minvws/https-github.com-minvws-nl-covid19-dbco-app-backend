@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTaskHpzoneId extends Migration
+class AddTaskHpzoneFk extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,9 @@ class AddTaskHpzoneId extends Migration
     public function up()
     {
         Schema::table('task', function (Blueprint $table) {
-            $table->string('hpzone_id')->default(null);
+            $table->string('hpzone_id')
+                ->nullable()
+                ->default(null);
         });
     }
 

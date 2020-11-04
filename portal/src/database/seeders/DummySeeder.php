@@ -232,7 +232,8 @@ class DummySeeder extends Seeder
             'communication' => 'staff',
             'informed_by_index' => false,
             'created_at' => $now,
-            'updated_at' => $now
+            'updated_at' => $now,
+            'hpzone_id' => 'abcd1234'
         ],[
             'uuid' => (string)Str::uuid(),
             'case_uuid' => $caseUuid,
@@ -245,7 +246,8 @@ class DummySeeder extends Seeder
             'communication' => 'index',
             'informed_by_index' => false,
             'created_at' => $now,
-            'updated_at' => $now
+            'updated_at' => $now,
+            'hpzone_id' => null
         ]]);
     }
 }
