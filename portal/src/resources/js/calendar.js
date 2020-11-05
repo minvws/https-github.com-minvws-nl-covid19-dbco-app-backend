@@ -40,7 +40,7 @@ const datePickerFactory = (id, inline = false) => {
         inlineMode: inline,
         element: element,
         onRender: (element) => {
-            const selectedElement = $('.is-start-date.is-end-date');
+            const selectedElement = $(element).find('.is-start-date.is-end-date');
             let dayItems = $(element).find('.day-item');
 
             /** Remove default selection classes because we will add them later on. */
