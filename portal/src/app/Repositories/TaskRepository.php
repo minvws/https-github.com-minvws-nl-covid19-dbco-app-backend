@@ -24,7 +24,7 @@ interface TaskRepository
      *
      * @return Task The task (or null if not found)
      */
-    public function getTask(string $taskUuid): Task;
+    public function getTask(string $taskUuid): ?Task;
 
     /**
      * Update a task in the db

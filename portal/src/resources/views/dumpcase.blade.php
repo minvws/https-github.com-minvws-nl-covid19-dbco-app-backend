@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>GGD BCO portaal - Case export</title>
 
     <!-- Stylesheet -->
@@ -67,16 +68,19 @@ $groupTitles = [
             -->
             <colgroup>
                 @foreach ($headers as $fieldUuid => $header)
-                    <col class="w-auto">
+                    <col class="w-auto" />
                 @endforeach
+                <col class="w-auto" />
             </colgroup>
             <thead>
             <tr>
                 @foreach ($headers as $fieldUuid => $header)
-                    <th scope="col">{{ $header }}</i></th>
+                    <th scope="col">{{ $header }}</th>
                 @endforeach
 
+                <th>HPZone</th>
             </tr>
+
             </thead>
             <tbody>
             @foreach ($tasks as $task)
@@ -86,6 +90,15 @@ $groupTitles = [
                         {{ $task[$fieldUuid] ?? ''}}
                     </td>
                     @endforeach
+
+                    <td>
+                        @if ($task['task.enableExport'])
+                            <input style="width: auto; display: inline; position: relative;" type="text" size="10" id="remote_{{ $task['task.uuid'] }}" value="{{ $task['task.exportId'] }}"/>
+                            <input style="width: auto; display: inline; position: relative;" type="checkbox" class="chk-upload-completed" id="upload_{{ $task['task.uuid'] }}" />
+                        @else
+                            {{ $task['task.exportId'] }}
+                        @endif
+                    </td>
                 </tr>
             @endforeach
             </tbody>

@@ -9,7 +9,6 @@ use App\Services\QuestionnaireService;
 use Illuminate\Http\Request;
 use Jenssegers\Date\Date;
 
-
 class CaseController extends Controller
 {
     private CaseService $caseService;
@@ -127,7 +126,6 @@ class CaseController extends Controller
      * Start pairing process.
      *
      * @param $caseUuid
-
      */
     public function pairCase($caseUuid)
     {
