@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CaseController;
@@ -41,6 +42,7 @@ Route::middleware('sessionauth')->group(function() {
 
     // Dump data for export to HPZone
     Route::get('/dumpcase/{uuid}', [CaseController::class, 'dumpCase']);
+    Route::post('/linktasktoexport', [TaskController::class, 'linkTaskToExport']);
 });
 
 Route::get('auth/identityhub', [LoginController::class, 'redirectToProvider']);
@@ -48,4 +50,3 @@ Route::get('auth/login', [LoginController::class, 'handleProviderCallback']);
 
 // Temporary development login stub so you can test the portal without ggd account.
 Route::get('auth/stub', [LoginController::class, 'stubAuthenticate']);
-

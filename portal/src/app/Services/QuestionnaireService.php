@@ -29,7 +29,7 @@ class QuestionnaireService
         $tasks = $this->taskRepository->getTasks($caseUuid);
 
         // Hypothetically each task could've used a different questionnaire (once we have
-        // more than one taks type). For now this isn't supported and we assume all tasks have
+        // more than one task type). For now this isn't supported and we assume all tasks have
         // used the same questionnaire.
         $task = $tasks->first();
         $questions = [];
@@ -73,11 +73,14 @@ class QuestionnaireService
 
         foreach ($tasks as $task) {
             $records[$task->uuid] = [
+                'task.uuid' => $task->uuid,
                 'task.label' => $task->label,
                 'task.source' => $task->source,
                 'task.context' => $task->taskContext,
-                'task.dateoflastexposure' => $task->dateOfLastExposure != null ? Date::parse($task->dateOfLastExposure)->format("Y-m-d"): '',
-                'task.communication' => $task->communication
+                'task.dateoflastexposure' => $task->dateOfLastExposure !== null ? Date::parse($task->dateOfLastExposure)->format("Y-m-d"): '',
+                'task.communication' => $task->communication,
+                'task.exportId' => $task->exportId,
+                'task.enableExport' => $task->exportedAt === null || $task->exportedAt < $task->updatedAt
             ];
 
         }
