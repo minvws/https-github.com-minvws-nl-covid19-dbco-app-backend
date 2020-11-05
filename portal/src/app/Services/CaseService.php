@@ -82,13 +82,12 @@ class CaseService
     /**
      * Create pairing code for the given case.
      *
-     * @param string $caseUuid
+     * @param CovidCase $case
      *
      * @return string|null Formatted pairing code.
      */
-    public function createPairingCodeForCase(string $caseUuid): ?string
+    public function createPairingCodeForCase(CovidCase $case): ?string
     {
-        $case = $this->getCase($caseUuid);
         if (!$this->canAccess($case)) {
             return null;
         }
