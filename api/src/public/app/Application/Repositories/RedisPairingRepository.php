@@ -14,6 +14,10 @@ use RuntimeException;
  */
 class RedisPairingRepository implements PairingRepository
 {
+    const PAIRING_LIST_KEY = 'pairings';
+    const PAIRING_RESPONSE_LIST_KEY_TEMPLATE = 'pairing:%s:response';
+    const PAIRING_TIMEOUT = 30;
+
     /**
      * @var PredisClient
      */
@@ -34,20 +38,32 @@ class RedisPairingRepository implements PairingRepository
      */
     public function storePairing(Pairing $pairing)
     {
-        $key = 'case:' . $pairing->case->id . ':pairing';
-        $expiresInSeconds = $pairing->case->expiresAt->getTimestamp() - time();
+        $responseListKey = sprintf(self::PAIRING_RESPONSE_LIST_KEY_TEMPLATE, $pairing->case->id);
+
         $data = [
-            'case' => [
-                'id' => $pairing->case->id,
-                'expiresAt' =>  $pairing->case->expiresAt->format(DateTime::ATOM)
+            'pairing' => [
+                'case' => [
+                    'id' => $pairing->case->id,
+                    'expiresAt' =>  $pairing->case->expiresAt->format(DateTime::ATOM)
+                ],
+                'encryptedClientPublicKey' => $pairing->encryptedClientPublicKey
             ],
-            'signingKey' => $pairing->signingKey
+            'responseListKey' => $responseListKey
         ];
 
         try {
-            $this->client->hset($key, $expiresInSeconds, json_encode($data));
+            $this->client->rpush(self::PAIRING_LIST_KEY, json_encode($data));
+            $response = $this->client->blpop($responseListKey, self::PAIRING_TIMEOUT);
+
+            if ($response === null || count($response) === 0) {
+                throw new Exception('Error storing pairing (no response');
+            }
+
+            $responseData = json_decode($response[0]);
+            $pairing->encryptedHealthAuthorityPublicKey =
+                $responseData->pairing->encryptedHealthAuthorityPublicKey;
         } catch (Exception $e) {
-            throw new RuntimeException('Error storing pairing', 0, $e);
+            throw new Exception('Error storing pairing', 0, $e);
         }
     }
 }
