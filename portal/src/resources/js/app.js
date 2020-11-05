@@ -66,7 +66,7 @@ jQuery(document).ready(function ($) {
                 $('#remote_' + taskId).attr('disabled', true);
             },
             error: function (data) {
-                // No UX, the robot only needs the HTTP status codes
+                $('#upload_' + taskId).prop('checked', false);
             }
         });
     }
