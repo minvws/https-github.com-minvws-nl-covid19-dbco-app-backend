@@ -107,16 +107,17 @@ class QuestionnaireService
             }
         }
 
-        $answersPerTask = [];
+        $tasksPerCategory = [];
 
         foreach ($tasks as $task) {
-            $answersPerTask[$task->category][] = $records[$task->uuid];
+            $tasksPerCategory[$task->category][] = $records[$task->uuid];
         }
+        ksort($tasksPerCategory);
 
         // multidimensional array, rows are tasks, each column is a question-answer (referred to by question-uuid). Multi value questions are sub arrays.
         return [
             'headers' => $headers,
-            'categories' => $answersPerTask
+            'categories' => $tasksPerCategory
         ];
     }
 }
