@@ -47,7 +47,7 @@ jQuery(document).ready(function ($) {
        $(this).closest('tr').remove();
     });
 
-    function markUploadCompleted(taskId, remoteId) {
+    function linkTaskToExport(taskId, remoteId) {
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -55,7 +55,7 @@ jQuery(document).ready(function ($) {
         });
         $.ajax({
             type: 'POST',
-            url: '/mark-task-exported',
+            url: '/linktasktoexport',
             data: {
                 'taskId': taskId,
                 'exportId': remoteId
@@ -75,7 +75,7 @@ jQuery(document).ready(function ($) {
         if ($(this).is(':checked') && $(this).attr('id').indexOf('upload_') !== -1) {
             taskId = $(this).attr('id').substr(7);
             exportId = $('#remote_' + taskId).val() ?? '';
-            markUploadCompleted(taskId, exportId);
+            linkTaskToExport(taskId, exportId);
         }
     });
 });
