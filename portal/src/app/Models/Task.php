@@ -8,6 +8,8 @@ class Task
 {
     public string $uuid;
 
+    public string $caseUuid;
+
     public string $taskType;
 
     public string $source;

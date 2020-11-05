@@ -30,6 +30,10 @@ class TaskController extends Controller
             return response()->json(['error' => "Task $taskUuid is invalid"], Response::HTTP_BAD_REQUEST);
         }
 
+        if (!$this->taskService->canAccess($task)) {
+            return response()->json(['error' => 'Access denied'], Response::HTTP_FORBIDDEN);
+        }
+
         $this->taskService->linkTaskToExport($task, $exportId);
 
         return response()->json(['success' => 'success'], Response::HTTP_OK);
