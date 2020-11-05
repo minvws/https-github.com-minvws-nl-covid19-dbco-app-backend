@@ -27,22 +27,22 @@ class CaseController extends Controller
         // Because we want to show the new case immediately, we create a draft case.
         $case = $this->caseService->createDraftCase();
 
-        return redirect()->intended('/newcaseedit/' . $case->uuid);
+        return redirect()->intended('/editcase/' . $case->uuid);
     }
 
-    public function draftCase($caseUuid)
+    public function editCase($caseUuid)
     {
         $case = $this->caseService->getCase($caseUuid);
 
         if ($case != null && $this->caseService->canAccess($case)) {
             $case->tasks[] = new Task(); // one empty placeholder
-            return view('draftcase', ['case' => $case, 'tasks' => $case->tasks]);
+            return view('editcase', ['case' => $case, 'tasks' => $case->tasks]);
         } else {
             return redirect()->intended('/');
         }
     }
 
-    public function editCase($caseUuid)
+    public function viewCase($caseUuid)
     {
         $case = $this->caseService->getCase($caseUuid, true);
 
@@ -53,7 +53,7 @@ class CaseController extends Controller
                 $taskgroups[$task->communication][] = $task;
             }
 
-            return view('editcase', ['case' => $case, 'taskgroups' => $taskgroups]);
+            return view('viewcase', ['case' => $case, 'taskgroups' => $taskgroups]);
         } else {
             return redirect()->intended('/');
         }
@@ -77,7 +77,7 @@ class CaseController extends Controller
 
         // Enrich data with some view level helper data
         foreach ($cases as $case) {
-            $case->editCommand = ($case->status == CovidCase::STATUS_DRAFT ? 'newcaseedit' : 'case');
+            $case->editCommand = ($case->status == CovidCase::STATUS_DRAFT ? 'editcase' : 'case');
         }
 
         return view('caseoverview', ['cases' => $cases]);
@@ -99,7 +99,6 @@ class CaseController extends Controller
 
             $case->caseId = $request->input('caseId');
             $case->dateOfSymptomOnset = Date::parse($request->input('dateOfSymptomOnset'));
-            $case->status = 'open'; // TODO: only set to open once a pairing code was assigned
 
             $this->caseService->updateCase($case);
 
@@ -114,7 +113,13 @@ class CaseController extends Controller
             $this->caseService->deleteRemovedTasks($caseUuid, $keep);
         }
 
-        return redirect()->intended('/paircase/' . $caseUuid);
+        if ($case->status == 'draft') {
+            // For draft cases go to the secondary screen to pair the case.
+            return redirect()->intended('/paircase/' . $caseUuid);
+        } else {
+            // For existing cases, go to the case's detail page
+            return redirect()->intended('/case/' . $caseUuid);
+        }
 
     }
 
