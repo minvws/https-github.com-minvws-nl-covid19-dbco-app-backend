@@ -106,6 +106,7 @@ class DbTaskRepository implements TaskRepository
     {
         $task = new Task();
         $task->uuid = $dbTask->uuid;
+        $task->caseUuid = $dbTask->case_uuid;
         $task->category = $dbTask->category;
         $task->communication = $dbTask->communication;
         $task->dateOfLastExposure = $dbTask->date_of_last_exposure !== NULL ? new Date($dbTask->date_of_last_exposure) : null;
