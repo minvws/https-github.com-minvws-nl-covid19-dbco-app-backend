@@ -61,7 +61,7 @@ $groupTitles = [
         <!-- End of table title component -->
 
         <!-- Start of table component -->
-        <table class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-hover  table-form  table-ggd">
+        <table class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-hover table-ggd">
             <!--
                 Modify the col definitions in the colgroup below to change the widths of the the columns.
                 The w-* classes will be automatically generated based on the $sizes array which is defined in the scss/_variables.scss
@@ -93,8 +93,8 @@ $groupTitles = [
 
                     <td>
                         @if ($task['task.enableExport'])
-                            <input style="width: auto; display: inline; position: relative;" type="text" size="10" id="remote_{{ $task['task.uuid'] }}" value="{{ $task['task.exportId'] }}"/>
-                            <input style="width: auto; display: inline; position: relative;" type="checkbox" class="chk-upload-completed" id="upload_{{ $task['task.uuid'] }}" />
+                            <input type="text" size="10" id="remote_{{ $task['task.uuid'] }}" value="{{ $task['task.exportId'] }}"/>
+                            <input type="checkbox" class="chk-upload-completed" id="upload_{{ $task['task.uuid'] }}" />
                         @else
                             {{ $task['task.exportId'] }}
                         @endif
