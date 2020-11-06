@@ -28,10 +28,12 @@ const datePickerFactory = (id, inline = false) => {
         return null;
     }
 
+    var minDate = new Date();
+    minDate.setDate(minDate.getDate() - 28);
     const instance = new Litepicker({
         lang: 'nl',
         moveByOneMonth: true,
-        minDate: new Date(Date.now() - 12096e5), // current date minus 14 days
+        minDate: minDate, 
         maxDate: Date.now(),
         numberOfMonths: 2,
         numberOfColumns: 2,
@@ -76,7 +78,7 @@ const datePickerFactory = (id, inline = false) => {
     });
 
     const date = new Date();
-    instance.gotoDate(date.setMonth(date.getMonth() - 2));
+    instance.gotoDate(date.setMonth(date.getMonth() - 1));
 
     return instance;
 }
