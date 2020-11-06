@@ -3,7 +3,7 @@
     <nav class="navbar  navbar-expand-lg  navbar-light  bg-white  w-100">
         @if (!($root ?? false))
         <a href="{{ $returnPath ?? '/' }}" class="btn  btn-light  rounded-pill">
-            <i class="icon  icon--arrow-left  icon--m0"></i> {{ $returnTitle ?? 'Terug naar Cases' }}
+            <i class="icon  icon--arrow-left  icon--m0"></i>
         </a>
         @endif
 

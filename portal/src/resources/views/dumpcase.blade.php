@@ -16,8 +16,7 @@
 <div class="container-xl">
 
     @include ('navbar', [
-        'returnPath' => '/case/' . $case->uuid,
-        'returnTitle' => 'Terug naar case'
+        'returnPath' => '/case/' . $case->uuid
     ])
     <!-- End of navbar component -->
     <div class="row">
