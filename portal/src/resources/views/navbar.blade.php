@@ -23,7 +23,7 @@
                 </li>
                 @endif
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Ingelogd als {{ $userName }}</a>
+                    <a class="nav-link" href="/profile">Ingelogd als {{ $userName }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">eLearning</a>
