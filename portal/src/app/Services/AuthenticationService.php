@@ -20,4 +20,9 @@ class AuthenticationService
     {
         Session::put('user', $user);
     }
+
+    public function clearAuthenticatedUser()
+    {
+        Session::remove('user');
+    }
 }

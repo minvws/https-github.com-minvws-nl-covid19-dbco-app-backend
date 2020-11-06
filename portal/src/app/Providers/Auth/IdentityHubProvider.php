@@ -52,7 +52,7 @@ class IdentityHubProvider extends AbstractProvider implements ProviderInterface
      */
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->get('https://login.ggdghor.nl/ggdghornl/oauth2/v1/userinfo', [
+        $response = $this->getHttpClient()->post('https://login.ggdghor.nl/ggdghornl/oauth2/v1/introspect', [
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,
             ],

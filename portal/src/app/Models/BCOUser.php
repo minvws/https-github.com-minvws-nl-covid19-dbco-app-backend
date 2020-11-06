@@ -11,4 +11,7 @@ class BCOUser
 {
    public string $id;
    public string $name;
+
+   public ?string $organization;
+   public array $roles = [];
 }
