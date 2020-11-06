@@ -15,7 +15,7 @@ use RuntimeException;
 class RedisPairingRepository implements PairingRepository
 {
     const PAIRING_LIST_KEY = 'pairings';
-    const PAIRING_RESPONSE_LIST_KEY_TEMPLATE = 'pairing:%s:response';
+    const PAIRING_RESPONSE_LIST_KEY_TEMPLATE = 'pairing-response:%s';
     const PAIRING_TIMEOUT = 30;
 
     /**
@@ -55,13 +55,13 @@ class RedisPairingRepository implements PairingRepository
             $this->client->rpush(self::PAIRING_LIST_KEY, json_encode($data));
             $response = $this->client->blpop($responseListKey, self::PAIRING_TIMEOUT);
 
-            if ($response === null || count($response) === 0) {
+            if ($response === null || count($response) !== 2) {
                 throw new Exception('Error storing pairing (no response');
             }
 
-            $responseData = json_decode($response[0]);
-            $pairing->encryptedHealthAuthorityPublicKey =
-                $responseData->pairing->encryptedHealthAuthorityPublicKey;
+            $responseData = json_decode($response[1]);
+            $pairing->sealedHealthAuthorityPublicKey =
+                base64_decode($responseData->pairing->sealedHealthAuthorityPublicKey);
         } catch (Exception $e) {
             throw new Exception('Error storing pairing', 0, $e);
         }
