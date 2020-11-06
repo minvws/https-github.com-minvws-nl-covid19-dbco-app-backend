@@ -12,31 +12,11 @@
 <body>
 
 <div class="container-xl">
-    <!-- Start of navbar component -->
-    <div class="row">
-        <nav class="navbar  navbar-expand-lg  navbar-light  bg-white  w-100">
-            <a href="/" class="btn  btn-light  rounded-pill">
-                <i class="icon  icon--arrow-left  icon--m0"></i> Terug naar Cases
-            </a>
-
-            <button class="navbar-toggler  ml-auto  bg-white"
-                    type="button"
-                    data-toggle="collapse"
-                    data-target="#navbarToggler"
-                    aria-controls="navbarToggler"
-                    aria-expanded="false" aria-label="Navigatie tonen">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            @include ('identitybar')
-        </nav>
-    </div>
-    <!-- End of navbar component -->
-
+    @include ('navbar')
     <!-- Start of sidebar component -->
     <div class="row  flex-nowrap  wrapper">
         <!-- Start of sidebar page content -->
-        <main class="col">
+        <main class="col ml-5 mr-5">
             <!-- Start of page title component -->
             <h2 class="mt-4  mb-4  font-weight-normal d-flex align-items-end">
                 <span class="font-weight-bold">{{ $case->name }}</span>

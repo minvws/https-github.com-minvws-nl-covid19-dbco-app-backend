@@ -20,10 +20,6 @@ Route::get('/login', array('as' => 'login', function() {
     return view('login');
 }));
 
-Route::get('/colofon', function () {
-    return view('welcome');
-});
-
 // All pages that are behind auth
 Route::middleware('sessionauth')->group(function() {
     // Home (case overview)
