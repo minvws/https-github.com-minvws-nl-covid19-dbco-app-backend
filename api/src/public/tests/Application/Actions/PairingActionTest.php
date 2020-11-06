@@ -54,7 +54,6 @@ class PairingActionTest extends TestCase
 
         $clientKeyPair = sodium_crypto_box_keypair();
         $clientPublicKey = sodium_crypto_box_publickey($clientKeyPair);
-
         $sealedClientPublicKey = sodium_crypto_box_seal($clientPublicKey, $generalHAPublicKey);
 
         $caseHAPublicKey = null;
@@ -101,6 +100,37 @@ class PairingActionTest extends TestCase
         $this->assertCount(1, $data->errors);
         $this->assertEquals('invalid', $data->errors[0]->code);
         $this->assertEquals(['pairingCode'], $data->errors[0]->path);
+    }
+
+    /**
+     * Test pairing process through Redis.
+     *
+     * @throws Exception
+     */
+    public function testPairingThroughRedisAction()
+    {
+        $generalHAKeyPair = sodium_crypto_box_keypair();
+        $generalHAPublicKey = sodium_crypto_box_publickey($generalHAKeyPair);
+
+        $clientKeyPair = sodium_crypto_box_keypair();
+        $clientPublicKey = sodium_crypto_box_publickey($clientKeyPair);
+        $sealedClientPublicKey = sodium_crypto_box_seal($clientPublicKey, $generalHAPublicKey);
+
+        // we already store the pairing response in Redis to verify the list is read
+        $redis = $this->getAppInstance()->getContainer()->get(PredisClient::class);
+        $dummySealedHealthAuthorityPublicKey = random_bytes(32);
+        $pairingResponse = ['pairing' => ['sealedHealthAuthorityPublicKey' => base64_encode($dummySealedHealthAuthorityPublicKey)]];
+        $redis->rpush('pairing-response:' . self::CASE_ID, json_encode($pairingResponse));
+
+        $request = $this->createRequest('POST', '/v1/pairings');
+        $request = $request->withParsedBody(['pairingCode' => self::PAIRING_CODE, 'sealedClientPublicKey' => base64_encode($sealedClientPublicKey)]);
+        $request = $request->withHeader('Content-Type', 'application/json');
+        $response = $this->app->handle($request);
+        $this->assertEquals(201, $response->getStatusCode());
+        $payload = (string)$response->getBody();
+        $decoded = json_decode($payload, true);
+        $this->assertNotEmpty($decoded['sealedHealthAuthorityPublicKey']);
+        $this->assertEquals($dummySealedHealthAuthorityPublicKey, base64_decode($decoded['sealedHealthAuthorityPublicKey']));
     }
 
     /**
