@@ -15,23 +15,10 @@
 <!-- todo make something here that is horitontally scrollable -->
 <div class="container-xl">
 
-    <!-- Start of navbar component -->
-    <nav class="navbar  navbar-expand-lg  navbar-light  bg-transparent  pl-0  pr-0  w-100">
-        <a href="/case/{{ $case->uuid }}" class="btn  btn-light  rounded-pill">
-            <i class="icon  icon--arrow-left  icon--m0"></i> Terug naar case
-        </a>
-
-        <button class="navbar-toggler  ml-auto  bg-white"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarToggler"
-                aria-controls="navbarToggler"
-                aria-expanded="false" aria-label="Navigatie tonen">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        @include ('identitybar')
-    </nav>
+    @include ('navbar', [
+        'returnUrl' => '/case/' . $case->uuid,
+        'returnTitle' => 'Terug naar case'
+    ])
     <!-- End of navbar component -->
 
     <!-- Start of page title component -->
