@@ -16,24 +16,10 @@
 
 <div class="container-xl questionform">
 
-    <!-- Start of navbar component -->
-    <nav class="navbar  navbar-expand-lg  navbar-light  bg-transparent  pl-0  pr-0  w-100">
-        <a href="/" class="btn  btn-light  rounded-pill">
-            <i class="icon  icon--arrow-left  icon--m0"></i> Terug naar Cases
-        </a>
-
-        <button class="navbar-toggler  ml-auto  bg-white"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarToggler"
-                aria-controls="navbarToggler"
-                aria-expanded="false" aria-label="Navigatie tonen">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        @include ('identitybar')
-    </nav>
+    @include ('navbar')
     <!-- End of navbar component -->
+        <div class="row">
+            <div class="col ml-5 mr-5">
 
     <!-- Start of table title component -->
     <div class="align-items-end  mb-3 mt-5">
@@ -41,16 +27,16 @@
         <p class="mt-2 mb-0  ml-auto">Met deze code heeft de index toegang tot de contacten uit de aanleverlijst.</p>
     </div>
     <!-- End of table title component -->
-    <div class="mt-4 mb-4">
+    <div class="mt-4 mb-4 bg-white w-25 p-4 text-center">
         <h2>{{ $pairingCode }}</h2>
     </div>
 
     <div class="btn-group">
         <a href="/" class="btn btn-primary">Terug naar case overzicht</a>
     </div>
-
+        </div>
 </div>
-
+</div>
 <!-- Bootstrap core JavaScript -->
 <!-- build:js -->
 <!-- endbuild -->

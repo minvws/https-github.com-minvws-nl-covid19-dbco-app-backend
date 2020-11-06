@@ -5,7 +5,7 @@ namespace App\Http\View\Composers;
 use App\Services\AuthenticationService;
 use Illuminate\View\View;
 
-class IdentityBarComposer
+class NavBarComposer
 {
     private AuthenticationService $authenticationService;
 
