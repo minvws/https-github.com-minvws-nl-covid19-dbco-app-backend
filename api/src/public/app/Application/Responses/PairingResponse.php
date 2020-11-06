@@ -31,15 +31,7 @@ class PairingResponse extends Response implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'case' => [
-                'id' =>
-                    $this->pairing->case->id,
-                'expiresAt' =>
-                    $this->pairing->case->expiresAt
-                        ->setTimezone(new \DateTimeZone('UTC'))
-                        ->format('Y-m-d\TH:i:s\Z')
-            ],
-            'signingKey' => $this->pairing->signingKey
+            'sealedHealthAuthorityPublicKey' => base64_encode($this->pairing->sealedHealthAuthorityPublicKey)
         ];
     }
 
