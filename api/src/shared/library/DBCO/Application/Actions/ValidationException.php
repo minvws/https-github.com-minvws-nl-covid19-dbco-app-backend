@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DBCO\Shared\Application\Actions;
 
-use Slim\Psr7\Request;
+use Psr\Http\Message\RequestInterface;
 
 /**
  * Validation exception.
@@ -20,13 +20,13 @@ class ValidationException extends ActionException
     /**
      * Constructs a new error.
      *
-     * @param Request           $request Request.
+     * @param RequestInterface  $request Request.
      * @param string            $type    Error type.
      * @param string            $message Error message.
      * @param ValidationError[] $errors  Validation errors.
      * @param int               $code    Status code.
      */
-    public function __construct(Request $request, array $errors, string $type = 'validationError', string $message = 'The server cannot or will not process the request due to an apparent client error.', int $code = self::BAD_REQUEST)
+    public function __construct(RequestInterface $request, array $errors, string $type = 'validationError', string $message = 'The server cannot or will not process the request due to an apparent client error.', int $code = self::BAD_REQUEST)
     {
         parent::__construct($request, $type, $message, $code);
         $this->errors = $errors;

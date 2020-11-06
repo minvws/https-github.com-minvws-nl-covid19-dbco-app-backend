@@ -5,7 +5,7 @@ namespace DBCO\Shared\Application\Actions;
 
 use Exception;
 use JsonSerializable;
-use Slim\Psr7\Request;
+use Psr\Http\Message\RequestInterface;
 use Throwable;
 
 /**
@@ -20,9 +20,9 @@ class ActionException extends Exception implements JsonSerializable
     public const INTERNAL_SERVER_ERROR = 501;
 
     /**
-     * @var Request
+     * @var RequestInterface
      */
-    private Request $request;
+    private RequestInterface $request;
 
     /**
      * @var string
@@ -32,13 +32,13 @@ class ActionException extends Exception implements JsonSerializable
     /**
      * Constructs a new error.
      *
-     * @param Request        $request  Request.
-     * @param string         $type     Error type.
-     * @param string         $message  Error message.
-     * @param int            $code     Request status code.
-     * @param Throwable|null $previous Previous exception.
+     * @param RequestInterface $request  Request.
+     * @param string           $type     Error type.
+     * @param string           $message  Error message.
+     * @param int              $code     Request status code.
+     * @param Throwable|null   $previous Previous exception.
      */
-    public function __construct(Request $request, $type, string $message, int $code = self::INTERNAL_SERVER_ERROR, Throwable $previous = null)
+    public function __construct(RequestInterface $request, $type, string $message, int $code = self::INTERNAL_SERVER_ERROR, Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
         $this->request = $request;
@@ -48,9 +48,9 @@ class ActionException extends Exception implements JsonSerializable
     /**
      * Returns the request.
      *
-     * @return Request
+     * @return RequestInterface
      */
-    public function getRequest(): Request
+    public function getRequest(): RequestInterface
     {
         return $this->request;
     }
