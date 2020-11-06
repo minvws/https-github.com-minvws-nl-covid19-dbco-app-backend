@@ -20,6 +20,8 @@
         'returnTitle' => 'Terug naar case'
     ])
     <!-- End of navbar component -->
+        <div class="row">
+            <div class="col ml-5">
 
     <!-- Start of page title component -->
     <h2 class="mt-4  mb-4  font-weight-normal d-flex align-items-end">
@@ -92,7 +94,8 @@ $groupTitles = [
         </table>
         <!-- End of table component -->
     @endforeach
-
+        </div>
+        </div>
 </div>
 
 <!-- Bootstrap core JavaScript -->

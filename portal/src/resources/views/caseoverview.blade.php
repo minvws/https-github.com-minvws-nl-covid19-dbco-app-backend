@@ -15,19 +15,22 @@
     @include('navbar', ['root' => true])
     <div class="row">
         <div class="col ml-5 mr-5">
-        <!-- Start of page title component -->
-            <h1 class="mt-4  mb-4">Cases</h1>
-            <!-- End of page title component -->
+            <!-- Start of page title component -->
+            <h2 class="mt-4  mb-4  font-weight-normal d-flex align-items-end">
+                <span class="font-weight-bold">Mijn Cases</span>
 
-            <!-- Start of add button component -->
-            <nav class="nav  mb-2">
-                <a href="/newcase" class="btn  btn-primary  ml-auto">
-                    Case openen
-                </a>
-            </nav>
+                <!-- End of page title component -->
+
+                <!-- Start of add button component -->
+                <span class="ml-auto">
+                    <a href="/newcase" class="btn  btn-primary  ml-auto">
+                        Nieuwe case
+                    </a>
+                </span>
             <!-- End of add button component -->
-
+            </h2>
             <!-- Start of tabs component -->
+            <!-- tabs disabled until we support multiple tabs
             <nav>
                 <div class="nav  nav-tabs" id="nav-tab" role="tablist">
                     <a class="nav-item  nav-link  active"
@@ -37,7 +40,6 @@
                        role="tab"
                        aria-controls="nav-own-cases"
                        aria-selected="true">Mijn cases</a>
-        <!-- disabled because not yet functional
                     <a class="nav-item nav-link"
                        id="nav-all-cases-tab"
                        data-toggle="tab"
@@ -45,9 +47,10 @@
                        role="tab"
                        aria-controls="nav-all-cases"
                        aria-selected="false">Alle cases</a>
-             end disabled -->
+
                 </div>
             </nav>
+               end disabled -->
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane  fade show  active" id="nav-own-cases" role="tabpanel" aria-labelledby="nav-own-cases-tab">
                     <!-- Start of table component -->
