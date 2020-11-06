@@ -53,4 +53,10 @@ class LoginController extends Controller
 
         return redirect()->intended('/');
     }
+
+    public function logout()
+    {
+        $this->authService->clearAuthenticatedUser();
+        return redirect()->intended('/');
+    }
 }
