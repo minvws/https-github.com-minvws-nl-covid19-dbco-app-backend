@@ -19,24 +19,10 @@
         @csrf
         <input type="hidden" id="caseUuid" name="caseUuid" value="{{ $case->uuid }}">
 
-        <!-- Start of navbar component -->
-        <nav class="navbar  navbar-expand-lg  navbar-light  bg-transparent  pl-0  pr-0  w-100">
-            <a href="/" class="btn  btn-light  rounded-pill">
-                <i class="icon  icon--arrow-left  icon--m0"></i> Terug naar Cases
-            </a>
+        @include ('navbar')
 
-            <button class="navbar-toggler  ml-auto  bg-white"
-                    type="button"
-                    data-toggle="collapse"
-                    data-target="#navbarToggler"
-                    aria-controls="navbarToggler"
-                    aria-expanded="false" aria-label="Navigatie tonen">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            @include ('identitybar')
-        </nav>
-        <!-- End of navbar component -->
+        <div class="row">
+            <div class="col ml-5 mr-5">
 
         <!-- Start of question title component -->
         <div class="align-items-end  mb-3 mt-5">
@@ -48,7 +34,7 @@
                 Vul minimaal een naam in om de case te openen.
             </div>
         @enderror
-        <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $case->name) }}">
+        <input type="text" class="form-control w-25" id="name" name="name" value="{{ old('name', $case->name) }}">
 
         <!-- Start of question title component -->
         <div class="align-items-end  mb-3 mt-5">
@@ -56,7 +42,7 @@
             <p class="mt-2 mb-0  ml-auto">Bijvoorbeeld een case id uit HPZone, zodat je later makkelijk kunt zien bij wie deze gegevens horen.</p>
         </div>
         <!-- End of question title component -->
-        <input type="text" class="form-control" id="caseId" name="caseId" value="{{ old('caseId', $case->caseId) }}">
+        <input type="text" class="form-control w-25" id="caseId" name="caseId" value="{{ old('caseId', $case->caseId) }}">
 
 
         <!-- Start of question title component -->
@@ -150,6 +136,8 @@
         </div>
 
         <p></p>
+        </div>
+        </div>
 
     </form>
 
