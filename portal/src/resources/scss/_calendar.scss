@@ -79,7 +79,7 @@
                     color: $black;
                 }
 
-                &.is-start-date, &.is-end-date, &.is-in-range, &:hover {
+                &.is-start-date, &.is-end-date, &.is-in-range {
                     color: $white !important;
                     box-shadow: none;
                     background: transparent;
@@ -87,9 +87,30 @@
                     z-index: 1;
                 }
 
-                &.is-start-date, &.is-end-date, &:hover {
+                &.is-start-date, &.is-end-date{
                     &:after {
                         background: $red;
+                        content: '';
+                        width: 36px;
+                        height: 36px;
+                        position: absolute;
+                        left: 50%;
+                        border-radius: 50%;
+                        transform: translate(-50%, -50%);
+                        top: 50%;
+                        z-index: -1;
+                    }
+                }
+
+                &:hover:not(.is-locked) {
+                    color: $white !important;
+                    box-shadow: none;
+                    background: transparent;
+                    position: relative;
+                    z-index: 1;
+
+                    &:after {
+                        background: $orange;
                         content: '';
                         width: 36px;
                         height: 36px;
