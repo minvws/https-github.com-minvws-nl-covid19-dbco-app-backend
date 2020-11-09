@@ -70,7 +70,12 @@ class CaseService
     public function createDraftCase(): CovidCase
     {
         $owner = $this->authService->getAuthenticatedUser();
-        return $this->caseRepository->createCase($owner, CovidCase::STATUS_DRAFT);
+        $assignedTo = null;
+        if (!$this->authService->isPlanner()) {
+            // Auto assign to yourself if you aren't a planner
+            $assignedTo = $owner;
+        }
+        return $this->caseRepository->createCase($owner, CovidCase::STATUS_DRAFT, $assignedTo);
     }
 
     /**

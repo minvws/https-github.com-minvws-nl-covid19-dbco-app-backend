@@ -13,6 +13,8 @@ class CovidCase
     public string $uuid;
 
     public string $owner;
+    public ?string $assignedUuid;
+    public string $organisationUuid;
 
     public string $status;
 
