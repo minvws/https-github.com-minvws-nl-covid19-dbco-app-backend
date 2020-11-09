@@ -39,7 +39,7 @@ class DbCaseRepository implements CaseRepository
      */
     public function getCasesByAssignedUser(BCOUser $user): Collection
     {
-        $dbCases = EloquentCase::where('owner', $user->uuid)->orderBy('updated_at', 'desc')->get();
+        $dbCases = EloquentCase::where('assigned_uuid', $user->uuid)->orderBy('updated_at', 'desc')->get();
 
         $cases = array();
 
