@@ -22,7 +22,7 @@ Route::get('/login', array('as' => 'login', function() {
 }));
 
 // All pages that are behind auth
-Route::middleware('sessionauth')->group(function() {
+Route::middleware('auth')->group(function() {
     // Home (case overview)
     Route::get('/', [CaseController::class, 'listCases']);
 

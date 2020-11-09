@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CovidCase;
 use App\Models\Task;
+use App\Services\AuthenticationService;
 use App\Services\CaseService;
 use App\Services\QuestionnaireService;
 use Illuminate\Http\Request;
@@ -13,12 +14,15 @@ class CaseController extends Controller
 {
     private CaseService $caseService;
     private QuestionnaireService $questionnaireService;
+    private AuthenticationService $authService;
 
     public function __construct(CaseService $caseService,
-                                QuestionnaireService $questionnaireService)
+                                QuestionnaireService $questionnaireService,
+                                AuthenticationService $authService)
     {
         $this->caseService = $caseService;
         $this->questionnaireService = $questionnaireService;
+        $this->authService = $authService;
     }
 
     public function newCase()
@@ -72,8 +76,11 @@ class CaseController extends Controller
 
     public function listCases()
     {
-        $cases = $this->caseService->myCases();
-
+        if ($this->authService->isPlanner()) {
+            $cases = $this->caseService->organisationCases();
+        } else {
+            $cases = $this->caseService->myCases();
+        }
         // Enrich data with some view level helper data
         foreach ($cases as $case) {
             $case->editCommand = ($case->status == CovidCase::STATUS_DRAFT ? 'editcase' : 'case');

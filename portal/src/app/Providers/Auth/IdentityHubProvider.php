@@ -54,11 +54,15 @@ class IdentityHubProvider extends AbstractProvider implements ProviderInterface
     {
         $response = $this->getHttpClient()->post('https://login.ggdghor.nl/ggdghornl/oauth2/v1/introspect', [
             'headers' => [
-                'Authorization' => 'Bearer ' . $token,
+                'Authorization' => 'Basic ' . base64_encode($this->clientId . ':' . $this->clientSecret)
             ],
+            'form_params' => [
+                'token' => $token
+            ]
         ]);
 
         $user = json_decode($response->getBody(), true);
+
         return $user;
     }
 
@@ -67,11 +71,28 @@ class IdentityHubProvider extends AbstractProvider implements ProviderInterface
      */
     protected function mapUserToObject(array $user)
     {
-        return (new User)->setRaw($user)->map([
-            'id'       => $user['unique_name'],
-            'nickname' => $user['nickname'],
-            'name'     => $user['name'],
-        ]);
+        $userObj = new User();
+        $userObj->id = $user['profile']['identityId'];
+        $userObj->name = $user['profile']['displayName'];
+        $userObj->email = $user['profile']['emailAddress'];
+
+        $organisations = [];
+        if (isset($user['profile']['properties']['http://schemas.ggd.nl/ws/2020/07/identity/claims/vrregiocode'])) {
+            foreach ($user['profile']['properties']['http://schemas.ggd.nl/ws/2020/07/identity/claims/vrregiocode'] as $regio) {
+                $organisations[] = $regio;
+            }
+        }
+        $userObj->organisations = $organisations;
+
+        $roles = [];
+        if (isset($user['roles'])) {
+            foreach ($user['roles'] as $role) {
+                $roles[] = $role['name'];
+            }
+        }
+        $userObj->roles = $roles;
+
+        return $userObj;
     }
 
 }
