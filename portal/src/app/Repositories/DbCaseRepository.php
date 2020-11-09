@@ -71,12 +71,17 @@ class DbCaseRepository implements CaseRepository
      *
      * @return CovidCase
      */
-    public function createCase(BCOUser $owner, string $initialStatus): CovidCase
+    public function createCase(BCOUser $owner, string $initialStatus, ?BCOUser $assignedTo=null): CovidCase
     {
         $dbCase = new EloquentCase();
 
         $dbCase->owner = $owner->uuid;
         $dbCase->status = $initialStatus;
+        $dbCase->organisation_uuid = $owner->organisations[0]->uuid; // TODO fix me: what if user has 2 orgs?
+
+        if ($assignedTo != null) {
+            $dbCase->assigned_uuid = $assignedTo->uuid;
+        }
 
         $dbCase->save();
         return $this->caseFromEloquentModel($dbCase);

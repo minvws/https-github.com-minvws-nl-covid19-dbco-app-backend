@@ -22,6 +22,7 @@ class DummySeeder extends Seeder
         $questionnaireUuid = 'facade01-feed-dead-c0de-defacedc0c0a';
         $dummyUserUuid = '00000000-0000-0000-0000-000000000001';
         $dummyPlannerUuid = '00000000-0000-0000-0000-000000000002';
+        $dummyAdminUuid = '00000000-0000-0000-0000-000000000003';
         $dummyOrgUuid = '00000000-0000-0000-0000-000000000000';
 
         DB::table('organisation')->insert([
@@ -33,11 +34,31 @@ class DummySeeder extends Seeder
         ]);
 
         DB::table('bcouser')->insert([
-            'name' => 'Dummy gebruiker',
+            'name' => 'Demo Gebruiker',
             'uuid' => $dummyUserUuid,
             'external_id' => $dummyUserUuid,
             'email' => 'dummy@gebruiker.tst',
             'roles' => 'DBCO-Gebruiker',
+            'created_at' => $now,
+            'updated_at' => $now
+        ]);
+
+        DB::table('bcouser')->insert([
+            'name' => 'Demo Planner',
+            'uuid' => $dummyPlannerUuid,
+            'external_id' => $dummyPlannerUuid,
+            'email' => 'dummy@gebruiker.tst',
+            'roles' => 'DBCO-Werkverdeler',
+            'created_at' => $now,
+            'updated_at' => $now
+        ]);
+
+        DB::table('bcouser')->insert([
+            'name' => 'Demo Beheerder',
+            'uuid' => $dummyAdminUuid,
+            'external_id' => $dummyAdminUuid,
+            'email' => 'dummy@gebruiker.tst',
+            'roles' => 'DBCO-Beheer',
             'created_at' => $now,
             'updated_at' => $now
         ]);
