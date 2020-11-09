@@ -26,13 +26,18 @@
             </h2>
             <!-- End of page title component -->
             <p>
-                Organisatie: {{ $user->organization ?? 'Onbekend' }}
+                Organisaties:
+            <ul>
+                @foreach ($user->organisations as $organisation)
+                    <li>{{ $organisation->name }} ({{ $organisation->externalId }})</li>
+                @endforeach
+            </ul>
             </p>
             <p>
                 Toegekende rollen:
                 <ul>
                     @foreach ($user->roles as $role)
-                        {{ $role }}
+                        <li>{{ $role }}</li>
                     @endforeach
                 </ul>
             </p>

@@ -3,26 +3,45 @@
 namespace App\Services;
 
 use App\Models\BCOUser;
-use Illuminate\Support\Facades\Session;
+use App\Repositories\UserRepository;
 
 class AuthenticationService
 {
+    private UserRepository $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * Returns the currently logged in user, or null if not logged in.
      * @return BCOUser|null
      */
     public function getAuthenticatedUser(): ?BCOUser
     {
-        return Session::get('user');
+        $dbUser = auth()->user();
+        if ($dbUser) {
+            return $this->userRepository->bcoUserFromEloquentUser($dbUser);
+        }
+        return null;
     }
 
-    public function setAuthenticatedUser(BCOUser $user)
+    public function isPlanner(): bool
     {
-        Session::put('user', $user);
+        $user = $this->getAuthenticatedUser();
+        $roles = config('authorization.roles');
+        foreach($user->roles as $role) {
+            if ($role == $roles['planner']) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public function clearAuthenticatedUser()
+    public function logout()
     {
-        Session::remove('user');
+        return auth()->logout();
     }
+
 }

@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 class BCOUser
 {
-   public string $id;
-   public string $name;
+    public string $uuid;
+    public string $name;
+    public string $email;
+    public string $externalId;
 
-   public ?string $organization;
-   public array $roles = [];
+    public array $organisations = [];
+    public array $roles = [];
+
 }
