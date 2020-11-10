@@ -36,8 +36,9 @@ class OrganizationSeeder extends Seeder
             '09101' => 'Gemeente Utrecht',
             '10003' => 'GGD Hollands Noorden',
             '11003' => 'GGD Zaanstreek - Waterland',
-            '12003' => 'GGD Kennemerland / Gooi en Vechtstreek', // ??? have same id in TIH list
+            '12003' => 'GGD Kennemerland',
             '13003' => 'GGD Amsterdam',
+            '14003' => 'GGD Gooi en Vechtstreek',
             '15003' => 'GGD Haaglanden O365',
             '15102' => 'JGZ ZuidHollandWest',
             '16003' => 'RDOG HM',

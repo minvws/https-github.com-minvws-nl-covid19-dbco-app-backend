@@ -37,7 +37,7 @@
                 Toegekende rollen:
                 <ul>
                     @foreach ($user->roles as $role)
-                        <li>{{ $role }}</li>
+                        <li>{{ $roles[$role] ?? $role }}</li>
                     @endforeach
                 </ul>
             </p>

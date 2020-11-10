@@ -83,14 +83,17 @@ class IdentityHubProvider extends AbstractProvider implements ProviderInterface
             }
         }
         $userObj->organisations = $organisations;
-
-        $roles = [];
+        $roles = config('authorization.roles');
+        $userRoles = [];
         if (isset($user['roles'])) {
             foreach ($user['roles'] as $role) {
-                $roles[] = $role['name'];
+                $matchedRole = array_search($role['name'], $roles);
+                if ($matchedRole) {
+                    $userRoles[] = $role;
+                }
             }
         }
-        $userObj->roles = $roles;
+        $userObj->roles = $userRoles;
 
         return $userObj;
     }
