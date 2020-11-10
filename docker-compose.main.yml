@@ -4,6 +4,9 @@ services:
     redis:
         image: redis
 
+    redis-haa:
+        image: redis
+
     private_api:
         build:
             context: ./api
@@ -52,6 +55,9 @@ services:
             DB_USERNAME: ${HEALTHAUTHORITY_API_DB_USERNAME}
             DB_PASSWORD: ${HEALTHAUTHORITY_API_DB_PASSWORD}
             DB_TNS: ${HEALTHAUTHORITY_API_DB_TNS:-oracle/XEPDB1}
+            REDIS_HOST: redis-haa
+            REDIS_PORT: 6379
+            ENCRYPTION_GENERAL_KEY_PAIR: ${HEALTHAUTHORITY_ENCRYPTION_GENERAL_KEY_PAIR}
 
     portal:
         build:

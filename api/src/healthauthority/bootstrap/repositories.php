@@ -2,7 +2,9 @@
 declare(strict_types=1);
 
 use DBCO\HealthAuthorityAPI\Application\Repositories\CaseRepository;
+use DBCO\HealthAuthorityAPI\Application\Repositories\ClientRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\DbCaseRepository;
+use DBCO\HealthAuthorityAPI\Application\Repositories\RedisClientRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\StubCaseRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\StubGeneralTaskRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\StubQuestionnaireRepository;
@@ -24,6 +26,7 @@ return function (ContainerBuilder $containerBuilder) {
             } else {
                 return $c->get(DbCaseRepository::class);
             }
-        }
+        },
+        ClientRepository::class => autowire(RedisClientRepository::class)
     ]);
 };
