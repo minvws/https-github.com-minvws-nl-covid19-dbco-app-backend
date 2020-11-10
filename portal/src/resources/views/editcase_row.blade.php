@@ -21,7 +21,6 @@
     <td>
         <label class="sr-only" for="date1">Laatste contact</label>
         <select class="form-control" id="lastcontact1" name="tasks[{{ $row }}][dateOfLastExposure]">
-            <option disabled selected>Selecteer</option>
             @for ($i = 13; $i >= 0; $i--)
                 <?php
                 $date = Date::parse("-$i days")->format("Y-m-d");
@@ -30,6 +29,7 @@
                 ?>
                 <option value="{{ $date }}" {{ $selected }}>{{ $label }}</option>
             @endfor
+            <option disabled selected>Selecteer</option>
         </select>
     </td>
     <td>
