@@ -38,7 +38,7 @@ class DummySeeder extends Seeder
             'uuid' => $dummyUserUuid,
             'external_id' => $dummyUserUuid,
             'email' => 'dummy@gebruiker.tst',
-            'roles' => 'DBCO-Gebruiker',
+            'roles' => 'user',
             'created_at' => $now,
             'updated_at' => $now
         ]);
@@ -48,7 +48,7 @@ class DummySeeder extends Seeder
             'uuid' => $dummyPlannerUuid,
             'external_id' => $dummyPlannerUuid,
             'email' => 'dummy@gebruiker.tst',
-            'roles' => 'DBCO-Werkverdeler',
+            'roles' => 'user,planner',
             'created_at' => $now,
             'updated_at' => $now
         ]);
@@ -58,7 +58,7 @@ class DummySeeder extends Seeder
             'uuid' => $dummyAdminUuid,
             'external_id' => $dummyAdminUuid,
             'email' => 'dummy@gebruiker.tst',
-            'roles' => 'DBCO-Beheer',
+            'roles' => 'user,admin',
             'created_at' => $now,
             'updated_at' => $now
         ]);

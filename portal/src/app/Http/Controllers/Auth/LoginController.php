@@ -68,14 +68,19 @@ class LoginController extends Controller
             'admin' => 'Demo Beheerder'
         ];
         $desiredRole = $request->input('role');
-
-        $user = $this->userService->upsertUserByExternalId($demoUuids[$desiredRole],
-            $demoNames[$desiredRole],
-            'dummy@gebruiker.tst',
-            [$roles[$desiredRole]],
-            ['999999']);
-        Auth::login($user, true);
-
+        $actualRoles = [];
+        if (isset($roles[$desiredRole])) {
+            $actualRoles[] = $desiredRole;
+            if (in_array($desiredRole, ['admin', 'planner'])) {
+                $actualRoles[] = 'user'; // should also have user role if you're an admin/planner
+            }
+            $user = $this->userService->upsertUserByExternalId($demoUuids[$desiredRole],
+                $demoNames[$desiredRole],
+                'dummy@gebruiker.tst',
+                $actualRoles,
+                ['999999']);
+            Auth::login($user, true);
+        }
         return redirect()->intended('/');
     }
 

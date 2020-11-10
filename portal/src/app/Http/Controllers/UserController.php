@@ -16,7 +16,8 @@ class UserController extends Controller
     public function profile()
     {
         $user = $this->authenticationService->getAuthenticatedUser();
+        $roles = config('authorization.roles');
 
-        return view('profile', ['user' => $user]);
+        return view('profile', ['user' => $user, 'roles' => $roles]);
     }
 }

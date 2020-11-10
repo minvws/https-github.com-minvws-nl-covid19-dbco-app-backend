@@ -30,9 +30,8 @@ class AuthenticationService
     public function isPlanner(): bool
     {
         $user = $this->getAuthenticatedUser();
-        $roles = config('authorization.roles');
         foreach($user->roles as $role) {
-            if ($role == $roles['planner']) {
+            if ($role == 'planner') {
                 return true;
             }
         }
