@@ -16,7 +16,7 @@ class EloquentBaseModel extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            if ($model->{$model->getKeyName()} == null) {
+            if ($model->{$model->getKeyName()} === null) {
                 $model->{$model->getKeyName()} = (string)Str::uuid();
             }
         });
