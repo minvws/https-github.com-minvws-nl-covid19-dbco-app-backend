@@ -59,7 +59,6 @@ class DbUserRepository implements UserRepository
 
         foreach ($dbUser->organisations as $dbOrganisation)
         {
-          //  var_dump($dbOrganisation);
             $organisation = new Organisation();
             $organisation->uuid = $dbOrganisation->uuid;
             $organisation->externalId = $dbOrganisation->external_id;
