@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             QuestionnaireSeeder::class,
+            OrganizationSeeder::class
+
         ]);
 
         if (App::environment() == 'development') {
