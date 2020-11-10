@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use DBCO\HealthAuthorityAPI\Application\Helpers\EncryptionHelper;
 use DBCO\Shared\Application\Managers\DbTransactionManager;
 use DBCO\Shared\Application\Managers\TransactionManager;
 use DI\ContainerBuilder;
@@ -9,6 +10,7 @@ use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Predis\Client as PredisClient;
 use function DI\autowire;
 use function DI\get;
 
@@ -59,7 +61,13 @@ return function (ContainerBuilder $containerBuilder) {
 
                 return $pdo;
             },
-            TransactionManager::class => autowire(DbTransactionManager::class)
+            PredisClient::class => autowire(PredisClient::class)->constructor(get('redis')),
+            TransactionManager::class => autowire(DbTransactionManager::class),
+            EncryptionHelper::class =>
+                autowire(EncryptionHelper::class)
+                    ->constructor(
+                        get('encryption.generalKeyPair')
+                    )
         ]
     );
 };
