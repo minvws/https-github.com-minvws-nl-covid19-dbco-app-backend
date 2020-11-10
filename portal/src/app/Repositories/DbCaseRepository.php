@@ -37,9 +37,25 @@ class DbCaseRepository implements CaseRepository
      * Returns all the cases of a specicic user
      * @return Collection
      */
-    public function getCasesByUser(BCOUser $user): Collection
+    public function getCasesByAssignedUser(BCOUser $user): Collection
     {
-        $dbCases = EloquentCase::where('owner', $user->id)->orderBy('updated_at', 'desc')->get();
+        $dbCases = EloquentCase::where('assigned_uuid', $user->uuid)->orderBy('updated_at', 'desc')->get();
+
+        $cases = array();
+
+        foreach($dbCases as $dbCase) {
+            $cases[] = $this->caseFromEloquentModel($dbCase);
+        };
+
+        return collect($cases);
+    }
+
+    public function getCasesByOrganisation(BCOUser $user): Collection
+    {
+        $dbCases = EloquentCase::where('user_organisation.user_uuid', $user->uuid)
+                ->select('covidcase.*')
+                ->join('user_organisation', 'user_organisation.organisation_uuid', '=', 'covidcase.organisation_uuid')
+                ->orderBy('covidcase.updated_at', 'desc')->get();
 
         $cases = array();
 
@@ -55,12 +71,17 @@ class DbCaseRepository implements CaseRepository
      *
      * @return CovidCase
      */
-    public function createCase(BCOUser $owner, string $initialStatus): CovidCase
+    public function createCase(BCOUser $owner, string $initialStatus, ?BCOUser $assignedTo=null): CovidCase
     {
         $dbCase = new EloquentCase();
 
-        $dbCase->owner = $owner->id;
+        $dbCase->owner = $owner->uuid;
         $dbCase->status = $initialStatus;
+        $dbCase->organisation_uuid = $owner->organisations[0]->uuid; // TODO fix me: what if user has 2 orgs?
+
+        if ($assignedTo != null) {
+            $dbCase->assigned_uuid = $assignedTo->uuid;
+        }
 
         $dbCase->save();
         return $this->caseFromEloquentModel($dbCase);

@@ -21,14 +21,21 @@ interface CaseRepository
      * Returns all the cases of a user
      * @return Collection
      */
-    public function getCasesByUser(BCOUser $user): Collection;
+    public function getCasesByAssignedUser(BCOUser $user): Collection;
+
+    /**
+     * Retrusns all cases of a user's organisation
+     * @param array $organisations
+     * @return Collection
+     */
+    public function getCasesByOrganisation(BCOUser $user): Collection;
 
     /**
      * Create a new, empty case
      *
      * @return CovidCase
      */
-    public function createCase(BCOUser $owner, string $initialStatus): CovidCase;
+    public function createCase(BCOUser $owner, string $initialStatus, ?BCOUser $assignedTo): CovidCase;
 
     /**
      * Update case.

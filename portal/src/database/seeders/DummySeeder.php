@@ -20,13 +20,57 @@ class DummySeeder extends Seeder
     {
         $now = Date::now();
         $questionnaireUuid = 'facade01-feed-dead-c0de-defacedc0c0a';
+        $dummyUserUuid = '00000000-0000-0000-0000-000000000001';
+        $dummyPlannerUuid = '00000000-0000-0000-0000-000000000002';
+        $dummyAdminUuid = '00000000-0000-0000-0000-000000000003';
+        $dummyOrgUuid = '00000000-0000-0000-0000-000000000000';
+
+        DB::table('organisation')->insert([
+            'name' => 'Demo organisatie',
+            'uuid' => $dummyOrgUuid,
+            'external_id' => '999999', // 6 digit ids don't exist in real ggd ecosystem
+            'created_at' => $now,
+            'updated_at' => $now
+        ]);
+
+        DB::table('bcouser')->insert([
+            'name' => 'Demo Gebruiker',
+            'uuid' => $dummyUserUuid,
+            'external_id' => $dummyUserUuid,
+            'email' => 'dummy@gebruiker.tst',
+            'roles' => 'user',
+            'created_at' => $now,
+            'updated_at' => $now
+        ]);
+
+        DB::table('bcouser')->insert([
+            'name' => 'Demo Planner',
+            'uuid' => $dummyPlannerUuid,
+            'external_id' => $dummyPlannerUuid,
+            'email' => 'dummy@gebruiker.tst',
+            'roles' => 'user,planner',
+            'created_at' => $now,
+            'updated_at' => $now
+        ]);
+
+        DB::table('bcouser')->insert([
+            'name' => 'Demo Beheerder',
+            'uuid' => $dummyAdminUuid,
+            'external_id' => $dummyAdminUuid,
+            'email' => 'dummy@gebruiker.tst',
+            'roles' => 'user,admin',
+            'created_at' => $now,
+            'updated_at' => $now
+        ]);
 
         $caseUuid = (string)Str::uuid();
         // Create a case for the dummy user (id 0), with tasks. Case is open, not yet submitted.
         DB::table('covidcase')->insert([
             'name' => 'Bruce Wayne',
             'uuid' => $caseUuid,
-            'owner' => 0,
+            'organisation_uuid' => $dummyOrgUuid,
+            'owner' => $dummyUserUuid,
+            'assigned_uuid' => $dummyUserUuid,
             'date_of_symptom_onset' => date('Y-m-d'),
             'status' => 'open',
             'case_id' => 'GOTHAM001',
@@ -93,7 +137,9 @@ class DummySeeder extends Seeder
         DB::table('covidcase')->insert([
             'name' => 'Clark Kent',
             'uuid' => $caseUuid,
-            'owner' => 0,
+            'organisation_uuid' => $dummyOrgUuid,
+            'owner' => $dummyUserUuid,
+            'assigned_uuid' => $dummyUserUuid,
             'date_of_symptom_onset' => date('Y-m-d'),
             'status' => 'open',
             'case_id' => 'METROPOLIS001',
@@ -208,11 +254,13 @@ class DummySeeder extends Seeder
         ]]);
 
         $caseUuid = (string)Str::uuid();
-        // Create a final case for the dummy user (id 0), some tasks. Case is closed by ggdd.
+        // Create a case for the dummy user (id 0), some tasks. Case is closed by ggdd.
         DB::table('covidcase')->insert([
             'name' => 'Carol Danvers',
             'uuid' => $caseUuid,
-            'owner' => 0,
+            'organisation_uuid' => $dummyOrgUuid,
+            'owner' => $dummyUserUuid,
+            'assigned_uuid' => $dummyUserUuid,
             'date_of_symptom_onset' => date('Y-m-d'),
             'status' => 'closed',
             'case_id' => 'ASGARD001',
@@ -251,5 +299,20 @@ class DummySeeder extends Seeder
             'export_id' => null,
             'exported_at' => null
         ]]);
+
+        $caseUuid = (string)Str::uuid();
+        // Create an unassigned case.
+        DB::table('covidcase')->insert([
+            'name' => 'Diana Prince',
+            'uuid' => $caseUuid,
+            'organisation_uuid' => $dummyOrgUuid,
+            'owner' => $dummyPlannerUuid,
+            'assigned_uuid' => null,
+            'date_of_symptom_onset' => null,
+            'status' => 'draft',
+            'case_id' => 'THEMYSCIRA001',
+            'created_at' => $now,
+            'updated_at' => $now
+        ]);
     }
 }

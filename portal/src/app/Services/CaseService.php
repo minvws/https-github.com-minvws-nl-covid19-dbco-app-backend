@@ -70,7 +70,12 @@ class CaseService
     public function createDraftCase(): CovidCase
     {
         $owner = $this->authService->getAuthenticatedUser();
-        return $this->caseRepository->createCase($owner, CovidCase::STATUS_DRAFT);
+        $assignedTo = null;
+        if (!$this->authService->isPlanner()) {
+            // Auto assign to yourself if you aren't a planner
+            $assignedTo = $owner;
+        }
+        return $this->caseRepository->createCase($owner, CovidCase::STATUS_DRAFT, $assignedTo);
     }
 
     /**
@@ -114,7 +119,12 @@ class CaseService
 
     public function myCases(): Collection
     {
-        return $this->caseRepository->getCasesByUser($this->authService->getAuthenticatedUser());
+        return $this->caseRepository->getCasesByAssignedUser($this->authService->getAuthenticatedUser());
+    }
+
+    public function organisationCases(): Collection
+    {
+        return $this->caseRepository->getCasesByOrganisation($this->authService->getAuthenticatedUser());
     }
 
     /**
@@ -125,7 +135,7 @@ class CaseService
     public function canAccess(CovidCase $case): bool
     {
         $user = $this->authService->getAuthenticatedUser();
-        return $user->id == $case->owner;
+        return $user->uuid == $case->owner;
     }
 
     public function updateCase(CovidCase $case)
