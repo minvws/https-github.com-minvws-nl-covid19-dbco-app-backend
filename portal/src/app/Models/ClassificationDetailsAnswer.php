@@ -4,10 +4,10 @@ namespace App\Models;
 
 class ClassificationDetailsAnswer extends Answer
 {
-    public bool $livedTogetherRisk = false;
-    public bool $durationRisk = false;
-    public bool $distanceRisk = false;
-    public bool $otherRisk = false;
+    public bool $category1Risk = false;
+    public bool $category2ARisk = false;
+    public bool $category2BRisk = false;
+    public bool $category3Risk = false;
 
     function progressContribution()
     {
