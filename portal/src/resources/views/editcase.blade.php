@@ -30,11 +30,11 @@
                 </div>
                 <!-- End of question title component -->
                 @error('name')
-                    <div class="alert alert-danger" role="alert">
-                        Vul minimaal een naam in om de case te openen.
-                    </div>
+                    <alert class="alert alert-danger" role="alert">
+                        Naam is een verplicht veld, en maximaal 255 karakters.
+                    </alert>
                 @enderror
-                <input type="text" class="form-control w-25" id="name" name="name" value="{{ old('name', $case->name) }}">
+                <input type="text" maxlength="255" class="form-control w-25" id="name" name="name" value="{{ old('name', $case->name) }}">
 
                 <!-- Start of question title component -->
                 <div class="align-items-end  mb-3 mt-5">
@@ -42,7 +42,12 @@
                     <p class="mt-2 mb-0  ml-auto">Bijvoorbeeld een case id uit HPZone, zodat je later makkelijk kunt zien bij wie deze gegevens horen.</p>
                 </div>
                 <!-- End of question title component -->
-                <input type="text" class="form-control w-25" id="caseId" name="caseId" value="{{ old('caseId', $case->caseId) }}">
+                @error('caseId')
+                    <alert class="alert alert-danger" role="alert">
+                        Een case nummer is maximaal 255 karakters.
+                    </alert>
+                @enderror
+                <input type="text" maxlength="255" class="form-control w-25" id="caseId" name="caseId" value="{{ old('caseId', $case->caseId) }}">
 
 
                 <!-- Start of question title component -->
