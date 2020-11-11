@@ -197,20 +197,20 @@ class DummySeeder extends Seeder
             'uuid' => (string)Str::uuid(),
             'task_uuid' => $taskUuidLex,
             'question_uuid' => $classificationQuestionUuid,
-            'cfd_livedtogetherrisk' => '0',
-            'cfd_durationrisk' => '1',
-            'cfd_distancerisk' => '1',
-            'cfd_otherrisk' => '1',
+            'cfd_cat_1_risk' => '0',
+            'cfd_cat_2a_risk' => '1',
+            'cfd_cat_2b_risk' => '1',
+            'cfd_cat_3_risk' => '1',
             'created_at' => $now,
             'updated_at' => $now
         ],[
             'uuid' => (string)Str::uuid(),
             'task_uuid' => $taskUuidLois,
             'question_uuid' => $classificationQuestionUuid,
-            'cfd_livedtogetherrisk' => '1',
-            'cfd_durationrisk' => '1',
-            'cfd_distancerisk' => '1',
-            'cfd_otherrisk' => '0',
+            'cfd_cat_1_risk' => '1',
+            'cfd_cat_2a_risk' => '1',
+            'cfd_cat_2b_risk' => '1',
+            'cfd_cat_3_risk' => '0',
             'created_at' => $now,
             'updated_at' => $now
         ]]);
