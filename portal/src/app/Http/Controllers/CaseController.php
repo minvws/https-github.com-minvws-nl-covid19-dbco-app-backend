@@ -98,7 +98,8 @@ class CaseController extends Controller
         if ($case != null && $this->caseService->canAccess($case)) {
 
             $validatedData = $request->validate([
-                'name' => 'required'
+                'name' => 'required|max:255',
+                'caseId' => 'max:255'
             ]);
 
             $case->name = $validatedData['name'];
