@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Repositories;
+namespace DBCO\Worker\Application\Repositories;
 
-use App\Application\Models\GeneralTaskList;
-use App\Application\Models\Header;
-use App\Application\Models\QuestionnaireList;
+use DBCO\Worker\Application\Models\GeneralTaskList;
+use DBCO\Worker\Application\Models\Header;
+use DBCO\Worker\Application\Models\QuestionnaireList;
 use GuzzleHttp\Client as GuzzleClient;
 use Psr\Log\LoggerInterface;
 

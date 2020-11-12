@@ -1,9 +1,9 @@
 <?php
-namespace App\Application\Services;
+namespace DBCO\Worker\Application\Services;
 
-use App\Application\Models\GeneralTaskList;
-use App\Application\Repositories\GeneralTaskCacheRepository;
-use App\Application\Repositories\GeneralTaskGetRepository;
+use DBCO\Worker\Application\Models\GeneralTaskList;
+use DBCO\Worker\Application\Repositories\GeneralTaskCacheRepository;
+use DBCO\Worker\Application\Repositories\GeneralTaskGetRepository;
 use Exception;
 use Psr\Log\LoggerInterface;
 
