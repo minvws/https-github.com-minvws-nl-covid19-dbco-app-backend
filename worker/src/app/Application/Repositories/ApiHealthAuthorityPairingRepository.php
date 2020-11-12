@@ -43,9 +43,6 @@ class ApiHealthAuthorityPairingRepository implements HealthAuthorityPairingRepos
         $this->logger->debug('Register client in health authority API');
 
         $options = [
-//            'headers' => [
-//                'Authorization' => 'Bearer ' . $this->encodeJWT($caseUuid)
-//            ],
             'json' => [
                 'sealedClientPublicKey' => base64_encode($request->sealedClientPublicKey)
             ]
