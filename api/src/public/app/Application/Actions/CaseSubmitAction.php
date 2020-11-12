@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DBCO\PublicAPI\Application\Actions;
 
+use DBCO\PublicAPI\Application\Models\SealedCase;
 use DBCO\PublicAPI\Application\Responses\CaseSubmitResponse;
 use DBCO\PublicAPI\Application\Services\CaseService;
 use DBCO\Shared\Application\Actions\Action;
@@ -38,27 +39,62 @@ class CaseSubmitAction extends Action
         $this->caseService = $caseService;
     }
 
+
+    /**
+     * Validate contents of parsed body.
+     *
+     * @param mixed $body
+     * @param array $errors
+     *
+     * @throws ValidationException
+     */
+    private function validateBody($body, &$errors)
+    {
+        if (!is_array($body)) {
+            $errors[] = ValidationError::body('invalid', 'body should be a valid JSON object string', []);
+        } else {
+            if (empty($body['sealedCase'])) {
+                $errors[] = ValidationError::body('isRequired', 'sealedCase is required', ['sealedCase']);
+            } else if (!is_array($body['sealedCase'])) {
+                $errors[] = ValidationError::body('invalid', 'sealedCase should be an object', ['sealedCase']);
+            } else {
+                if (empty($body['sealedCase']['ciphertext'])) {
+                    $errors[] = ValidationError::body('isRequired', 'sealedCase.ciphertext is required', ['sealedCase', 'ciphertext']);
+                } else if (!is_string($body['sealedCase']['ciphertext'])) {
+                    $errors[] = ValidationError::body('invalid', 'sealedCase.ciphertext should be a string', ['sealedCase', 'ciphertext']);
+                }
+
+                if (empty($body['sealedCase']['nonce'])) {
+                    $errors[] = ValidationError::body('isRequired', 'sealedCase.nonce is required', ['sealedCase', 'nonce']);
+                } else if (!is_string($body['sealedCase']['nonce'])) {
+                    $errors[] = ValidationError::body('invalid', 'sealedCase.nonce should be a string', ['sealedCase', 'nonce']);
+                }
+            }
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $body = (string)$this->request->getBody();
-
         $errors = [];
 
-        $caseId = $this->args['caseId'] ?? null;
-        if (empty($caseId)) {
-            $errors = ValidationError::url('isRequired', 'caseId is required', 'caseId');
+        $token = $this->args['token'] ?? null;
+        if (empty($token)) {
+            $errors[] = ValidationError::url('isRequired', 'token is required', 'token');
         }
 
-        // TODO: verify body is not empty, signature etc.
+        $body = $this->request->getParsedBody();
+        $this->validateBody($body, $errors);
 
         if (count($errors) > 0) {
             throw new ValidationException($this->request, $errors);
         }
 
-        $this->caseService->submitCase($caseId, $body);
+        $ciphertext = $body['sealedCase']['ciphertext'];
+        $nonce = $body['sealedCase']['nonce'];
+        $this->caseService->submitCase($token, $ciphertext, $nonce);
 
         return $this->respond(new CaseSubmitResponse());
     }

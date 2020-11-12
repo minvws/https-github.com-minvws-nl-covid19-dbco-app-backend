@@ -1,7 +1,8 @@
 <?php
 namespace DBCO\PublicAPI\Application\Repositories;
 
-use DBCO\PublicAPI\Application\Models\CovidCase;
+use DBCO\PublicAPI\Application\Models\SealedCase;
+use DBCO\Shared\Application\Models\SealedData;
 
 /**
  * Used for syncing case details.
@@ -13,19 +14,19 @@ interface CaseRepository
     /**
      * Returns the case and its task list.
      *
-     * @param string $caseId Case identifier.
+     * @param string $token Case token.
      *
-     * @return CovidCase
+     * @return SealedCase
      */
-    public function getCase(string $caseId): CovidCase;
+    public function getCase(string $token): SealedCase;
 
     /**
      * Submit case and its tasks.
      *
-     * @param string $caseId
-     * @param string $body
+     * @param string     $token
+     * @param SealedCase $sealedCase
      *
      * @return void
      */
-    public function submitCase(string $caseId, string $body): void;
+    public function submitCase(string $token, SealedCase $sealedCase): void;
 }

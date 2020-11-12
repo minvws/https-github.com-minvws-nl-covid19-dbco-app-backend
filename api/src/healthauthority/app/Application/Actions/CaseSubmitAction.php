@@ -11,7 +11,7 @@ use DBCO\Shared\Application\Actions\Action;
 use DBCO\Shared\Application\Actions\ActionException;
 use DBCO\Shared\Application\Actions\ValidationError;
 use DBCO\Shared\Application\Actions\ValidationException;
-use DBCO\Shared\Application\Models\SealedMessage;
+use DBCO\Shared\Application\Models\SealedData;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
@@ -73,7 +73,7 @@ class CaseSubmitAction extends Action
         }
 
         try {
-            $this->caseService->submitCase($token, new SealedMessage(base64_decode($sealedCase['ciphertext']), base64_decode($sealedCase['nonce'])));
+            $this->caseService->submitCase($token, new SealedData(base64_decode($sealedCase['ciphertext']), base64_decode($sealedCase['nonce'])));
         } catch (CaseNotFoundException $e) {
             throw new ActionException($this->request, 'caseNotFoundError', $e->getMessage(), ActionException::NOT_FOUND);
         } catch (SealedBoxException $e) {

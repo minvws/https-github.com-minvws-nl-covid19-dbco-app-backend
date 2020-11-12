@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DBCO\HealthAuthorityAPI\Application\Helpers;
 
-use DBCO\Shared\Application\Models\SealedMessage;
+use DBCO\Shared\Application\Models\SealedData;
 
 /**
  * Utility methods for encryption.
@@ -121,24 +121,24 @@ class EncryptionHelper
      * @param string $message
      * @param string $transferKey
      *
-     * @return SealedMessage
+     * @return SealedData
      */
-    public function sealMessageForClient(string $message, string $transferKey): SealedMessage
+    public function sealMessageForClient(string $message, string $transferKey): SealedData
     {
         $nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
         $ciphertext = sodium_crypto_secretbox($message, $nonce, $transferKey);
-        return new SealedMessage($ciphertext, $nonce);
+        return new SealedData($ciphertext, $nonce);
     }
 
     /**
      * Unseal message from client.
      *
-     * @param SealedMessage $sealedMessage
+     * @param SealedData $sealedMessage
      * @param string        $receiveKey
      *
      * @return string
      */
-    public function unsealMessageFromClient(SealedMessage $sealedMessage, string $receiveKey): string
+    public function unsealMessageFromClient(SealedData $sealedMessage, string $receiveKey): string
     {
         return sodium_crypto_secretbox_open($sealedMessage->ciphertext, $sealedMessage->nonce, $receiveKey);
     }
