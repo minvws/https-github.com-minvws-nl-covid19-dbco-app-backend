@@ -14,9 +14,9 @@ use RuntimeException;
  */
 class RedisPairingRepository implements PairingRepository
 {
-    const PAIRING_LIST_KEY = 'pairings';
-    const PAIRING_RESPONSE_LIST_KEY_TEMPLATE = 'pairing-response:%s';
-    const PAIRING_TIMEOUT = 30;
+    private const PAIRING_LIST_KEY = 'pairings';
+    private const PAIRING_RESPONSE_LIST_KEY_TEMPLATE = 'pairing-response:%s';
+    private const PAIRING_TIMEOUT = 30;
 
     /**
      * @var PredisClient
@@ -41,14 +41,10 @@ class RedisPairingRepository implements PairingRepository
         $responseListKey = sprintf(self::PAIRING_RESPONSE_LIST_KEY_TEMPLATE, $pairing->case->id);
 
         $data = [
-            'pairing' => [
-                'case' => [
-                    'id' => $pairing->case->id,
-                    'expiresAt' =>  $pairing->case->expiresAt->format(DateTime::ATOM)
-                ],
-                'encryptedClientPublicKey' => $pairing->encryptedClientPublicKey
+            'case' => [
+                'id' => $pairing->case->id,
             ],
-            'responseListKey' => $responseListKey
+            'sealedClientPublicKey' => $pairing->sealedClientPublicKey
         ];
 
         try {

@@ -42,3 +42,15 @@ services:
             - ${PORTAL_PORT:-8084}:80
         volumes:
             - ./portal/src:/src
+
+    pairing-worker:
+        build: worker
+        command: pairing:process-queue
+        environment:
+            DEBUG: ${DEBUG:-0}
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api/v1/
+        depends_on:
+            - redis
+            - healthauthority_api

@@ -1,5 +1,5 @@
 <?php
-namespace App\Application\Models;
+namespace DBCO\Worker\Application\Models;
 
 /**
  * Used for 1:1 forwarding of the general task list body and headers.
