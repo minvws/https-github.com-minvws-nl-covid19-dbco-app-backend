@@ -9,9 +9,11 @@ return [
     'displayErrorDetails' => $debug,
     'logErrors' => true,
     'logErrorDetails' => true,
+
     'logger.name' => 'api',
     'logger.path' => 'php://stdout',
     'logger.level' => $debug ? Logger::DEBUG : Logger::ERROR,
+
     'db' => [
         'type' => DI\env('DB_TYPE'),
         'host' => DI\env('DB_HOST'),
@@ -20,6 +22,13 @@ return [
         'password' => DI\env('DB_PASSWORD'),
         'tns' => DI\env('DB_TNS', null)
     ],
+
+    'redis' => [
+        'host' => DI\env('REDIS_HOST'),
+        'port' => DI\env('REDIS_PORT')
+    ],
+
     'signingKey.length' => 32,
-    'useStubs' => DI\env('USE_STUBS', false)
+    'useStubs' => DI\env('USE_STUBS', false),
+    'encryption.generalKeyPair' => DI\env('ENCRYPTION_GENERAL_KEY_PAIR')
 ];

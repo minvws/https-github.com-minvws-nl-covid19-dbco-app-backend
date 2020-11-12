@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace DBCO\HealthAuthorityAPI\Application\Actions;
 
-use DBCO\HealthAuthorityAPI\Application\Responses\CaseResponse;
+use DBCO\HealthAuthorityAPI\Application\Responses\ClientRegisterResponse;
 use DBCO\HealthAuthorityAPI\Application\Services\CaseNotFoundException;
 use DBCO\HealthAuthorityAPI\Application\Services\CaseService;
+use DBCO\HealthAuthorityAPI\Application\Services\SealedBoxException;
 use DBCO\Shared\Application\Actions\Action;
 use DBCO\Shared\Application\Actions\ActionException;
 use DBCO\Shared\Application\Actions\ValidationError;
@@ -15,14 +16,14 @@ use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 
 /**
- * List case specific tasks.
+ * Register client.
  *
  * @package DBCO\HealthAuthorityAPI\Application\Actions
  */
-class CaseAction extends Action
+class ClientRegisterAction extends Action
 {
     /**
-     * @var TaskService
+     * @var CaseService
      */
     protected CaseService $caseService;
 
@@ -55,16 +56,25 @@ class CaseAction extends Action
             $errors[] = ValidationError::url('invalid', 'caseUuid should be valid UUID', 'caseUuid');
         }
 
+        $body = $this->request->getParsedBody();
+        $sealedClientPublicKey = $body['sealedClientPublicKey'] ?? null;
+        if (empty($sealedClientPublicKey)) {
+            $errors[] = ValidationError::body('isRequired', 'sealedClientPublicKey is required', ['sealedClientPublicKey']);
+        }
+
         if (count($errors) > 0) {
             throw new ValidationException($this->request, $errors);
         }
 
         try {
-            $case = $this->caseService->getCase($caseUuid);
+            $client = $this->caseService->registerClient($caseUuid, $sealedClientPublicKey);
         } catch (CaseNotFoundException $e) {
             throw new ActionException($this->request, 'caseNotFoundError', $e->getMessage(), ActionException::NOT_FOUND);
+        } catch (SealedBoxException $e) {
+            $errors[] = ValidationError::body('invalid', 'sealedClientPublicKey is invalid', ['sealedClientPublicKey']);
+            throw new ValidationException($this->request, $errors);
         }
 
-        return $this->respond(new CaseResponse($case));
+        return $this->respond(new ClientRegisterResponse($client));
     }
 }
