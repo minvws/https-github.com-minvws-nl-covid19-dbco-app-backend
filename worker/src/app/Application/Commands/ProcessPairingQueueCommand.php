@@ -1,29 +1,29 @@
 <?php
 namespace DBCO\Worker\Application\Commands;
 
-use DBCO\Worker\Application\Services\TaskService;
+use DBCO\Worker\Application\Services\PairingService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RefreshGeneralTasksCommand extends Command
+class ProcessPairingQueueCommand extends Command
 {
-    protected static $defaultName = 'task:refresh-general';
+    protected static $defaultName = 'pairing:process-queue';
 
     /**
-     * @var TaskService
+     * @var PairingService
      */
-    private TaskService $taskService;
+    private PairingService $pairingService;
 
     /**
      * Constructor.
      *
-     * @param TaskService $taskService
+     * @param PairingService $pairingService
      */
-    public function __construct(TaskService $taskService)
+    public function __construct(PairingService $pairingService)
     {
         parent::__construct();
-        $this->taskService = $taskService;
+        $this->pairingService = $pairingService;
     }
 
     /**
@@ -32,8 +32,8 @@ class RefreshGeneralTasksCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Refresh general tasks command')
-            ->setHelp('Can be used to retrieve a fresh list of general tasks from the health authority');
+            ->setDescription('Process pairing queue command')
+            ->setHelp('Can be used to process entries in the pairing queue (e.g. exchange keys)');
     }
 
     /**
@@ -46,7 +46,7 @@ class RefreshGeneralTasksCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->taskService->refreshGeneralTasks();
+        $this->pairingService->processPairingQueue();
         return Command::SUCCESS;
     }
 }

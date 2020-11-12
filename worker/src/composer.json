@@ -13,12 +13,12 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "DBCO\\Worker\\": "app/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "DBCO\\Worker\\Tests\\": "tests/"
         }
     },
     "scripts": {
