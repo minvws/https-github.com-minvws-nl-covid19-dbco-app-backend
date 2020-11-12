@@ -59,6 +59,18 @@ services:
             REDIS_PORT: 6379
             ENCRYPTION_GENERAL_KEY_PAIR: ${HEALTHAUTHORITY_ENCRYPTION_GENERAL_KEY_PAIR}
 
+    pairing-worker:
+        build: worker
+        command: pairing:process-queue
+        environment:
+            DEBUG: ${DEBUG:-0}
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api/v1/
+        depends_on:
+            - redis
+            - healthauthority_api
+
     portal:
         build:
             context: ./portal

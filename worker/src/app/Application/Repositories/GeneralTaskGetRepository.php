@@ -1,7 +1,7 @@
 <?php
-namespace App\Application\Repositories;
+namespace DBCO\Worker\Application\Repositories;
 
-use App\Application\Models\GeneralTaskList;
+use DBCO\Worker\Application\Models\GeneralTaskList;
 
 interface GeneralTaskGetRepository
 {

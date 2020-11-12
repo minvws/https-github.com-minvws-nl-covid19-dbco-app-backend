@@ -1,5 +1,5 @@
 <?php
-namespace App\Application\Managers;
+namespace DBCO\Worker\Application\Managers;
 
 interface TransactionManager
 {
