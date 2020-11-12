@@ -47,10 +47,11 @@ class PairingServiceTest extends TestCase
 
         $redis = $this->getAppInstance()->getContainer()->get(PredisClient::class);
         $redis->rpush(self::PAIRING_LIST_KEY, [json_encode($pairingData)]);
+        $this->assertEquals(1, $redis->exists(self::PAIRING_LIST_KEY));
         $this->assertEquals(0, $redis->exists($responseKey));
 
         $pairingService = $this->getAppInstance()->getContainer()->get(PairingService::class);
-        $pairingService->processPairingQueue();
+        $pairingService->processPairingQueueEntry();
 
         $this->assertEquals(1, $redis->exists($responseKey));
         $data = $redis->lpop($responseKey);

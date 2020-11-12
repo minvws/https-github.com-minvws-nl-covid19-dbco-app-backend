@@ -4,7 +4,10 @@ namespace DBCO\Worker\Application\Repositories;
 use DBCO\Worker\Application\Models\PairingRequest;
 use DBCO\Worker\Application\Models\PairingResponse;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ClientException;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
+use Throwable;
 
 /**
  * Health authority pairing gateway.
@@ -48,10 +51,20 @@ class ApiHealthAuthorityPairingRepository implements HealthAuthorityPairingRepos
             ]
         ];
 
-        $response = $this->client->post('cases/' . $request->case->id . '/clients', $options);
-        $data = json_decode((string)$response->getBody());
+        try {
+            $response = $this->client->post('cases/' . $request->case->id . '/clients', $options);
+            $this->logger->debug("Response:\n" . (string)$response->getBody());
+            $data = json_decode((string)$response->getBody());
 
-        $sealedHealthAuthorityPublicKey = base64_decode($data->sealedHealthAuthorityPublicKey);
-        return new PairingResponse($request, $sealedHealthAuthorityPublicKey);
+            $sealedHealthAuthorityPublicKey = base64_decode($data->sealedHealthAuthorityPublicKey);
+            return new PairingResponse($request, $sealedHealthAuthorityPublicKey);
+        } catch (ClientException $e) {
+            $this->logger->error('Error registering client in health authority API: ' . $e->getMessage());
+            $this->logger->debug("Response:\n" . (string)$e->getResponse()->getBody());
+            throw new RuntimeException('Error registering client in health authority API');
+        } catch (Throwable $e) {
+            $this->logger->error('Error registering client in health authority API: ' . $e->getMessage());
+            throw new RuntimeException('Error registering client in health authority API');
+        }
     }
 }

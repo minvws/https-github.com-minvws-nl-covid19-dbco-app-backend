@@ -1,11 +1,10 @@
 <?php
 namespace DBCO\PublicAPI\Application\Repositories;
 
-use DateTime;
 use DBCO\PublicAPI\Application\Models\Pairing;
-use Exception;
 use Predis\Client as PredisClient;
 use RuntimeException;
+use Throwable;
 
 /**
  * Store/retrieve pairings in/from Redis.
@@ -44,7 +43,7 @@ class RedisPairingRepository implements PairingRepository
             'case' => [
                 'id' => $pairing->case->id,
             ],
-            'sealedClientPublicKey' => $pairing->sealedClientPublicKey
+            'sealedClientPublicKey' => base64_encode($pairing->sealedClientPublicKey)
         ];
 
         try {
@@ -52,14 +51,14 @@ class RedisPairingRepository implements PairingRepository
             $response = $this->client->blpop($responseListKey, self::PAIRING_TIMEOUT);
 
             if ($response === null || count($response) !== 2) {
-                throw new Exception('Error storing pairing (no response');
+                throw new RuntimeException('Error storing pairing (no response');
             }
 
             $responseData = json_decode($response[1]);
             $pairing->sealedHealthAuthorityPublicKey =
                 base64_decode($responseData->pairing->sealedHealthAuthorityPublicKey);
-        } catch (Exception $e) {
-            throw new Exception('Error storing pairing', 0, $e);
+        } catch (Throwable $e) {
+            throw new RuntimeException('Error storing pairing: ' . $e->getMessage(), 0, $e);
         }
     }
 }
