@@ -1,18 +1,20 @@
 <?php
+namespace DBCO\Shared\Application\Models;
+
 /**
- * Encrypted message.
+ * Encrypted/sealed message.
  */
-class EncryptedMessage
+class SealedMessage
 {
     /**
-     * @var
+     * @var string
      */
-    private string $ciphertext;
+    public string $ciphertext;
 
     /**
-     * @var
+     * @var string
      */
-    private string $nonce;
+    public string $nonce;
 
     /**
      * Constructor.
@@ -22,7 +24,7 @@ class EncryptedMessage
      */
     public function __construct(string $ciphertext, string $nonce)
     {
-        $this->ciphertext = ciphertext;
+        $this->ciphertext = $ciphertext;
         $this->nonce = $nonce;
     }
 }
