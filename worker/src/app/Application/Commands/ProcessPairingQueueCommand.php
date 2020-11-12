@@ -46,7 +46,15 @@ class ProcessPairingQueueCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->pairingService->processPairingQueue();
+        while (true) {
+            try {
+                $this->pairingService->processPairingQueueEntry();
+            } catch (\Throwable $e) {
+                // wait a little before trying again, maybe something is down
+                sleep(1);
+            }
+        }
+
         return Command::SUCCESS;
     }
 }
