@@ -4,7 +4,7 @@ namespace DBCO\Shared\Application\Models;
 /**
  * Encrypted/sealed message.
  */
-class SealedMessage
+class SealedData
 {
     /**
      * @var string

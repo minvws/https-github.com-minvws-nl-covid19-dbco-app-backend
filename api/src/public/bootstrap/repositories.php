@@ -13,7 +13,6 @@ use DBCO\PublicAPI\Application\Repositories\RedisPairingRepository;
 use DBCO\PublicAPI\Application\Repositories\PairingRepository;
 use DBCO\PublicAPI\Application\Repositories\PairingRequestRepository;
 use DBCO\PublicAPI\Application\Repositories\SimpleConfigRepository;
-use DBCO\PublicAPI\Application\Repositories\StubCaseRepository;
 use DI\ContainerBuilder;
 use function DI\autowire;
 
@@ -23,7 +22,7 @@ return function (ContainerBuilder $containerBuilder) {
         PairingRepository::class => autowire(RedisPairingRepository::class),
         QuestionnaireRepository::class => autowire(RedisQuestionnaireRepository::class),
         GeneralTaskRepository::class => autowire(RedisGeneralTaskRepository::class),
-        CaseRepository::class => autowire(StubCaseRepository::class),
+        CaseRepository::class => autowire(RedisCaseRepository::class),
         ConfigRepository::class => autowire(SimpleConfigRepository::class)
     ]);
 };

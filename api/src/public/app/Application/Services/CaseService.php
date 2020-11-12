@@ -1,7 +1,7 @@
 <?php
 namespace DBCO\PublicAPI\Application\Services;
 
-use DBCO\PublicAPI\Application\Models\CovidCase;
+use DBCO\PublicAPI\Application\Models\SealedCase;
 use DBCO\PublicAPI\Application\Models\GeneralTaskList;
 use DBCO\PublicAPI\Application\Repositories\CaseRepository;
 use DBCO\PublicAPI\Application\Repositories\GeneralTaskRepository;
@@ -65,9 +65,9 @@ class CaseService
      *
      * @param string $caseId Case identifier.
      *
-     * @return CovidCase
+     * @return SealedCase
      */
-    public function getCase(string $caseId): CovidCase
+    public function getCase(string $caseId): SealedCase
     {
         // TODO: verify access to case using signed otp
         return $this->caseRepository->getCase($caseId);
@@ -76,12 +76,14 @@ class CaseService
     /**
      * Submit case tasks.
      *
-     * @param string $caseId Case identifier.
-     * @param string $body   Encrypted body.
+     * @param string $token       Case token.
+     * @param string $ciphertext  Sealed case ciphertext.
+     * @param string $nonce       Sealed case nonce.
      */
-    public function submitCase(string $caseId, string $body): void
+    public function submitCase(string $token, string $ciphertext, string $nonce): void
     {
-        // TODO: verify signature and access
-        $this->caseRepository->submitCase($caseId, $body);
+        // TODO: verify access
+        $sealedCase = new SealedCase($ciphertext, $nonce);
+        $this->caseRepository->submitCase($token, $sealedCase);
     }
 }

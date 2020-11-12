@@ -9,7 +9,7 @@ use DBCO\HealthAuthorityAPI\Application\Models\TaskList;
 use DBCO\HealthAuthorityAPI\Application\Repositories\CaseRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\ClientRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\GeneralTaskRepository;
-use DBCO\Shared\Application\Models\SealedMessage;
+use DBCO\Shared\Application\Models\SealedData;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
@@ -128,12 +128,12 @@ class CaseService
      * Submit case with tasks.
      *
      * @param string $token             Case token.
-     * @param SealedMessage $sealedCase Sealed case data.
+     * @param SealedData $sealedCase Sealed case data.
      *
      * @throws CaseNotFoundException
      * @throws SealedBoxException
      */
-    public function submitCase(string $token, SealedMessage $sealedCase): void
+    public function submitCase(string $token, SealedData $sealedCase): void
     {
         $client = $this->clientRepository->getClient($token);
         if ($client === null) {

@@ -1,9 +1,11 @@
 <?php
 namespace DBCO\PublicAPI\Application\Models;
 
+use DBCO\Shared\Application\Models\SealedData;
+
 /**
- * Used for 1:1 forwarding of the case and its task list body and headers.
+ * Used for forwarding an encrypted case.
  */
-class CovidCase extends ProxyData
+class SealedCase extends SealedData
 {
 }
