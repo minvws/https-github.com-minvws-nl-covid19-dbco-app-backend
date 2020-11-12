@@ -27,7 +27,7 @@ class CaseAction extends Action
      * Constructor.
      *
      * @param LoggerInterface $logger
-     * @param TaskService     $taskService
+     * @param CaseService     $caseService
      */
     public function __construct(
         LoggerInterface $logger,
@@ -45,16 +45,16 @@ class CaseAction extends Action
     {
         $errors = [];
 
-        $caseId = $this->args['caseId'] ?? null;
-        if (empty($caseId)) {
-            $errors[] = ValidationError::url('isRequired', 'caseId is required', 'caseId');
+        $token = $this->args['token'] ?? null;
+        if (empty($token)) {
+            $errors[] = ValidationError::url('isRequired', 'token is required', 'token');
         }
 
         if (count($errors) > 0) {
             throw new ValidationException($this->request, $errors);
         }
 
-        $case = $this->caseService->getCase($caseId);
+        $case = $this->caseService->getCase($token);
 
         return $this->respond(new CaseResponse($case));
     }

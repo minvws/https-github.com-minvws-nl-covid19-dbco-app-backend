@@ -5,6 +5,7 @@ use DBCO\Worker\Application\Repositories\ClientPairingRepository;
 use DBCO\Worker\Application\Repositories\HealthAuthorityPairingRepository;
 use Exception;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 class PairingService
 {
@@ -42,11 +43,11 @@ class PairingService
     }
 
     /**
-     * Process the pairing cache.
+     * Processes a single pairing queue entry.
      *
-     * @throws Exception
+     * @throws Throwable
      */
-    public function processPairingQueue()
+    public function processPairingQueueEntry()
     {
         try {
             $this->logger->debug('Wait for pairing request');
@@ -57,7 +58,7 @@ class PairingService
             $this->logger->debug('Send health authority response to client for case ' . $request->case->id);
             $this->clientPairingRepository->sendPairingResponse($response);
             $this->logger->debug('Successfully completed pairing for case ' . $request->case->id);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $this->logger->error('Error processing pairing queue entry: ' . $e->getMessage());
             $this->logger->debug($e->getTraceAsString());
             throw $e;
