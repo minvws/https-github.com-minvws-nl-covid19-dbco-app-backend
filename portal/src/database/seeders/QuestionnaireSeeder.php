@@ -99,19 +99,6 @@ class QuestionnaireSeeder extends Seeder
                 'uuid' => $questionUuid,
                 'questionnaire_uuid' => $questionnaireUuid,
                 'group' => 'contactdetails',
-                'question_type' => 'open',
-                'label' => 'Beroep',
-                'description' => null,
-                'relevant_for_categories' => '1',
-                'created_at' => $now,
-                'updated_at' => $now
-            ]);
-
-            $questionUuid = (string)Str::uuid();
-            DB::table('question')->insert([
-                'uuid' => $questionUuid,
-                'questionnaire_uuid' => $questionnaireUuid,
-                'group' => 'contactdetails',
                 'question_type' => 'multiplechoice',
                 'label' => 'Waar ken je deze persoon van?',
                 'header' => 'Relatie',
