@@ -14,14 +14,12 @@ interface UserRepository
      * why for authentication purposes we're passing an EloquentUser around.
      * @param string $externalId
      * @param string $name
-     * @param string|null $email
      * @param array $roles
      * @param array $organisationUuids
      * @return EloquentUser
      */
     public function upsertUserByExternalId(string $externalId,
                                            string $name,
-                                           ?string $email,
                                            array $roles,
                                            array $organisationUuids): EloquentUser;
 
