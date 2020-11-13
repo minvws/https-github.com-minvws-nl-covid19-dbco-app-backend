@@ -68,7 +68,7 @@ class RedisClientPairingRepository implements ClientPairingRepository
                 $data = json_decode($result[1]);
 
                 $case = new PairingRequestCase($data->case->id);
-                $sealedClientPublicKey = $data->sealedClientPublicKey;
+                $sealedClientPublicKey = base64_decode($data->sealedClientPublicKey);
 
                 return new PairingRequest($case, $sealedClientPublicKey);
             } catch (ConnectionException $e) {
