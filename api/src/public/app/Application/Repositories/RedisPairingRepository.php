@@ -61,7 +61,7 @@ class RedisPairingRepository implements PairingRepository
                 throw new Exception($responseData->error);
             } else {
                 $pairing->sealedHealthAuthorityPublicKey =
-                    base64_decode($responseData->pairing->sealedHealthAuthorityPublicKey);
+                    base64_decode($responseData->sealedHealthAuthorityPublicKey);
             }
         } catch (Throwable $e) {
             throw new RuntimeException('Error storing pairing: ' . $e->getMessage(), 0, $e);
