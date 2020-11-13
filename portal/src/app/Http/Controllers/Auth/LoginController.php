@@ -45,7 +45,6 @@ class LoginController extends Controller
 
         $user = $this->userService->upsertUserByExternalId($socialiteUser['id'],
                                                           $socialiteUser['name'],
-                                                          $socialiteUser['email'],
                                                           $socialiteUser['roles'],
                                                           $socialiteUser['organisations']);
 
@@ -76,7 +75,6 @@ class LoginController extends Controller
             }
             $user = $this->userService->upsertUserByExternalId($demoUuids[$desiredRole],
                 $demoNames[$desiredRole],
-                'dummy@gebruiker.tst',
                 $actualRoles,
                 ['999999']);
             Auth::login($user, true);
