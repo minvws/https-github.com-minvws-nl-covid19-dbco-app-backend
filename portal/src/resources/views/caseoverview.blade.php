@@ -83,6 +83,7 @@
                         @endforeach
                     </table>
                     <!-- End of table component -->
+                    {{ $cases->links() }}
                 </div>
 
                 <div class="tab-pane  fade" id="nav-all-cases" role="tabpanel" aria-labelledby="nav-all-cases-tab">
