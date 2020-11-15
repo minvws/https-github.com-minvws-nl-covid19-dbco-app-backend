@@ -4,7 +4,8 @@ namespace App\Repositories;
 
 use App\Models\BCOUser;
 use App\Models\CovidCase;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 
 interface CaseRepository
 {
@@ -19,16 +20,16 @@ interface CaseRepository
 
     /**
      * Returns all the cases of a user
-     * @return Collection
+     * @return LengthAwarePaginator
      */
-    public function getCasesByAssignedUser(BCOUser $user): Collection;
+    public function getCasesByAssignedUser(BCOUser $user): LengthAwarePaginator;
 
     /**
      * Retrusns all cases of a user's organisation
      * @param array $organisations
-     * @return Collection
+     * @return LengthAwarePaginator
      */
-    public function getCasesByOrganisation(BCOUser $user): Collection;
+    public function getCasesByOrganisation(BCOUser $user): LengthAwarePaginator;
 
     /**
      * Create a new, empty case

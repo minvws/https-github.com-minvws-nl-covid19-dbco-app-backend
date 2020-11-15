@@ -30,9 +30,9 @@
                 </div>
                 <!-- End of question title component -->
                 @error('name')
-                    <alert class="alert alert-danger" role="alert">
+                    <div class="alert alert-danger">
                         Naam is een verplicht veld, en maximaal 255 karakters.
-                    </alert>
+                    </div>
                 @enderror
                 <input type="text" maxlength="255" class="form-control w-25" id="name" name="name" value="{{ old('name', $case->name) }}">
 
@@ -43,9 +43,9 @@
                 </div>
                 <!-- End of question title component -->
                 @error('caseId')
-                    <alert class="alert alert-danger" role="alert">
+                    <div class="alert alert-danger">
                         Een case nummer is maximaal 255 karakters.
-                    </alert>
+                    </div>
                 @enderror
                 <input type="text" maxlength="255" class="form-control w-25" id="caseId" name="caseId" value="{{ old('caseId', $case->caseId) }}">
 
