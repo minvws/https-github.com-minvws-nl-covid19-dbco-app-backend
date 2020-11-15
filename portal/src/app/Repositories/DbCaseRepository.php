@@ -6,6 +6,7 @@ use App\Models\BCOUser;
 use App\Models\Eloquent\EloquentCase;
 use App\Models\CovidCase;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Jenssegers\Date\Date;
 
 class DbCaseRepository implements CaseRepository
 {
