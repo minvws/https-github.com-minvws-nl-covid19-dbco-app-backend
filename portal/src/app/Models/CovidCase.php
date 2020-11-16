@@ -83,4 +83,13 @@ class CovidCase
         return $labels[$status];
     }
 
+    public function isEditable()
+    {
+        $status = $this->caseStatus();
+        if ($status == self::STATUS_COMPLETED) return false;
+        if ($status == self::STATUS_ARCHIVED) return false;
+        if ($status == self::STATUS_EXPIRED) return false;
+        return true;
+    }
+
 }
