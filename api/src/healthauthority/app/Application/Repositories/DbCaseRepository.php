@@ -59,7 +59,7 @@ class DbCaseRepository implements CaseRepository
     public function getCase(string $caseUuid): ?CovidCase
     {
         $stmt = $this->client->prepare("
-            SELECT c.date_of_symptom_onset
+            SELECT c.uuid, c.date_of_symptom_onset
             FROM covidcase c
             WHERE c.uuid = :caseUuid
             AND c.status = 'open'
@@ -67,14 +67,15 @@ class DbCaseRepository implements CaseRepository
 
         $stmt->execute([ 'caseUuid' => $caseUuid ]);
 
-        $dateOfSymptomOnsetStr = $stmt->fetchColumn();
-        if ($dateOfSymptomOnsetStr === false) {
+        $row = $stmt->fetchObject();
+        if ($row === false) {
             return null;
         }
 
         $case = new CovidCase();
+        $case->uuid = $row->uuid;
         $case->dateOfSymptomOnset =
-            $dateOfSymptomOnsetStr != null ? new DateTimeImmutable($dateOfSymptomOnsetStr) : null;
+            $row->dateOfSymptomOnset != null ? new DateTimeImmutable($row->dateOfSymptomOnset) : null;
 
         $stmt = $this->client->prepare("
             SELECT t.*

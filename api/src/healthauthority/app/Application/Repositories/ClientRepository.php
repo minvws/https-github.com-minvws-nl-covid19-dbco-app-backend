@@ -25,4 +25,13 @@ interface ClientRepository
      * @return Client|null
      */
     public function getClient(string $token): ?Client;
+
+    /**
+     * Returns the paired clients for the given case.
+     *
+     * @param string $caseUuid
+     *
+     * @return Client[]
+     */
+    public function getClientsForCase(string $caseUuid): array;
 }
