@@ -1,6 +1,7 @@
 <?php
 namespace DBCO\Worker\Application\Repositories;
 
+use DBCO\Worker\Application\Exceptions\PairingException;
 use DBCO\Worker\Application\Models\PairingRequest;
 use DBCO\Worker\Application\Models\PairingResponse;
 
@@ -17,6 +18,8 @@ interface HealthAuthorityPairingRepository
      * @param PairingRequest $request
      *
      * @return PairingResponse
+     *
+     * @throws PairingException
      */
     public function completePairing(PairingRequest $request): PairingResponse;
 }

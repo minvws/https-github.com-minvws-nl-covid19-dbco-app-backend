@@ -21,11 +21,10 @@ class UserService
 
     public function upsertUserByExternalId(string $externalId,
                                            string $name,
-                                           ?string $email,
                                            array $roles,
                                            array $organisationExternalIds): EloquentUser
     {
         $organisationUuids = $this->organisationRepository->getOrganisationUuidsByExternalIds($organisationExternalIds);
-        return $this->userRepository->upsertUserByExternalId($externalId, $name, $email, $roles, $organisationUuids->all());
+        return $this->userRepository->upsertUserByExternalId($externalId, $name, $roles, $organisationUuids->all());
     }
 }

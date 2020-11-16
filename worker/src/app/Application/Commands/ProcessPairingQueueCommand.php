@@ -5,6 +5,7 @@ use DBCO\Worker\Application\Services\PairingService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
 
 class ProcessPairingQueueCommand extends Command
 {
@@ -48,8 +49,8 @@ class ProcessPairingQueueCommand extends Command
     {
         while (true) {
             try {
-                $this->pairingService->processPairingQueueEntry();
-            } catch (\Throwable $e) {
+                $this->pairingService->processPairingQueueEntry(300);
+            } catch (Throwable $e) {
                 // wait a little before trying again, maybe something is down
                 sleep(1);
             }

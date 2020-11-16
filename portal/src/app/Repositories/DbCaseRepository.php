@@ -5,7 +5,8 @@ namespace App\Repositories;
 use App\Models\BCOUser;
 use App\Models\Eloquent\EloquentCase;
 use App\Models\CovidCase;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 use Jenssegers\Date\Date;
 
 class DbCaseRepository implements CaseRepository
@@ -34,36 +35,60 @@ class DbCaseRepository implements CaseRepository
     }
 
     /**
-     * Returns all the cases of a specicic user
-     * @return Collection
+     * Update a case with info about whether there is data to export to HPZone
+     * TODO: It may be more efficient to join/subquery this when retrieving the cases, instead
+     * of doing it per row.
+     * @param CovidCase $case
      */
-    public function getCasesByAssignedUser(BCOUser $user): Collection
+    private function verifyExportables(CovidCase $case)
     {
-        $dbCases = EloquentCase::where('assigned_uuid', $user->uuid)->orderBy('updated_at', 'desc')->get();
+        $exportableTasks = DB::table('task')->where('case_uuid', '=', $case->uuid)
+        ->whereNotNull('questionnaire_uuid')
+        ->where(function($query) {
+            $query->whereNull('exported_at')->orWhereRaw('exported_at < updated_at');
+        })->get();
 
-        $cases = array();
-
-        foreach($dbCases as $dbCase) {
-            $cases[] = $this->caseFromEloquentModel($dbCase);
-        };
-
-        return collect($cases);
+        $case->hasExportables = ($exportableTasks->count() > 0);
     }
 
-    public function getCasesByOrganisation(BCOUser $user): Collection
+    /**
+     * Returns all the cases of a specicic user
+     * @return LengthAwarePaginator
+     */
+    public function getCasesByAssignedUser(BCOUser $user): LengthAwarePaginator
     {
-        $dbCases = EloquentCase::where('user_organisation.user_uuid', $user->uuid)
-                ->select('covidcase.*')
-                ->join('user_organisation', 'user_organisation.organisation_uuid', '=', 'covidcase.organisation_uuid')
-                ->orderBy('covidcase.updated_at', 'desc')->get();
+        $paginator = EloquentCase::where('assigned_uuid', $user->uuid)->orderBy('covidcase.updated_at', 'desc')->paginate(config('view.rowsPerPage'));
 
         $cases = array();
 
-        foreach($dbCases as $dbCase) {
-            $cases[] = $this->caseFromEloquentModel($dbCase);
+        foreach($paginator->items() as $dbCase) {
+            $case = $this->caseFromEloquentModel($dbCase);
+            $this->verifyExportables($case);
+            $cases[] = $case;
         };
 
-        return collect($cases);
+        $paginator->setCollection(collect($cases));
+        return $paginator;
+    }
+
+    public function getCasesByOrganisation(BCOUser $user): LengthAwarePaginator
+    {
+        $paginator = EloquentCase::where('user_organisation.user_uuid', $user->uuid)
+                ->select('covidcase.*')
+                ->join('user_organisation', 'user_organisation.organisation_uuid', '=', 'covidcase.organisation_uuid')
+                ->orderBy('covidcase.updated_at', 'desc')->paginate(config('view.rowsPerPage'));
+
+        $cases = array();
+
+        foreach($paginator->items() as $dbCase) {
+            $case = $this->caseFromEloquentModel($dbCase);
+            $this->verifyExportables($case);
+            $cases[] = $case;
+        };
+
+        $paginator->setCollection(collect($cases));
+
+        return $paginator;
     }
 
     /**
@@ -104,6 +129,20 @@ class DbCaseRepository implements CaseRepository
         $dbCase->save();
     }
 
+    /**
+     * @param CovidCase $case
+     * @param Date $windowExpiresAt
+     * @param Date $pairingExpiresAt
+     * @return mixed
+     */
+    public function setExpiry(CovidCase $case, Date $windowExpiresAt, Date $pairingExpiresAt)
+    {
+        $dbCase = $this->getCaseFromDb($case->uuid);
+        $dbCase->window_expires_at = $windowExpiresAt->toDateTimeImmutable();
+        $dbCase->pairing_expires_at = $pairingExpiresAt->toDateTimeImmutable();
+        $dbCase->save();
+    }
+
     private function caseFromEloquentModel(EloquentCase $dbCase): CovidCase
     {
         $case = new CovidCase();
@@ -114,7 +153,9 @@ class DbCaseRepository implements CaseRepository
         $case->owner = $dbCase->owner;
         $case->status = $dbCase->status;
         $case->updatedAt = new Date($dbCase->updated_at);
-
+        $case->pairingExpiresAt = $dbCase->pairing_expires_at != null ? new Date($dbCase->pairing_expires_at) : null;
+        $case->windowExpiresAt = $dbCase->window_expires_at != null ? new Date($dbCase->window_expires_at) : null;
+        $case->indexSubmittedAt = $dbCase->index_submitted_at != null ? new Date($dbCase->index_submitted_at) : null;
         return $case;
     }
 
