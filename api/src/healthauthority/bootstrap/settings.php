@@ -34,6 +34,5 @@ return [
     'privateAPI.jwtSecret' => DI\env('PRIVATE_API_JWT_SECRET'),
 
     'signingKey.length' => 32,
-    'useStubs' => DI\env('USE_STUBS', false),
     'encryption.generalKeyPair' => DI\env('ENCRYPTION_GENERAL_KEY_PAIR')
 ];
