@@ -19,29 +19,29 @@ class Task
     public string $taskType;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $source;
+    public ?string $source;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $label;
+    public ?string $label;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $context;
+    public ?string $context;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $category;
+    public ?string $category;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $communication;
+    public ?string $communication;
 
     /**
      * @var DateTimeImmutable|null
