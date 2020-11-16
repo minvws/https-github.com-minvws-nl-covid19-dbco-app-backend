@@ -75,7 +75,7 @@ class DbCaseRepository implements CaseRepository
         $case = new CovidCase();
         $case->uuid = $row->uuid;
         $case->dateOfSymptomOnset =
-            $row->dateOfSymptomOnset != null ? new DateTimeImmutable($row->dateOfSymptomOnset) : null;
+            !empty($row->date_of_symptom_onset) ? new DateTimeImmutable($row->date_of_symptom_onset) : null;
 
         $stmt = $this->client->prepare("
             SELECT t.*
@@ -95,7 +95,7 @@ class DbCaseRepository implements CaseRepository
             $task->category = $row->category;
             $task->communication = $row->communication;
             $task->dateOfLastExposure =
-                $row->date_of_last_exposure != null ? new DateTimeImmutable($row->date_of_last_exposure) : null;
+                !empty($row->date_of_last_exposure) ? new DateTimeImmutable($row->date_of_last_exposure) : null;
 
             $case->tasks[] = $task;
         }
