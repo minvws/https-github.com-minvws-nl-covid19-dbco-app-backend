@@ -16,14 +16,12 @@ class DbUserRepository implements UserRepository
      * why for authentication purposes we're passing an EloquentUser around.
      * @param string $externalId
      * @param string $name
-     * @param string|null $email
      * @param array $roles
      * @param array $organisationUuids
      * @return EloquentUser
      */
     public function upsertUserByExternalId(string $externalId,
                                            string $name,
-                                           ?string $email,
                                            array $roles,
                                            array $organisationUuids): EloquentUser
     {
@@ -35,7 +33,6 @@ class DbUserRepository implements UserRepository
             $dbUser->external_id = $externalId;
         }
 
-        $dbUser->email = $email;
         $dbUser->name = $name;
         $dbUser->roles = implode(',', $roles);
 
@@ -52,7 +49,6 @@ class DbUserRepository implements UserRepository
     {
         $user = new BCOUser();
         $user->uuid = $dbUser->uuid;
-        $user->email = $dbUser->email;
         $user->name = $dbUser->name;
         $user->externalId = $dbUser->external_id;
         $user->roles = explode(',', $dbUser->roles);
