@@ -93,11 +93,13 @@ class CaseService
             return null;
         }
 
-        $expiresAt = new DateTime("+1 day"); // TODO: move to config and/or base on case data
-        $code = $this->pairingRepository->getPairingCode($case->uuid, $expiresAt);
+        $expiresAt = Date::now()->addDays(1); // TODO: move to config and/or base on case data
+        $pairing = $this->pairingRepository->getPairing($case->uuid, $expiresAt);
+
+        $this->caseRepository->setExpiry($case, $expiresAt, $pairing->expiresAt);
 
         // apply formatting for readability (TODO: move to view?)
-        return implode('-', str_split($code, 3));
+        return implode('-', str_split($pairing->code, 3));
     }
 
     /**

@@ -19,6 +19,7 @@ class DummySeeder extends Seeder
     public function run()
     {
         $now = Date::now();
+        $tomorrow = Date::now()->addDays(1);
         $questionnaireUuid = 'facade01-feed-dead-c0de-defacedc0c0a';
         $dummyUserUuid = '00000000-0000-0000-0000-000000000001';
         $dummyPlannerUuid = '00000000-0000-0000-0000-000000000002';
@@ -71,9 +72,12 @@ class DummySeeder extends Seeder
             'organisation_uuid' => $dummyOrgUuid,
             'owner' => $dummyUserUuid,
             'assigned_uuid' => $dummyUserUuid,
+            'index_submitted_at' => null,
             'date_of_symptom_onset' => date('Y-m-d'),
-            'status' => 'open',
+            'status' => 'paired',
             'case_id' => 'GOTHAM001',
+            'pairing_expires_at' => null,
+            'window_expires_at' => $tomorrow,
             'created_at' => $now,
             'updated_at' => $now
         ]);
@@ -133,7 +137,7 @@ class DummySeeder extends Seeder
         ]]);
 
         $caseUuid = (string)Str::uuid();
-        // Create another case for the dummy user (id 0), with tasks. Case is open, not yet closed.
+        // Create another case for the dummy user (id 0), with tasks. Case is open, user has delivered data
         DB::table('covidcase')->insert([
             'name' => 'Clark Kent',
             'uuid' => $caseUuid,
@@ -141,9 +145,12 @@ class DummySeeder extends Seeder
             'owner' => $dummyUserUuid,
             'assigned_uuid' => $dummyUserUuid,
             'date_of_symptom_onset' => date('Y-m-d'),
-            'status' => 'open',
+            'index_submitted_at' => Date::now()->addHours(1),
+            'status' => 'paired',
+            'pairing_expires_at' => null,
+            'window_expires_at' => $tomorrow,
             'case_id' => 'METROPOLIS001',
-            'created_at' => $now,
+            'created_at' => Date::now()->addHours(-3),
             'updated_at' => $now
         ]);
 
@@ -254,7 +261,7 @@ class DummySeeder extends Seeder
         ]]);
 
         $caseUuid = (string)Str::uuid();
-        // Create a case for the dummy user (id 0), some tasks. Case is closed by ggdd.
+        // Create a case for the dummy user (id 0), some tasks. Case is opened and not yet paired
         DB::table('covidcase')->insert([
             'name' => 'Carol Danvers',
             'uuid' => $caseUuid,
@@ -262,7 +269,10 @@ class DummySeeder extends Seeder
             'owner' => $dummyUserUuid,
             'assigned_uuid' => $dummyUserUuid,
             'date_of_symptom_onset' => date('Y-m-d'),
-            'status' => 'closed',
+            'index_submitted_at' => null,
+            'status' => 'open',
+            'pairing_expires_at' => Date::now()->addMinutes(60),
+            'window_expires_at' => $tomorrow,
             'case_id' => 'ASGARD001',
             'created_at' => $now,
             'updated_at' => $now
