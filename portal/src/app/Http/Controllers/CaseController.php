@@ -142,11 +142,12 @@ class CaseController extends Controller
         if ($case != null && $this->caseService->canAccess($case)) {
 
             $pairingCode = $this->caseService->createPairingCodeForCase($caseUuid);
-
-            // When we show the pairingcode, we mark the case as 'open'.
-            $this->caseService->openCase($case);
-
-            return view('paircase', ['case' => $case, 'pairingCode' => $pairingCode]);
+            $isDraftCase = $case->caseStatus() == CovidCase::STATUS_DRAFT;
+            // When we show the pairingcode for a new case, we mark the case as 'open'.
+            if ($isDraftCase) {
+                $this->caseService->openCase($case);
+            }
+            return view('paircase', ['case' => $case, 'pairingCode' => $pairingCode, 'includeQuestionNumber' => $isDraftCase]);
         }
         return redirect()->intended('/');
     }
