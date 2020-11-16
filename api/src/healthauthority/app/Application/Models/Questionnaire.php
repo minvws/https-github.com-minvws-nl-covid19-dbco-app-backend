@@ -17,5 +17,5 @@ class Questionnaire
     /**
      * @var Question[]
      */
-    public array $questions;
+    public array $questions = [];
 }
