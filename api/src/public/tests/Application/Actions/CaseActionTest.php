@@ -24,12 +24,14 @@ class CaseActionTest extends TestCase
     public function testList()
     {
         $case = [
-            'ciphertext' => base64_encode(random_bytes(1024)),
-            'nonce' => base64_encode(random_bytes(20))
+            'sealedCase' => [
+                'ciphertext' => base64_encode(random_bytes(1024)),
+                'nonce' => base64_encode(random_bytes(20))
+            ]
         ];
 
         $redis = $this->app->getContainer()->get(PredisClient::class);
-        $redis->setex('case:' . self::CASE_TOKEN, 60, json_encode($case));
+        $redis->setex('case:' . self::CASE_TOKEN, 60, json_encode(['payload' => json_encode($case)]));
 
         $request = $this->createRequest('GET', '/v1/cases/' . self::CASE_TOKEN);
         $response = $this->app->handle($request);
@@ -40,8 +42,8 @@ class CaseActionTest extends TestCase
         $data = json_decode($body);
         $this->assertIsObject($data);
         $this->assertIsObject($data->sealedCase);
-        $this->assertEquals($case['ciphertext'], $data->sealedCase->ciphertext);
-        $this->assertEquals($case['nonce'], $data->sealedCase->nonce);
+        $this->assertEquals($case['sealedCase']['ciphertext'], $data->sealedCase->ciphertext);
+        $this->assertEquals($case['sealedCase']['nonce'], $data->sealedCase->nonce);
     }
 }
 
