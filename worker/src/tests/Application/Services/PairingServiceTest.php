@@ -51,7 +51,7 @@ class PairingServiceTest extends TestCase
         $this->assertEquals(0, $redis->exists($responseKey));
 
         $pairingService = $this->getAppInstance()->getContainer()->get(PairingService::class);
-        $pairingService->processPairingQueueEntry();
+        $pairingService->processPairingQueueEntry(5);
 
         $this->assertEquals(1, $redis->exists($responseKey));
         $data = $redis->lpop($responseKey);

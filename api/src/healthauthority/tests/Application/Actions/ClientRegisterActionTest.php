@@ -56,7 +56,7 @@ class ClientRegisterActionTest extends TestCase
         $clientKeyPair = sodium_crypto_kx_keypair();
         $clientPublicKey = sodium_crypto_kx_publickey($clientKeyPair);
 
-        $sealedClientPublicKey = sodium_crypto_box_seal($clientPublicKey, $generalPublicKey);
+        $sealedClientPublicKey = base64_encode(sodium_crypto_box_seal($clientPublicKey, $generalPublicKey));
 
         $request = $this->createRequest('POST', '/v1/cases/' . $caseUuid . '/clients');
         $request = $request->withParsedBody([ 'sealedClientPublicKey' => $sealedClientPublicKey ]);

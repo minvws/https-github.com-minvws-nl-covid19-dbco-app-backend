@@ -29,6 +29,27 @@ class DbCaseRepository implements CaseRepository
     }
 
     /**
+     * Check if a case exists.
+     *
+     * @param string $caseUuid Case identifier.
+     *
+     * @return bool
+     */
+    public function caseExists(string $caseUuid): bool
+    {
+        $stmt = $this->client->prepare("
+            SELECT COUNT(1) as c
+            FROM covidcase c
+            WHERE c.uuid = :caseUuid
+            AND c.status = 'open'
+        ");
+
+        $stmt->execute([ 'caseUuid' => $caseUuid ]);
+        $count = $stmt->fetchColumn();
+        return $count > 0;
+    }
+
+    /**
      * Returns the case with its task list.
      *
      * @param string $caseUuid Case identifier.

@@ -67,7 +67,7 @@ class ClientRegisterAction extends Action
         }
 
         try {
-            $client = $this->caseService->registerClient($caseUuid, $sealedClientPublicKey);
+            $client = $this->caseService->registerClient($caseUuid, base64_decode($sealedClientPublicKey));
         } catch (CaseNotFoundException $e) {
             throw new ActionException($this->request, 'caseNotFoundError', $e->getMessage(), ActionException::NOT_FOUND);
         } catch (SealedBoxException $e) {

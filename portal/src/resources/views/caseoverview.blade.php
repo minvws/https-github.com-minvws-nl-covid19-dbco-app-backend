@@ -74,6 +74,7 @@
                                 <th scope="col">Eerste ziektedag</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Laatst bewerkt</th>
+
                             </tr>
                             </thead>
                             <tbody>
@@ -82,7 +83,7 @@
                                     <th scope="row">{{ Str::limit($case->name, 30, '...') }}</th>
                                     <td>{{ Str::limit($case->caseId, 30, '...') }}</td>
                                     <td>{{ $case->dateOfSymptomOnset != NULL ? $case->dateOfSymptomOnset->format('l j M') : '' }}</td>
-                                    <td>{{ $case->status }}</td>
+                                    <td>{{ \App\Models\CovidCase::statusLabel($case->caseStatus()) }}</td>
                                     <td>{{ $case->updatedAt->diffForHumans() }}</td>
                                 </tr>
                             @endforeach

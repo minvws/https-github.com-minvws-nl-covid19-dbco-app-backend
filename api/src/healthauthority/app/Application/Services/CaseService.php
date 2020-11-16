@@ -93,8 +93,8 @@ class CaseService
      */
     public function registerClient(string $caseUuid, string $sealedClientPublicKey): Client
     {
-        $case = $this->caseRepository->getCase($caseUuid);
-        if ($case === null) {
+        $caseExists = $this->caseRepository->caseExists($caseUuid);
+        if (!$caseExists) {
             throw new CaseNotFoundException('Case does not exist!');
         }
 
