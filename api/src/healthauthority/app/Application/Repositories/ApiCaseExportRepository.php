@@ -1,6 +1,8 @@
 <?php
 namespace DBCO\HealthAuthorityAPI\Application\Repositories;
 
+use DateTimeInterface;
+use DateTimeZone;
 use DBCO\Shared\Application\Models\SealedData;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Client as GuzzleClient;
@@ -48,7 +50,7 @@ class ApiCaseExportRepository implements CaseExportRepository
     /**
      * @inheritDoc
      */
-    public function exportCase(string $token, SealedData $sealedCase)
+    public function exportCase(string $token, SealedData $sealedCase, DateTimeInterface $expiresAt)
     {
         $this->logger->debug('Export case to private API');
 
@@ -62,10 +64,13 @@ class ApiCaseExportRepository implements CaseExportRepository
 
         $options = [
             'headers' => [
-                'Authorization' => 'Bearer ' . $jwt,
-                'Expires' => date('D M j G:i:s T Y', time() + 3600) // TODO: should be passed in
+                'Authorization' => 'Bearer ' . $jwt
             ],
             'json' => [
+                'expiresAt' =>
+                    $expiresAt
+                        ->setTimezone(new DateTimeZone('UTC'))
+                        ->format('Y-m-d\TH:i:s\Z'),
                 'sealedCase' => [
                     'ciphertext' => base64_encode($sealedCase->ciphertext),
                     'nonce' => base64_encode($sealedCase->nonce)

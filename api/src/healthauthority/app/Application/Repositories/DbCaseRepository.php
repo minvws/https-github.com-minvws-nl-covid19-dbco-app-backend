@@ -59,7 +59,7 @@ class DbCaseRepository implements CaseRepository
     public function getCase(string $caseUuid): ?CovidCase
     {
         $stmt = $this->client->prepare("
-            SELECT c.uuid, c.date_of_symptom_onset
+            SELECT c.uuid, c.date_of_symptom_onset, c.window_expires_at
             FROM covidcase c
             WHERE c.uuid = :caseUuid
             AND c.status = 'open'
@@ -74,6 +74,7 @@ class DbCaseRepository implements CaseRepository
 
         $case = new CovidCase();
         $case->uuid = $row->uuid;
+        $case->windowExpiresAt = new DateTimeImmutable($row->window_expires_at);
         $case->dateOfSymptomOnset =
             !empty($row->date_of_symptom_onset) ? new DateTimeImmutable($row->date_of_symptom_onset) : null;
 

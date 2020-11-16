@@ -1,6 +1,7 @@
 <?php
 namespace DBCO\HealthAuthorityAPI\Application\Repositories;
 
+use DateTimeInterface;
 use DBCO\Shared\Application\Models\SealedData;
 
 /**
@@ -13,8 +14,9 @@ interface CaseExportRepository
     /**
      * Export case.
      *
-     * @param string     $token Shared token identifier.
-     * @param SealedData $case  Case data.
+     * @param string            $token     Shared token identifier.
+     * @param SealedData        $case      Case data.
+     * @param DateTimeInterface $expiresAt Expiry date for this data.
      */
-    public function exportCase(string $token, SealedData $case);
+    public function exportCase(string $token, SealedData $case, DateTimeInterface $expiresAt);
 }

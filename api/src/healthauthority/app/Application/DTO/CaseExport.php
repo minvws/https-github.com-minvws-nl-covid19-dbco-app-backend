@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace  DBCO\HealthAuthorityAPI\Application\DTO;
 
+use DateTimeZone;
 use DBCO\HealthAuthorityAPI\Application\Models\CovidCase;
 use JsonSerializable;
 
@@ -21,7 +22,7 @@ class CaseExport implements JsonSerializable
     /**
      * Constructor.
      *
-     * @param TaskModel $task
+     * @param CovidCase $case
      */
     public function __construct(CovidCase $case)
     {
@@ -34,6 +35,10 @@ class CaseExport implements JsonSerializable
     public function jsonSerialize()
     {
         return [
+            'windowExpiresAt' =>
+                $this->case->dateOfSymptomOnset
+                    ->setTimezone(new DateTimeZone('UTC'))
+                    ->format('Y-m-d\TH:i:s\Z'),
             'dateOfSymptomOnset' =>
                 $this->case->dateOfSymptomOnset !== null ?
                     $this->case->dateOfSymptomOnset->format('Y-m-d') : null,

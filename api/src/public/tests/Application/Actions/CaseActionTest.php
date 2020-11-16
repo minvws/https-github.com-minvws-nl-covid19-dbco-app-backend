@@ -31,7 +31,7 @@ class CaseActionTest extends TestCase
         ];
 
         $redis = $this->app->getContainer()->get(PredisClient::class);
-        $redis->setex('case:' . self::CASE_TOKEN, 60, json_encode(['payload' => json_encode($case)]));
+        $redis->setex('case:' . self::CASE_TOKEN, 60, json_encode($case));
 
         $request = $this->createRequest('GET', '/v1/cases/' . self::CASE_TOKEN);
         $response = $this->app->handle($request);

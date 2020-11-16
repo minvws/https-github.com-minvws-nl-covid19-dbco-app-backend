@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use DBCO\HealthAuthorityAPI\Application\Actions\CaseAction;
+use DBCO\HealthAuthorityAPI\Application\Actions\CaseExportAction;
 use DBCO\HealthAuthorityAPI\Application\Actions\CaseSubmitAction;
 use DBCO\HealthAuthorityAPI\Application\Actions\ClientRegisterAction;
 use DBCO\HealthAuthorityAPI\Application\Actions\GeneralTaskListAction;
@@ -19,6 +20,7 @@ return function (App $app) {
     $app->get('/v1/questionnaires', QuestionnaireListAction::class);
     $app->get('/v1/tasks', GeneralTaskListAction::class);
 
+    $app->post('/v1/cases/{caseUuid}/exports', CaseExportAction::class);
     $app->post('/v1/cases/{caseUuid}/clients', ClientRegisterAction::class);
     $app->put('/v1/cases/{token}', CaseSubmitAction::class);
 
