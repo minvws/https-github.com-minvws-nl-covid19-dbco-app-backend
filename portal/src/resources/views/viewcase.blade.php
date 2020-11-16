@@ -95,7 +95,7 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                <button data-target=".sidebar" data-toggle="collapse" class="btn">
+                                <button class="btn sidebar-open" data-uuid="{{ $task->uuid }}">
                                     <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M1.99984 0L0.589844 1.41L5.16984 6L0.589844 10.59L1.99984 12L7.99984 6L1.99984 0Z" fill="#D0D0DB"/>
                                     </svg>
@@ -131,44 +131,7 @@
             </div>
 
             <div class="sidebar-content">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer et mauris non neque pulvinar fringilla sit amet vitae dui. Mauris purus enim, rhoncus quis molestie vulputate, imperdiet a velit. Donec nulla enim, iaculis vel maximus et, luctus sed turpis. Vivamus vel elementum quam, non ornare turpis. Maecenas gravida nisi vitae fringilla facilisis. Nam vel massa urna. Nunc
-                    facilisis suscipit orci. Nunc purus odio, vehicula a massa in, consectetur mollis dolor. Integer sed arcu ac felis convallis ornare nec ac urna.
-                </p>
-                <p>Mauris a purus nisl. Aenean tincidunt felis quis nisi varius finibus. Sed consequat sem vitae porttitor viverra. Maecenas faucibus pretium leo, non pretium metus ultrices sed. Duis et ligula scelerisque, gravida quam cursus, ultrices felis. Nulla non lectus vel quam molestie finibus. Phasellus tellus nibh, tincidunt eu posuere nec, finibus et nunc. Donec quam diam, vehicula at
-                    venenatis eget, feugiat tincidunt magna. Cras et consequat purus, et eleifend lorem. Sed convallis sapien ac augue blandit congue. Donec porta nulla ut fermentum blandit. Praesent eu odio vel nunc vestibulum scelerisque ac vitae leo. Integer quis velit a arcu tempor iaculis non eget erat. Donec dapibus ipsum vel lacus blandit, et vulputate justo dictum.
-                </p>
 
-                <p>Mauris a purus nisl. Aenean tincidunt felis quis nisi varius finibus. Sed consequat sem vitae porttitor viverra. Maecenas faucibus pretium leo, non pretium metus ultrices sed. Duis et ligula scelerisque, gravida quam cursus, ultrices felis. Nulla non lectus vel quam molestie finibus. Phasellus tellus nibh, tincidunt eu posuere nec, finibus et nunc. Donec quam diam, vehicula at
-                    venenatis eget, feugiat tincidunt magna. Cras et consequat purus, et eleifend lorem. Sed convallis sapien ac augue blandit congue. Donec porta nulla ut fermentum blandit. Praesent eu odio vel nunc vestibulum scelerisque ac vitae leo. Integer quis velit a arcu tempor iaculis non eget erat. Donec dapibus ipsum vel lacus blandit, et vulputate justo dictum.
-                </p>
-
-                <p>Mauris a purus nisl. Aenean tincidunt felis quis nisi varius finibus. Sed consequat sem vitae porttitor viverra. Maecenas faucibus pretium leo, non pretium metus ultrices sed. Duis et ligula scelerisque, gravida quam cursus, ultrices felis. Nulla non lectus vel quam molestie finibus. Phasellus tellus nibh, tincidunt eu posuere nec, finibus et nunc. Donec quam diam, vehicula at
-                    venenatis eget, feugiat tincidunt magna. Cras et consequat purus, et eleifend lorem. Sed convallis sapien ac augue blandit congue. Donec porta nulla ut fermentum blandit. Praesent eu odio vel nunc vestibulum scelerisque ac vitae leo. Integer quis velit a arcu tempor iaculis non eget erat. Donec dapibus ipsum vel lacus blandit, et vulputate justo dictum.
-                </p>
-                <p>Mauris a purus nisl. Aenean tincidunt felis quis nisi varius finibus. Sed consequat sem vitae porttitor viverra. Maecenas faucibus pretium leo, non pretium metus ultrices sed. Duis et ligula scelerisque, gravida quam cursus, ultrices felis. Nulla non lectus vel quam molestie finibus. Phasellus tellus nibh, tincidunt eu posuere nec, finibus et nunc. Donec quam diam, vehicula at
-                    venenatis eget, feugiat tincidunt magna. Cras et consequat purus, et eleifend lorem. Sed convallis sapien ac augue blandit congue. Donec porta nulla ut fermentum blandit. Praesent eu odio vel nunc vestibulum scelerisque ac vitae leo. Integer quis velit a arcu tempor iaculis non eget erat. Donec dapibus ipsum vel lacus blandit, et vulputate justo dictum.
-                </p>
-                <p>Mauris a purus nisl. Aenean tincidunt felis quis nisi varius finibus. Sed consequat sem vitae porttitor viverra. Maecenas faucibus pretium leo, non pretium metus ultrices sed. Duis et ligula scelerisque, gravida quam cursus, ultrices felis. Nulla non lectus vel quam molestie finibus. Phasellus tellus nibh, tincidunt eu posuere nec, finibus et nunc. Donec quam diam, vehicula at
-                    venenatis eget, feugiat tincidunt magna. Cras et consequat purus, et eleifend lorem. Sed convallis sapien ac augue blandit congue. Donec porta nulla ut fermentum blandit. Praesent eu odio vel nunc vestibulum scelerisque ac vitae leo. Integer quis velit a arcu tempor iaculis non eget erat. Donec dapibus ipsum vel lacus blandit, et vulputate justo dictum.
-                </p>
-                <p>Mauris a purus nisl. Aenean tincidunt felis quis nisi varius finibus. Sed consequat sem vitae porttitor viverra. Maecenas faucibus pretium leo, non pretium metus ultrices sed. Duis et ligula scelerisque, gravida quam cursus, ultrices felis. Nulla non lectus vel quam molestie finibus. Phasellus tellus nibh, tincidunt eu posuere nec, finibus et nunc. Donec quam diam, vehicula at
-                    venenatis eget, feugiat tincidunt magna. Cras et consequat purus, et eleifend lorem. Sed convallis sapien ac augue blandit congue. Donec porta nulla ut fermentum blandit. Praesent eu odio vel nunc vestibulum scelerisque ac vitae leo. Integer quis velit a arcu tempor iaculis non eget erat. Donec dapibus ipsum vel lacus blandit, et vulputate justo dictum.
-                </p>
-                <p>Mauris a purus nisl. Aenean tincidunt felis quis nisi varius finibus. Sed consequat sem vitae porttitor viverra. Maecenas faucibus pretium leo, non pretium metus ultrices sed. Duis et ligula scelerisque, gravida quam cursus, ultrices felis. Nulla non lectus vel quam molestie finibus. Phasellus tellus nibh, tincidunt eu posuere nec, finibus et nunc. Donec quam diam, vehicula at
-                    venenatis eget, feugiat tincidunt magna. Cras et consequat purus, et eleifend lorem. Sed convallis sapien ac augue blandit congue. Donec porta nulla ut fermentum blandit. Praesent eu odio vel nunc vestibulum scelerisque ac vitae leo. Integer quis velit a arcu tempor iaculis non eget erat. Donec dapibus ipsum vel lacus blandit, et vulputate justo dictum.
-                </p>
-                <p>Mauris a purus nisl. Aenean tincidunt felis quis nisi varius finibus. Sed consequat sem vitae porttitor viverra. Maecenas faucibus pretium leo, non pretium metus ultrices sed. Duis et ligula scelerisque, gravida quam cursus, ultrices felis. Nulla non lectus vel quam molestie finibus. Phasellus tellus nibh, tincidunt eu posuere nec, finibus et nunc. Donec quam diam, vehicula at
-                    venenatis eget, feugiat tincidunt magna. Cras et consequat purus, et eleifend lorem. Sed convallis sapien ac augue blandit congue. Donec porta nulla ut fermentum blandit. Praesent eu odio vel nunc vestibulum scelerisque ac vitae leo. Integer quis velit a arcu tempor iaculis non eget erat. Donec dapibus ipsum vel lacus blandit, et vulputate justo dictum.
-                </p>
-                <p>Mauris a purus nisl. Aenean tincidunt felis quis nisi varius finibus. Sed consequat sem vitae porttitor viverra. Maecenas faucibus pretium leo, non pretium metus ultrices sed. Duis et ligula scelerisque, gravida quam cursus, ultrices felis. Nulla non lectus vel quam molestie finibus. Phasellus tellus nibh, tincidunt eu posuere nec, finibus et nunc. Donec quam diam, vehicula at
-                    venenatis eget, feugiat tincidunt magna. Cras et consequat purus, et eleifend lorem. Sed convallis sapien ac augue blandit congue. Donec porta nulla ut fermentum blandit. Praesent eu odio vel nunc vestibulum scelerisque ac vitae leo. Integer quis velit a arcu tempor iaculis non eget erat. Donec dapibus ipsum vel lacus blandit, et vulputate justo dictum.
-                </p>
-                <p>Mauris a purus nisl. Aenean tincidunt felis quis nisi varius finibus. Sed consequat sem vitae porttitor viverra. Maecenas faucibus pretium leo, non pretium metus ultrices sed. Duis et ligula scelerisque, gravida quam cursus, ultrices felis. Nulla non lectus vel quam molestie finibus. Phasellus tellus nibh, tincidunt eu posuere nec, finibus et nunc. Donec quam diam, vehicula at
-                    venenatis eget, feugiat tincidunt magna. Cras et consequat purus, et eleifend lorem. Sed convallis sapien ac augue blandit congue. Donec porta nulla ut fermentum blandit. Praesent eu odio vel nunc vestibulum scelerisque ac vitae leo. Integer quis velit a arcu tempor iaculis non eget erat. Donec dapibus ipsum vel lacus blandit, et vulputate justo dictum.
-                </p>
-                <p>Mauris a purus nisl. Aenean tincidunt felis quis nisi varius finibus. Sed consequat sem vitae porttitor viverra. Maecenas faucibus pretium leo, non pretium metus ultrices sed. Duis et ligula scelerisque, gravida quam cursus, ultrices felis. Nulla non lectus vel quam molestie finibus. Phasellus tellus nibh, tincidunt eu posuere nec, finibus et nunc. Donec quam diam, vehicula at
-                    venenatis eget, feugiat tincidunt magna. Cras et consequat purus, et eleifend lorem. Sed convallis sapien ac augue blandit congue. Donec porta nulla ut fermentum blandit. Praesent eu odio vel nunc vestibulum scelerisque ac vitae leo. Integer quis velit a arcu tempor iaculis non eget erat. Donec dapibus ipsum vel lacus blandit, et vulputate justo dictum.
-                </p>
             </div>
         </div>
         <!-- End of sidebar content -->

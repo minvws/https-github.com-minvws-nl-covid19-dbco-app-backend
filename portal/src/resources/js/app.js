@@ -79,4 +79,29 @@ jQuery(document).ready(function ($) {
        $(this).closest('tr').remove();
     });
 
+    ////////////////////////////////////////////////////
+    // Sidebar appearance
+    ////////////////////////////////////////////////////
+    $('.sidebar-open').on('click', function () {
+        console.log('sidebar appears!');
+        let contactUuid = $(this).data('uuid');
+
+        $.ajax({
+            type: "GET",
+            url: '/task/' + contactUuid + '/questionnaire',
+            data: null,
+            success: function( data ) {
+                $('.sidebar-content').html(data);
+                $('.sidebar').collapse('show');
+            }
+        });
+
+
+
+
+
+
+
+    })
+
 });

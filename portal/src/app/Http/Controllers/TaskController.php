@@ -38,4 +38,11 @@ class TaskController extends Controller
 
         return response()->json(['success' => 'success'], Response::HTTP_OK);
     }
+
+    public function viewTaskQuestionnaire($uuid)
+    {
+        $task = $this->taskService->getTask($uuid);
+
+        return view('taskquestionnaire', ['task' => $task]);
+    }
 }
