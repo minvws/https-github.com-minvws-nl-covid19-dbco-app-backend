@@ -55,11 +55,12 @@ class RedisCaseRepository implements CaseRepository
         }
 
         $data = @json_decode($json);
-        $this->validateData($data);
+        $data = json_decode($data->payload); // TODO: fix me correctly
+        //$this->validateData($data);
 
         return new SealedCase(
-            base64_decode($data->ciphertext),
-            base64_decode($data->nonce)
+            base64_decode($data->sealedCase->ciphertext),
+            base64_decode($data->sealedCase->nonce)
         );
     }
 
