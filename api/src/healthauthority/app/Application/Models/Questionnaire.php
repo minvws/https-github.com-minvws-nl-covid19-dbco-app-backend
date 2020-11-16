@@ -6,15 +6,13 @@ namespace DBCO\HealthAuthorityAPI\Application\Models;
  */
 class Questionnaire
 {
-    /**
-     * @var string
-     */
     public string $uuid;
 
-    /**
-     * @var string
-     */
+    public string $name;
+
     public string $taskType;
+
+    public int $version;
 
     /**
      * @var Question[]
