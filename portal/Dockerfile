@@ -45,6 +45,7 @@ RUN chmod 755 /entrypoint.sh
 COPY assets/portal.ini /usr/local/etc/php/conf.d/portal.ini
 COPY assets/security.conf /etc/apache2/conf-available/security.conf
 COPY assets/apache2.conf /etc/apache2/apache2.conf
+COPY assets/ports.conf /etc/apache2/ports.conf
 COPY assets/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 COPY assets/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_default.conf
 
@@ -57,14 +58,16 @@ RUN cd /src && composer install && \
 RUN set -ex \
 	&& ln -sf /proc/1/fd/1 "/var/log/cron.log" \
 	&& ln -sf /proc/1/fd/1 "/var/log/syslog"
-  
+
 # Install Laravel cmdline
-RUN composer global require laravel/installer  
+RUN composer global require laravel/installer
 
 # Environment
 ENV PATH $PATH:/root/.composer/vendor/bin
 
 WORKDIR /src
+
+EXPOSE 8080/tcp
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["apache2-foreground"]
