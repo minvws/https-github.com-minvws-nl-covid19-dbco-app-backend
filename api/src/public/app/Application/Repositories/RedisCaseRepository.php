@@ -38,7 +38,7 @@ class RedisCaseRepository implements CaseRepository
      */
     private function validateData($data)
     {
-        if (!is_object($data) || !isset($data->ciphertext) || !isset($data->nonce)) {
+        if (!is_object($data) || !isset($data->sealedCase->ciphertext) || !isset($data->sealedCase->nonce)) {
             throw new RuntimeException('Case data invalid!');
         }
     }
@@ -55,8 +55,7 @@ class RedisCaseRepository implements CaseRepository
         }
 
         $data = @json_decode($json);
-        $data = json_decode($data->payload); // TODO: fix me correctly
-        //$this->validateData($data);
+        $this->validateData($data);
 
         return new SealedCase(
             base64_decode($data->sealedCase->ciphertext),

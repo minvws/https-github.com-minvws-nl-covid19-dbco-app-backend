@@ -47,26 +47,31 @@ class CaseUpdateActionTest extends TestCase
      */
     public function testUpdateAction()
     {
-        $token = hash_hmac('sha256', random_bytes(16), 'secret');
+        $token = bin2hex(sodium_crypto_generichash(random_bytes(16)));
+
+        $data = [
+            'sealedCase' => [
+                'ciphertext' => base64_encode(random_bytes(1024)),
+                'nonce' => base64_encode(random_bytes(20)),
+            ],
+            'expiresAt' => gmdate(DATE_ISO8601, time() + 3600)
+        ];
 
         // 1st time
-        $payload = random_bytes(1024);
         $request = $this->createRequest('PUT', '/v1/cases/' . $token);
-        $request->getBody()->write($payload);
-        $request = $request->withHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + 3600));
+        $request = $request->withParsedBody($data);
+        $request = $request->withHeader('Content-Type', 'application/json');
         $request = $this->requestWithAuthorization($request, $token);
         $response = $this->app->handle($request);
         $this->assertEquals(204, $response->getStatusCode());
 
         // 2nd time should work just as well
-        $payload = random_bytes(1024);
         $request = $this->createRequest('PUT', '/v1/cases/' . $token);
-        $request->getBody()->write($payload);
-        $request = $request->withHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + 3600));
+        $request = $request->withParsedBody($data);
+        $request = $request->withHeader('Content-Type', 'application/json');
         $request = $this->requestWithAuthorization($request, $token);
         $response = $this->app->handle($request);
         $this->assertEquals(204, $response->getStatusCode());
-
     }
 
     /**
@@ -76,30 +81,35 @@ class CaseUpdateActionTest extends TestCase
      */
     public function testInvalidAuthorization()
     {
-        $token = hash_hmac('sha256', random_bytes(16), 'secret');
-        $payload = random_bytes(1024);
+        $token = bin2hex(sodium_crypto_generichash(random_bytes(16)));
+
+        $data = [
+            'sealedCase' => [
+                'ciphertext' => base64_encode(random_bytes(1024)),
+                'nonce' => base64_encode(random_bytes(20)),
+            ],
+            'expiresAt' => gmdate(DATE_ISO8601, time() + 3600)
+        ];
 
         // missing authorization
         $request = $this->createRequest('PUT', '/v1/cases/' . $token);
-        $request->getBody()->write($payload);
+        $request = $request->withParsedBody($data);
         $request = $request->withHeader('Content-Type', 'application/json');
-        $request = $request->withHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + 3600));
         $response = $this->app->handle($request);
         $this->assertEquals(401, $response->getStatusCode());
 
         // invalid authorization
         $request = $this->createRequest('POST', '/v1/cases');
-        $request->getBody()->write($payload);
+        $request = $request->withParsedBody($data);
         $request = $request->withHeader('Content-Type', 'application/json');
-        $request = $request->withHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + 3600));
         $request = $request->withHeader('Authorization', 'Bearer this.is.not.correct');
         $response = $this->app->handle($request);
         $this->assertEquals(401, $response->getStatusCode());
 
         // invalid secret
         $request = $this->createRequest('PUT', '/v1/cases/' . $token);
-        $request->getBody()->write($payload);
-        $request = $request->withHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + 3600));
+        $request = $request->withParsedBody($data);
+        $request = $request->withHeader('Content-Type', 'application/json');
         $request = $this->requestWithAuthorization($request, $token, 'not.the.correct.secret');
         $response = $this->app->handle($request);
         $this->assertEquals(401, $response->getStatusCode());
@@ -112,15 +122,21 @@ class CaseUpdateActionTest extends TestCase
      */
     public function testWrongTokenClaim()
     {
-        $tokenUrl = hash_hmac('sha256', random_bytes(16), 'secret');
-        $tokenClaim = hash_hmac('sha256', random_bytes(16), 'secret');
+        $tokenUrl = bin2hex(sodium_crypto_generichash(random_bytes(16)));
+        $tokenClaim = bin2hex(sodium_crypto_generichash(random_bytes(16)));
 
-        $payload = random_bytes(1024);
+        $data = [
+            'sealedCase' => [
+                'ciphertext' => base64_encode(random_bytes(1024)),
+                'nonce' => base64_encode(random_bytes(20)),
+            ],
+            'expiresAt' => gmdate(DATE_ISO8601, time() + 3600)
+        ];
 
         // wrong token in claim
         $request = $this->createRequest('PUT', '/v1/cases/' . $tokenUrl);
-        $request->getBody()->write($payload);
-        $request = $request->withHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + 3600));
+        $request = $request->withParsedBody($data);
+        $request = $request->withHeader('Content-Type', 'application/json');
         $request = $this->requestWithAuthorization($request, $tokenClaim);
         $response = $this->app->handle($request);
 
@@ -130,7 +146,7 @@ class CaseUpdateActionTest extends TestCase
         $data = json_decode($payload);
         $this->assertCount(1, $data->errors);
         $this->assertEquals('invalid', $data->errors[0]->code);
-        $this->assertEquals(['token'], $data->errors[0]->path);
+        $this->assertEquals(['$url', 'token'], $data->errors[0]->path);
     }
 }
 

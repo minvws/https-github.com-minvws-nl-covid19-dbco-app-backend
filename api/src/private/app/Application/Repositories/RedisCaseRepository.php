@@ -3,6 +3,7 @@ namespace DBCO\PrivateAPI\Application\Repositories;
 
 use DateTime;
 use DateTimeInterface;
+use DBCO\Shared\Application\Models\SealedData;
 use Predis\Client as PredisClient;
 
 /**
@@ -42,13 +43,15 @@ class RedisCaseRepository implements CaseRepository
     /**
      * @inheritDoc
      */
-    public function storeCase(string $token, string $payload, DateTimeInterface $expiresAt)
+    public function storeCase(string $token, SealedData $sealedCase, DateTimeInterface $expiresAt)
     {
         $key = $this->getRedisKeyForToken($token);
         $expiresInSeconds = $expiresAt->getTimestamp() - time();
         $data = [
-            'expiresAt' => $expiresAt->format(DateTime::ATOM),
-            'payload' => $payload
+            'sealedCase' => [
+                'ciphertext' => base64_encode($sealedCase->ciphertext),
+                'nonce' => base64_encode($sealedCase->nonce)
+            ]
         ];
 
         $this->client->setex($key, $expiresInSeconds, json_encode($data));

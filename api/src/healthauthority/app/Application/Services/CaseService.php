@@ -14,7 +14,6 @@ use DBCO\HealthAuthorityAPI\Application\Repositories\GeneralTaskRepository;
 use DBCO\Shared\Application\Models\SealedData;
 use Exception;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\Uuid;
 
 /**
  * Responsible for listing tasks.
@@ -102,17 +101,23 @@ class CaseService
     {
         $json = json_encode(new CaseExport($case));
         $sealedCase = $this->encryptionHelper->sealMessageForClient($json, $client->transmitKey);
-        $this->caseExportRepository->exportCase($client->token, $sealedCase);
+        $this->caseExportRepository->exportCase($client->token, $sealedCase, $case->windowExpiresAt);
     }
 
     /**
      * Export case for all paired clients.
      *
      * @param string $caseUuid
+     *
+     * @throws CaseNotFoundException
      */
-    private function exportCase(string $caseUuid)
+    public function exportCase(string $caseUuid)
     {
         $case = $this->caseRepository->getCase($caseUuid);
+        if ($case === null) {
+            throw new CaseNotFoundException('Case does not exist!');
+        }
+
         $clients = $this->clientRepository->getClientsForCase($caseUuid);
         foreach ($clients as $client) {
             $this->exportCaseForClient($case, $client);
