@@ -31,7 +31,7 @@ class Task
     /**
      * @var string|null
      */
-    public ?string $context;
+    public ?string $taskContext;
 
     /**
      * @var string|null

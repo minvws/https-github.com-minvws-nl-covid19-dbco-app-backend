@@ -91,7 +91,7 @@ class DbCaseRepository implements CaseRepository
             $task->taskType = $row->task_type;
             $task->source = $row->source;
             $task->label = $row->label;
-            $task->context = $row->task_context;
+            $task->taskContext = $row->task_context;
             $task->category = $row->category;
             $task->communication = $row->communication;
             $task->dateOfLastExposure =
