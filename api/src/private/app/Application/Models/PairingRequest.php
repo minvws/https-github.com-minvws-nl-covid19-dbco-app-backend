@@ -47,7 +47,7 @@ class PairingRequest
         try {
             $this->case = $case;
             $this->code = $code;
-            $this->codeExpiresAt =new DateTimeImmutable('@' . $codeExpiresAt->getTimestamp());
+            $this->codeExpiresAt = new DateTimeImmutable('@' . $codeExpiresAt->getTimestamp());
         } catch (Exception $e) {
             // should not be possible
             throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
