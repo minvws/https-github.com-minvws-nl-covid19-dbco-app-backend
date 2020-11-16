@@ -1,6 +1,7 @@
 <?php
 namespace DBCO\HealthAuthorityAPI\Application\Repositories;
 
+use DateTimeInterface;
 use DBCO\HealthAuthorityAPI\Application\Models\Client;
 use Predis\Client as PredisClient;
 use Psr\Log\LoggerInterface;
@@ -42,7 +43,7 @@ class RedisClientRepository implements ClientRepository
     /**
      * @inheritDoc
      */
-    public function registerClient(Client $client)
+    public function registerClient(Client $client, DateTimeInterface $expiresAt)
     {
         // store client
         $clientKey = sprintf(self::CLIENT_KEY_TEMPLATE, $client->token);
@@ -60,11 +61,13 @@ class RedisClientRepository implements ClientRepository
         ];
 
         // TODO: proper expiry
-        $this->client->setex($clientKey, 3600, json_encode($data));
+        $expires = $expiresAt->getTimestamp() - time();
+        $this->client->setex($clientKey, $expires, json_encode($data));
 
         // store client for case
         $caseClientsKey = sprintf(self::CASE_CLIENTS_KEY_TEMPLATE, $client->case->uuid);
         $this->client->rpush($caseClientsKey, [$client->token]);
+        $this->client->expire($caseClientsKey, $expires);
     }
 
     /**
