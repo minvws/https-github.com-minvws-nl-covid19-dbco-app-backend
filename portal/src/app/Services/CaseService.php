@@ -9,6 +9,7 @@ use App\Repositories\PairingRepository;
 use App\Repositories\TaskRepository;
 use App\Models\CovidCase;
 use DateTime;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Jenssegers\Date\Date;
 
@@ -119,12 +120,15 @@ class CaseService
         return $case;
     }
 
-    public function myCases(): Collection
+    /**
+     * @return LengthAwarePaginator
+     */
+    public function myCases(): LengthAwarePaginator
     {
         return $this->caseRepository->getCasesByAssignedUser($this->authService->getAuthenticatedUser());
     }
 
-    public function organisationCases(): Collection
+    public function organisationCases(): LengthAwarePaginator
     {
         return $this->caseRepository->getCasesByOrganisation($this->authService->getAuthenticatedUser());
     }

@@ -5,8 +5,7 @@ namespace App\Repositories;
 use App\Models\BCOUser;
 use App\Models\Eloquent\EloquentCase;
 use App\Models\CovidCase;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Jenssegers\Date\Date;
 
@@ -54,39 +53,42 @@ class DbCaseRepository implements CaseRepository
 
     /**
      * Returns all the cases of a specicic user
-     * @return Collection
+     * @return LengthAwarePaginator
      */
-    public function getCasesByAssignedUser(BCOUser $user): Collection
+    public function getCasesByAssignedUser(BCOUser $user): LengthAwarePaginator
     {
-        $dbCases = EloquentCase::where('assigned_uuid', $user->uuid)->orderBy('covidcase.updated_at', 'desc')->get();
+        $paginator = EloquentCase::where('assigned_uuid', $user->uuid)->orderBy('covidcase.updated_at', 'desc')->paginate(config('view.rowsPerPage'));
 
         $cases = array();
 
-        foreach($dbCases as $dbCase) {
+        foreach($paginator->items() as $dbCase) {
             $case = $this->caseFromEloquentModel($dbCase);
             $this->verifyExportables($case);
             $cases[] = $case;
         };
 
-        return collect($cases);
+        $paginator->setCollection(collect($cases));
+        return $paginator;
     }
 
-    public function getCasesByOrganisation(BCOUser $user): Collection
+    public function getCasesByOrganisation(BCOUser $user): LengthAwarePaginator
     {
-        $dbCases = EloquentCase::where('user_organisation.user_uuid', $user->uuid)
+        $paginator = EloquentCase::where('user_organisation.user_uuid', $user->uuid)
                 ->select('covidcase.*')
                 ->join('user_organisation', 'user_organisation.organisation_uuid', '=', 'covidcase.organisation_uuid')
-                ->orderBy('covidcase.updated_at', 'desc')->get();
+                ->orderBy('covidcase.updated_at', 'desc')->paginate(config('view.rowsPerPage'));
 
         $cases = array();
 
-        foreach($dbCases as $dbCase) {
+        foreach($paginator->items() as $dbCase) {
             $case = $this->caseFromEloquentModel($dbCase);
             $this->verifyExportables($case);
             $cases[] = $case;
         };
 
-        return collect($cases);
+        $paginator->setCollection(collect($cases));
+
+        return $paginator;
     }
 
     /**
