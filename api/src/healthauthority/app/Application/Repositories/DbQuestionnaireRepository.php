@@ -41,7 +41,7 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
         $list = new QuestionnaireList();
 
         $stmt = $this->client->query('
-            WITH LATEST AS (
+            WITH latest AS (
                 SELECT
                     uuid,
                     task_type,
@@ -53,8 +53,6 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
             FROM latest
             WHERE row_number = 1
         ');
-
-        $questionnaires = $stmt->fetchAll(PDO::FETCH_OBJ);
 
         while ($row = $stmt->fetchObject()) {
             $questionnaire = new Questionnaire();
@@ -86,7 +84,18 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
             FROM question
             WHERE questionnaire_uuid = :uuid
         ');
+
         $stmt->execute(['uuid' => $questionnaire->uuid]);
+        while ($row = $stmt->fetchObject()) {
+            $question = new Question;
+            $question->uuid = $row->uuid;
+            $question->group = $row->group;
+            $question->questionType = $row->question_type;
+            $question->label = $row->label;
+            $question->description = $row->description;
+            $question->relevantForCategories = explode(',', $row->relevant_for_categories);
+            $questions[] = $question;
+        }
 
         return $questions;
     }
@@ -107,11 +116,48 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
             )
         ");
 
-        $stmt->execute([
+        $res = $stmt->execute([
             'uuid' => $questionnaire->uuid,
             'name' => $questionnaire->name,
             'task_type' => $questionnaire->taskType,
             'version' => $questionnaire->version
+        ]);
+
+        foreach ($questionnaire->questions as $question) {
+            $this->storeQuestionForQuestionnaire($questionnaire, $question);
+        }
+    }
+
+    public function storeQuestionForQuestionnaire(Questionnaire $questionnaire, Question $question): void
+    {
+        $stmt = $this->client->prepare('
+            INSERT INTO question (
+                uuid,
+                questionnaire_uuid,
+                "group",
+                question_type,
+                label,
+                description,
+                relevant_for_categories
+            ) VALUES (
+                :uuid,
+                :questionnaire_uuid,
+                :group,
+                :question_type,
+                :label,
+                :description,
+                :relevant_for_categories
+            )
+        ');
+
+        $res = $stmt->execute([
+            'uuid' => $question->uuid,
+            'questionnaire_uuid' => $questionnaire->uuid,
+            'group' => $question->group,
+            'question_type' => $question->questionType,
+            'label' => $question->label,
+            'description' => $question->description,
+            'relevant_for_categories' => join(',', $question->relevantForCategories)
         ]);
     }
 }
