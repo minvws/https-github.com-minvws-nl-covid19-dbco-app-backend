@@ -99,13 +99,14 @@ class CaseController extends Controller
 
             $validatedData = $request->validate([
                 'name' => 'required|max:255',
-                'caseId' => 'max:255'
+                'caseId' => 'max:255',
+                'dateOfSymptomOnset' => 'required',
             ]);
 
             $case->name = $validatedData['name'];
 
-            $case->caseId = $request->input('caseId');
-            $case->dateOfSymptomOnset = Date::parse($request->input('dateOfSymptomOnset'));
+            $case->caseId = $validatedData['caseId'];
+            $case->dateOfSymptomOnset = Date::parse($validatedData['dateOfSymptomOnset']);
 
             $this->caseService->updateCase($case);
 

@@ -56,6 +56,11 @@
                     <p class="mt-2 mb-0  ml-auto">De besmettelijke periode is twee dagen voor de eerste ziektedag tot en met vandaag.</p>
                 </div>
                 <!-- End of question title component -->
+                @error('dateOfSymptomOnset')
+                <div class="alert alert-danger">
+                    Geef altijd een eerste ziektedag op.
+                </div>
+                @enderror
                 <div>
                     <input type="hidden" class="form-control" id="dateofsymptomonset" name="dateOfSymptomOnset" value="{{ old('dateOfSymptomOnset', $case->dateOfSymptomOnset) }}" />
                 </div>
