@@ -41,11 +41,13 @@ class ClientRegisterActionTest extends TestCase
     public function testRegister()
     {
         $caseUuid = Uuid::uuid4();
+        $dateOfSymptomOnset = date('Y-m-d', strtotime('yesterday'));
+        $windowExpiresAt = date('Y-m-d', strtotime('+2 days'));
 
         $pdo = $this->getAppInstance()->getContainer()->get(PDO::class);
         $pdo->query("
-            INSERT INTO covidcase (uuid, owner, date_of_symptom_onset, status)
-            VALUES ('{$caseUuid}', 'Test', TO_DATE('2020-10-30', 'YYYY-MM-DD'), 'open')
+            INSERT INTO covidcase (uuid, owner, date_of_symptom_onset, window_expires_at, status)
+            VALUES ('{$caseUuid}', 'Test', TO_DATE('{$dateOfSymptomOnset}', 'YYYY-MM-DD'), TO_DATE('{$windowExpiresAt}', 'YYYY-MM-DD'), 'open')
         ");
 
         $encodedGeneralKeyPair = getenv('ENCRYPTION_GENERAL_KEY_PAIR');

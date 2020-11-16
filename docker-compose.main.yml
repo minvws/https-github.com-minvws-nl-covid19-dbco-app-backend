@@ -57,6 +57,8 @@ services:
             DB_TNS: ${HEALTHAUTHORITY_API_DB_TNS:-oracle/XEPDB1}
             REDIS_HOST: redis-haa
             REDIS_PORT: 6379
+            PRIVATE_API_BASE_URI: http://private_api/v1/
+            PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
             ENCRYPTION_GENERAL_KEY_PAIR: ${HEALTHAUTHORITY_ENCRYPTION_GENERAL_KEY_PAIR}
 
     pairing-worker:

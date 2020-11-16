@@ -67,7 +67,10 @@ return function (ContainerBuilder $containerBuilder) {
                 autowire(EncryptionHelper::class)
                     ->constructor(
                         get('encryption.generalKeyPair')
-                    )
+                    ),
+            'privateAPIGuzzleClient' =>
+                autowire(GuzzleHttp\Client::class)
+                    ->constructor(get('privateAPI.client'))
         ]
     );
 };

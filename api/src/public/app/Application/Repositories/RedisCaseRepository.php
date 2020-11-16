@@ -38,7 +38,7 @@ class RedisCaseRepository implements CaseRepository
      */
     private function validateData($data)
     {
-        if (!is_object($data) || !isset($data->ciphertext) || !isset($data->nonce)) {
+        if (!is_object($data) || !isset($data->sealedCase->ciphertext) || !isset($data->sealedCase->nonce)) {
             throw new RuntimeException('Case data invalid!');
         }
     }
@@ -58,8 +58,8 @@ class RedisCaseRepository implements CaseRepository
         $this->validateData($data);
 
         return new SealedCase(
-            base64_decode($data->ciphertext),
-            base64_decode($data->nonce)
+            base64_decode($data->sealedCase->ciphertext),
+            base64_decode($data->sealedCase->nonce)
         );
     }
 
