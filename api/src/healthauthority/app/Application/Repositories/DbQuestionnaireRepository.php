@@ -1,4 +1,5 @@
 <?php
+
 namespace DBCO\HealthAuthorityAPI\Application\Repositories;
 
 use DateTimeImmutable;
@@ -40,24 +41,77 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
         $list = new QuestionnaireList();
 
         $stmt = $this->client->query('
-            with latest as (
-                select *,
-                row_number() over (partition by task_type order by version desc) as row_number
-                from questionnaire
+            WITH LATEST AS (
+                SELECT
+                    uuid,
+                    task_type,
+                    version,
+                    row_number() OVER (partition BY task_type ORDER BY version DESC) AS row_number
+                FROM questionnaire
             )
-            select *
-            from latest
-            where row_number = 1
+            SELECT *
+            FROM latest
+            WHERE row_number = 1
         ');
+
+        $questionnaires = $stmt->fetchAll(PDO::FETCH_OBJ);
 
         while ($row = $stmt->fetchObject()) {
             $questionnaire = new Questionnaire();
             $questionnaire->uuid = $row->uuid;
             $questionnaire->taskType = $row->task_type;
-            $questionnaire->questions = [];
+            $questionnaire->questions = $this->getQuestionsForQuestionnaire($questionnaire);
             $list->questionnaires[] = $questionnaire;
         }
 
         return $list;
     }
- }
+
+    /**
+     * @param Questionnaire $questionnaire
+     * @return Question[]
+     */
+    private function getQuestionsForQuestionnaire(Questionnaire $questionnaire): array
+    {
+        $questions = [];
+
+        $stmt = $this->client->prepare('
+            SELECT
+                uuid,
+                "group",
+                question_type,
+                label,
+                description,
+                relevant_for_categories
+            FROM question
+            WHERE questionnaire_uuid = :uuid
+        ');
+        $stmt->execute(['uuid' => $questionnaire->uuid]);
+
+        return $questions;
+    }
+
+    public function storeQuestionnaire(Questionnaire $questionnaire): void
+    {
+        $stmt = $this->client->prepare("
+            INSERT INTO questionnaire (
+                uuid,
+                name,
+                task_type,
+                version
+            ) VALUES (
+                :uuid,
+                :name,
+                :task_type,
+                :version
+            )
+        ");
+
+        $stmt->execute([
+            'uuid' => $questionnaire->uuid,
+            'name' => $questionnaire->name,
+            'task_type' => $questionnaire->taskType,
+            'version' => $questionnaire->version
+        ]);
+    }
+}
