@@ -1,18 +1,19 @@
 <?php
 namespace DBCO\HealthAuthorityAPI\Application\Services;
 
+use DBCO\HealthAuthorityAPI\Application\DTO\CaseExport;
 use DBCO\HealthAuthorityAPI\Application\Helpers\EncryptionHelper;
 use DBCO\HealthAuthorityAPI\Application\Models\Client;
 use DBCO\HealthAuthorityAPI\Application\Models\ClientCase;
 use DBCO\HealthAuthorityAPI\Application\Models\CovidCase;
 use DBCO\HealthAuthorityAPI\Application\Models\TaskList;
+use DBCO\HealthAuthorityAPI\Application\Repositories\CaseExportRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\CaseRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\ClientRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\GeneralTaskRepository;
 use DBCO\Shared\Application\Models\SealedData;
 use Exception;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\Uuid;
 
 /**
  * Responsible for listing tasks.
@@ -37,6 +38,11 @@ class CaseService
     private ClientRepository $clientRepository;
 
     /**
+     * @var CaseExportRepository
+     */
+    private CaseExportRepository $caseExportRepository;
+
+    /**
      * @var EncryptionHelper
      */
     private EncryptionHelper $encryptionHelper;
@@ -52,6 +58,7 @@ class CaseService
      * @param GeneralTaskRepository $generalTaskRepository
      * @param CaseRepository        $caseRepository
      * @param ClientRepository      $clientRepository
+     * @param CaseExportRepository  $caseExportRepository
      * @param EncryptionHelper      $encryptionHelper
      * @param LoggerInterface       $logger
      */
@@ -59,6 +66,7 @@ class CaseService
         GeneralTaskRepository $generalTaskRepository,
         CaseRepository $caseRepository,
         ClientRepository $clientRepository,
+        CaseExportRepository $caseExportRepository,
         EncryptionHelper $encryptionHelper,
         LoggerInterface $logger
     )
@@ -66,6 +74,7 @@ class CaseService
         $this->generalTaskRepository = $generalTaskRepository;
         $this->caseRepository = $caseRepository;
         $this->clientRepository = $clientRepository;
+        $this->caseExportRepository = $caseExportRepository;
         $this->encryptionHelper = $encryptionHelper;
         $this->logger = $logger;
     }
@@ -80,6 +89,39 @@ class CaseService
     public function getGeneralTasks(): TaskList
     {
         return $this->generalTaskRepository->getGeneralTasks();
+    }
+
+    /**
+     * Export case.
+     *
+     * @param CovidCase $case
+     * @param Client    $client
+     */
+    private function exportCaseForClient(CovidCase $case, Client $client)
+    {
+        $json = json_encode(new CaseExport($case));
+        $sealedCase = $this->encryptionHelper->sealMessageForClient($json, $client->transmitKey);
+        $this->caseExportRepository->exportCase($client->token, $sealedCase, $case->windowExpiresAt);
+    }
+
+    /**
+     * Export case for all paired clients.
+     *
+     * @param string $caseUuid
+     *
+     * @throws CaseNotFoundException
+     */
+    public function exportCase(string $caseUuid)
+    {
+        $case = $this->caseRepository->getCase($caseUuid);
+        if ($case === null) {
+            throw new CaseNotFoundException('Case does not exist!');
+        }
+
+        $clients = $this->clientRepository->getClientsForCase($caseUuid);
+        foreach ($clients as $client) {
+            $this->exportCaseForClient($case, $client);
+        }
     }
 
     /**
@@ -118,7 +160,9 @@ class CaseService
                 $transmitKey
             );
 
-        $this->clientRepository->registerClient($client);
+        $case = $this->caseRepository->getCase($caseUuid);
+        $this->clientRepository->registerClient($client, $case->windowExpiresAt);
+        $this->exportCaseForClient($case, $client);
 
         return $client;
     }
