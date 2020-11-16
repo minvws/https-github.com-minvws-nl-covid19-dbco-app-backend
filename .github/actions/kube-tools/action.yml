@@ -1,0 +1,8 @@
+name: 'kube-tools'
+description: 'A GitHub Action to setup kubernetes tools'
+branding:
+  icon: 'command'
+  color: 'blue'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

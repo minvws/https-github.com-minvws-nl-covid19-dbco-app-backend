@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "app.fullname" . }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.hpa.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      {{- include "app.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "app.selectorLabels" . | nindent 8 }}
+      annotations:
+        {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+    spec:
+      terminationGracePeriodSeconds: 30
+      {{- if .Values.serviceAccount.enabled }}
+      serviceAccountName: {{ template "app.serviceAccountName" . }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: APP_DEBUG
+            value: {{ quote .Values.app.debug }}
+          - name: APP_URL
+            value: {{ quote .Values.app.url }}
+          - name: APP_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "app.fullname" . }}-app
+                key: app-key
+          - name: APACHE_RUN_USER
+            value: {{ quote .Values.apache.run.user }}
+          - name: REDIS_HOST
+            value: {{ quote .Values.redis.host }}
+          - name: REDIS_PORT
+            value: {{ quote .Values.redis.port }}
+          - name: DB_CONNECTION
+            value: {{ quote .Values.db.type }}
+          - name: DB_HOST
+            value: {{ quote .Values.db.host }}
+          - name: DB_DATABASE
+            value: {{ quote .Values.db.database }}
+          - name: DB_USERNAME
+            value: {{ quote .Values.db.username }}
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "app.fullname" . }}-db
+                key: db-password
+          - name: TIH_REDIRECT_URL
+            value: {{ quote .Values.tih.redirect_url }}
+          - name: TIH_CLIENT_ID
+            value: {{ quote .Values.tih.client_id }}
+          - name: TIH_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "app.fullname" . }}-tih
+                key: tih-client-secret
+          - name: TIH_REDIRECT_URL
+            value: {{ quote .Values.private.jwt.base_uri }}
+          - name: PRIVATE_API_JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "app.fullname" . }}-private-jwt
+                key: jwt-secret
+          - name: USER_ROLE_ADMIN
+            value: {{ quote .Values.user.role.admin }}
+          - name: USER_ROLE_USER
+            value: {{ quote .Values.user.role.user }}
+          - name: USER_ROLE_PLANNER
+            value: {{ quote .Values.user.role.planner }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.httpPort | default 8080 }}
+              protocol: TCP
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /status
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 1
+            failureThreshold: 3
+            successThreshold: 1
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}

@@ -1,0 +1,58 @@
+name: e2e
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  kind-helm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Helm
+        uses: ./.github/actions/kube-tools
+      - name: Validate Helm charts
+        run:
+          helm template ./charts/public-api | kubeval --strict
+          helm template ./charts/private-api | kubeval --strict
+          helm template ./charts/healthauthority-api | kubeval --strict
+          helm template ./charts/portal | kubeval --strict
+      - name: Setup Kubernetes
+        uses: engineerd/setup-kind@v0.5.0
+      - name: Build container image
+        run: |
+          docker build -t test/public-api:latest -f api/Dockerfile-public api/
+          docker build -t test/private-api:latest -f api/Dockerfile-private api/
+          docker build -t test/healthauthority-api:latest -f api/Dockerfile-healthauthority api/
+          docker build -t test/portal:latest -f portal/Dockerfile portal/
+          kind load docker-image test/public-api:latest
+          kind load docker-image test/private-api:latest
+          kind load docker-image test/healthauthority-api:latest
+          kind load docker-image test/portal:latest
+      - name: Deploy
+        run: |
+          helm upgrade -i public-api ./charts/public-api \
+          --set image.repository=test/public-api \
+          --set image.tag=latest \
+          --namespace=default
+          helm upgrade -i private-api ./charts/private-api \
+          --set image.repository=test/private-api \
+          --set image.tag=latest \
+          --namespace=default
+          helm upgrade -i healthauthority-api ./charts/healthauthority-api \
+          --set image.repository=test/healthauthority-api \
+          --set image.tag=latest \
+          --namespace=default
+          helm upgrade -i portal ./charts/portal \
+          --set image.repository=test/portal \
+          --set image.tag=latest \
+          --namespace=default
+      - name: Run integration tests
+        run: |
+          kubectl rollout status deployment/public-api --timeout=1m
+          kubectl rollout status deployment/private-api --timeout=1m
+          kubectl rollout status deployment/healthauthority-api --timeout=1m
+          kubectl rollout status deployment/portal --timeout=1m
