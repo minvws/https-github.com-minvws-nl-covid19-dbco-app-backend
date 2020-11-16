@@ -83,7 +83,12 @@
                                     <th scope="row">{{ Str::limit($case->name, 30, '...') }}</th>
                                     <td>{{ Str::limit($case->caseId, 30, '...') }}</td>
                                     <td>{{ $case->dateOfSymptomOnset != NULL ? $case->dateOfSymptomOnset->format('l j M') : '' }}</td>
-                                    <td>{{ \App\Models\CovidCase::statusLabel($case->caseStatus()) }}</td>
+                                    <td>
+                                        <span class="icon text-center">
+                                            <img src="{{ asset("/images/status_".$case->caseStatus().".svg") }}">
+                                        </span>
+                                        <span>{{ \App\Models\CovidCase::statusLabel($case->caseStatus()) }}</span>
+                                    </td>
                                     <td>{{ $case->updatedAt->diffForHumans() }}</td>
                                 </tr>
                             @endforeach
