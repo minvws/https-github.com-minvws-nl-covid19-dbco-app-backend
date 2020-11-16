@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\BCOUser;
 use App\Models\CovidCase;
 use Illuminate\Support\Collection;
+use Jenssegers\Date\Date;
 
 interface CaseRepository
 {
@@ -43,5 +44,13 @@ interface CaseRepository
      * @param CovidCase $case Case entity
      */
     public function updateCase(CovidCase $case);
+
+    /**
+     * @param CovidCase $case
+     * @param Date $windowExpiresAt
+     * @param Date $pairingExpiresAt
+     * @return mixed
+     */
+    public function setExpiry(CovidCase $case, Date $windowExpiresAt, Date $pairingExpiresAt);
 
 }
