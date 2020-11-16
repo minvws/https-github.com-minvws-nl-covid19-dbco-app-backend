@@ -9,11 +9,18 @@ use DateTimeImmutable;
 class CovidCase
 {
     /**
+     * Case identifier.
+     *
+     * @var string|null
+     */
+    public string $uuid;
+
+    /**
      * Date of symptom onset
      *
-     * @var DateTimeImmutable
+     * @var DateTimeImmutable|null
      */
-    public DateTimeImmutable $dateOfSymptomOnset;
+    public ?DateTimeImmutable $dateOfSymptomOnset;
      
     /**
      * Tasks.

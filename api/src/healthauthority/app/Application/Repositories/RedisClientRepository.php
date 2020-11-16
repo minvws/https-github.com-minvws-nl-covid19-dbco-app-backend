@@ -12,7 +12,8 @@ use Psr\Log\LoggerInterface;
  */
 class RedisClientRepository implements ClientRepository
 {
-    private const KEY_CLIENT_TEMPLATE = 'client:%s';
+    private const CLIENT_KEY_TEMPLATE = 'client:%s';
+    private const CASE_CLIENTS_KEY_TEMPLATE = 'case:%s:clients';
 
     /**
      * Redis client.
@@ -43,7 +44,8 @@ class RedisClientRepository implements ClientRepository
      */
     public function registerClient(Client $client)
     {
-        $key = sprintf(self::KEY_CLIENT_TEMPLATE, $client->token);
+        // store client
+        $clientKey = sprintf(self::CLIENT_KEY_TEMPLATE, $client->token);
 
         $data = [
             'case' => [
@@ -56,7 +58,12 @@ class RedisClientRepository implements ClientRepository
             'transmitKey' => base64_encode($client->transmitKey)
         ];
 
-        $this->client->setex($key, 3600, json_encode($data));
+        // TODO: proper expiry
+        $this->client->setex($clientKey, 3600, json_encode($data));
+
+        // store client for case
+        $caseClientsKey = sprintf(self::CASE_CLIENTS_KEY_TEMPLATE, $client->case->uuid);
+        $this->client->rpush($caseClientsKey, [$client->token]);
     }
 
     /**
@@ -64,7 +71,7 @@ class RedisClientRepository implements ClientRepository
      */
     public function getClient(string $token): ?Client
     {
-        $key = sprintf(self::KEY_CLIENT_TEMPLATE, $token);
+        $key = sprintf(self::CLIENT_KEY_TEMPLATE, $token);
 
         $data = $this->client->get($key);
         if ($data === null) {
@@ -85,5 +92,29 @@ class RedisClientRepository implements ClientRepository
             $data->receiveKey,
             $data->transmitKey
         );
+    }
+
+
+    /**
+     * Returns the paired clients for the given case.
+     *
+     * @param string $caseUuid
+     *
+     * @return Client[]
+     */
+    public function getClientsForCase(string $caseUuid): array
+    {
+        $caseClientsKey = sprintf(self::CASE_CLIENTS_KEY_TEMPLATE, $caseUuid);
+        $tokens = $this->client->lrange($caseClientsKey, 0, 100); // TODO: arbitrary max
+
+        $clients = [];
+        foreach ($tokens as $token) {
+            $client = $this->getClient($token);;
+            if ($client !== null) {
+                $client[] = $client;
+            }
+        }
+
+        return $clients;
     }
 }
