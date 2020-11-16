@@ -139,6 +139,9 @@ class CaseService
         $healthAuthorityKeyPair = $this->encryptionHelper->createHealthAuthorityKeyPair();
         $healthAuthorityPublicKey = $this->encryptionHelper->getHealthAuthorityPublicKey($healthAuthorityKeyPair);
         $sealedHealthAuthorityPublicKey = $this->encryptionHelper->sealHealthAuthorityPublicKeyForClient($healthAuthorityPublicKey, $clientPublicKey);
+        $this->logger->debug('cpk ' . base64_encode($clientPublicKey));
+        $this->logger->debug('hapk ' . base64_encode($healthAuthorityPublicKey));
+        $this->logger->debug('sealed hapk ' . base64_encode($sealedHealthAuthorityPublicKey));
         $healthAuthoritySecretKey = $this->encryptionHelper->getHealthAuthoritySecretKey($healthAuthorityKeyPair);
         [$receiveKey, $transmitKey] = $this->encryptionHelper->deriveSharedSecretKeys($healthAuthorityKeyPair, $clientPublicKey);
         $token = $this->encryptionHelper->deriveSharedToken($receiveKey, $transmitKey);

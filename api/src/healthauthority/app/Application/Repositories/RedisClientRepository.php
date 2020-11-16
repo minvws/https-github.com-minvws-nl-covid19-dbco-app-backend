@@ -54,6 +54,7 @@ class RedisClientRepository implements ClientRepository
             'clientPublicKey' => base64_encode($client->clientPublicKey),
             'healthAuthorityPublicKey' => base64_encode($client->healthAuthorityPublicKey),
             'healthAuthoritySecretKey' => base64_encode($client->healthAuthoritySecretKey),
+            'sealedHealthAuthorityPublicKey' => base64_encode($client->sealedHealthAuthorityPublicKey),
             'receiveKey' => base64_encode($client->receiveKey),
             'transmitKey' => base64_encode($client->transmitKey)
         ];
@@ -89,6 +90,7 @@ class RedisClientRepository implements ClientRepository
             $data->clientPublicKey,
             $data->healthAuthorityPublicKey,
             $data->healthAuthoritySecretKey,
+            $data->sealedHealthAuthorityPublicKey,
             $data->receiveKey,
             $data->transmitKey
         );
