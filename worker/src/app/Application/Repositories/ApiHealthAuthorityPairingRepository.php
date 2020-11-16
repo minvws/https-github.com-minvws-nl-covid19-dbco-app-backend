@@ -1,10 +1,11 @@
 <?php
 namespace DBCO\Worker\Application\Repositories;
 
+use DBCO\Worker\Application\Exceptions\PairingException;
 use DBCO\Worker\Application\Models\PairingRequest;
 use DBCO\Worker\Application\Models\PairingResponse;
 use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\BadResponseException;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Throwable;
@@ -58,10 +59,10 @@ class ApiHealthAuthorityPairingRepository implements HealthAuthorityPairingRepos
 
             $sealedHealthAuthorityPublicKey = base64_decode($data->sealedHealthAuthorityPublicKey);
             return new PairingResponse($request, $sealedHealthAuthorityPublicKey);
-        } catch (ClientException $e) {
+        } catch (BadResponseException $e) {
             $this->logger->error('Error registering client in health authority API: ' . $e->getMessage());
             $this->logger->debug("Response:\n" . (string)$e->getResponse()->getBody());
-            throw new RuntimeException('Error registering client in health authority API');
+            throw new PairingException('Error registering client in health authority API', $request);
         } catch (Throwable $e) {
             $this->logger->error('Error registering client in health authority API: ' . $e->getMessage());
             throw new RuntimeException('Error registering client in health authority API');
