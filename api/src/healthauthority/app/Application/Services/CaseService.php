@@ -160,9 +160,8 @@ class CaseService
                 $transmitKey
             );
 
-        $this->clientRepository->registerClient($client);
-
         $case = $this->caseRepository->getCase($caseUuid);
+        $this->clientRepository->registerClient($client, $case->windowExpiresAt);
         $this->exportCaseForClient($case, $client);
 
         return $client;
