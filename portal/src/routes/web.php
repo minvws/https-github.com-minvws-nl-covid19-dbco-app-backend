@@ -50,3 +50,8 @@ Route::get('auth/login', [LoginController::class, 'handleProviderCallback']);
 
 // Temporary development login stub so you can test the portal without ggd account.
 Route::get('auth/stub', [LoginController::class, 'stubAuthenticate']);
+
+// Liveness check for k8s
+Route::get('/status', function() {
+    return 'OK';
+});
