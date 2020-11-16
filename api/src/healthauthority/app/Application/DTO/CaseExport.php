@@ -36,7 +36,7 @@ class CaseExport implements JsonSerializable
     {
         return [
             'windowExpiresAt' =>
-                $this->case->dateOfSymptomOnset
+                $this->case->windowExpiresAt
                     ->setTimezone(new DateTimeZone('UTC'))
                     ->format('Y-m-d\TH:i:s\Z'),
             'dateOfSymptomOnset' =>
