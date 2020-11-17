@@ -20,8 +20,14 @@ class CaseSubmitActionTest extends TestCase
      */
     public function testSubmit()
     {
+        $body = [
+            'sealedCase' => [
+                'ciphertext' => base64_encode(random_bytes(1024)),
+                'nonce' => base64_encode(random_bytes(20))
+            ]
+        ];
         $request = $this->createRequest('PUT', '/v1/cases/1234');
-        $request = $request->withParsedBody(new \stdClass);
+        $request = $request->withParsedBody($body);
         $request = $request->withHeader('Content-Type', 'application/json');
         $response = $this->app->handle($request);
         $this->assertEquals(204, $response->getStatusCode());

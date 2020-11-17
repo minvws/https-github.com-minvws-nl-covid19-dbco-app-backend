@@ -2,11 +2,11 @@
     <td>
         <input class="form-control" type="hidden" name="tasks[{{ $row }}][uuid]" value="{{ $task['uuid'] ?? '' }}">
         <label class="sr-only" for="label">Label</label>
-        <input type="text" class="form-control auto-row-clone" id="label" name="tasks[{{ $row }}][label]" value="{{ $task['label'] ?? '' }}" placeholder="Voeg contact toe">
+        <input type="text" maxlength="255" class="form-control auto-row-clone" id="label" name="tasks[{{ $row }}][label]" value="{{ $task['label'] ?? '' }}" placeholder="Voeg contact toe">
     </td>
     <td>
         <label class="sr-only" for="context1">Context</label>
-        <input type="text" class="form-control" id="context1" name="tasks[{{ $row }}][taskContext]" value="{{ $task['taskContext'] ?? '' }}" placeholder="Bijv. collega of trainer">
+        <input type="text" maxlength="255" class="form-control" id="context1" name="tasks[{{ $row }}][taskContext]" value="{{ $task['taskContext'] ?? '' }}" placeholder="Bijv. collega of trainer">
     </td>
     <td>
         <label class='sr-only' for="categorie1">Categorie</label>
@@ -21,15 +21,15 @@
     <td>
         <label class="sr-only" for="date1">Laatste contact</label>
         <select class="form-control" id="lastcontact1" name="tasks[{{ $row }}][dateOfLastExposure]">
-            <option disabled selected>Selecteer</option>
-            @for ($i = 0; $i < 14; $i++)
+            @for ($i = 13; $i >= 0; $i--)
                 <?php
                 $date = Date::parse("-$i days")->format("Y-m-d");
-                $label = Date::parse("-$i days")->format('l j M');
+                $label = Date::parse("-$i days")->format('j M l');
                 $selected = (!isset($task['dateOfLastExposure']) || $date != $task['dateOfLastExposure'] ?: 'selected="selected"')
                 ?>
                 <option value="{{ $date }}" {{ $selected }}>{{ $label }}</option>
             @endfor
+            <option disabled selected>Selecteer</option>
         </select>
     </td>
     <td>

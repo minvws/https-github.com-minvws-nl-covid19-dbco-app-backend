@@ -73,7 +73,6 @@ class PairingAction extends Action
         }
     }
 
-
     /**
      * {@inheritdoc}
      */

@@ -8,7 +8,6 @@ class BCOUser
 {
     public string $uuid;
     public string $name;
-    public string $email;
     public string $externalId;
 
     public array $organisations = [];

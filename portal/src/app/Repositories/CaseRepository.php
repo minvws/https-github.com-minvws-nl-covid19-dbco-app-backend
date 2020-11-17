@@ -4,7 +4,9 @@ namespace App\Repositories;
 
 use App\Models\BCOUser;
 use App\Models\CovidCase;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Jenssegers\Date\Date;
+
 
 interface CaseRepository
 {
@@ -19,16 +21,16 @@ interface CaseRepository
 
     /**
      * Returns all the cases of a user
-     * @return Collection
+     * @return LengthAwarePaginator
      */
-    public function getCasesByAssignedUser(BCOUser $user): Collection;
+    public function getCasesByAssignedUser(BCOUser $user): LengthAwarePaginator;
 
     /**
      * Retrusns all cases of a user's organisation
      * @param array $organisations
-     * @return Collection
+     * @return LengthAwarePaginator
      */
-    public function getCasesByOrganisation(BCOUser $user): Collection;
+    public function getCasesByOrganisation(BCOUser $user): LengthAwarePaginator;
 
     /**
      * Create a new, empty case
@@ -43,5 +45,13 @@ interface CaseRepository
      * @param CovidCase $case Case entity
      */
     public function updateCase(CovidCase $case);
+
+    /**
+     * @param CovidCase $case
+     * @param Date $windowExpiresAt
+     * @param Date $pairingExpiresAt
+     * @return mixed
+     */
+    public function setExpiry(CovidCase $case, Date $windowExpiresAt, Date $pairingExpiresAt);
 
 }

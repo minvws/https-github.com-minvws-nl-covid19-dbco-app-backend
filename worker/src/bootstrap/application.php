@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
+use DBCO\Worker\Application;
 use DI\ContainerBuilder;
-use Symfony\Component\Console\Application;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -34,6 +34,7 @@ $container = $containerBuilder->build();
 
 // Instantiate the app
 $app = new Application();
+$app->setContainer($container);
 
 // Register commands
 $commands = require __DIR__ . '/commands.php';

@@ -1,7 +1,7 @@
 <?php
 namespace DBCO\HealthAuthorityAPI\Application\Models;
 
-use DateTimeImmutable;
+use DateTimeInterface;
 
 /**
  * CovidCase.
@@ -9,12 +9,26 @@ use DateTimeImmutable;
 class CovidCase
 {
     /**
+     * Case identifier.
+     *
+     * @var string|null
+     */
+    public string $uuid;
+
+    /**
      * Date of symptom onset
      *
-     * @var DateTimeImmutable
+     * @var DateTimeInterface|null
      */
-    public DateTimeImmutable $dateOfSymptomOnset;
-     
+    public ?DateTimeInterface $dateOfSymptomOnset;
+
+    /**
+     * Date case expires for input.
+     *
+     * @var DateTimeInterface|null
+     */
+    public DateTimeInterface $windowExpiresAt;
+
     /**
      * Tasks.
      *

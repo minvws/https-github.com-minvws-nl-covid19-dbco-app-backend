@@ -1,9 +1,9 @@
 <?php
-namespace App\Application\Services;
+namespace DBCO\Worker\Application\Services;
 
-use App\Application\Models\QuestionnaireList;
-use App\Application\Repositories\QuestionnaireCacheRepository;
-use App\Application\Repositories\QuestionnaireGetRepository;
+use DBCO\Worker\Application\Models\QuestionnaireList;
+use DBCO\Worker\Application\Repositories\QuestionnaireCacheRepository;
+use DBCO\Worker\Application\Repositories\QuestionnaireGetRepository;
 use Exception;
 use Psr\Log\LoggerInterface;
 

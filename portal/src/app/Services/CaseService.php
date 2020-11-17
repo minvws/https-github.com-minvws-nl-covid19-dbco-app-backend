@@ -9,6 +9,7 @@ use App\Repositories\PairingRepository;
 use App\Repositories\TaskRepository;
 use App\Models\CovidCase;
 use DateTime;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Jenssegers\Date\Date;
 
@@ -92,11 +93,13 @@ class CaseService
             return null;
         }
 
-        $expiresAt = new DateTime("+1 day"); // TODO: move to config and/or base on case data
-        $code = $this->pairingRepository->getPairingCode($case->uuid, $expiresAt);
+        $expiresAt = Date::now()->addDays(1); // TODO: move to config and/or base on case data
+        $pairing = $this->pairingRepository->getPairing($case->uuid, $expiresAt);
+
+        $this->caseRepository->setExpiry($case, $expiresAt, $pairing->expiresAt);
 
         // apply formatting for readability (TODO: move to view?)
-        return implode('-', str_split($code, 3));
+        return implode('-', str_split($pairing->code, 3));
     }
 
     /**
@@ -117,12 +120,15 @@ class CaseService
         return $case;
     }
 
-    public function myCases(): Collection
+    /**
+     * @return LengthAwarePaginator
+     */
+    public function myCases(): LengthAwarePaginator
     {
         return $this->caseRepository->getCasesByAssignedUser($this->authService->getAuthenticatedUser());
     }
 
-    public function organisationCases(): Collection
+    public function organisationCases(): LengthAwarePaginator
     {
         return $this->caseRepository->getCasesByOrganisation($this->authService->getAuthenticatedUser());
     }

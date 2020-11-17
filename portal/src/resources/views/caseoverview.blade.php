@@ -53,36 +53,49 @@
                end disabled -->
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane  fade show  active" id="nav-own-cases" role="tabpanel" aria-labelledby="nav-own-cases-tab">
-                    <!-- Start of table component -->
-                    <table class="table  table-rounded  table-hover  table-ggd">
-                        <colgroup>
-                            <col class="w-20">
-                            <col class="w-20">
-                            <col class="w-20">
-                            <col class="w-20">
-                            <col class="w-20">
-                        </colgroup>
-                        <thead>
-                        <tr>
-                            <th scope="col">Naam</th>
-                            <th scope="col">Casenr.</th>
-                            <th scope="col">Eerste ziektedag</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Laatst bewerkt</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($cases as $case)
-                            <tr role="button" class="custom-link clickable-row" data-href="/{{ $case->editCommand }}/{{ $case->uuid }}">
-                                <th scope="row">{{ $case->name }}</th>
-                                <td>{{ $case->caseId }}</td>
-                                <td>{{ $case->dateOfSymptomOnset != NULL ? $case->dateOfSymptomOnset->format('l j M') : '' }}</td>
-                                <td>{{ $case->status }}</td>
-                                <td>{{ $case->updatedAt->diffForHumans() }}</td>
+                    @if (count($cases) == 0)
+                        <div class="bg-white text-center pt-5 pb-5">
+                            Je hebt nog geen cases. Voeg deze toe door rechtsboven op de knop 'Nieuwe case' te drukken.
+                        </div>
+                    @else
+                        <!-- Start of table component -->
+                        <table class="table  table-rounded  table-hover  table-ggd">
+                            <colgroup>
+                                <col class="w-20">
+                                <col class="w-20">
+                                <col class="w-20">
+                                <col class="w-20">
+                                <col class="w-20">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th scope="col">Naam</th>
+                                <th scope="col">Casenr.</th>
+                                <th scope="col">Eerste ziektedag</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Laatst bewerkt</th>
+
                             </tr>
-                        @endforeach
-                    </table>
-                    <!-- End of table component -->
+                            </thead>
+                            <tbody>
+                            @foreach($cases as $case)
+                                <tr role="button" class="custom-link clickable-row" data-href="/{{ $case->editCommand }}/{{ $case->uuid }}">
+                                    <th scope="row">{{ Str::limit($case->name, 30, '...') }}</th>
+                                    <td>{{ Str::limit($case->caseId, 30, '...') }}</td>
+                                    <td>{{ $case->dateOfSymptomOnset != NULL ? $case->dateOfSymptomOnset->format('l j M') : '' }}</td>
+                                    <td>
+                                        <span class="icon text-center">
+                                            <img src="{{ asset("/images/status_".$case->caseStatus().".svg") }}">
+                                        </span>
+                                        <span>{{ \App\Models\CovidCase::statusLabel($case->caseStatus()) }}</span>
+                                    </td>
+                                    <td>{{ $case->updatedAt->diffForHumans() }}</td>
+                                </tr>
+                            @endforeach
+                        </table>
+                        <!-- End of table component -->
+                        {{ $cases->links() }}
+                    @endif
                 </div>
 
                 <div class="tab-pane  fade" id="nav-all-cases" role="tabpanel" aria-labelledby="nav-all-cases-tab">
