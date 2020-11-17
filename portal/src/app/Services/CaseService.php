@@ -203,4 +203,9 @@ class CaseService
         $tasks = array_values($tasksByTaskUuid);
     }
 
+    public function getAllAnswersByCase(string $caseUuid): Collection
+    {
+        return $this->answerRepository->getAllAnswersByCase($caseUuid);
+    }
+
 }

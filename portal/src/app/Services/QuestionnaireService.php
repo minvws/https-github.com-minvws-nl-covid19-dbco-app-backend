@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Questionnaire;
 use App\Models\SimpleAnswer;
 use App\Repositories\AnswerRepository;
+use App\Repositories\QuestionnaireRepository;
 use App\Repositories\QuestionRepository;
 use App\Repositories\TaskRepository;
 use Jenssegers\Date\Date;
@@ -11,17 +13,39 @@ use Jenssegers\Date\Date;
 class QuestionnaireService
 {
     private QuestionRepository $questionRepository;
+    private QuestionnaireRepository $questionnaireRepository;
     private TaskRepository $taskRepository;
     private AnswerRepository $answerRepository;
 
     public function __construct(
         QuestionRepository $questionRepository,
+        QuestionnaireRepository $questionnaireRepository,
         TaskRepository $taskRepository,
         AnswerRepository $answerRepository)
     {
         $this->questionRepository = $questionRepository;
+        $this->questionnaireRepository = $questionnaireRepository;
         $this->taskRepository = $taskRepository;
         $this->answerRepository = $answerRepository;
+    }
+
+    public function getLatestQuestionnaire(string $taskType): ?Questionnaire
+    {
+        $questionnaire = $this->questionnaireRepository->getLatestQuestionnaire($taskType);
+        $this->enhanceWithQuestions($questionnaire);
+        return $questionnaire;
+    }
+
+    public function getQuestionnaire(string $uuid): ?Questionnaire
+    {
+        $questionnaire = $this->questionnaireRepository->getQuestionnaire($uuid);
+        $this->enhanceWithQuestions($questionnaire);
+        return $questionnaire;
+    }
+
+    private function enhanceWithQuestions(Questionnaire $questionnaire)
+    {
+        $questionnaire->questions = $this->questionRepository->getQuestions($questionnaire->uuid)->all();
     }
 
     public function getRobotFriendlyTaskExport(string $caseUuid): array
