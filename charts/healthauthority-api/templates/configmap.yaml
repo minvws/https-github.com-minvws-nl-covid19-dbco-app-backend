@@ -13,3 +13,4 @@ data:
   DB_HOST: {{ .Values.db.host }}
   DB_DATABASE: {{ .Values.db.database }}
   DB_USERNAME: {{ .Values.db.username }}
+  PRIVATE_API_BASE_URI: {{ .Values.private.jwt.base_uri }}
