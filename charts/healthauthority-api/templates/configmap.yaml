@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "app.fullname" . }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+data:
+  DEBUG: {{ quote .Values.debug }}
+  APACHE_RUN_USER: {{  .Values.apache.run.user }}
+  REDIS_HOST: {{  .Values.redis.host }}
+  REDIS_PORT: {{  quote .Values.redis.port }}
+  DB_TYPE: {{ .Values.db.type }}
+  DB_HOST: {{ .Values.db.host }}
+  DB_DATABASE: {{ .Values.db.database }}
+  DB_USERNAME: {{ .Values.db.username }}

@@ -32,26 +32,13 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-          - name: DEBUG
-            value: {{ quote .Values.debug }}
-          - name: APACHE_RUN_USER
-            value: {{ quote .Values.apache.run.user }}
+          envFrom:
+          - configMapRef:
+              name: {{ template "app.fullname" . }}
           {{- if .Values.jwt.enabled }}
-          - name: JWT_ENABLED
-            value: {{ quote .Values.jwt.enabled }}
-          - name: JWT_SECURE
-            value: {{ quote .Values.jwt.secure }}
-          - name: JWT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: {{ template "app.fullname" . }}
-                key: jwt-secret
+          - secretRef:
+              name: {{ template "app.fullname" . }}-jwt
           {{- end }}
-          - name: REDIS_HOST
-            value: {{ quote .Values.redis.host }}
-          - name: REDIS_PORT
-            value: {{ quote .Values.redis.port }}
           ports:
             - name: http
               containerPort: {{ .Values.service.httpPort | default 8080 }}

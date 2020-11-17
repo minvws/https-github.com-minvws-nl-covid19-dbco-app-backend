@@ -32,33 +32,13 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-          - name: DEBUG
-            value: {{ quote .Values.debug }}
-          - name: APACHE_RUN_USER
-            value: {{ quote .Values.apache.run.user }}
-          - name: REDIS_HOST
-            value: {{ quote .Values.redis.host }}
-          - name: REDIS_PORT
-            value: {{ quote .Values.redis.port }}
-          - name: DB_TYPE
-            value: {{ quote .Values.db.type }}
-          - name: DB_HOST
-            value: {{ quote .Values.db.host }}
-          - name: DB_DATABASE
-            value: {{ quote .Values.db.database }}
-          - name: DB_USERNAME
-            value: {{ quote .Values.db.username }}
-          - name: DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: {{ template "app.fullname" . }}-db
-                key: db-password
-          - name: ENCRYPTION_GENERAL_KEY_PAIR
-            valueFrom:
-              secretKeyRef:
-                name: {{ template "app.fullname" . }}-encryption-key-pair
-                key: encryption-key-pair
+          envFrom:
+          - configMapRef:
+              name: {{ template "app.fullname" . }}
+          - secretRef:
+              name: {{ template "app.fullname" . }}-db
+          - secretRef:
+              name: {{ template "app.fullname" . }}-encryption
           ports:
             - name: http
               containerPort: {{ .Values.service.httpPort | default 8080 }}
