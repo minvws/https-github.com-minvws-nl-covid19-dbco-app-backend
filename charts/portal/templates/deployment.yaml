@@ -28,61 +28,24 @@ spec:
       {{- if .Values.serviceAccount.enabled }}
       serviceAccountName: {{ template "app.serviceAccountName" . }}
       {{- end }}
+      volumes:
+      - name: storage
+        emptyDir: {}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-          - name: APP_DEBUG
-            value: {{ quote .Values.app.debug }}
-          - name: APP_URL
-            value: {{ quote .Values.app.url }}
-          - name: APP_KEY
-            valueFrom:
-              secretKeyRef:
-                name: {{ template "app.fullname" . }}-app
-                key: app-key
-          - name: APACHE_RUN_USER
-            value: {{ quote .Values.apache.run.user }}
-          - name: REDIS_HOST
-            value: {{ quote .Values.redis.host }}
-          - name: REDIS_PORT
-            value: {{ quote .Values.redis.port }}
-          - name: DB_CONNECTION
-            value: {{ quote .Values.db.type }}
-          - name: DB_HOST
-            value: {{ quote .Values.db.host }}
-          - name: DB_DATABASE
-            value: {{ quote .Values.db.database }}
-          - name: DB_USERNAME
-            value: {{ quote .Values.db.username }}
-          - name: DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: {{ template "app.fullname" . }}-db
-                key: db-password
-          - name: TIH_REDIRECT_URL
-            value: {{ quote .Values.tih.redirect_url }}
-          - name: TIH_CLIENT_ID
-            value: {{ quote .Values.tih.client_id }}
-          - name: TIH_CLIENT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: {{ template "app.fullname" . }}-tih
-                key: tih-client-secret
-          - name: TIH_REDIRECT_URL
-            value: {{ quote .Values.private.jwt.base_uri }}
-          - name: PRIVATE_API_JWT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: {{ template "app.fullname" . }}-private-jwt
-                key: jwt-secret
-          - name: USER_ROLE_ADMIN
-            value: {{ quote .Values.user.role.admin }}
-          - name: USER_ROLE_USER
-            value: {{ quote .Values.user.role.user }}
-          - name: USER_ROLE_PLANNER
-            value: {{ quote .Values.user.role.planner }}
+          envFrom:
+          - configMapRef:
+              name: {{ template "app.fullname" . }}
+          - secretRef:
+              name: {{ template "app.fullname" . }}-private-jwt
+          - secretRef:
+              name: {{ template "app.fullname" . }}-app
+          - secretRef:
+              name: {{ template "app.fullname" . }}-db
+          - secretRef:
+              name: {{ template "app.fullname" . }}-tih
           ports:
             - name: http
               containerPort: {{ .Values.service.httpPort | default 8080 }}
@@ -98,6 +61,23 @@ spec:
             timeoutSeconds: 1
             failureThreshold: 3
             successThreshold: 1
+          volumeMounts:
+          - name: storage
+            mountPath: /src/storage
+      initContainers:
+        - name: create-storage-dirs
+          image: busybox
+          command:
+          - mkdir
+          - "-p"
+          - /src/storage/app/public
+          - /src/storage/framework/cache/data
+          - /src/storage/framework/sessions
+          - /src/storage/framework/testing
+          - /src/storage/framework/views
+          volumeMounts:
+          - name: storage
+            mountPath: /src/storage
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000

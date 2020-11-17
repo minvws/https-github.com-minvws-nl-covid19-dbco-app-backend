@@ -32,15 +32,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-          - name: DEBUG
-            value: {{ quote .Values.debug }}
-          - name: APACHE_RUN_USER
-            value: {{ quote .Values.apache.run.user }}
-          - name: REDIS_HOST
-            value: {{ quote .Values.redis.host }}
-          - name: REDIS_PORT
-            value: {{ quote .Values.redis.port }}
+          envFrom:
+          - configMapRef:
+              name: {{ template "app.fullname" . }}
           ports:
             - name: http
               containerPort: {{ .Values.service.httpPort | default 8080 }}
