@@ -17,10 +17,10 @@ jobs:
       - name: Setup Kubectl
         uses: azure/setup-helm@v1
       - name: Validate Helm charts
-        run:
+        run: |
           KUBEVAL=0.15.0
           curl -sL https://github.com/instrumenta/kubeval/releases/download/${KUBEVAL}/kubeval-linux-amd64.tar.gz | tar xz
-          kubeval --version
+          ./kubeval --version
           helm template ./charts/public-api | ./kubeval --strict
           helm template ./charts/private-api | ./kubeval --strict
           helm template ./charts/healthauthority-api | ./kubeval --strict
