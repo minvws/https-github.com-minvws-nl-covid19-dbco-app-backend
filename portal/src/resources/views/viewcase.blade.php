@@ -21,11 +21,13 @@
             <h2 class="mt-4  mb-4  font-weight-normal d-flex align-items-end">
                 <span class="font-weight-bold">{{ $case->name }}</span>
                 <span class="ml-auto">
-            @if ($case->status != 'closed')
-                        <a class="btn btn-outline-primary" role="button" href="/editcase/{{ $case->uuid }}">Case wijzigen</a>
+                    @if ($case->caseStatus() == \App\Models\CovidCase::STATUS_TIMEOUT)
+                        <a class="btn btn-outline-primary" role="button" href="/paircase/{{ $case->uuid }}">Nieuwe koppelcode</a>
                     @endif
-            <a class="btn btn-primary" role="button" href="/dumpcase/{{ $case->uuid }}">Zet in HPZone</a>
-        </span>
+                    @if ($case->isEditable())
+                        <a class="btn btn-outline-primary" role="button" href="/editcase/{{ $case->uuid }}">Case wijzigen</a>
+                    @endif<a class="btn btn-primary" role="button" href="/dumpcase/{{ $case->uuid }}">Zet in HPZone</a>
+                </span>
             </h2>
             <!-- End of page title component -->
             <p>

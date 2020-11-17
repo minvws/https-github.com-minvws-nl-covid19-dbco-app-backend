@@ -20,8 +20,13 @@ class DbCaseRepository implements CaseRepository
      */
     public function getCase(string $caseUuid): ?CovidCase
     {
+        $case = null;
         $dbCase = $this->getCaseFromDb($caseUuid);
-        return $dbCase != null ? $this->caseFromEloquentModel($dbCase): null;
+        if ($dbCase != null) {
+            $case = $this->caseFromEloquentModel($dbCase);
+            $this->verifyExportables($case);
+        }
+        return $case;
     }
 
     /**
