@@ -18,4 +18,6 @@ class Question
 
     public array $relevantForCategories;
 
+    public ?array $answerOptions; // only used for questionType = multiplechoice
+
 }

@@ -1,7 +1,11 @@
-<h3> {{ $task->label }} </h3>
+<div class="row">
+    <div class="col">
+        <h3> {{ $task['label'] }} </h3>
+    </div>
+</div>
 
-Wat voor soort contact is dit?
-
-<select name="category">
-    <option value="1">1 - Huisgenoot</option>
-</select>
+@foreach($questions as $question)
+    @if (in_array($task['category'], $question->relevantForCategories))
+        @include("taskquestion_".$question->questionType)
+    @endif
+@endforeach
