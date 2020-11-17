@@ -159,5 +159,38 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
             'description' => $question->description,
             'relevant_for_categories' => join(',', $question->relevantForCategories)
         ]);
+
+        if ($question instanceof MultipleChoiceQuestion) {
+            foreach ($question->answerOptions as $option) {
+                $this->storeAnswerOptionForQuestion($question, $option);
+            }
+        }
+    }
+
+    public function storeAnswerOptionForQuestion(Question $question, AnswerOption $option): void
+    {
+        $stmt = $this->client->prepare('
+            INSERT INTO answer_option (
+                uuid,
+                question_uuid,
+                label,
+                value,
+                trigger
+            ) VALUES (
+                :uuid,
+                :question_uuid,
+                :label,
+                :value,
+                :trigger
+            )
+        ');
+
+        $res = $stmt->execute([
+            'uuid' => $option->uuid,
+            'question_uuid' => $question->uuid,
+            'label' => $option->label,
+            'value' => $option->value,
+            'trigger' => $option->trigger,
+        ]);
     }
 }

@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace DBCO\HealthAuthorityAPI\Tests\Application\Actions;
 
+use DBCO\HealthAuthorityAPI\Application\Models\AnswerOption;
 use DBCO\HealthAuthorityAPI\Application\Models\ClassificationDetailsQuestion;
 use DBCO\HealthAuthorityAPI\Application\Models\ContactDetailsQuestion;
+use DBCO\HealthAuthorityAPI\Application\Models\MultipleChoiceQuestion;
 use DBCO\HealthAuthorityAPI\Application\Models\OpenQuestion;
 use DBCO\HealthAuthorityAPI\Application\Models\Question;
 use DBCO\HealthAuthorityAPI\Application\Models\Questionnaire;
@@ -80,7 +82,7 @@ class QuestionnaireListActionTest extends TestCase
 
         // Does the API call return the questions?
         $this->assertObjectHasAttribute('questions', $questionnaire, 'Questionnaire does not contain any questions');
-        $this->assertCount(3, $questionnaire->questions, 'Incorrect number of questions returned for questionnaire');
+        $this->assertCount(5, $questionnaire->questions, 'Incorrect number of questions returned for questionnaire');
 
         // Check the first question to see if the data roundtrip works
         $question = $this->findByUuid('37d818ed-9499-4b9a-9771-725467368387', $questionnaire->questions);
@@ -93,6 +95,8 @@ class QuestionnaireListActionTest extends TestCase
         // Check if the other questions are returned too
         $this->assertNotNull($this->findByUuid('37d818ed-9499-4b9a-9770-725467368388', $questionnaire->questions));
         $this->assertNotNull($this->findByUuid('37d818ed-9499-4b9a-9771-725467368389', $questionnaire->questions));
+        $this->assertNotNull($this->findByUuid('37d818ed-9499-4b9a-9771-725467368390', $questionnaire->questions));
+        $this->assertNotNull($this->findByUuid('37d818ed-9499-4b9a-9771-725467368391', $questionnaire->questions));
     }
 
     /**
@@ -113,14 +117,15 @@ class QuestionnaireListActionTest extends TestCase
         return null;
     }
 
+    /**
+     * Convenience method to retrieve the questionnaires
+     *
+     * @return stdClass Decoded JSON data from the API
+     */
     private function retrieveQuestionnaireList(): stdClass
     {
         $request = $this->createRequest('GET', '/v1/questionnaires');
         $response = $this->app->handle($request);
-        if ($response->getStatusCode() !== 200) {
-            print "***\n";
-            print_r(str_replace('\n', "\n", (string)$response->getBody()));
-        }
         $this->assertEquals(200, $response->getStatusCode());
 
         return json_decode((string)$response->getBody());
@@ -167,6 +172,47 @@ class QuestionnaireListActionTest extends TestCase
         $question3->description = null;
         $question3->relevantForCategories = ["1"];
         $questionnaire->questions[] = $question3;
+
+        $question4 = new MultipleChoiceQuestion();
+        $question4->uuid = "37d818ed-9499-4b9a-9771-725467368390";
+        $question4->group = "contactdetails";
+        $question4->label = "Waar ken je deze persoon van?";
+        $question4->description = null;
+        $question4->relevantForCategories = [Question::CATEGORY_2A, Question::CATEGORY_2B];
+        $question4->answerOptions = [
+            new AnswerOption('Ouder', 'Ouder'),
+            new AnswerOption('Kind', 'Kind'),
+            new AnswerOption('Broer of zus', 'Broer of zus'),
+            new AnswerOption('Partner', 'Partner'),
+            new AnswerOption('Familielid (overig)', 'Familielid (overig)'),
+            new AnswerOption('Huisgenoot', 'Huisgenoot'),
+            new AnswerOption('Vriend of kennis', 'Vriend of kennis'),
+            new AnswerOption('Medestudent of leerling', 'Medestudent of leerling'),
+            new AnswerOption('Collega', 'Collega'),
+            new AnswerOption('Gezondheidszorg medewerker', 'Gezondheidszorg medewerker'),
+            new AnswerOption('Ex-partner', 'Ex-partner'),
+            new AnswerOption('Overig', 'Overig')];
+        $questionnaire->questions[] = $question4;
+
+        $question5 = new MultipleChoiceQuestion();
+        $question5->uuid = "37d818ed-9499-4b9a-9771-725467368391";
+        $question5->group = "contactdetails";
+        $question5->label = "Geldt een of meer van deze dingen voor deze persoon?";
+        $question5->description =
+            "<ul><li>Student</li>" .
+            "<li>70 jaar of ouder</li>" .
+            "<li>Gezondheidsklachten of extra gezondheidsrisico's</li>" .
+            "<li>Woont in een zorginstelling of asielzoekerscentrum (bijvoorbeeld bejaardentehuis)</li>" .
+            "<li>Spreekt slecht of geen Nederlands</li>" .
+            "<li>Werkt in de zorg, onderwijs of een contactberoep (bijvoorbeeld kapper)</li></ul>";
+        $question5->relevantForCategories = [
+            Question::CATEGORY_1,
+            Question::CATEGORY_2A,
+            Question::CATEGORY_2B];
+        $question5->answerOptions = [
+            new AnswerOption('Ja, één of meerdere dingen', 'Ja', 'communication_staff'),
+            new AnswerOption('Nee, ik denk het niet', 'Nee', 'communication_index')];
+        $questionnaire->questions[] = $question5;
 
         $this->repository->storeQuestionnaire($questionnaire);
 
