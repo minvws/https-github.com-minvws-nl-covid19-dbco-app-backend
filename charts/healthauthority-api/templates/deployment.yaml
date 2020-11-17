@@ -39,6 +39,8 @@ spec:
               name: {{ template "app.fullname" . }}-db
           - secretRef:
               name: {{ template "app.fullname" . }}-encryption
+          - secretRef:
+              name: {{ template "app.fullname" . }}-jwt
           ports:
             - name: http
               containerPort: {{ .Values.service.httpPort | default 8080 }}
