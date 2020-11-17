@@ -3,10 +3,9 @@
 set -o errexit
 set -o pipefail
 
-BIN_DIR="$GITHUB_WORKSPACE/bin"
+BIN_DIR="/usr/local/bin"
 
 main() {
-  mkdir -p ${BIN_DIR}
   tmpDir=$(mktemp -d)
 
   pushd $tmpDir >& /dev/null
@@ -68,5 +67,3 @@ main() {
 }
 
 main
-echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
-echo "$RUNNER_WORKSPACE/$(basename $GITHUB_REPOSITORY)/bin" >> $GITHUB_PATH
