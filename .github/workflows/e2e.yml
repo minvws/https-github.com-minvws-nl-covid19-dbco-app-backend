@@ -44,7 +44,7 @@ jobs:
         run: |
           helm upgrade -i redis bitnami/redis --wait
           helm upgrade -i postgres bitnami/postgresql \
-          --set postgresqlPassword=changeme
+          --set postgresqlPassword=changeme \
           --wait
           helm upgrade -i public-api ./charts/public-api \
           --set image.repository=test/public-api \
