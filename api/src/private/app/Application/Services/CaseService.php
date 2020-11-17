@@ -8,6 +8,7 @@ use DBCO\PrivateAPI\Application\Repositories\CaseRepository;
 use DBCO\PrivateAPI\Application\Repositories\PairingRequestRepository;
 use DateTime;
 use DateTimeInterface;
+use DBCO\Shared\Application\Models\SealedData;
 use Exception;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -158,12 +159,12 @@ class CaseService
     /**
      * Store encrypted case payload for client retrieval.
      *
-     * @param string $token                Case token.
-     * @param string $payload              Encrypted payload.
-     * @param DateTimeInterface $expiresAt Data should automatically be wiped after expiry date.
+     * @param string            $token      Case token.
+     * @param SealedData        $sealedCase Encrypted case.
+     * @param DateTimeInterface $expiresAt  Data should automatically be wiped after expiry date.
      */
-    public function storeCase(string $token, string $payload, DateTimeInterface $expiresAt)
+    public function storeCase(string $token, SealedData $sealedCase, DateTimeInterface $expiresAt)
     {
-        $this->caseRepository->storeCase($token, $payload, $expiresAt);
+        $this->caseRepository->storeCase($token, $sealedCase, $expiresAt);
     }
 }
