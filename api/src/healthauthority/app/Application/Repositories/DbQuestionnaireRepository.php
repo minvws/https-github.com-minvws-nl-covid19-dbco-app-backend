@@ -87,17 +87,70 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
 
         $stmt->execute(['uuid' => $questionnaire->uuid]);
         while ($row = $stmt->fetchObject()) {
-            $question = new Question;
+            switch ($row->question_type) {
+                case 'classificationdetails':
+                    $question = new ClassificationDetailsQuestion();
+                    break;
+                case 'contactdetails':
+                    $question = new ContactDetailsQuestion();
+                    break;
+                case 'date':
+                    $question = new DateQuestion();
+                    break;
+                case 'multiplechoice':
+                    $question = new MultipleChoiceQuestion();
+                    break;
+                case 'open':
+                    $question = new OpenQuestion();
+                    break;
+            }
+
             $question->uuid = $row->uuid;
             $question->group = $row->group;
             $question->questionType = $row->question_type;
             $question->label = $row->label;
             $question->description = $row->description;
             $question->relevantForCategories = explode(',', $row->relevant_for_categories);
+
+            if ($question instanceof MultipleChoiceQuestion) {
+                $question->answerOptions = $this->getAnswerOptionsForQuestion($question);
+            }
+
             $questions[] = $question;
         }
 
         return $questions;
+    }
+
+    /**
+     * @param Question $question
+     * @return AnswerOption[]
+     */
+    public function getAnswerOptionsForQuestion(Question $question): array
+    {
+        $options = [];
+
+        $stmt = $this->client->prepare('
+            SELECT
+                uuid,
+                question_uuid,
+                label,
+                value,
+                trigger
+            FROM answer_option
+            WHERE question_uuid = :question_uuid
+        ');
+
+        $stmt->execute(['question_uuid' => $question->uuid]);
+        while ($row = $stmt->fetchObject()) {
+            $options[] = new AnswerOption(
+                $row->label,
+                $row->value,
+                $row->trigger
+            );
+        }
+
+        return $options;
     }
 
     public function storeQuestionnaire(Questionnaire $questionnaire): void

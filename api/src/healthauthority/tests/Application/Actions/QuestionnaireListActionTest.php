@@ -99,6 +99,23 @@ class QuestionnaireListActionTest extends TestCase
         $this->assertNotNull($this->findByUuid('37d818ed-9499-4b9a-9771-725467368391', $questionnaire->questions));
     }
 
+    public function testMultipleChoiceQuestionsContainAnswerOptions(): void
+    {
+        $data = $this->retrieveQuestionnaireList();
+
+        // Retrieve the latest version of test Questionnare A
+        $questionnaire = $this->findByUuid('00000000-0000-0000-0000-000000000001', $data->questionnaires);
+        $this->assertNotNull($questionnaire);
+
+        // Find a multiple choice question
+        $question = $this->findByUuid('37d818ed-9499-4b9a-9771-725467368390', $questionnaire->questions);
+        $this->assertNotNull($question);
+        $this->assertObjectHasAttribute('answerOptions', $question);
+
+        $this->assertCount(12, $question->answerOptions);
+
+    }
+
     /**
      * Helper method to locate a stdClass.uuid in an array of API-data
      *
@@ -126,7 +143,9 @@ class QuestionnaireListActionTest extends TestCase
     {
         $request = $this->createRequest('GET', '/v1/questionnaires');
         $response = $this->app->handle($request);
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode(), var_export([
+            'api' =>str_replace('\n', "\n", (string)$response->getBody())
+        ], true));
 
         return json_decode((string)$response->getBody());
     }
