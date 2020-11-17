@@ -47,7 +47,6 @@ if [ "$1" == "--setup" ] || [ "$1" == "--reset" ]; then
     $DOCKER_COMPOSE run --rm psql -c "CREATE USER portal PASSWORD '$PORTAL_DB_PASSWORD'"
     $DOCKER_COMPOSE run --rm psql -c "CREATE USER healthauthority_api PASSWORD '$HEALTHAUTHORITY_API_DB_PASSWORD'"
     $DOCKER_COMPOSE run --rm psql < $BASE_PATH/install/postgres/permissions.sql
-    $DOCKER_COMPOSE run --rm psql
   fi
 
   if [ $DATABASE_TYPE = "oracle" ]; then

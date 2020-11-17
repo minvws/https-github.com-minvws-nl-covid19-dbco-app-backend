@@ -1,7 +1,7 @@
 <?php
-namespace App\Application\Commands;
+namespace DBCO\Worker\Application\Commands;
 
-use App\Application\Services\TaskService;
+use DBCO\Worker\Application\Services\TaskService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

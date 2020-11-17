@@ -56,10 +56,10 @@ class QuestionnaireService
                     $headers[$question->uuid.'.phonenumber'] = 'Telefoon';
                     break;
                 case 'classificationdetails':
-                    $headers[$question->uuid.'.durationrisk'] = '> 15 min.';
-                    $headers[$question->uuid.'.distancerisk'] = '< 1.5m';
-                    $headers[$question->uuid.'.livedtogetherrisk'] = '> x uur zelfde huis';
-                    $headers[$question->uuid.'.otherrisk'] = 'Overig risico';
+                    $headers[$question->uuid.'.category1risk'] = 'Cat 1 risico';
+                    $headers[$question->uuid.'.category2arisk'] = 'Cat 2a risico';
+                    $headers[$question->uuid.'.category2brisk'] = 'Cat 2b risico';
+                    $headers[$question->uuid.'.category3risk'] = 'Cat 3 risico';
                     break;
                 default:
                     $headers[$question->uuid] = $question->header ?? $question->label;
@@ -96,10 +96,10 @@ class QuestionnaireService
                     break;
                 case 'classificationdetails':
                     // ClassificationDetailsAnswer, turns into 4 distinct columns
-                    $records[$answer->taskUuid][$answer->questionUuid.'.durationrisk'] = $answer->durationRisk ? 'Ja' : 'Nee';
-                    $records[$answer->taskUuid][$answer->questionUuid.'.distancerisk'] = $answer->distanceRisk ? 'Ja' : 'Nee';
-                    $records[$answer->taskUuid][$answer->questionUuid.'.livedtogetherrisk'] = $answer->livedTogetherRisk ? 'Ja' : 'Nee';
-                    $records[$answer->taskUuid][$answer->questionUuid.'.otherrisk'] = $answer->otherRisk ? 'Ja' : 'Nee';
+                    $records[$answer->taskUuid][$answer->questionUuid.'.category1risk'] = $answer->category1Risk ? 'Ja' : 'Nee';
+                    $records[$answer->taskUuid][$answer->questionUuid.'.category2arisk'] = $answer->category2ARisk ? 'Ja' : 'Nee';
+                    $records[$answer->taskUuid][$answer->questionUuid.'.category2brisk'] = $answer->category2BRisk ? 'Ja' : 'Nee';
+                    $records[$answer->taskUuid][$answer->questionUuid.'.category3risk'] = $answer->category3Risk ? 'Ja' : 'Nee';
                     break;
                 default:
                     // SimpleAnswer

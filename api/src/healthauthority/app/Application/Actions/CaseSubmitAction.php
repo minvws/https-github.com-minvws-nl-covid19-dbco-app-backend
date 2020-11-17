@@ -4,10 +4,14 @@ declare(strict_types=1);
 namespace DBCO\HealthAuthorityAPI\Application\Actions;
 
 use DBCO\HealthAuthorityAPI\Application\Responses\CaseSubmitResponse;
+use DBCO\HealthAuthorityAPI\Application\Services\CaseNotFoundException;
 use DBCO\HealthAuthorityAPI\Application\Services\CaseService;
+use DBCO\HealthAuthorityAPI\Application\Services\SealedBoxException;
 use DBCO\Shared\Application\Actions\Action;
+use DBCO\Shared\Application\Actions\ActionException;
 use DBCO\Shared\Application\Actions\ValidationError;
 use DBCO\Shared\Application\Actions\ValidationException;
+use DBCO\Shared\Application\Models\SealedData;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
@@ -43,22 +47,39 @@ class CaseSubmitAction extends Action
      */
     protected function action(): Response
     {
-        $body = (string)$this->request->getBody();
-
         $errors = [];
 
-        $caseUuid = $this->args['caseUuid'] ?? null;
-        if (empty($caseUuid)) {
-            $errors = ValidationError::url('isRequired', 'caseUuid is required', 'caseUuid');
+        $token = $this->args['token'] ?? null;
+        if (empty($token)) {
+            $errors = ValidationError::url('isRequired', 'token is required', ['token']);
         }
 
-        // TODO: verify body is not empty, signature etc.
+        $body = $this->request->getParsedBody();
+        $sealedCase = $body['sealedCase'] ?? null;
+        if (empty($sealedCase)) {
+            $errors[] = ValidationError::body('isRequired', 'sealedCase is required', ['sealedCase']);
+        } else {
+            if (empty($sealedCase['ciphertext'])) {
+                $errors[] = ValidationError::body('isRequired', 'sealedCase.ciphertext is required', ['sealedCase', 'ciphertext']);
+            }
+
+            if (empty($sealedCase['nonce'])) {
+                $errors[] = ValidationError::body('isRequired', 'sealedCase.nonce is required', ['sealedCase', 'nonce']);
+            }
+        }
 
         if (count($errors) > 0) {
             throw new ValidationException($this->request, $errors);
         }
 
-        $this->caseService->submitCase($caseUuid, $body);
+        try {
+            $this->caseService->submitCase($token, new SealedData(base64_decode($sealedCase['ciphertext']), base64_decode($sealedCase['nonce'])));
+        } catch (CaseNotFoundException $e) {
+            throw new ActionException($this->request, 'caseNotFoundError', $e->getMessage(), ActionException::NOT_FOUND);
+        } catch (SealedBoxException $e) {
+            $errors[] = ValidationError::body('invalid', 'sealedCase is invalid', ['sealedCase']);
+            throw new ValidationException($this->request, $errors);
+        }
 
         return $this->respond(new CaseSubmitResponse());
     }

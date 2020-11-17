@@ -29,6 +29,27 @@ class DbCaseRepository implements CaseRepository
     }
 
     /**
+     * Check if a case exists.
+     *
+     * @param string $caseUuid Case identifier.
+     *
+     * @return bool
+     */
+    public function caseExists(string $caseUuid): bool
+    {
+        $stmt = $this->client->prepare("
+            SELECT COUNT(1) as c
+            FROM covidcase c
+            WHERE c.uuid = :caseUuid
+            AND c.status = 'open'
+        ");
+
+        $stmt->execute([ 'caseUuid' => $caseUuid ]);
+        $count = $stmt->fetchColumn();
+        return $count > 0;
+    }
+
+    /**
      * Returns the case with its task list.
      *
      * @param string $caseUuid Case identifier.
@@ -38,7 +59,7 @@ class DbCaseRepository implements CaseRepository
     public function getCase(string $caseUuid): ?CovidCase
     {
         $stmt = $this->client->prepare("
-            SELECT c.date_of_symptom_onset
+            SELECT c.uuid, c.date_of_symptom_onset, c.window_expires_at
             FROM covidcase c
             WHERE c.uuid = :caseUuid
             AND c.status = 'open'
@@ -46,14 +67,16 @@ class DbCaseRepository implements CaseRepository
 
         $stmt->execute([ 'caseUuid' => $caseUuid ]);
 
-        $dateOfSymptomOnsetStr = $stmt->fetchColumn();
-        if ($dateOfSymptomOnsetStr === false) {
+        $row = $stmt->fetchObject();
+        if ($row === false) {
             return null;
         }
 
         $case = new CovidCase();
+        $case->uuid = $row->uuid;
+        $case->windowExpiresAt = new DateTimeImmutable($row->window_expires_at);
         $case->dateOfSymptomOnset =
-            $dateOfSymptomOnsetStr != null ? new DateTimeImmutable($dateOfSymptomOnsetStr) : null;
+            !empty($row->date_of_symptom_onset) ? new DateTimeImmutable($row->date_of_symptom_onset) : null;
 
         $stmt = $this->client->prepare("
             SELECT t.*
@@ -69,11 +92,11 @@ class DbCaseRepository implements CaseRepository
             $task->taskType = $row->task_type;
             $task->source = $row->source;
             $task->label = $row->label;
-            $task->context = $row->task_context;
+            $task->taskContext = $row->task_context;
             $task->category = $row->category;
             $task->communication = $row->communication;
             $task->dateOfLastExposure =
-                $row->date_of_last_exposure != null ? new DateTimeImmutable($row->date_of_last_exposure) : null;
+                !empty($row->date_of_last_exposure) ? new DateTimeImmutable($row->date_of_last_exposure) : null;
 
             $case->tasks[] = $task;
         }

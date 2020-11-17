@@ -98,13 +98,15 @@ class CaseController extends Controller
         if ($case != null && $this->caseService->canAccess($case)) {
 
             $validatedData = $request->validate([
-                'name' => 'required'
+                'name' => 'required|max:255',
+                'caseId' => 'max:255',
+                'dateOfSymptomOnset' => 'required',
             ]);
 
             $case->name = $validatedData['name'];
 
-            $case->caseId = $request->input('caseId');
-            $case->dateOfSymptomOnset = Date::parse($request->input('dateOfSymptomOnset'));
+            $case->caseId = $validatedData['caseId'];
+            $case->dateOfSymptomOnset = Date::parse($validatedData['dateOfSymptomOnset']);
 
             $this->caseService->updateCase($case);
 
@@ -141,11 +143,12 @@ class CaseController extends Controller
         if ($case != null && $this->caseService->canAccess($case)) {
 
             $pairingCode = $this->caseService->createPairingCodeForCase($caseUuid);
-
-            // When we show the pairingcode, we mark the case as 'open'.
-            $this->caseService->openCase($case);
-
-            return view('paircase', ['case' => $case, 'pairingCode' => $pairingCode]);
+            $isDraftCase = $case->caseStatus() == CovidCase::STATUS_DRAFT;
+            // When we show the pairingcode for a new case, we mark the case as 'open'.
+            if ($isDraftCase) {
+                $this->caseService->openCase($case);
+            }
+            return view('paircase', ['case' => $case, 'pairingCode' => $pairingCode, 'includeQuestionNumber' => $isDraftCase]);
         }
         return redirect()->intended('/');
     }
