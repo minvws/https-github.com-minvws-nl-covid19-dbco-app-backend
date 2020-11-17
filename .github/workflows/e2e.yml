@@ -12,14 +12,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup Helm
-        uses: ./.github/actions/kube-tools
+      - name: Setup Kubectl
+        uses: azure/setup-kubectl@v1
+      - name: Setup Kubectl
+        uses: azure/setup-helm@v1
       - name: Validate Helm charts
         run:
-          helm template ./charts/public-api | kubeval --strict
-          helm template ./charts/private-api | kubeval --strict
-          helm template ./charts/healthauthority-api | kubeval --strict
-          helm template ./charts/portal | kubeval --strict
+          KUBEVAL=0.15.0
+          curl -sL https://github.com/instrumenta/kubeval/releases/download/${KUBEVAL}/kubeval-linux-amd64.tar.gz | tar xz
+          kubeval --version
+          helm template ./charts/public-api | ./kubeval --strict
+          helm template ./charts/private-api | ./kubeval --strict
+          helm template ./charts/healthauthority-api | ./kubeval --strict
+          helm template ./charts/portal | ./kubeval --strict
       - name: Setup Kubernetes
         uses: engineerd/setup-kind@v0.5.0
       - name: Build container image
