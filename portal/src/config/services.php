@@ -33,7 +33,11 @@ return [
     'identityhub' => [
         'client_id' => env('TIH_CLIENT_ID'),
         'client_secret' => env('TIH_CLIENT_SECRET'),
-        'redirect' => env('TIH_REDIRECT_URL')
+        'redirect' => env('TIH_REDIRECT_URL'),
+        'authUrl' => 'https://login.ggdghor.nl/ggdghornl/oauth2/v1/auth',
+        'tokenUrl' => 'https://login.ggdghor.nl/ggdghornl/oauth2/v1/token',
+        'userUrl' => 'https://login.ggdghor.nl/ggdghornl/oauth2/v1/introspect',
+        'organisationClaim' => 'http://schemas.ggd.nl/ws/2020/07/identity/claims/vrregiocode'
     ],
 
     'private_api' => [

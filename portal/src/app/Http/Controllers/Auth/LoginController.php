@@ -4,16 +4,23 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\BCOUser;
+use App\Models\Eloquent\EloquentUser;
 use App\Services\AuthenticationService;
+use App\Services\UserService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
     private AuthenticationService $authService;
+    private UserService $userService;
 
-    public function __construct(AuthenticationService $authService)
+    public function __construct(AuthenticationService $authService,
+                                UserService $userService)
     {
         $this->authService = $authService;
+        $this->userService = $userService;
     }
 
     /**
@@ -33,24 +40,51 @@ class LoginController extends Controller
      */
     public function handleProviderCallback()
     {
-        $socialiteUser = Socialite::driver('identityhub')->user();
-        $user = new BCOUser();
-        $user->id = $socialiteUser->getId();
-        $user->name = $socialiteUser->getName();
+        // Cast the user to an array so that we can read the custom properties we added
+        $socialiteUser = (array)Socialite::driver('identityhub')->user();
 
-        $this->authService->setAuthenticatedUser($user);
+        $user = $this->userService->upsertUserByExternalId($socialiteUser['id'],
+                                                          $socialiteUser['name'],
+                                                          $socialiteUser['roles'],
+                                                          $socialiteUser['organisations']);
+
+        Auth::login($user, true);
 
         return redirect()->intended('/');
     }
 
-    public function stubAuthenticate()
+    public function stubAuthenticate(Request $request)
     {
-        $user = new BCOUser();
-        $user->id = 0;
-        $user->name = 'Dummy User';
+        $roles = config('authorization.roles');
+        $demoUuids = [
+            'user' => '00000000-0000-0000-0000-000000000001',
+            'planner' => '00000000-0000-0000-0000-000000000002',
+            'admin' => '00000000-0000-0000-0000-000000000003'
+        ];
+        $demoNames = [
+            'user' => 'Demo Gebruiker',
+            'planner' => 'Demo Werkverdeler',
+            'admin' => 'Demo Beheerder'
+        ];
+        $desiredRole = $request->input('role');
+        $actualRoles = [];
+        if (isset($roles[$desiredRole])) {
+            $actualRoles[] = $desiredRole;
+            if (in_array($desiredRole, ['admin', 'planner'])) {
+                $actualRoles[] = 'user'; // should also have user role if you're an admin/planner
+            }
+            $user = $this->userService->upsertUserByExternalId($demoUuids[$desiredRole],
+                $demoNames[$desiredRole],
+                $actualRoles,
+                ['999999']);
+            Auth::login($user, true);
+        }
+        return redirect()->intended('/');
+    }
 
-        $this->authService->setAuthenticatedUser($user);
-
+    public function logout()
+    {
+        Auth::logout();
         return redirect()->intended('/');
     }
 }

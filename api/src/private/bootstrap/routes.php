@@ -4,7 +4,9 @@ declare(strict_types=1);
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
+
 use DBCO\PrivateAPI\Application\Actions\CaseRegisterAction;
+use DBCO\PrivateAPI\Application\Actions\CaseUpdateAction;
 
 return function (App $app) {
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
@@ -13,6 +15,7 @@ return function (App $app) {
     });
 
     $app->post('/v1/cases', CaseRegisterAction::class);
+    $app->put('/v1/cases/{token}', CaseUpdateAction::class);
 
     $app->get('/status', function (Request $request, Response $response) {
         return $response->withStatus(200);

@@ -41,12 +41,14 @@ class QuestionnaireService
     /**
      * Returns the questionnaire list.
      *
+     * @param string $language Language.
+     *
      * @return QuestionnaireList
      *
      * @throws Exception
      */
-    public function getQuestionnaires(): QuestionnaireList
+    public function getQuestionnaires(string $language): QuestionnaireList
     {
-        return $this->questionnaireRepository->getQuestionnaires();
+        return $this->questionnaireRepository->getQuestionnaires($language);
     }
 }

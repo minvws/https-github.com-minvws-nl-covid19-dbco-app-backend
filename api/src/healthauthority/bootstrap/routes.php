@@ -2,7 +2,9 @@
 declare(strict_types=1);
 
 use DBCO\HealthAuthorityAPI\Application\Actions\CaseAction;
+use DBCO\HealthAuthorityAPI\Application\Actions\CaseExportAction;
 use DBCO\HealthAuthorityAPI\Application\Actions\CaseSubmitAction;
+use DBCO\HealthAuthorityAPI\Application\Actions\ClientRegisterAction;
 use DBCO\HealthAuthorityAPI\Application\Actions\GeneralTaskListAction;
 use DBCO\HealthAuthorityAPI\Application\Actions\QuestionnaireListAction;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -18,8 +20,9 @@ return function (App $app) {
     $app->get('/v1/questionnaires', QuestionnaireListAction::class);
     $app->get('/v1/tasks', GeneralTaskListAction::class);
 
-    $app->get('/v1/cases/{caseId}', CaseAction::class);
-    $app->put('/v1/cases/{caseId}', CaseSubmitAction::class);
+    $app->post('/v1/cases/{caseUuid}/exports', CaseExportAction::class);
+    $app->post('/v1/cases/{caseUuid}/clients', ClientRegisterAction::class);
+    $app->put('/v1/cases/{token}', CaseSubmitAction::class);
 
     $app->get('/status', function (Request $request, Response $response) {
         return $response->withStatus(200);

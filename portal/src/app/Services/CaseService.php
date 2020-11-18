@@ -2,11 +2,14 @@
 
 namespace App\Services;
 
+use App\Models\Answer;
+use App\Repositories\AnswerRepository;
 use App\Repositories\CaseRepository;
 use App\Repositories\PairingRepository;
 use App\Repositories\TaskRepository;
 use App\Models\CovidCase;
 use DateTime;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Jenssegers\Date\Date;
 
@@ -33,30 +36,47 @@ class CaseService
     private PairingRepository $pairingRepository;
 
     /**
+     * @var AnswerRepository
+     */
+    private AnswerRepository $answerRepository;
+
+    /**
      * @var AuthenticationService
      */
     private AuthenticationService $authService;
 
+
     /**
      * Constructor.
      *
-     * @param CaseRepository        $caseRepository
-     * @param TaskRepository        $taskRepository
-     * @param PairingRepository     $pairingRepository
+     * @param CaseRepository $caseRepository
+     * @param TaskRepository $taskRepository
+     * @param PairingRepository $pairingRepository
+     * @param AnswerRepository $answerRepository
      * @param AuthenticationService $authService
      */
-    public function __construct(CaseRepository $caseRepository, TaskRepository $taskRepository, PairingRepository $pairingRepository, AuthenticationService $authService)
+    public function __construct(CaseRepository $caseRepository,
+                                TaskRepository $taskRepository,
+                                PairingRepository $pairingRepository,
+                                AnswerRepository $answerRepository,
+                                AuthenticationService $authService)
     {
         $this->caseRepository = $caseRepository;
         $this->taskRepository = $taskRepository;
         $this->pairingRepository = $pairingRepository;
+        $this->answerRepository =$answerRepository;
         $this->authService = $authService;
     }
 
     public function createDraftCase(): CovidCase
     {
         $owner = $this->authService->getAuthenticatedUser();
-        return $this->caseRepository->createCase($owner, CovidCase::STATUS_DRAFT);
+        $assignedTo = null;
+        if (!$this->authService->isPlanner()) {
+            // Auto assign to yourself if you aren't a planner
+            $assignedTo = $owner;
+        }
+        return $this->caseRepository->createCase($owner, CovidCase::STATUS_DRAFT, $assignedTo);
     }
 
     /**
@@ -73,25 +93,44 @@ class CaseService
             return null;
         }
 
-        $expiresAt = new DateTime("+1 day"); // TODO: move to config and/or base on case data
-        $code = $this->pairingRepository->getPairingCode($case->uuid, $expiresAt);
+        $expiresAt = Date::now()->addDays(1); // TODO: move to config and/or base on case data
+        $pairing = $this->pairingRepository->getPairing($case->uuid, $expiresAt);
+
+        $this->caseRepository->setExpiry($case, $expiresAt, $pairing->expiresAt);
 
         // apply formatting for readability (TODO: move to view?)
-        return implode('-', str_split($code, 3));
+        return implode('-', str_split($pairing->code, 3));
     }
 
-    public function getCase($caseUuid): ?CovidCase
+    /**
+     * @param $caseUuid
+     * @param false $includeProgress If true, loads the progress of the case (significantly slower)
+     * @return CovidCase|null
+     */
+    public function getCase($caseUuid, $includeProgress = false): ?CovidCase
     {
         $case = $this->caseRepository->getCase($caseUuid);
         if ($case) {
             $case->tasks = $this->taskRepository->getTasks($caseUuid)->all();
+
+            if ($includeProgress) {
+                $this->applyProgress($caseUuid, $case->tasks);
+            }
         }
         return $case;
     }
 
-    public function myCases(): Collection
+    /**
+     * @return LengthAwarePaginator
+     */
+    public function myCases(): LengthAwarePaginator
     {
-        return $this->caseRepository->getCasesByUser($this->authService->getAuthenticatedUser());
+        return $this->caseRepository->getCasesByAssignedUser($this->authService->getAuthenticatedUser());
+    }
+
+    public function organisationCases(): LengthAwarePaginator
+    {
+        return $this->caseRepository->getCasesByOrganisation($this->authService->getAuthenticatedUser());
     }
 
     /**
@@ -102,7 +141,7 @@ class CaseService
     public function canAccess(CovidCase $case): bool
     {
         $user = $this->authService->getAuthenticatedUser();
-        return $user->id == $case->owner;
+        return $user->uuid == $case->owner;
     }
 
     public function updateCase(CovidCase $case)
@@ -144,6 +183,24 @@ class CaseService
     public function deleteRemovedTasks(string $caseUuid, array $keep)
     {
         $this->taskRepository->deleteRemovedTasks($caseUuid, $keep);
+    }
+
+    private function applyProgress($caseUuid, &$tasks)
+    {
+        $tasksByTaskUuid = [];
+        foreach ($tasks as $task) {
+            $task->progress += ($task->dateOfLastExposure != null ? 25 : 0);
+            $tasksByTaskUuid[$task->uuid] = $task;
+        }
+
+        $answers = $this->answerRepository->getAllAnswersByCase($caseUuid);
+        foreach ($answers as $answer) {
+            // Todo: this assumes a task's questionnaire has one ClassificationDetails object
+            // and one ContactDetails object. This may not always be the case.
+            $tasksByTaskUuid[$answer->taskUuid]->progress += $answer->progressContribution();
+        }
+
+        $tasks = array_values($tasksByTaskUuid);
     }
 
 }

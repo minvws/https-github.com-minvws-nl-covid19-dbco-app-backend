@@ -1,12 +1,24 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Commands\RefreshGeneralTasksCommand;
-use App\Application\Commands\RefreshQuestionnairesCommand;
+use DBCO\Worker\Application\Commands\ProcessPairingQueueCommand;
+use DBCO\Worker\Application\Commands\RefreshGeneralTasksCommand;
+use DBCO\Worker\Application\Commands\RefreshQuestionnairesCommand;
 use Symfony\Component\Console\Application;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 
 return function (Application $app, ContainerInterface $container) {
-    $app->add($container->get(RefreshQuestionnairesCommand::class));
-    $app->add($container->get(RefreshGeneralTasksCommand::class));
+    $commands = [
+        RefreshQuestionnairesCommand::class,
+        RefreshGeneralTasksCommand::class,
+        ProcessPairingQueueCommand::class
+    ];
+
+    $commandMap = [];
+    foreach ($commands as $class) {
+        $commandMap[$class::getDefaultName()] = $class;
+    }
+
+    $app->setCommandLoader(new ContainerCommandLoader($container, $commandMap));
 };

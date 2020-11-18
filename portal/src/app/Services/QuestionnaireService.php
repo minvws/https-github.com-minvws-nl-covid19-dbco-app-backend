@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Questionnaire;
 use App\Models\SimpleAnswer;
 use App\Repositories\AnswerRepository;
+use App\Repositories\QuestionnaireRepository;
 use App\Repositories\QuestionRepository;
 use App\Repositories\TaskRepository;
 use Jenssegers\Date\Date;
@@ -11,17 +13,39 @@ use Jenssegers\Date\Date;
 class QuestionnaireService
 {
     private QuestionRepository $questionRepository;
+    private QuestionnaireRepository $questionnaireRepository;
     private TaskRepository $taskRepository;
     private AnswerRepository $answerRepository;
 
     public function __construct(
         QuestionRepository $questionRepository,
+        QuestionnaireRepository $questionnaireRepository,
         TaskRepository $taskRepository,
         AnswerRepository $answerRepository)
     {
         $this->questionRepository = $questionRepository;
+        $this->questionnaireRepository = $questionnaireRepository;
         $this->taskRepository = $taskRepository;
         $this->answerRepository = $answerRepository;
+    }
+
+    public function getLatestQuestionnaire(string $taskType): ?Questionnaire
+    {
+        $questionnaire = $this->questionnaireRepository->getLatestQuestionnaire($taskType);
+        $this->enhanceWithQuestions($questionnaire);
+        return $questionnaire;
+    }
+
+    public function getQuestionnaire(string $uuid): ?Questionnaire
+    {
+        $questionnaire = $this->questionnaireRepository->getQuestionnaire($uuid);
+        $this->enhanceWithQuestions($questionnaire);
+        return $questionnaire;
+    }
+
+    private function enhanceWithQuestions(Questionnaire $questionnaire)
+    {
+        $questionnaire->questions = $this->questionRepository->getQuestions($questionnaire->uuid)->all();
     }
 
     public function getRobotFriendlyTaskExport(string $caseUuid): array
@@ -29,7 +53,7 @@ class QuestionnaireService
         $tasks = $this->taskRepository->getTasks($caseUuid);
 
         // Hypothetically each task could've used a different questionnaire (once we have
-        // more than one taks type). For now this isn't supported and we assume all tasks have
+        // more than one task type). For now this isn't supported and we assume all tasks have
         // used the same questionnaire.
         $task = $tasks->first();
         $questions = [];
@@ -56,10 +80,10 @@ class QuestionnaireService
                     $headers[$question->uuid.'.phonenumber'] = 'Telefoon';
                     break;
                 case 'classificationdetails':
-                    $headers[$question->uuid.'.durationrisk'] = '> 15 min.';
-                    $headers[$question->uuid.'.distancerisk'] = '< 1.5m';
-                    $headers[$question->uuid.'.livedtogetherrisk'] = '> x uur zelfde huis';
-                    $headers[$question->uuid.'.otherrisk'] = 'Overig risico';
+                    $headers[$question->uuid.'.category1risk'] = 'Cat 1 risico';
+                    $headers[$question->uuid.'.category2arisk'] = 'Cat 2a risico';
+                    $headers[$question->uuid.'.category2brisk'] = 'Cat 2b risico';
+                    $headers[$question->uuid.'.category3risk'] = 'Cat 3 risico';
                     break;
                 default:
                     $headers[$question->uuid] = $question->header ?? $question->label;
@@ -73,11 +97,14 @@ class QuestionnaireService
 
         foreach ($tasks as $task) {
             $records[$task->uuid] = [
+                'task.uuid' => $task->uuid,
                 'task.label' => $task->label,
                 'task.source' => $task->source,
                 'task.context' => $task->taskContext,
-                'task.dateoflastexposure' => $task->dateOfLastExposure != null ? Date::parse($task->dateOfLastExposure)->format("Y-m-d"): '',
-                'task.communication' => $task->communication
+                'task.dateoflastexposure' => $task->dateOfLastExposure !== null ? Date::parse($task->dateOfLastExposure)->format("Y-m-d"): '',
+                'task.communication' => $task->communication,
+                'task.exportId' => $task->exportId,
+                'task.enableExport' => $task->exportedAt === null || $task->exportedAt < $task->updatedAt
             ];
 
         }
@@ -93,10 +120,10 @@ class QuestionnaireService
                     break;
                 case 'classificationdetails':
                     // ClassificationDetailsAnswer, turns into 4 distinct columns
-                    $records[$answer->taskUuid][$answer->questionUuid.'.durationrisk'] = $answer->durationRisk ? 'Ja' : 'Nee';
-                    $records[$answer->taskUuid][$answer->questionUuid.'.distancerisk'] = $answer->distanceRisk ? 'Ja' : 'Nee';
-                    $records[$answer->taskUuid][$answer->questionUuid.'.livedtogetherrisk'] = $answer->livedTogetherRisk ? 'Ja' : 'Nee';
-                    $records[$answer->taskUuid][$answer->questionUuid.'.otherrisk'] = $answer->otherRisk ? 'Ja' : 'Nee';
+                    $records[$answer->taskUuid][$answer->questionUuid.'.category1risk'] = $answer->category1Risk ? 'Ja' : 'Nee';
+                    $records[$answer->taskUuid][$answer->questionUuid.'.category2arisk'] = $answer->category2ARisk ? 'Ja' : 'Nee';
+                    $records[$answer->taskUuid][$answer->questionUuid.'.category2brisk'] = $answer->category2BRisk ? 'Ja' : 'Nee';
+                    $records[$answer->taskUuid][$answer->questionUuid.'.category3risk'] = $answer->category3Risk ? 'Ja' : 'Nee';
                     break;
                 default:
                     // SimpleAnswer
@@ -104,16 +131,17 @@ class QuestionnaireService
             }
         }
 
-        $answersPerTask = [];
+        $tasksPerCategory = [];
 
         foreach ($tasks as $task) {
-            $answersPerTask[$task->category][] = $records[$task->uuid];
+            $tasksPerCategory[$task->category][] = $records[$task->uuid];
         }
+        ksort($tasksPerCategory);
 
         // multidimensional array, rows are tasks, each column is a question-answer (referred to by question-uuid). Multi value questions are sub arrays.
         return [
             'headers' => $headers,
-            'categories' => $answersPerTask
+            'categories' => $tasksPerCategory
         ];
     }
 }

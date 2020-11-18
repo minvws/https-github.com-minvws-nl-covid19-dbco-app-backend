@@ -47,14 +47,6 @@ class StubQuestionnaireRepository implements QuestionnaireRepository
         $question2->relevantForCategories = Question::ALL_CATEGORIES;;
         $questionnaire->questions[] = $question2;
 
-        $question3 = new OpenQuestion();
-        $question3->uuid = "37d818ed-9499-4b9a-9771-725467368389";
-        $question3->group = "contactdetails";
-        $question3->label = "Beroep";
-        $question3->description = null;
-        $question3->relevantForCategories = ["1"];
-        $questionnaire->questions[] = $question3;
-
         $question4 = new MultipleChoiceQuestion();
         $question4->uuid = "37d818ed-9499-4b9a-9771-725467368390";
         $question4->group = "contactdetails";
