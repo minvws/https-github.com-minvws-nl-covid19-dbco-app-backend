@@ -41,25 +41,25 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
         $list = new QuestionnaireList();
 
         $stmt = $this->client->query('
-            WITH latest AS (
-                SELECT
-                    uuid,
-                    task_type,
-                    version,
-                    row_number() OVER (partition BY task_type ORDER BY version DESC) AS row_number
-                FROM questionnaire
-            )
-            SELECT *
-            FROM latest
-            WHERE row_number = 1
+            SELECT
+                uuid,
+                task_type,
+                version
+            FROM questionnaire
+            ORDER BY version DESC
         ');
 
+        $seenTaskTypes = [];
         while ($row = $stmt->fetchObject()) {
-            $questionnaire = new Questionnaire();
-            $questionnaire->uuid = $row->uuid;
-            $questionnaire->taskType = $row->task_type;
-            $questionnaire->questions = $this->getQuestionsForQuestionnaire($questionnaire);
-            $list->questionnaires[] = $questionnaire;
+            if(array_search($row->task_type, $seenTaskTypes, true) === false) {
+                $questionnaire = new Questionnaire();
+                $questionnaire->uuid = $row->uuid;
+                $questionnaire->taskType = $row->task_type;
+                $questionnaire->questions = $this->getQuestionsForQuestionnaire($questionnaire);
+
+                $list->questionnaires[] = $questionnaire;
+                $seenTaskTypes[] = $row->task_type;
+            }
         }
 
         return $list;
