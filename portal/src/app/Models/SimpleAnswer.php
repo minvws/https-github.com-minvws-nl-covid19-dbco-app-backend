@@ -6,8 +6,13 @@ class SimpleAnswer extends Answer
 {
     public string $value;
 
-    function progressContribution()
+    public function progressContribution()
     {
         return 0;
+    }
+
+    public function toFormValue()
+    {
+        return $this->value;
     }
 }
