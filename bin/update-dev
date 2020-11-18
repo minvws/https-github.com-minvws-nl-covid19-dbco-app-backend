@@ -11,6 +11,10 @@ echo "=====[ UPDATE WORKER ]====="
 $DOCKER_COMPOSE run --rm --entrypoint composer worker install
 
 echo
+echo "=====[ UPDATE BRIDGE ]====="
+$DOCKER_COMPOSE run --rm --entrypoint composer bridge install
+
+echo
 echo "=====[ UPDATE PRIVATE API ]====="
 $DOCKER_COMPOSE run --rm --entrypoint composer private_api install
 

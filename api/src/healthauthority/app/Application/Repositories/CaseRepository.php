@@ -29,12 +29,11 @@ interface CaseRepository
     public function getCase(string $caseUuid): ?CovidCase;
 
     /**
-     * Submit case tasks.
+     * Store case answers.
      *
-     * @param string $caseUuid
-     * @param string $body
+     * @param CovidCase $case
      *
      * @return void
      */
-    public function submitCase(string $caseUuid, string $body): void;
+    public function storeCaseAnswers(CovidCase $case): void;
 }

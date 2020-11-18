@@ -1,7 +1,7 @@
 <?php
 namespace DBCO\HealthAuthorityAPI\Application\Services;
 
-use DBCO\HealthAuthorityAPI\Application\DTO\CaseExport;
+use DBCO\HealthAuthorityAPI\Application\DTO\CovidCase as CovidCaseDTO;
 use DBCO\HealthAuthorityAPI\Application\Helpers\EncryptionHelper;
 use DBCO\HealthAuthorityAPI\Application\Models\Client;
 use DBCO\HealthAuthorityAPI\Application\Models\ClientCase;
@@ -11,6 +11,7 @@ use DBCO\HealthAuthorityAPI\Application\Repositories\CaseExportRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\CaseRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\ClientRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\GeneralTaskRepository;
+use DBCO\Shared\Application\Managers\TransactionManager;
 use DBCO\Shared\Application\Models\SealedData;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -48,6 +49,11 @@ class CaseService
     private EncryptionHelper $encryptionHelper;
 
     /**
+     * @var TransactionManager
+     */
+    private TransactionManager $transactionManager;
+
+    /**
      * @var LoggerInterface
      */
     private LoggerInterface $logger;
@@ -60,6 +66,7 @@ class CaseService
      * @param ClientRepository      $clientRepository
      * @param CaseExportRepository  $caseExportRepository
      * @param EncryptionHelper      $encryptionHelper
+     * @param TransactionManager    $transactionManager
      * @param LoggerInterface       $logger
      */
     public function __construct(
@@ -68,6 +75,7 @@ class CaseService
         ClientRepository $clientRepository,
         CaseExportRepository $caseExportRepository,
         EncryptionHelper $encryptionHelper,
+        TransactionManager $transactionManager,
         LoggerInterface $logger
     )
     {
@@ -76,6 +84,7 @@ class CaseService
         $this->clientRepository = $clientRepository;
         $this->caseExportRepository = $caseExportRepository;
         $this->encryptionHelper = $encryptionHelper;
+        $this->transactionManager = $transactionManager;
         $this->logger = $logger;
     }
 
@@ -99,7 +108,7 @@ class CaseService
      */
     private function exportCaseForClient(CovidCase $case, Client $client)
     {
-        $json = json_encode(new CaseExport($case));
+        $json = json_encode(new CovidCaseDTO($case));
         $sealedCase = $this->encryptionHelper->sealMessageForClient($json, $client->transmitKey);
         $this->caseExportRepository->exportCase($client->token, $sealedCase, $case->windowExpiresAt);
     }
@@ -171,7 +180,7 @@ class CaseService
     /**
      * Submit case with tasks.
      *
-     * @param string $token             Case token.
+     * @param string $token          Case token.
      * @param SealedData $sealedCase Sealed case data.
      *
      * @throws CaseNotFoundException
@@ -184,11 +193,16 @@ class CaseService
             throw new CaseNotFoundException('Case does not exist!'); // TODO: different error?
         }
 
-        $data = $this->encryptionHelper->unsealMessageFromClient($sealedCase, $client->receiveKey);
-        if (empty($data)) {
+        $json = $this->encryptionHelper->unsealMessageFromClient($sealedCase, $client->receiveKey);
+        if (empty($json)) {
             throw new SealedBoxException();
         }
 
-        // TODO: this is a dummy implementation, we still need to process the data
+        $data = json_decode($json);
+        $case = CovidCaseDTO::jsonUnserialize($data);
+        $case->uuid = $client->case->uuid;
+        $this->transactionManager->run(function () use ($case) {
+            $this->caseRepository->storeCaseAnswers($case);
+        });
     }
 }

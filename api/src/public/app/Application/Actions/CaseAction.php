@@ -8,6 +8,7 @@ use DBCO\PublicAPI\Application\Services\CaseService;
 use DBCO\Shared\Application\Actions\Action;
 use DBCO\Shared\Application\Actions\ValidationError;
 use DBCO\Shared\Application\Actions\ValidationException;
+use DBCO\Shared\Application\Models\SealedData;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
@@ -55,6 +56,14 @@ class CaseAction extends Action
         }
 
         $case = $this->caseService->getCase($token);
+
+        // always return a result so it is not visible if a case exists or not
+        if ($case === null) {
+            $case = new SealedData(
+                random_bytes(rand(512, 4096)),
+                random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES)
+            );
+        }
 
         return $this->respond(new CaseResponse($case));
     }

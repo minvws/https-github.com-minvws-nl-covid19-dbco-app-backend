@@ -1,32 +1,30 @@
 <?php
 namespace DBCO\PublicAPI\Application\Repositories;
 
-use DBCO\PublicAPI\Application\Models\SealedCase;
 use DBCO\Shared\Application\Models\SealedData;
 
 /**
- * Used for syncing case details.
+ * Used for retrieving case details.
  *
  * @package DBCO\PublicAPI\Application\Repositories
  */
 interface CaseRepository
 {
     /**
+     * Check if the given token resolves to a case.
+     *
+     * @param string $token
+     *
+     * @return bool
+     */
+    public function caseExists(string $token): bool;
+
+    /**
      * Returns the case and its task list.
      *
      * @param string $token Case token.
      *
-     * @return SealedCase
+     * @return SealedData|null
      */
-    public function getCase(string $token): SealedCase;
-
-    /**
-     * Submit case and its tasks.
-     *
-     * @param string     $token
-     * @param SealedCase $sealedCase
-     *
-     * @return void
-     */
-    public function submitCase(string $token, SealedCase $sealedCase): void;
+    public function getCase(string $token): ?SealedData;
 }
