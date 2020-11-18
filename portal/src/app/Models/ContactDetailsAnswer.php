@@ -9,7 +9,7 @@ class ContactDetailsAnswer extends Answer
     public ?string $email;
     public ?string $phonenumber;
 
-    function progressContribution()
+    public function progressContribution()
     {
         $progress = 0;
         if (!empty($this->firstname)) {
@@ -22,5 +22,15 @@ class ContactDetailsAnswer extends Answer
             $progress += 25;
         }
         return $progress;
+    }
+
+    public function toFormValue()
+    {
+        return [
+            'firstname' => $this->firstname,
+            'lastname' => $this->lastname,
+            'email' => $this->email,
+            'phonenumber' => $this->phonenumber
+        ];
     }
 }
