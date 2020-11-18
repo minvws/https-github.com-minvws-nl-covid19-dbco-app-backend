@@ -6,5 +6,3 @@ class EloquentQuestionnaire extends EloquentBaseModel
 {
     protected $table = "questionnaire";
 }
-
-
