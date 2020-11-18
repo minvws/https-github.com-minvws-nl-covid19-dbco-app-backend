@@ -163,5 +163,4 @@ class DbCaseRepository implements CaseRepository
         $case->indexSubmittedAt = $dbCase->index_submitted_at != null ? new Date($dbCase->index_submitted_at) : null;
         return $case;
     }
-
 }

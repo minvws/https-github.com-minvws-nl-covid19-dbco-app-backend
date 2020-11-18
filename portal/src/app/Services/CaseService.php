@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Answer;
 use App\Repositories\AnswerRepository;
+use App\Repositories\CaseExportRepository;
 use App\Repositories\CaseRepository;
 use App\Repositories\PairingRepository;
 use App\Repositories\TaskRepository;
@@ -45,6 +46,7 @@ class CaseService
      */
     private AuthenticationService $authService;
 
+    private CaseExportRepository $caseExportRepository;
 
     /**
      * Constructor.
@@ -54,18 +56,21 @@ class CaseService
      * @param PairingRepository $pairingRepository
      * @param AnswerRepository $answerRepository
      * @param AuthenticationService $authService
+     * @param CaseExportRepository $caseExportRepository
      */
     public function __construct(CaseRepository $caseRepository,
                                 TaskRepository $taskRepository,
                                 PairingRepository $pairingRepository,
                                 AnswerRepository $answerRepository,
-                                AuthenticationService $authService)
+                                AuthenticationService $authService,
+                                CaseExportRepository $caseExportRepository)
     {
         $this->caseRepository = $caseRepository;
         $this->taskRepository = $taskRepository;
         $this->pairingRepository = $pairingRepository;
         $this->answerRepository =$answerRepository;
         $this->authService = $authService;
+        $this->caseExportRepository = $caseExportRepository;
     }
 
     public function createDraftCase(): CovidCase
@@ -146,6 +151,10 @@ class CaseService
     public function updateCase(CovidCase $case)
     {
         $this->caseRepository->updateCase($case);
+
+        if ($case->status === CovidCase::STATUS_OPEN) {
+            $this->caseExportRepository->export($case);
+        }
     }
 
     public function openCase(CovidCase $case)
