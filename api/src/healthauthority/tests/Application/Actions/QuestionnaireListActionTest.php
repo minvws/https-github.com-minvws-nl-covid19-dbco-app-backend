@@ -39,7 +39,7 @@ class QuestionnaireListActionTest extends TestCase
         $this->pdo = $this->getAppInstance()->getContainer()->get(PDO::class);
         $this->repository = new DbQuestionnaireRepository($this->pdo);
         $this->pdo->beginTransaction();
-        $this->createTestData();
+        $this->createTestQuestionnaires();
     }
 
     /**
@@ -51,12 +51,7 @@ class QuestionnaireListActionTest extends TestCase
         parent::tearDown();
     }
 
-    private function createTestData(): void
-    {
-        $this->createTestQuestionnaires();
-    }
-
-    /**
+   /**
      * Test happy flow.
      *
      * @throws Exception
