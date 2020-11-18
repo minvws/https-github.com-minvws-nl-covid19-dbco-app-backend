@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Pairing;
+use App\Models\CovidCase;
 use DateTimeInterface;
 use GuzzleHttp\Client as GuzzleClient;
 use Firebase\JWT\JWT;
@@ -13,7 +13,7 @@ use GuzzleHttp\Exception\GuzzleException;
  *
  * @package App\Repositories
  */
-class ApiPairingRepository implements PairingRepository
+class ApiCaseExportRepository implements CaseExportRepository
 {
     const JWT_EXPIRATION_TIME = 300; // 5 minutes
 
@@ -38,6 +38,16 @@ class ApiPairingRepository implements PairingRepository
         $this->jwtSecret = $jwtSecret;
     }
 
+    private function encodeJSON(CovidCase $case): array
+    {
+        $tasks = [];
+
+        return [
+            'dateOfSymptomOnset' => $case->dateOfSymptomOnset->format('c'),
+            'tasks' => $tasks
+        ];
+    }
+
     /**
      * Encode JWT for registering case.
      *
@@ -56,36 +66,28 @@ class ApiPairingRepository implements PairingRepository
         return JWT::encode($payload, $this->jwtSecret);
     }
 
-
     /**
-     * Fetch pairing code for the given case.
+     * Fetch pairing code for the given case.case_id
      *
-     * @param string            $caseUuid  The case to pair.
-     * @param DateTimeInterface $expiresAt When it is not possible anymore to submit data for this case.
-     *
-     * @return Pairing A pairing code for this case
+     * @param CovidCase $case The case to pair.
      *
      * @throws GuzzleException
      */
-    public function getPairing(string $caseUuid, DateTimeInterface $expiresAt): Pairing
+    public function export(CovidCase $case): void
     {
         $options = [
             'headers' => [
-                'Authorization' => 'Bearer ' . $this->encodeJWT($caseUuid)
+                'Authorization' => 'Bearer ' . $this->encodeJWT($case->uuid)
             ],
-            'json' => [
-                'caseId' => $caseUuid,
-                'caseExpiresAt' => $expiresAt->format('c')
-            ]
+            'json' => $this->encodeJSON($case)
         ];
 
-        $response = $this->client->post('cases', $options);
-        $data = json_decode($response->getBody()->getContents());
+        error_log(var_export($options, true));
 
-        $pairing = new Pairing();
-        $pairing->code = $data->pairingCode;
-        $pairing->expiresAt = new Date($data->pairingCodeExpiresAt);
-
-        return $pairing;
+        try {
+            $response = $this->client->post('cases', $options);
+        } catch (\Throwable $t) {
+            print_r($t->getMessage());
+        }
     }
 }
