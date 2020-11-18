@@ -26,12 +26,26 @@ services:
         volumes:
             - ./worker/src:/src
 
-    pairing-worker:
-        build: worker
+    bridge:
+        build: bridge
         environment:
             APP_ENV: development
         volumes:
-            - ./worker/src:/src
+            - ./bridge/src:/src
+
+    bridge-clients:
+        build: bridge
+        environment:
+            APP_ENV: development
+        volumes:
+            - ./bridge/src:/src
+
+    bridge-caseresults:
+        build: bridge
+        environment:
+            APP_ENV: development
+        volumes:
+            - ./bridge/src:/src
 
     healthauthority_api:
         environment:
@@ -49,3 +63,15 @@ services:
             - ${PORTAL_PORT:-8084}:80
         volumes:
             - ./portal/src:/src
+
+    simulator:
+        build: simulator
+        environment:
+            APP_ENV: development
+            DEBUG: ${DEBUG:-0}
+            PUBLIC_API_BASE_URI: http://public_api/v1/
+            HEALTHAUTHORITY_ENCRYPTION_GENERAL_KEY_PAIR: ${HEALTHAUTHORITY_ENCRYPTION_GENERAL_KEY_PAIR}
+        depends_on:
+            - public_api
+        volumes:
+            - ./simulator/src:/src
