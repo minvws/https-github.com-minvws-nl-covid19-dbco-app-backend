@@ -1,0 +1,36 @@
+.sidebar {
+    height: calc(100vh - 56px); // 56px is the navbar height including padding
+    transition: right 0.3s linear, max-width 0.7s linear;
+    display: block;
+    position: relative;
+
+    &.collapse {
+        width: 0;
+        max-width: 0;
+        position: relative;
+        top: 0;
+        right: 100%;
+        left: 0;
+        overflow: hidden;
+    }
+
+    &.collapsing {
+        width: 0 !important;
+        max-width: 0 !important;
+        min-width: 0;
+        right: 0;
+    }
+
+    &.show {
+        width: 100%;
+        max-width: 100%;
+        min-width: 50px;
+        right: 0;
+    }
+}
+
+.sidebar-content {
+    overflow-y: scroll;
+    padding: 1rem 2rem;
+    height: calc(100% - 2rem - 12px);
+}

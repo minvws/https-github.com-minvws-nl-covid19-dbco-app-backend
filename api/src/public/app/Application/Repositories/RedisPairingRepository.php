@@ -1,11 +1,11 @@
 <?php
 namespace DBCO\PublicAPI\Application\Repositories;
 
-use DateTime;
 use DBCO\PublicAPI\Application\Models\Pairing;
 use Exception;
 use Predis\Client as PredisClient;
 use RuntimeException;
+use Throwable;
 
 /**
  * Store/retrieve pairings in/from Redis.
@@ -14,6 +14,10 @@ use RuntimeException;
  */
 class RedisPairingRepository implements PairingRepository
 {
+    private const PAIRING_LIST_KEY = 'pairings';
+    private const PAIRING_RESPONSE_LIST_KEY_TEMPLATE = 'pairing-response:%s';
+    private const PAIRING_TIMEOUT = 30;
+
     /**
      * @var PredisClient
      */
@@ -34,20 +38,33 @@ class RedisPairingRepository implements PairingRepository
      */
     public function storePairing(Pairing $pairing)
     {
-        $key = 'case:' . $pairing->case->id . ':pairing';
-        $expiresInSeconds = $pairing->case->expiresAt->getTimestamp() - time();
+        $responseListKey = sprintf(self::PAIRING_RESPONSE_LIST_KEY_TEMPLATE, $pairing->case->id);
+
         $data = [
             'case' => [
                 'id' => $pairing->case->id,
-                'expiresAt' =>  $pairing->case->expiresAt->format(DateTime::ATOM)
             ],
-            'signingKey' => $pairing->signingKey
+            'sealedClientPublicKey' => base64_encode($pairing->sealedClientPublicKey)
         ];
 
         try {
-            $this->client->hset($key, $expiresInSeconds, json_encode($data));
-        } catch (Exception $e) {
-            throw new RuntimeException('Error storing pairing', 0, $e);
+            $this->client->rpush(self::PAIRING_LIST_KEY, json_encode($data));
+            $response = $this->client->blpop($responseListKey, self::PAIRING_TIMEOUT);
+
+            if ($response === null || count($response) !== 2) {
+                throw new RuntimeException('Error storing pairing (no response');
+            }
+
+            $responseData = json_decode($response[1]);
+
+            if (isset($responseData->error)) {
+                throw new Exception($responseData->error);
+            } else {
+                $pairing->sealedHealthAuthorityPublicKey =
+                    base64_decode($responseData->sealedHealthAuthorityPublicKey);
+            }
+        } catch (Throwable $e) {
+            throw new RuntimeException('Error storing pairing: ' . $e->getMessage(), 0, $e);
         }
     }
 }

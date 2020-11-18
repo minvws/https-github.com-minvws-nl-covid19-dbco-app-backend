@@ -40,35 +40,53 @@ class PairingAction extends Action
     }
 
     /**
+     * Validate contents of parsed body.
+     *
+     * @param mixed $body
+     *
+     * @throws ValidationException
+     */
+    private function validateBody($body)
+    {
+        $errors = [];
+
+        if (!is_array($body)) {
+            $errors[] = ValidationError::body('invalid', 'body should be a valid JSON object string', []);
+        } else {
+            if (empty($body['pairingCode'])) {
+                $errors[] = ValidationError::body('isRequired', 'pairingCode is required', ['pairingCode']);
+            } else if (!is_string($body['pairingCode'])) {
+                $errors[] = ValidationError::body('invalid', 'pairingCode should be a string', ['pairingCode']);
+            }
+
+            if (empty($body['sealedClientPublicKey'])) {
+                $errors[] = ValidationError::body('isRequired', 'sealedClientPublicKey is required', ['sealedClientPublicKey']);
+            } else if (!is_string($body['sealedClientPublicKey'])) {
+                $errors[] = ValidationError::body('invalid', 'sealedClientPublicKey should be a string', ['sealedClientPublicKey']);
+            } else if (base64_decode($body['sealedClientPublicKey'], true) === false) { // not bulletproof
+                $errors[] = ValidationError::body('invalid', 'sealedClientPublicKey is not a valid base64 encoded string', ['sealedClientPublicKey']);
+            }
+        }
+
+        if (count($errors) > 0) {
+            throw new ValidationException($this->request, $errors);
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
         $body = $this->request->getParsedBody();
 
-        $errors = [];
+        $this->validateBody($body);
 
-        $pairingCode = $body['pairingCode'] ?? null;
-        if (empty($pairingCode)) {
-            $errors[] = ValidationError::body('isRequired', 'pairingCode is required', ['pairingCode']);
-        }
-
-        $deviceType = $body['deviceType'] ?? null;
-        if (empty($deviceType)) {
-            $errors[] = ValidationError::body('isRequired', 'deviceType is required', ['deviceType']);
-        }
-
-        $deviceName = $body['deviceName'] ?? null;
-        if (empty($deviceName)) {
-            $errors[] = ValidationError::body('isRequired', 'deviceName is required', ['deviceName']);
-        }
-
-        if (count($errors) > 0) {
-            throw new ValidationException($this->request, $errors);
-        }
+        $pairingCode = $body['pairingCode'];
+        $sealedClientPublicKey = base64_decode($body['sealedClientPublicKey']);
 
         try {
-            $pairing = $this->pairingService->completePairing($pairingCode, $deviceType, $deviceName);
+            $pairing = $this->pairingService->completePairing($pairingCode, $sealedClientPublicKey);
             return $this->respond(new PairingResponse($pairing));
         } catch (InvalidPairingCodeException $e) {
             $error = ValidationError::body('invalid', 'Invalid or expired pairing code', ['pairingCode']);

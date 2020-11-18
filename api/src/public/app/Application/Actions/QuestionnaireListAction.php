@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace DBCO\PublicAPI\Application\Actions;
 
-use DBCO\PublicAPI\Application\Helpers\TranslationHelper;
 use DBCO\PublicAPI\Application\Responses\QuestionnaireListResponse;
 use DBCO\PublicAPI\Application\Services\QuestionnaireService;
 use DBCO\Shared\Application\Actions\Action;
+use DBCO\Shared\Application\Helpers\TranslationHelper;
+use Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
@@ -47,6 +48,8 @@ class QuestionnaireListAction extends Action
 
     /**
      * {@inheritdoc}
+     *
+     * @throws Exception
      */
     protected function action(): Response
     {

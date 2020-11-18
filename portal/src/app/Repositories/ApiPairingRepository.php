@@ -2,10 +2,12 @@
 
 namespace App\Repositories;
 
+use App\Models\Pairing;
 use DateTimeInterface;
 use GuzzleHttp\Client as GuzzleClient;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Exception\GuzzleException;
+use Jenssegers\Date\Date;
 
 /**
  * Used for registering a new case for pairing.
@@ -62,11 +64,11 @@ class ApiPairingRepository implements PairingRepository
      * @param string            $caseUuid  The case to pair.
      * @param DateTimeInterface $expiresAt When it is not possible anymore to submit data for this case.
      *
-     * @return string A pairing code for this case
+     * @return Pairing A pairing code for this case
      *
      * @throws GuzzleException
      */
-    public function getPairingCode(string $caseUuid, DateTimeInterface $expiresAt): string
+    public function getPairing(string $caseUuid, DateTimeInterface $expiresAt): Pairing
     {
         $options = [
             'headers' => [
@@ -80,6 +82,11 @@ class ApiPairingRepository implements PairingRepository
 
         $response = $this->client->post('cases', $options);
         $data = json_decode($response->getBody()->getContents());
-        return $data->pairingCode;
+
+        $pairing = new Pairing();
+        $pairing->code = $data->pairingCode;
+        $pairing->expiresAt = new Date($data->pairingCodeExpiresAt);
+
+        return $pairing;
     }
 }

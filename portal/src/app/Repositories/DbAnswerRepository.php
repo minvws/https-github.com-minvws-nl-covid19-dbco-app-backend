@@ -27,6 +27,21 @@ class DbAnswerRepository implements AnswerRepository
         return collect($answers);
     }
 
+    public function getAllAnswersByTask(string $taskUuid): Collection
+    {
+        $dbAnswers = EloquentAnswer::where('task_uuid', $taskUuid)
+            ->select('answer.*', 'question.question_type')
+            ->join('question', 'answer.question_uuid', '=', 'question.uuid')->get();
+
+        $answers = array();
+
+        foreach($dbAnswers as $dbAnswer) {
+            $answers[] = $this->answerFromEloquentModel($dbAnswer);
+        };
+
+        return collect($answers);
+    }
+
     public function answerFromEloquentModel(EloquentAnswer $dbAnswer): Answer
     {
         $answer = null;
@@ -40,10 +55,10 @@ class DbAnswerRepository implements AnswerRepository
                 break;
             case 'classificationdetails':
                 $answer = new ClassificationDetailsAnswer();
-                $answer->distanceRisk = ($dbAnswer->cfd_distancerisk == 1);
-                $answer->livedTogetherRisk = ($dbAnswer->cfd_livedtogetherrisk == 1);
-                $answer->durationRisk = ($dbAnswer->cfd_durationrisk == 1);
-                $answer->otherRisk = ($dbAnswer->cfd_otherrisk == 1);
+                $answer->category1Risk = ($dbAnswer->cfd_cat_1_risk == 1);
+                $answer->category2ARisk = ($dbAnswer->cfd_cat_2a_risk == 1);
+                $answer->category2BRisk = ($dbAnswer->cfd_cat_2b_risk == 1);
+                $answer->category3Risk = ($dbAnswer->cfd_cat_3_risk == 1);
                 break;
             default:
                 $answer = new SimpleAnswer();

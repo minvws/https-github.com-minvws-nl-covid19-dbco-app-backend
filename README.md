@@ -26,23 +26,32 @@ Steps to run a local development environment:
 
 - Create an `.env` file (you can create a copy of `.env.example` to get started). 
 - Generate some passwords and enter them in the various .env file settings that are passwords
+- Set the DATABASE_TYPE environment variable to "oracle" or "postgres" in the `.env` file.
 - If you want to test the portal against an oracle database:
   - Make sure your docker environment has sufficient memory (the default 2Gb in most docker installs won't be enough, choose 8Gb to be safe)
+  - Build a local oracle container using `./oracle-database/build-dev.sh` before continuing with the next step.
   - Build a local oracle container using `./oracle-database/build-dev.sh`.
-  - Set the DATABASE_TYPE environment variable to "oracle" in the `.env` file. 
+  - Set the `DATABASE_TYPE` environment variable to "oracle" in the `.env` file. 
+- If you want to test the portal against a Postgres database:
+  - Set the `DATABASE_TYPE` environment variable to "postgres" in the `.env` file.
+  - Set a `POSTGRES_PASSWORD` in the `.env` file. 
 - Run `bin/setup-dev` to set up the environment (initialize database, install dependencies).
+
+Tip: If you are using oracle instead of postgres, the setup might take a while and the 'Waiting for Oracle to launch on 1521...' seemingly takes forever. Run `./bin/docker-compose-dev logs oracle --follow` to see if Oracle is still busy installing.
 
 If the command has completed successfully, you will be running 4 docker instances:
 * The private api will run on port 8081 on localhost
 * The public api will run on port 8082
 * The healthcare api will run on port 8083
-* The healthcare portal will run on port 8084
+* The [healthcare portal](http://localhost:8084/) will run on port 8084
 
 To start-up the development environment manually (outside of the setup process) you can use
 `bin/docker-compose-dev up`. This command uses a docker-compose wrapper script that makes sure the
 correct database is attached and adds some other development specific settings. 
 
 To update your environment (e.g. run database migrations etc.) you can use `bin/update-dev`.
+
+If you work on the portal and want to change javascript or css files, please run `./bin/docker-compose-dev exec portal npm run watch`, to ensure your changes get build and packaged to the public/ assets folders. 
 
 If your development environment gets messed up, run `bin/reset-dev` to rebuild the environment.
 

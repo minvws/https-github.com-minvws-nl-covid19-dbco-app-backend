@@ -11,21 +11,30 @@ use DBCO\HealthAuthorityAPI\Application\Models\CovidCase;
 interface CaseRepository
 {
     /**
+     * Check if a case exists.
+     *
+     * @param string $caseUuid Case identifier.
+     *
+     * @return bool
+     */
+    public function caseExists(string $caseUuid): bool;
+
+    /**
      * Returns the case task list.
      *
-     * @param string $caseId Case identifier.
+     * @param string $caseUuid Case identifier.
      *
-     * @return CovidCase
+     * @return CovidCase|null
      */
-    public function getCase(string $caseId): CovidCase;
+    public function getCase(string $caseUuid): ?CovidCase;
 
     /**
      * Submit case tasks.
      *
-     * @param string $caseId
+     * @param string $caseUuid
      * @param string $body
      *
      * @return void
      */
-    public function submitCase(string $caseId, string $body): void;
+    public function submitCase(string $caseUuid, string $body): void;
 }
