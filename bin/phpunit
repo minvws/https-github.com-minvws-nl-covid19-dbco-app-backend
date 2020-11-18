@@ -1,34 +1,92 @@
 #!/bin/bash
 BASE_PATH=$(dirname $0)/..
+
+. $BASE_PATH/.env.test
+
 export DATABASE_TYPE=`source $BASE_PATH/.env && echo $DATABASE_TYPE`
 PROJECT_NAME=dbco-test-${DATABASE_TYPE}
 DOCKER_COMPOSE="docker-compose --project-directory=$BASE_PATH -p $PROJECT_NAME --env-file .env.test -f docker-compose.main.yml -f docker-compose.test.yml -f docker-compose.${DATABASE_TYPE}.yml"
 
-echo "=====[ SETUP ]====="
-$DOCKER_COMPOSE up -d --remove-orphans
+CONTAINER=$1
 
-if [ -z "$1" ] || [ "$1" == "worker" ]; then
+if [ "$1" == "--reset" ]; then
+  CONTAINER=$2
+
+  echo "=====[ RESET ]====="
+  $DOCKER_COMPOSE down --remove-orphans -v
+  echo
+fi
+
+echo "=====[ START CONTAINERS ]====="
+$DOCKER_COMPOSE up -d
+
+if [ $DATABASE_TYPE = "postgres" ]; then
+  echo
+  echo "=====[ START POSTGRES DATABASE ]========================="
+  echo "Waiting for PostgreSQL to launch on ${POSTGRES_PORT:-5432}..."
+  while ! echo "SELECT 1 FROM dual" | $DOCKER_COMPOSE run --rm psql > /dev/null 2>&1; do
+    sleep 0.5
+  done
+fi
+
+if [ $DATABASE_TYPE = "oracle" ]; then
+  echo
+  echo "=====[ START ORACLE DATABASE ]========================="
+  echo "Waiting for Oracle to launch on ${ORACLE_PORT:-1521}..."
+  while ! echo "SELECT 1 FROM dual" | $DOCKER_COMPOSE run --rm sqlplus > /dev/null 2>&1; do
+    sleep 0.5
+  done
+fi
+
+if [ "$1" == "--setup" ] || [ "$1" == "--reset" ]; then
+  CONTAINER=$2
+  
+  if [ $DATABASE_TYPE = "postgres" ]; then
+    echo
+    echo "=====[ SETUP POSTGRES DATABASE ]========================="
+    $DOCKER_COMPOSE run --rm psql -c "CREATE USER portal PASSWORD '$PORTAL_DB_PASSWORD'"
+    $DOCKER_COMPOSE run --rm psql -c "CREATE USER healthauthority_api PASSWORD '$HEALTHAUTHORITY_API_DB_PASSWORD'"
+    $DOCKER_COMPOSE run --rm psql < $BASE_PATH/install/postgres/permissions.sql
+  fi
+
+  if [ $DATABASE_TYPE = "oracle" ]; then
+    echo
+    echo "=====[ SETUP ORACLE DATABASE ]========================="
+    echo "CREATE USER healthauthority_api IDENTIFIED BY \"$HEALTHAUTHORITY_API_DB_PASSWORD\";" | $DOCKER_COMPOSE run --rm sqlplus
+    echo "CREATE USER portal IDENTIFIED BY \"$PORTAL_DB_PASSWORD\";" | $DOCKER_COMPOSE run --rm sqlplus
+    $DOCKER_COMPOSE run --rm sqlplus < $BASE_PATH/install/oracle/permissions.sql
+  fi
+fi
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "healthauthority_api" ] || [ "$CONTAINER" == "portal" ]; then
+  echo
+  echo "=====[ RUN MIGRATIONS ]====="
+  $DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
+  echo
+fi
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "worker" ]; then
   echo
   echo "=====[ RUN TESTS FOR WORKER ]====="
   $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit worker
   echo
 fi
 
-if [ -z "$1" ] || [ "$1" == "private_api" ]; then
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "private_api" ]; then
   echo
   echo "=====[ RUN TESTS FOR PRIVATE API ]====="
   $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit private_api
   echo
 fi
 
-if [ -z "$1" ] || [ "$1" == "public_api" ]; then
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "public_api" ]; then
   echo
   echo "=====[ RUN TESTS FOR PUBLIC API ]====="
   $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit public_api
   echo
 fi
 
-if [ -z "$1" ] || [ "$1" == "healthauthority_api" ]; then
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "healthauthority_api" ]; then
   echo
   echo "=====[ RUN TESTS FOR HEALTHAUTHORITY API ]====="
   $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority_api
@@ -36,6 +94,5 @@ if [ -z "$1" ] || [ "$1" == "healthauthority_api" ]; then
 fi
 
 echo
-echo "=====[ CLEANUP ]====="
-$DOCKER_COMPOSE down
-docker volume rm "${PROJECT_NAME}_${DATABASE_TYPE}-data"
+echo "=====[ STOP CONTAINERS ]====="
+$DOCKER_COMPOSE stop

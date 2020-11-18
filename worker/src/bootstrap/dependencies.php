@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Managers\DbTransactionManager;
-use App\Application\Managers\TransactionManager;
+use DBCO\Worker\Application\Managers\DbTransactionManager;
+use DBCO\Worker\Application\Managers\TransactionManager;
 
-use App\Application\Services\ExportManifestService;
-use App\Application\Services\ExportTEKsService;
-use App\Application\Services\ImportStaticFileService;
-use App\Application\Signers\CMSSigner;
-use App\Application\Signers\SHA256Signer;
+use DBCO\Worker\Application\Services\ExportManifestService;
+use DBCO\Worker\Application\Services\ExportTEKsService;
+use DBCO\Worker\Application\Services\ImportStaticFileService;
+use DBCO\Worker\Application\Signers\CMSSigner;
+use DBCO\Worker\Application\Signers\SHA256Signer;
 use DI\ContainerBuilder;
 use function DI\autowire;
 

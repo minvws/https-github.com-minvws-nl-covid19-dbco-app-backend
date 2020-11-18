@@ -4,6 +4,9 @@ services:
     redis:
         image: redis
 
+    redis-haa:
+        image: redis
+
     private_api:
         build:
             context: ./api
@@ -46,8 +49,29 @@ services:
             dockerfile: Dockerfile-healthauthority
         environment:
             DEBUG: ${DEBUG:-0}
-        ports:
-            - ${HEALTHAUTHORITY_API_PORT:-8083}:80
+            DB_TYPE: ${DATABASE_TYPE}
+            DB_HOST: ${DATABASE_TYPE}
+            DB_DATABASE: portal
+            DB_USERNAME: ${HEALTHAUTHORITY_API_DB_USERNAME}
+            DB_PASSWORD: ${HEALTHAUTHORITY_API_DB_PASSWORD}
+            DB_TNS: ${HEALTHAUTHORITY_API_DB_TNS:-oracle/XEPDB1}
+            REDIS_HOST: redis-haa
+            REDIS_PORT: 6379
+            PRIVATE_API_BASE_URI: http://private_api/v1/
+            PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
+            ENCRYPTION_GENERAL_KEY_PAIR: ${HEALTHAUTHORITY_ENCRYPTION_GENERAL_KEY_PAIR}
+
+    pairing-worker:
+        build: worker
+        command: pairing:process-queue
+        environment:
+            DEBUG: ${DEBUG:-0}
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api/v1/
+        depends_on:
+            - redis
+            - healthauthority_api
 
     portal:
         build:
@@ -67,5 +91,8 @@ services:
             TIH_CLIENT_ID: ${PORTAL_TIH_CLIENT_ID}
             TIH_CLIENT_SECRET: ${PORTAL_TIH_CLIENT_SECRET}
             TIH_REDIRECT_URL: ${PORTAL_TIH_REDIRECT_URL}
+            USER_ROLE_ADMIN: ${PORTAL_USER_ROLE_ADMIN:-DBCO-Beheer}
+            USER_ROLE_USER: ${PORTAL_USER_ROLE_USER:-DBCO-Gebruiker}
+            USER_ROLE_PLANNER: ${PORTAL_USER_ROLE_PLANNER:-DBCO-Werkverdeler}
             PRIVATE_API_BASE_URI: http://private_api/v1/
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}

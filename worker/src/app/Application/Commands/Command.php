@@ -1,5 +1,5 @@
 <?php
-namespace App\Application\Commands;
+namespace DBCO\Worker\Application\Commands;
 
 use Exception;
 use Symfony\Component\Console\Output\OutputInterface;

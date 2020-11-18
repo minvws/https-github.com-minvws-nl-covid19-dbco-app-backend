@@ -26,6 +26,13 @@ services:
         volumes:
             - ./worker/src:/src
 
+    pairing-worker:
+        build: worker
+        environment:
+            APP_ENV: development
+        volumes:
+            - ./worker/src:/src
+
     healthauthority_api:
         environment:
             APP_ENV: development

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use DBCO\PublicAPI\Application\Actions\CaseAction;
 use DBCO\PublicAPI\Application\Actions\CaseSubmitAction;
+use DBCO\PublicAPI\Application\Actions\ConfigAction;
 use DBCO\PublicAPI\Application\Actions\GeneralTaskListAction;
 use DBCO\PublicAPI\Application\Actions\PairingAction;
 use DBCO\PublicAPI\Application\Actions\QuestionnaireListAction;
@@ -16,13 +17,15 @@ return function (App $app) {
         return $response;
     });
 
+    $app->get('/v1/config', ConfigAction::class);
+
     $app->post('/v1/pairings', PairingAction::class);
 
     $app->get('/v1/questionnaires', QuestionnaireListAction::class);
     $app->get('/v1/tasks', GeneralTaskListAction::class);
 
-    $app->get('/v1/cases/{caseId}', CaseAction::class);
-    $app->put('/v1/cases/{caseId}', CaseSubmitAction::class);
+    $app->get('/v1/cases/{token}', CaseAction::class);
+    $app->put('/v1/cases/{token}', CaseSubmitAction::class);
 
     $app->get('/status', function (Request $request, Response $response) {
         return $response->withStatus(200);
