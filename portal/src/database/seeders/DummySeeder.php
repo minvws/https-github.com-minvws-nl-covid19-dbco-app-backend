@@ -38,7 +38,6 @@ class DummySeeder extends Seeder
             'name' => 'Demo Gebruiker',
             'uuid' => $dummyUserUuid,
             'external_id' => $dummyUserUuid,
-            'email' => 'dummy@gebruiker.tst',
             'roles' => 'user',
             'created_at' => $now,
             'updated_at' => $now
@@ -48,7 +47,6 @@ class DummySeeder extends Seeder
             'name' => 'Demo Planner',
             'uuid' => $dummyPlannerUuid,
             'external_id' => $dummyPlannerUuid,
-            'email' => 'dummy@gebruiker.tst',
             'roles' => 'user,planner',
             'created_at' => $now,
             'updated_at' => $now
@@ -58,7 +56,6 @@ class DummySeeder extends Seeder
             'name' => 'Demo Beheerder',
             'uuid' => $dummyAdminUuid,
             'external_id' => $dummyAdminUuid,
-            'email' => 'dummy@gebruiker.tst',
             'roles' => 'user,admin',
             'created_at' => $now,
             'updated_at' => $now
