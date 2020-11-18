@@ -28,17 +28,19 @@ const datePickerFactory = (id, inline = false) => {
         return null;
     }
 
-    return new Litepicker({
+    var minDate = new Date();
+    minDate.setDate(minDate.getDate() - 28);
+    const instance = new Litepicker({
         lang: 'nl',
         moveByOneMonth: true,
-        minDate: new Date(Date.now() - 12096e5), // current date minus 14 days
+        minDate: minDate, 
         maxDate: Date.now(),
         numberOfMonths: 2,
         numberOfColumns: 2,
         inlineMode: inline,
         element: element,
         onRender: (element) => {
-            const selectedElement = $('.is-start-date.is-end-date');
+            const selectedElement = $(element).find('.is-start-date.is-end-date');
             let dayItems = $(element).find('.day-item');
 
             /** Remove default selection classes because we will add them later on. */
@@ -74,6 +76,11 @@ const datePickerFactory = (id, inline = false) => {
             }
         }
     });
+
+    const date = new Date();
+    instance.gotoDate(date.setMonth(date.getMonth() - 1));
+
+    return instance;
 }
 
 /**

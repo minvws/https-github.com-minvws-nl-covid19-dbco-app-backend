@@ -34,3 +34,7 @@ services:
             APP_ENV: test
         volumes:
             - ./portal/src:/src
+
+    pairing-worker:
+        build: worker
+        command: bash -c "echo DISABLED"

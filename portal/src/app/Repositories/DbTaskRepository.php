@@ -38,7 +38,7 @@ class DbTaskRepository implements TaskRepository
      *
      * @return Task The task (or null if not found)
      */
-    public function getTask(string $taskUuid): Task
+    public function getTask(string $taskUuid): ?Task
     {
         $dbTask = $this->getTaskFromDb($taskUuid);
         return $dbTask != null ? $this->taskFromEloquentModel($dbTask): null;
@@ -64,7 +64,12 @@ class DbTaskRepository implements TaskRepository
         $dbTask->task_context = $task->taskContext;
         $dbTask->communication = $task->communication;
         $dbTask->category = $task->category;
-        $dbTask->date_of_last_exposure = $task->dateOfLastExposure != null? $task->dateOfLastExposure->toDateTimeImmutable() : null;
+        $dbTask->date_of_last_exposure = $task->dateOfLastExposure !== null ? $task->dateOfLastExposure->toDateTimeImmutable() : null;
+        $dbTask->export_id = $task->exportId;
+        $dbTask->created_at = $task->createdAt;
+        $dbTask->updated_at = $task->updatedAt;
+        $dbTask->exported_at = $task->exportedAt !== null ? $task->exportedAt->toDateTimeImmutable() : null;
+
         $dbTask->save();
     }
 
@@ -73,15 +78,21 @@ class DbTaskRepository implements TaskRepository
      *
      * @return Task
      */
-    public function createTask(string $caseUuid, string $label, ?string $context, string $category, string $communication, ?Date $dateOfLastExposure): Task
-    {
+    public function createTask(
+        string $caseUuid,
+        string $label,
+        ?string $context,
+        string $category,
+        string $communication,
+        ?Date $dateOfLastExposure
+    ): Task {
         $dbTask = new EloquentTask();
 
         $dbTask->case_uuid = $caseUuid;
         $dbTask->label = $label;
         $dbTask->task_context = $context;
         $dbTask->category = $category;
-        $dbTask->date_of_last_exposure = ($dateOfLastExposure != null ? $dateOfLastExposure->toDateTimeImmutable() : null);
+        $dbTask->date_of_last_exposure = ($dateOfLastExposure !== null ? $dateOfLastExposure->toDateTimeImmutable() : null);
         $dbTask->communication = $communication;
         $dbTask->source = 'portal';
         $dbTask->task_type = 'contact';
@@ -95,16 +106,22 @@ class DbTaskRepository implements TaskRepository
     {
         $task = new Task();
         $task->uuid = $dbTask->uuid;
+        $task->caseUuid = $dbTask->case_uuid;
         $task->category = $dbTask->category;
         $task->communication = $dbTask->communication;
-        $task->dateOfLastExposure = $dbTask->date_of_last_exposure != NULL ? new Date($dbTask->date_of_last_exposure) : null;
+        $task->dateOfLastExposure = $dbTask->date_of_last_exposure !== NULL ? new Date($dbTask->date_of_last_exposure) : null;
         $task->informedByIndex = $dbTask->informed_by_index;
+        $task->exportedAt = $dbTask->exported_at !== null ? new Date($dbTask->exported_at) : null;
         $task->label = $dbTask->label;
         $task->nature = $dbTask->nature;
         $task->source = $dbTask->source;
         $task->taskContext = $dbTask->task_context;
         $task->taskType = $dbTask->task_type;
         $task->questionnaireUuid = $dbTask->questionnaire_uuid;
+        $task->exportId = $dbTask->export_id;
+        $task->createdAt = $dbTask->created_at !== null ? new Date($dbTask->created_at) : null;
+        $task->updatedAt = $dbTask->updated_at !== null ? new Date($dbTask->updated_at) : null;
+        $task->exportedAt = $dbTask->exported_at !== null ? new Date($dbTask->exported_at) : null;
 
         return $task;
     }

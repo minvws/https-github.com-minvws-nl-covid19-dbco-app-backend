@@ -1,24 +1,19 @@
 <?php
 namespace DBCO\HealthAuthorityAPI\Application\Models;
 
+use Ramsey\Uuid\Nonstandard\Uuid;
+
 /**
  * Answer option.
  */
 class AnswerOption
 {
-    /**
-     * @var string
-     */
+    public string $uuid;
+
     public string $label;
 
-    /**
-     * @var string
-     */
     public string $value;
 
-    /**
-     * @var string
-     */
     public ?string $trigger;
 
     /**
@@ -30,6 +25,7 @@ class AnswerOption
      */
     public function __construct(string $label, string $value, ?string $trigger = null)
     {
+        $this->uuid = Uuid::uuid4();
         $this->label = $label;
         $this->value = $value;
         $this->trigger = $trigger;

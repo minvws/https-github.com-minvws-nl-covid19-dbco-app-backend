@@ -1,4 +1,4 @@
-GRANT CONNECT TO healthauthority_api;
+GRANT CONNECT, RESOURCE, DBA TO healthauthority_api;
 GRANT CREATE SESSION TO healthauthority_api;
 
 GRANT CONNECT, RESOURCE, DBA TO portal;

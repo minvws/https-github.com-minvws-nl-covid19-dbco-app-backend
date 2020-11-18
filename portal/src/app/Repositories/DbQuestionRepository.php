@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Models\AnswerOption;
+use App\Models\Eloquent\EloquentAnswerOption;
 use App\Models\Eloquent\EloquentQuestion;
 use App\Models\Question;
 use Illuminate\Support\Collection;
@@ -14,13 +16,15 @@ class DbQuestionRepository implements QuestionRepository
 
         $questions = [];
         foreach ($dbQuestions as $dbQuestion) {
-            $questions[] = $this->questionFromEloquentModel($dbQuestion);
+
+            $answerOptions = EloquentAnswerOption::where('question_uuid', $dbQuestion->uuid)->get();
+            $questions[] = $this->questionFromEloquentModel($dbQuestion, $answerOptions);
         }
 
         return collect($questions);
     }
 
-    private function questionFromEloquentModel(EloquentQuestion $dbQuestion): Question
+    private function questionFromEloquentModel(EloquentQuestion $dbQuestion, Collection $dbAnswerOptions): Question
     {
         $question = new Question();
         $question->uuid = $dbQuestion->uuid;
@@ -32,6 +36,19 @@ class DbQuestionRepository implements QuestionRepository
         $question->relevantForCategories =
             $dbQuestion->relevant_for_categories != null ?
                 explode(',', $dbQuestion->relevant_for_categories) : [];
+
+        if ($question->questionType == 'multiplechoice') {
+            $answerOptions = [];
+            foreach($dbAnswerOptions as $dbAnswerOption) {
+                $answerOption = new AnswerOption();
+                $answerOption->uuid = $dbAnswerOption->uuid;
+                $answerOption->label = $dbAnswerOption->label;
+                $answerOption->value = $dbAnswerOption->value;
+                $answerOption->trigger = $dbAnswerOption->trigger;
+                $answerOptions[] = $answerOption;
+            }
+            $question->answerOptions = $answerOptions;
+        }
 
         return $question;
     }

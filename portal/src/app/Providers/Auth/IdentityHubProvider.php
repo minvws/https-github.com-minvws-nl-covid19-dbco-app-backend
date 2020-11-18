@@ -2,18 +2,27 @@
 
 namespace App\Providers\Auth;
 
+use Illuminate\Http\Request;
 use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\ProviderInterface;
 use Laravel\Socialite\Two\User;
 
 class IdentityHubProvider extends AbstractProvider implements ProviderInterface
 {
+    private $config = [];
+
+    public function __construct(Request $request, $clientId, $clientSecret, $redirectUrl, $guzzle = [])
+    {
+        parent::__construct($request, $clientId, $clientSecret, $redirectUrl, $guzzle);
+        $this->config = config('services.identityhub');
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function getAuthUrl($state)
     {
-        return $this->buildAuthUrlFromBase('https://login.ggdghor.nl/ggdghornl/oauth2/v1/auth', $state);
+        return $this->buildAuthUrlFromBase($this->config['authUrl'], $state);
     }
 
     /**
@@ -21,7 +30,7 @@ class IdentityHubProvider extends AbstractProvider implements ProviderInterface
      */
     protected function getTokenUrl()
     {
-        return 'https://login.ggdghor.nl/ggdghornl/oauth2/v1/token';
+        return $this->config['tokenUrl'];
     }
 
     /**
@@ -52,13 +61,17 @@ class IdentityHubProvider extends AbstractProvider implements ProviderInterface
      */
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->get('https://login.ggdghor.nl/ggdghornl/oauth2/v1/userinfo', [
+        $response = $this->getHttpClient()->post($this->config['userUrl'], [
             'headers' => [
-                'Authorization' => 'Bearer ' . $token,
+                'Authorization' => 'Basic ' . base64_encode($this->clientId . ':' . $this->clientSecret)
             ],
+            'form_params' => [
+                'token' => $token
+            ]
         ]);
 
         $user = json_decode($response->getBody(), true);
+
         return $user;
     }
 
@@ -67,11 +80,31 @@ class IdentityHubProvider extends AbstractProvider implements ProviderInterface
      */
     protected function mapUserToObject(array $user)
     {
-        return (new User)->setRaw($user)->map([
-            'id'       => $user['unique_name'],
-            'nickname' => $user['nickname'],
-            'name'     => $user['name'],
-        ]);
+        $userObj = new User();
+        $userObj->id = $user['profile']['identityId'];
+        $userObj->name = $user['profile']['displayName'];
+        $userObj->email = $user['profile']['emailAddress'];
+        $claim = $this->config['organisationClaim'];
+        $organisations = [];
+        if (isset($user['profile']['properties'][$claim])) {
+            foreach ($user['profile']['properties'][$claim] as $regio) {
+                $organisations[] = $regio;
+            }
+        }
+        $userObj->organisations = $organisations;
+        $roles = config('authorization.roles');
+        $userRoles = [];
+        if (isset($user['roles'])) {
+            foreach ($user['roles'] as $role) {
+                $matchedRole = array_search($role['name'], $roles);
+                if ($matchedRole) {
+                    $userRoles[] = $role;
+                }
+            }
+        }
+        $userObj->roles = $userRoles;
+
+        return $userObj;
     }
 
 }

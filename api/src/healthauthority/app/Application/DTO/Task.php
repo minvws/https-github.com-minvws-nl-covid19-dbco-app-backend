@@ -38,9 +38,11 @@ class Task implements JsonSerializable
             'taskType' => $this->task->taskType,
             'source' => $this->task->source,
             'label' => $this->task->label,
-            'context' => $this->task->context,
+            'taskContext' => $this->task->taskContext,
             'category' => $this->task->category,
-            'communication' => $this->task->communication
+            'communication' => $this->task->communication,
+            'dateOfLastExposure' =>
+                $this->task->dateOfLastExposure !== null ? $this->task->dateOfLastExposure->format('Y-m-d') : null
         ];
     }
 }

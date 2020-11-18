@@ -14,21 +14,31 @@ class Pairing
     public PairingCase $case;
 
     /**
-     * Signing key.
+     * Sealed client public key.
      *
      * @var string|null
      */
-    public string $signingKey;
+    public ?string $sealedClientPublicKey;
+
+
+    /**
+     * Sealed health authority public key.
+     *
+     * @var string|null
+     */
+    public ?string $sealedHealthAuthorityPublicKey;
 
     /**
      * Pairing constructor.
      *
      * @param PairingCase $case
-     * @param string      $signingKey
+     * @param string|null $sealedClientPublicKey
+     * @param string|null $sealedHealthAuthorityPublicKey
      */
-    public function __construct(PairingCase $case, string $signingKey)
+    public function __construct(PairingCase $case, ?string $sealedClientPublicKey, ?string $sealedHealthAuthorityPublicKey = null)
     {
         $this->case = $case;
-        $this->signingKey = $signingKey;
+        $this->sealedClientPublicKey = $sealedClientPublicKey;
+        $this->sealedHealthAuthorityPublicKey = $sealedHealthAuthorityPublicKey;
     }
 }
