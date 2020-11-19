@@ -35,8 +35,8 @@ jobs:
           context: ./api
           file: ./api/Dockerfile-private
           tags: |
-            ghcr.io/minvws/nl-covid19-dbco-app-backend-private/private-api:${{ steps.prep.outputs.VERSION }}
-            ghcr.io/minvws/nl-covid19-dbco-app-backend-private/private-api:latest
+            ghcr.io/${{ github.repository }}/private-api:${{ steps.prep.outputs.VERSION }}
+            ghcr.io/${{ github.repository }}/private-api:latest
           labels: |
             org.opencontainers.image.title=${{ github.event.repository.name }}
             org.opencontainers.image.description=${{ github.event.repository.description }}
@@ -52,8 +52,8 @@ jobs:
           context: ./api
           file: ./api/Dockerfile-public
           tags: |
-            ghcr.io/minvws/nl-covid19-dbco-app-backend-private/public-api:${{ steps.prep.outputs.VERSION }}
-            ghcr.io/minvws/nl-covid19-dbco-app-backend-private/public-api:latest
+            ghcr.io/${{ github.repository }}/public-api:${{ steps.prep.outputs.VERSION }}
+            ghcr.io/${{ github.repository }}/public-api:latest
           labels: |
             org.opencontainers.image.title=${{ github.event.repository.name }}
             org.opencontainers.image.description=${{ github.event.repository.description }}
@@ -69,8 +69,8 @@ jobs:
           context: ./api
           file: ./api/Dockerfile-healthauthority
           tags: |
-            ghcr.io/minvws/nl-covid19-dbco-app-backend-private/healthauthority-api:${{ steps.prep.outputs.VERSION }}
-            ghcr.io/minvws/nl-covid19-dbco-app-backend-private/healthauthority-api:latest
+            ghcr.io/${{ github.repository }}/healthauthority-api:${{ steps.prep.outputs.VERSION }}
+            ghcr.io/${{ github.repository }}/healthauthority-api:latest
           labels: |
             org.opencontainers.image.title=${{ github.event.repository.name }}
             org.opencontainers.image.description=${{ github.event.repository.description }}
@@ -86,8 +86,8 @@ jobs:
           context: ./portal
           file: ./portal/Dockerfile
           tags: |
-            ghcr.io/minvws/nl-covid19-dbco-app-backend-private/portal:${{ steps.prep.outputs.VERSION }}
-            ghcr.io/minvws/nl-covid19-dbco-app-backend-private/portal:latest
+            ghcr.io/${{ github.repository }}/portal:${{ steps.prep.outputs.VERSION }}
+            ghcr.io/${{ github.repository }}/portal:latest
           labels: |
             org.opencontainers.image.title=${{ github.event.repository.name }}
             org.opencontainers.image.description=${{ github.event.repository.description }}
@@ -103,8 +103,8 @@ jobs:
           context: ./worker
           file: ./worker/Dockerfile
           tags: |
-            ghcr.io/minvws/nl-covid19-dbco-app-backend-private/worker:${{ steps.prep.outputs.VERSION }}
-            ghcr.io/minvws/nl-covid19-dbco-app-backend-private/worker:latest
+            ghcr.io/${{ github.repository }}/worker:${{ steps.prep.outputs.VERSION }}
+            ghcr.io/${{ github.repository }}/worker:latest
           labels: |
             org.opencontainers.image.title=${{ github.event.repository.name }}
             org.opencontainers.image.description=${{ github.event.repository.description }}
