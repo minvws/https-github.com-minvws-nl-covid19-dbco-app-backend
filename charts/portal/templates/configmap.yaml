@@ -13,9 +13,7 @@ data:
   DB_CONNECTION: {{  .Values.db.type }}
   DB_HOST: {{ .Values.db.host }}
   DB_DATABASE: {{ .Values.db.database }}
-  DB_USERNAME: {{ .Values.db.username }}
   TIH_REDIRECT_URL: {{ .Values.tih.redirect_url }}
-  TIH_CLIENT_ID: {{ .Values.tih.client_id }}
   PRIVATE_API_BASE_URI: {{ .Values.private.jwt.base_uri }}
   USER_ROLE_ADMIN: {{ .Values.user.role.admin }}
   USER_ROLE_USER: {{ .Values.user.role.user }}
