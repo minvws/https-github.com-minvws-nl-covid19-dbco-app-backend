@@ -97,7 +97,7 @@ class CaseService
             return null;
         }
 
-        $expiresAt = Date::now()->addDays(1); // TODO: move to config and/or base on case data
+        $expiresAt = Date::now()->addDays(1)->toDateTimeImmutable(); // TODO: move to config and/or base on case data
         $pairing = $this->pairingRepository->getPairing($case->uuid, $expiresAt);
 
         $this->caseRepository->setExpiry($case, $expiresAt, $pairing->expiresAt);

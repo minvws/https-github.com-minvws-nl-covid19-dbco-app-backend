@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Pairing;
+use DateTimeImmutable;
 use DateTimeInterface;
 use GuzzleHttp\Client as GuzzleClient;
 use Firebase\JWT\JWT;
@@ -84,7 +85,7 @@ class ApiPairingRepository implements PairingRepository
 
         $pairing = new Pairing();
         $pairing->code = $data->pairingCode;
-        $pairing->expiresAt = new Date($data->pairingCodeExpiresAt);
+        $pairing->expiresAt = new DateTimeImmutable($data->pairingCodeExpiresAt);
 
         return $pairing;
     }
