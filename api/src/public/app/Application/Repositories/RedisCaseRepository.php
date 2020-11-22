@@ -1,18 +1,21 @@
 <?php
 namespace DBCO\PublicAPI\Application\Repositories;
 
-use DBCO\PublicAPI\Application\Models\SealedCase;
+use DBCO\Shared\Application\DTO\SealedData as SealedDataDTO;
+use DBCO\Shared\Application\Models\SealedData;
 use Predis\Client as PredisClient;
 use RuntimeException;
+use Throwable;
 
 /**
- * Used for retrieving cases from Redis.
+ * Used for retrieving and submitting cases from/to Redis.
  *
  * @package DBCO\PublicAPI\Application\Repositories
  */
 class RedisCaseRepository implements CaseRepository
 {
-    const CASE_KEY_TEMPLATE = 'case:%s'; // case:<token>
+    const CASE_KEY_TEMPLATE     = 'case:%s'; // case:<token>
+    const CASE_RESULT_LIST_KEY = 'caseresults';
 
     /**
      * Redis client.
@@ -46,27 +49,26 @@ class RedisCaseRepository implements CaseRepository
     /**
      * @inheritDoc
      */
-    public function getCase(string $token): SealedCase
+    public function caseExists(string $token): bool
     {
         $key = sprintf(self::CASE_KEY_TEMPLATE, $token);
-        $json = $this->client->get($key);
-        if ($json === null) {
-            throw new RuntimeException('Case not available in Redis!');
-        }
-
-        $data = @json_decode($json);
-        $this->validateData($data);
-
-        return new SealedCase(
-            base64_decode($data->sealedCase->ciphertext),
-            base64_decode($data->sealedCase->nonce)
-        );
+        return $this->client->exists($key) === 1;
     }
 
     /**
      * @inheritDoc
      */
-    public function submitCase(string $token, SealedCase $sealedCase): void
+    public function getCase(string $token): ?SealedData
     {
+        $key = sprintf(self::CASE_KEY_TEMPLATE, $token);
+        $json = $this->client->get($key);
+        if ($json === null) {
+            return null;
+        }
+
+        $data = @json_decode($json);
+        $this->validateData($data);
+
+        return SealedDataDTO::jsonUnserialize($data->sealedCase);
     }
 }
