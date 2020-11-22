@@ -55,6 +55,7 @@ class CaseSubmitActionTest extends TestCase
         $container->set(CaseRepository::class, $stubCaseRepository);
 
         $data = [
+            'dateOfSymptomOnset' => date('Y-m-d'),
             'tasks' => []
         ];
         $nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);

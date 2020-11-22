@@ -3,18 +3,19 @@ declare(strict_types=1);
 
 namespace  DBCO\HealthAuthorityAPI\Application\DTO;
 
-use DateTime;
 use DateTimeZone;
 use DBCO\HealthAuthorityAPI\Application\Models\CovidCase as CovidCaseModel;
+use DBCO\HealthAuthorityAPI\Application\Models\Task as TaskModel;
+use DBCO\Shared\Application\Codable\DecodableDecorator;
+use DBCO\Shared\Application\Codable\DecodingContainer;
 use JsonSerializable;
-use stdClass;
 
 /**
  * Case export DTO.
  *
  * @package DBCO\HealthAuthorityAPI\Application\DTO
  */
-class CovidCase implements JsonSerializable
+class CovidCase implements JsonSerializable, DecodableDecorator
 {
     /**
      * @var CovidCaseModel $case
@@ -49,33 +50,22 @@ class CovidCase implements JsonSerializable
         ];
     }
 
-
     /**
-     * Unserialize from JSON data structure.
-     *
-     * @param stdClass $data
-     *
-     * @return CovidCaseModel
+     * @inheritDoc
      */
-    public static function jsonUnserialize(stdClass $data): CovidCaseModel
+    public static function decode(string $class, DecodingContainer $container): object
     {
         $case = new CovidCaseModel();
 
-        $case->uuid = $data->uuid ?? null;
-
         $tz = new DateTimeZone('UTC');
-
-        $windowExpiresAt = $data->windowExpiresAt ?? null;
         $case->windowExpiresAt =
-            $windowExpiresAt !== null ?
-                DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $windowExpiresAt, $tz) : null;
+            $container->windowExpiresAt->decodeDateTimeIfPresent('Y-m-d\TH:i:s\Z', $tz);
 
-        $dateOfSymptomOnset = $data->dateOfSymptomOnset ?? null;
         $case->dateOfSymptomOnset =
-            $dateOfSymptomOnset !== null ? DateTime::createFromFormat('Y-m-d', $dateOfSymptomOnset) : null;
+            $container->dateOfSymptomOnset->decodeDateTimeIfPresent('Y-m-d');
 
-        $tasks = $data->tasks ?? [];
-        $case->tasks = array_map(fn ($t) => Task::jsonUnserialize($t), $tasks);
+        $case->tasks =
+            $container->tasks->decodeArray(fn (DecodingContainer $c) => $c->decodeObject(TaskModel::class));
 
         return $case;
     }

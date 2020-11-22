@@ -3,15 +3,19 @@ declare(strict_types=1);
 
 namespace  DBCO\HealthAuthorityAPI\Application\DTO;
 
+use DBCO\HealthAuthorityAPI\Application\Models\Answer as AnswerModel;
 use DBCO\HealthAuthorityAPI\Application\Models\QuestionnaireResult as QuestionnaireResultModel;
-use stdClass;
+use DBCO\Shared\Application\Codable\DecodableDecorator;
+use DBCO\Shared\Application\Codable\DecodePathException;
+use DBCO\Shared\Application\Codable\DecodingContainer;
+use DBCO\Shared\Application\Codable\DecodingObject;
 
 /**
  * QuestionnaireResult DTO.
  *
  * @package DBCO\HealthAuthorityAPI\Application\DTO
  */
-class QuestionnaireResult
+class QuestionnaireResult implements DecodableDecorator
 {
     /**
      * @var QuestionnaireResultModel $questionnaireResult
@@ -29,19 +33,30 @@ class QuestionnaireResult
     }
 
     /**
-     * Unserialize JSON data structure.
-     *
-     * @param stdClass $data
-     *
-     * @return QuestionnaireResultModel
+     * @inheritDoc
      */
-    public static function jsonUnserialize(stdClass $data): QuestionnaireResultModel
+    public static function decode(string $class, DecodingContainer $container): object
     {
         $questionnaireResult = new QuestionnaireResultModel();
-        $questionnaireResult->questionnaireUuid = $data->questionnaireUuid;
+        $questionnaireResult->questionnaireUuid = $container->questionnaireUuid->decodeString();
 
-        $answers = $data->answers ?? [];
-        $questionnaireResult->answers = array_map(fn ($a) => Answer::jsonUnserialize($a), $answers);
+        $questionnaires = $container->getContext()->getValue('questionnaires');
+        $questionnaire = $questionnaires[$questionnaireResult->questionnaireUuid] ?? null;
+
+        if ($questionnaire === null) {
+            $path = array_merge($container->getPath(), ['questionnaireUuid']);
+            throw new DecodePathException(
+                $path,
+                "Questionnaire UUID is invalid for path '" . DecodePathException::convertPathToString($path) . "'"
+            );
+        }
+
+        $container->getContext()->setValue('questionnaire', $questionnaire);
+
+        $questionnaireResult->answers =
+            $container->answers->decodeArray(
+                fn (DecodingContainer $c) => $c->decodeObject(AnswerModel::class)
+            );
 
         return $questionnaireResult;
     }

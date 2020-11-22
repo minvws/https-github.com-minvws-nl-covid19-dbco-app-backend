@@ -1,19 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace  DBCO\HealthAuthorityAPI\Application\DTO;
+namespace DBCO\HealthAuthorityAPI\Application\DTO;
 
-use DateTime;
-use  DBCO\HealthAuthorityAPI\Application\Models\Task as TaskModel;
+use DBCO\HealthAuthorityAPI\Application\Models\QuestionnaireResult as QuestionnaireResultModel;
+use DBCO\HealthAuthorityAPI\Application\Models\Task as TaskModel;
+use DBCO\Shared\Application\Codable\DecodableDecorator;
+use DBCO\Shared\Application\Codable\DecodingContainer;
 use JsonSerializable;
-use stdClass;
 
 /**
  * Task DTO.
  *
- * @package  DBCO\HealthAuthorityAPI\Application\Actions
+ * @package DBCO\HealthAuthorityAPI\Application\DTO
  */
-class Task implements JsonSerializable
+class Task implements JsonSerializable, DecodableDecorator
 {
     /**
      * @var TaskModel $task
@@ -54,34 +55,21 @@ class Task implements JsonSerializable
     }
 
     /**
-     * Unserialize from JSON data structure.
-     *
-     * @param stdClass $data
-     *
-     * @return Task
+     * @inheritDoc
      */
-    public static function jsonUnserialize(stdClass $data): TaskModel
+    public static function decode(string $class, DecodingContainer $container): object
     {
         $task = new TaskModel();
-        $task->uuid = $data->uuid;
-        $task->taskType = $data->taskType;
-        $task->source = $data->source;
-        $task->label = $data->label;
-        $task->taskContext = $data->taskContext ?? null;
-        $task->category = $data->category;
-        $task->communication = $data->communication;
-
-        $dateOfLastExposure = $data->dateOfLastExposure ?? null;
-        $task->dateOfLastExposure =
-            $dateOfLastExposure != null ? DateTime::createFromFormat('Y-m-d', $dateOfLastExposure) : null;
-
-        $questionnaireResult = $data->questionnaireResult ?? null;
-        if (!empty($questionnaireResult)) {
-            $task->questionnaireResult = QuestionnaireResult::jsonUnserialize($questionnaireResult);
-        } else {
-            $task->questionnaireResult = null;
-        }
-
+        $task->uuid = $container->uuid->decodeString('uuid');
+        $task->taskType = $container->taskType->decodeString('taskType');
+        $task->source = $container->source->decodeString('source');
+        $task->label = $container->label->decodeString('label');
+        $task->taskContext = $container->taskContext->decodeStringIfPresent('taskContext');
+        $task->category = $container->category->decodeString('category');
+        $task->communication = $container->communication->decodeString('communication');
+        $task->dateOfLastExposure = $container->dateOfLastExposure->decodeDateTimeIfPresent('Y-m-d');
+        $task->questionnaireResult =
+            $container->questionnaireResult->decodeObject(QuestionnaireResultModel::class);
         return $task;
     }
 }

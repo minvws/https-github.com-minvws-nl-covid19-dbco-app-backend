@@ -7,22 +7,22 @@ namespace DBCO\HealthAuthorityAPI\Application\Models;
 class ContactDetails extends AnswerValue
 {
     /**
-     * @var string
+     * @var string|null
      */
-    public string $firstName;
+    public ?string $firstName;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $lastName;
+    public ?string $lastName;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $phoneNumber;
+    public ?string $phoneNumber;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $email;
+    public ?string $email;
 }

@@ -7,27 +7,27 @@ namespace DBCO\HealthAuthorityAPI\Application\Models;
 class ContactDetailsFull extends ContactDetails
 {
     /**
-     * @var string
+     * @var string|null
      */
-    public string $address1;
+    public ?string $address1;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $houseNumber;
+    public ?string $houseNumber;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $address2;
+    public ?string $address2;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $zipcode;
+    public ?string $zipcode;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $city;
+    public ?string $city;
 }
