@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use DBCO\Worker\Application\Commands\ProcessPairingQueueCommand;
 use DBCO\Worker\Application\Commands\RefreshGeneralTasksCommand;
 use DBCO\Worker\Application\Commands\RefreshQuestionnairesCommand;
 use Symfony\Component\Console\Application;
@@ -12,7 +11,6 @@ return function (Application $app, ContainerInterface $container) {
     $commands = [
         RefreshQuestionnairesCommand::class,
         RefreshGeneralTasksCommand::class,
-        ProcessPairingQueueCommand::class
     ];
 
     $commandMap = [];

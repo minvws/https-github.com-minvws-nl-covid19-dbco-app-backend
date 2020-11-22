@@ -9,13 +9,6 @@ return [
     'logger.name' => 'console',
     'logger.path' => 'php://stdout',
     'logger.level' => $debug ? Logger::DEBUG : Logger::ERROR,
-    'db' => [
-        'driver' => 'pgsql',
-        'host' => DI\env('DB_HOST'),
-        'username' => DI\env('DB_USERNAME'),
-        'database' => DI\env('DB_DATABASE'),
-        'password' => DI\env('DB_PASSWORD'),
-    ],
     'redis' => [
         'host' => DI\env('REDIS_HOST'),
         'port' => DI\env('REDIS_PORT')

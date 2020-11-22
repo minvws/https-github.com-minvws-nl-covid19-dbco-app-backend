@@ -11,7 +11,7 @@ use JsonSerializable;
 /**
  * Question DTO.
  *
- * @package DBCO\HealthAuthorityAPI\Application\Actions
+ * @package DBCO\HealthAuthorityAPI\Application\DTO
  */
 class Question implements JsonSerializable
 {
