@@ -130,6 +130,16 @@ $filledCase = tryBlock(
     function () use ($questionnaire, $case) {
         $filledCase = json_decode(json_encode($case)); // deep clone
 
+        $extraTask = new stdClass();
+        $extraTask->uuid = Uuid::uuid4()->toString();
+        $extraTask->taskType = 'contact';
+        $extraTask->source = 'app';
+        $extraTask->label = 'Random ' . rand(1, 10000);
+        $extraTask->taskContext = 'Feestje';
+        $extraTask->category = '3';
+        $extraTask->communication = 'staff';
+        $filledCase->tasks[] = $extraTask;
+
         foreach ($filledCase->tasks as $task) {
             $task->questionnaireResult = new stdClass();
             $task->questionnaireResult->questionnaireUuid = $questionnaire->uuid;
@@ -138,7 +148,7 @@ $filledCase = tryBlock(
             foreach ($questionnaire->questions as $question) {
                 $answer = new stdClass();
                 $answer->uuid = Uuid::uuid4()->toString();
-                $answer->lastModified = gmdate(DATE_ISO8601);
+                $answer->lastModified = gmdate(DATE_ATOM);
                 $answer->questionUuid = $question->uuid;
                 $answer->value = new stdClass();
 
