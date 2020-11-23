@@ -125,8 +125,6 @@ class CaseService
     private function exportCaseForClient(CovidCase $case, Client $client)
     {
         $json = json_encode(new CovidCaseDTO($case));
-        $this->logger->error('ZZZ1: ' . $json);
-        $this->logger->error('ZZZ2: ' . print_r($case, true));
         $sealedCase = $this->encryptionHelper->sealMessageForClient($json, $client->transmitKey);
         $this->caseExportRepository->exportCase($client->token, $sealedCase, $case->windowExpiresAt);
     }
