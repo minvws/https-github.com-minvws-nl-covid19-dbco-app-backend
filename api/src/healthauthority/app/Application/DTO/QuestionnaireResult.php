@@ -38,7 +38,7 @@ class QuestionnaireResult implements DecodableDecorator
     public static function decode(string $class, DecodingContainer $container): object
     {
         $questionnaireResult = new QuestionnaireResultModel();
-        $questionnaireResult->questionnaireUuid = $container->questionnaireUuid->decodeString();
+        $questionnaireResult->questionnaireUuid = strtolower($container->questionnaireUuid->decodeString());
 
         $questionnaires = $container->getContext()->getValue('questionnaires');
         $questionnaire = $questionnaires[$questionnaireResult->questionnaireUuid] ?? null;
