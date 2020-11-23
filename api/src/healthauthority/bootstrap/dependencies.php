@@ -33,7 +33,11 @@ return function (ContainerBuilder $containerBuilder) {
             PDO::class => function (ContainerInterface $c) {
                 $settings = $c->get('db');
 
-                if ($settings['type'] === 'postgres') {
+                if ($settings['type'] === 'mysql') {
+                    $host = $settings['host'];
+                    $db = $settings['database'];
+                    $dsn = "mysql:host=$host;dbname=$db";
+                } else if ($settings['type'] === 'postgres') {
                     $host = $settings['host'];
                     $db = $settings['database'];
                     $dsn = "pgsql:host=$host;dbname=$db";

@@ -30,7 +30,7 @@ class DbQuestionRepository implements QuestionRepository
         $question->uuid = $dbQuestion->uuid;
         $question->label = $dbQuestion->label;
         $question->header = $dbQuestion->header;
-        $question->group = $dbQuestion->group;
+        $question->group = $dbQuestion->group_name;
         $question->description = $dbQuestion->description;
         $question->questionType = $dbQuestion->question_type;
         $question->relevantForCategories =
@@ -44,7 +44,7 @@ class DbQuestionRepository implements QuestionRepository
                 $answerOption->uuid = $dbAnswerOption->uuid;
                 $answerOption->label = $dbAnswerOption->label;
                 $answerOption->value = $dbAnswerOption->value;
-                $answerOption->trigger = $dbAnswerOption->trigger;
+                $answerOption->trigger = $dbAnswerOption->trigger_name;
                 $answerOptions[] = $answerOption;
             }
             $question->answerOptions = $answerOptions;
