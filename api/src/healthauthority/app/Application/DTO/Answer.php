@@ -44,9 +44,9 @@ class Answer implements DecodableDecorator
     public static function decode(string $class, DecodingContainer $container): object
     {
         $answer = new AnswerModel();
-        $answer->uuid = $container->uuid->decodeString();
+        $answer->uuid = strtolower($container->uuid->decodeString());
         $answer->lastModified = $container->lastModified->decodeDateTime(DateTime::ATOM);
-        $answer->questionUuid = $container->questionUuid->decodeString();
+        $answer->questionUuid = strtolower($container->questionUuid->decodeString());
 
         /** @var QuestionnaireModel $questionnaire */
         $questionnaire = $container->getContext()->getValue('questionnaire');
