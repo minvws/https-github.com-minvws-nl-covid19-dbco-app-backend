@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 use DBCO\Worker\Application\Repositories\ApiHealthAuthorityPairingRepository;
-use DBCO\Worker\Application\Repositories\ClientPairingRepository;
+use DBCO\Worker\Application\Repositories\Source;
 use DBCO\Worker\Application\Repositories\GeneralTaskCacheRepository;
 use DBCO\Worker\Application\Repositories\GeneralTaskGetRepository;
 use DBCO\Worker\Application\Repositories\HealthAuthorityPairingRepository;
@@ -11,7 +11,7 @@ use DBCO\Worker\Application\Repositories\QuestionnaireGetRepository;
 use DBCO\Worker\Application\Repositories\HAGetRepository;
 use DBCO\Worker\Application\Repositories\RedisCacheRepository;
 
-use DBCO\Worker\Application\Repositories\RedisClientPairingRepository;
+use DBCO\Worker\Application\Repositories\RedisSource;
 use DI\ContainerBuilder;
 use function DI\autowire;
 use function DI\get;
@@ -29,7 +29,7 @@ return function (ContainerBuilder $containerBuilder) {
         GeneralTaskGetRepository::class => get(HAGetRepository::class),
         GeneralTaskCacheRepository::class => get(RedisCacheRepository::class),
 
-        ClientPairingRepository::class => autowire(RedisClientPairingRepository::class),
+        Source::class => autowire(RedisSource::class),
         HealthAuthorityPairingRepository::class =>
             autowire(ApiHealthAuthorityPairingRepository::class)
                 ->constructorParameter('client', get('healthAuthorityGuzzleClient'))

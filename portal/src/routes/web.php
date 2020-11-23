@@ -43,6 +43,8 @@ Route::middleware('auth')->group(function() {
 
     Route::get('/profile', [UserController::class, 'profile']);
     Route::post('/logout', [LoginController::class, 'logout']);
+
+    Route::get('/task/{uuid}/questionnaire', [TaskController::class, 'viewTaskQuestionnaire']);
 });
 
 Route::get('auth/identityhub', [LoginController::class, 'redirectToProvider']);

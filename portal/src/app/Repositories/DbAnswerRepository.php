@@ -27,6 +27,21 @@ class DbAnswerRepository implements AnswerRepository
         return collect($answers);
     }
 
+    public function getAllAnswersByTask(string $taskUuid): Collection
+    {
+        $dbAnswers = EloquentAnswer::where('task_uuid', $taskUuid)
+            ->select('answer.*', 'question.question_type')
+            ->join('question', 'answer.question_uuid', '=', 'question.uuid')->get();
+
+        $answers = array();
+
+        foreach($dbAnswers as $dbAnswer) {
+            $answers[] = $this->answerFromEloquentModel($dbAnswer);
+        };
+
+        return collect($answers);
+    }
+
     public function answerFromEloquentModel(EloquentAnswer $dbAnswer): Answer
     {
         $answer = null;
@@ -47,7 +62,7 @@ class DbAnswerRepository implements AnswerRepository
                 break;
             default:
                 $answer = new SimpleAnswer();
-                $answer->value = $dbAnswer->spv_value;
+                $answer->value = $dbAnswer->spv_value ?? '';
         }
 
         $answer->uuid = $dbAnswer->uuid;

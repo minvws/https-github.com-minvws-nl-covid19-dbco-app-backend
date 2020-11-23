@@ -119,8 +119,13 @@ class PairingActionTest extends TestCase
         // we already store the pairing response in Redis to verify the list is read
         $redis = $this->getAppInstance()->getContainer()->get(PredisClient::class);
         $dummySealedHealthAuthorityPublicKey = random_bytes(32);
-        $pairingResponse = ['sealedHealthAuthorityPublicKey' => base64_encode($dummySealedHealthAuthorityPublicKey)];
-        $redis->rpush('pairing-response:' . self::CASE_ID, json_encode($pairingResponse));
+        $pairingResponse = [
+            'status' => 'SUCCESS',
+            'data' => json_encode([
+                'sealedHealthAuthorityPublicKey' => base64_encode($dummySealedHealthAuthorityPublicKey)
+            ])
+        ];
+        $redis->rpush('client-response:' . self::CASE_ID, json_encode($pairingResponse));
 
         $request = $this->createRequest('POST', '/v1/pairings');
         $request = $request->withParsedBody(['pairingCode' => self::PAIRING_CODE, 'sealedClientPublicKey' => base64_encode($sealedClientPublicKey)]);

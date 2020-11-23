@@ -37,7 +37,7 @@ Steps to run a local development environment:
   - Set a `POSTGRES_PASSWORD` in the `.env` file. 
 - Run `bin/setup-dev` to set up the environment (initialize database, install dependencies).
 
-Tip: If you are using oracle instead of postgres, the setup might take a while and the 'Waiting for Oracle to launch on 1521...' seemingly takes forever. Run `./bin/docker-compose-dev logs oracle --follow` to see if Oracle is still busy installing.
+Tip: If you are using oracle instead of postgres, the setup might take a while and the 'Waiting for Oracle to launch on 1521...' seemingly takes forever. Run `./bin/docker-compose-dev logs --follow oracle` to see if Oracle is still busy installing.
 
 If the command has completed successfully, you will be running 4 docker instances:
 * The private api will run on port 8081 on localhost

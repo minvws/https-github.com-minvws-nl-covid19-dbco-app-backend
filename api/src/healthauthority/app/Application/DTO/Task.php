@@ -1,22 +1,30 @@
 <?php
 declare(strict_types=1);
 
-namespace  DBCO\HealthAuthorityAPI\Application\DTO;
+namespace DBCO\HealthAuthorityAPI\Application\DTO;
 
-use  DBCO\HealthAuthorityAPI\Application\Models\Task as TaskModel;
+use DBCO\HealthAuthorityAPI\Application\Models\QuestionnaireResult as QuestionnaireResultModel;
+use DBCO\HealthAuthorityAPI\Application\Models\Task as TaskModel;
+use DBCO\Shared\Application\Codable\DecodableDecorator;
+use DBCO\Shared\Application\Codable\DecodingContainer;
 use JsonSerializable;
 
 /**
  * Task DTO.
  *
- * @package  DBCO\HealthAuthorityAPI\Application\Actions
+ * @package DBCO\HealthAuthorityAPI\Application\DTO
  */
-class Task implements JsonSerializable
+class Task implements JsonSerializable, DecodableDecorator
 {
     /**
      * @var TaskModel $task
      */
     private TaskModel $task;
+
+    /**
+     * @var QuestionnaireResult|null
+     */
+    private ?QuestionnaireResult $questionnaireResult;
 
     /**
      * Constructor.
@@ -44,5 +52,24 @@ class Task implements JsonSerializable
             'dateOfLastExposure' =>
                 $this->task->dateOfLastExposure !== null ? $this->task->dateOfLastExposure->format('Y-m-d') : null
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function decode(string $class, DecodingContainer $container): object
+    {
+        $task = new TaskModel();
+        $task->uuid = $container->uuid->decodeString('uuid');
+        $task->taskType = $container->taskType->decodeString('taskType');
+        $task->source = $container->source->decodeString('source');
+        $task->label = $container->label->decodeString('label');
+        $task->taskContext = $container->taskContext->decodeStringIfPresent('taskContext');
+        $task->category = $container->category->decodeString('category');
+        $task->communication = $container->communication->decodeString('communication');
+        $task->dateOfLastExposure = $container->dateOfLastExposure->decodeDateTimeIfPresent('Y-m-d');
+        $task->questionnaireResult =
+            $container->questionnaireResult->decodeObject(QuestionnaireResultModel::class);
+        return $task;
     }
 }
