@@ -19,9 +19,7 @@ RUN unzip /tmp/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip -d /usr/local/ &
 
 RUN unzip /tmp/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip -d /usr/local
 
-RUN docker-php-ext-install zip && \
-    docker-php-ext-install pdo_pgsql && \
-    docker-php-ext-install opcache
+RUN docker-php-ext-install zip opcache pdo pdo_pgsql mysqli pdo_mysql
 
 RUN docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/usr/local/instantclient,19.8 && \
     echo 'instantclient,/usr/local/instantclient' | pecl install oci8 && \

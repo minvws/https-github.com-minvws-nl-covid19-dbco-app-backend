@@ -234,7 +234,7 @@ class DbCaseRepository implements CaseRepository
             )
             VALUES (
                 :taskUuid, :caseUuid, :taskType, :source, :label, :taskContext, 
-                :category, :communication, :questionnaireUuid, 'f', NOW(), NOW()
+                :category, :communication, :questionnaireUuid, 0, NOW(), NOW()
             )
         ");
 
@@ -458,16 +458,16 @@ class DbCaseRepository implements CaseRepository
     private function updateContactDetailsAnswer(Answer $answer, ContactDetails $value): void
     {
         $stmt = $this->client->prepare("
-                UPDATE answer
-                SET 
-                    question_uuid = :questionUuid,
-                    ctd_firstname = :firstName,
-                    ctd_lastname = :lastName,
-                    ctd_phonenumber = :phoneNumber,
-                    ctd_email = :email,
-                    updated_at = GREATEST(updated_at, :updatedAt)
-                WHERE uuid = :answerUuid
-            ");
+            UPDATE answer
+            SET 
+                question_uuid = :questionUuid,
+                ctd_firstname = :firstName,
+                ctd_lastname = :lastName,
+                ctd_phonenumber = :phoneNumber,
+                ctd_email = :email,
+                updated_at = GREATEST(updated_at, :updatedAt)
+            WHERE uuid = :answerUuid
+        ");
 
         $stmt->execute([
             'answerUuid' => $answer->uuid,
@@ -493,16 +493,16 @@ class DbCaseRepository implements CaseRepository
     private function updateClassificationDetailsAnswer(Answer $answer, ClassificationDetails $value): void
     {
         $stmt = $this->client->prepare("
-                UPDATE answer
-                SET 
-                    question_uuid = :questionUuid,
-                    cfd_cat_1_risk = :cat1Risk,
-                    cfd_cat_2a_risk = :cat2ARisk,
-                    cfd_cat_2b_risk = :cat2BRisk,
-                    cfd_cat_3_risk = :cat3Risk,
-                    updated_at = GREATEST(updated_at, :updatedAt)
-                WHERE uuid = :answerUuid
-            ");
+            UPDATE answer
+            SET 
+                question_uuid = :questionUuid,
+                cfd_cat_1_risk = :cat1Risk,
+                cfd_cat_2a_risk = :cat2ARisk,
+                cfd_cat_2b_risk = :cat2BRisk,
+                cfd_cat_3_risk = :cat3Risk,
+                updated_at = GREATEST(updated_at, :updatedAt)
+            WHERE uuid = :answerUuid
+        ");
 
         $stmt->execute([
             'answerUuid' => $answer->uuid,
