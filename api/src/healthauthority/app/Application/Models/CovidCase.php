@@ -13,7 +13,7 @@ class CovidCase
      *
      * @var string|null
      */
-    public string $uuid;
+    public ?string $uuid;
 
     /**
      * Date of symptom onset
@@ -27,7 +27,7 @@ class CovidCase
      *
      * @var DateTimeInterface|null
      */
-    public DateTimeInterface $windowExpiresAt;
+    public ?DateTimeInterface $windowExpiresAt;
 
     /**
      * Tasks.

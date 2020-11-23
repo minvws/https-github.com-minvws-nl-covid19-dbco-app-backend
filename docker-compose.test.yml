@@ -19,8 +19,22 @@ services:
     worker:
         environment:
             APP_ENV: test
-        volumes:
-            - ./worker/src:/src
+        command: bash -c "echo DISABLED"
+
+    bridge:
+        environment:
+            APP_ENV: test
+        command: bash -c "echo DISABLED"
+
+    bridge-clients:
+        environment:
+            APP_ENV: test
+        command: bash -c "echo DISABLED"
+
+    bridge-caseresults:
+        environment:
+            APP_ENV: test
+        command: bash -c "echo DISABLED"
 
     healthauthority_api:
         environment:
@@ -34,7 +48,3 @@ services:
             APP_ENV: test
         volumes:
             - ./portal/src:/src
-
-    pairing-worker:
-        build: worker
-        command: bash -c "echo DISABLED"

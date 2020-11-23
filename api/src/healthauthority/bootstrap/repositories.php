@@ -7,6 +7,8 @@ use DBCO\HealthAuthorityAPI\Application\Repositories\CaseRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\ClientRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\DbCaseRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\RedisClientRepository;
+use DBCO\HealthAuthorityAPI\Application\Repositories\DbQuestionnaireRepository;
+use DBCO\HealthAuthorityAPI\Application\Repositories\StubCaseRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\StubGeneralTaskRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\StubQuestionnaireRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\GeneralTaskRepository;
@@ -19,7 +21,7 @@ use function DI\get;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
-        QuestionnaireRepository::class => autowire(StubQuestionnaireRepository::class),
+        QuestionnaireRepository::class => autowire(DbQuestionnaireRepository::class),
         GeneralTaskRepository::class => autowire(StubGeneralTaskRepository::class),
         CaseRepository::class => autowire(DbCaseRepository::class),
         ClientRepository::class => autowire(RedisClientRepository::class),

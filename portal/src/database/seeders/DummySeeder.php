@@ -38,7 +38,6 @@ class DummySeeder extends Seeder
             'name' => 'Demo Gebruiker',
             'uuid' => $dummyUserUuid,
             'external_id' => $dummyUserUuid,
-            'email' => 'dummy@gebruiker.tst',
             'roles' => 'user',
             'created_at' => $now,
             'updated_at' => $now
@@ -48,7 +47,6 @@ class DummySeeder extends Seeder
             'name' => 'Demo Planner',
             'uuid' => $dummyPlannerUuid,
             'external_id' => $dummyPlannerUuid,
-            'email' => 'dummy@gebruiker.tst',
             'roles' => 'user,planner',
             'created_at' => $now,
             'updated_at' => $now
@@ -58,7 +56,6 @@ class DummySeeder extends Seeder
             'name' => 'Demo Beheerder',
             'uuid' => $dummyAdminUuid,
             'external_id' => $dummyAdminUuid,
-            'email' => 'dummy@gebruiker.tst',
             'roles' => 'user,admin',
             'created_at' => $now,
             'updated_at' => $now
@@ -158,6 +155,7 @@ class DummySeeder extends Seeder
 
             $taskUuidLex = (string)Str::uuid();
             $taskUuidLois = (string)Str::uuid();
+            $taskUuidMartha = (string)Str::uuid();
 
             DB::table('task')->insert([[
                 'uuid' => $taskUuidLex,
@@ -187,6 +185,20 @@ class DummySeeder extends Seeder
                 'questionnaire_uuid' => $questionnaireUuid,
                 'created_at' => $now,
                 'updated_at' => $now
+            ], [
+                'uuid' => $taskUuidMartha,
+                'case_uuid' => $caseUuid,
+                'task_type' => 'contact',
+                'source' => 'portal',
+                'label' => 'Martha K.',
+                'task_context' => "Mother",
+                'category' => '2a',
+                'date_of_last_exposure' => date('Y-m-d'),
+                'communication' => 'index',
+                'informed_by_index' => false,
+                'questionnaire_uuid' => $questionnaireUuid,
+                'created_at' => $now,
+                'updated_at' => $now
             ]]);
 
             $questions = DB::table('question')
@@ -199,6 +211,10 @@ class DummySeeder extends Seeder
                     $classificationQuestionUuid = (string)$question->uuid;
                 } else if ($question->label == 'Geboortedatum') {
                     $birthdateQuestionUuid = (string)$question->uuid;
+                } else if ($question->label == 'Waar ken je deze persoon van?') {
+                    $relationshipQuestionUuid = (string)$question->uuid;
+                } else if ($question->label == 'Is een of meerdere onderstaande zaken van toepassing voor deze persoon?') {
+                    $priorityQuestionUuid = (string)$question->uuid;
                 }
             }
 
@@ -244,6 +260,16 @@ class DummySeeder extends Seeder
                 'ctd_phonenumber' => null,
                 'created_at' => $now,
                 'updated_at' => $now
+            ], [
+                'uuid' => (string)Str::uuid(),
+                'task_uuid' => $taskUuidMartha,
+                'question_uuid' => $contactQuestionUuid,
+                'ctd_firstname' => 'Martha',
+                'ctd_lastname' => 'Kent',
+                'ctd_email' => 'martha.kent@kansas.dc',
+                'ctd_phonenumber' => '555-123145667',
+                'created_at' => $now,
+                'updated_at' => $now
             ]]);
 
             DB::table('answer')->insert([[
@@ -258,6 +284,41 @@ class DummySeeder extends Seeder
                 'task_uuid' => $taskUuidLex,
                 'question_uuid' => $birthdateQuestionUuid,
                 'spv_value' => Date('1970-10-11'),
+                'created_at' => $now,
+                'updated_at' => $now
+            ], [
+                'uuid' => (string)Str::uuid(),
+                'task_uuid' => $taskUuidMartha,
+                'question_uuid' => $birthdateQuestionUuid,
+                'spv_value' => Date('1930-10-11'),
+                'created_at' => $now,
+                'updated_at' => $now
+            ], [
+                'uuid' => (string)Str::uuid(),
+                'task_uuid' => $taskUuidLex,
+                'question_uuid' => $relationshipQuestionUuid,
+                'spv_value' => 'Overig',
+                'created_at' => $now,
+                'updated_at' => $now
+            ], [
+                'uuid' => (string)Str::uuid(),
+                'task_uuid' => $taskUuidMartha,
+                'question_uuid' => $relationshipQuestionUuid,
+                'spv_value' => 'Ouder',
+                'created_at' => $now,
+                'updated_at' => $now
+            ], [
+                'uuid' => (string)Str::uuid(),
+                'task_uuid' => $taskUuidLex,
+                'question_uuid' => $priorityQuestionUuid,
+                'spv_value' => 'Nee',
+                'created_at' => $now,
+                'updated_at' => $now
+            ], [
+                'uuid' => (string)Str::uuid(),
+                'task_uuid' => $taskUuidMartha,
+                'question_uuid' => $priorityQuestionUuid,
+                'spv_value' => 'Ja',
                 'created_at' => $now,
                 'updated_at' => $now
             ]]);

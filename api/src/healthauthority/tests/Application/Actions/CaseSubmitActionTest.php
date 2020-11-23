@@ -5,8 +5,8 @@ namespace DBCO\HealthAuthorityAPI\Tests\Application\Actions;
 
 use DBCO\HealthAuthorityAPI\Application\Models\Client;
 use DBCO\HealthAuthorityAPI\Application\Models\ClientCase;
+use DBCO\HealthAuthorityAPI\Application\Repositories\CaseRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\ClientRepository;
-use DI\Container;
 use Exception;
 use DBCO\HealthAuthorityAPI\Tests\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -40,17 +40,24 @@ class CaseSubmitActionTest extends TestCase
                 ''
             );
 
-        /** @var $c Container */
         $stubClientRepository = $this->createStub(ClientRepository::class);
         $stubClientRepository->method('getClient')->willReturnCallback(function ($t) use ($client, $token) {
             $this->assertEquals($token, $t);
             return $client;
         });
 
+        $stubCaseRepository = $this->createStub(CaseRepository::class);
+        $stubCaseRepository->method('caseExists')->willReturn(true);
+
+
         $container = $this->getAppInstance()->getContainer();
         $container->set(ClientRepository::class, $stubClientRepository);
+        $container->set(CaseRepository::class, $stubCaseRepository);
 
-        $data = ['tasks' => []];
+        $data = [
+            'dateOfSymptomOnset' => date('Y-m-d'),
+            'tasks' => []
+        ];
         $nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
         $ciphertext = sodium_crypto_secretbox(json_encode($data), $nonce, $secretKey);
 
