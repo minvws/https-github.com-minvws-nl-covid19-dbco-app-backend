@@ -47,10 +47,7 @@ class TestCase extends PHPUnit_TestCase
      */
     protected function createAppInstance(): App
     {
-        $app = require APP_ROOT . '/bootstrap/application.php';
-        $container = $app->getContainer();
-        $container->set(LoggerInterface::class, new NullLogger());
-        return $app;
+        return require APP_ROOT . '/bootstrap/application.php';
     }
 
     /**

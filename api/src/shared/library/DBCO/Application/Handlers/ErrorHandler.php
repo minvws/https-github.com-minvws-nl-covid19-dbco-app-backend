@@ -17,6 +17,20 @@ class ErrorHandler extends SlimErrorHandler
     /**
      * @inheritdoc
      */
+    protected function writeToErrorLog(): void
+    {
+        if ($this->displayErrorDetails) {
+            parent::writeToErrorLog(); // log all errors if display error details is on
+        } else if (!($this->exception instanceof ActionException)) {
+            parent::writeToErrorLog(); // unexpected error
+        } else if ($this->exception->getCode() === ActionException::INTERNAL_SERVER_ERROR) {
+            parent::writeToErrorLog(); // explicit internal error
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function respond(): Response
     {
         $exception = $this->exception;
