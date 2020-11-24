@@ -60,7 +60,7 @@ class Task implements JsonSerializable, DecodableDecorator
     public static function decode(string $class, DecodingContainer $container): object
     {
         $task = new TaskModel();
-        $task->uuid = $container->uuid->decodeString('uuid');
+        $task->uuid = strtolower($container->uuid->decodeString('uuid'));
         $task->taskType = $container->taskType->decodeString('taskType');
         $task->source = $container->source->decodeString('source');
         $task->label = $container->label->decodeString('label');
