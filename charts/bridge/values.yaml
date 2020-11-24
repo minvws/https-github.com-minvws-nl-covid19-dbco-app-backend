@@ -34,7 +34,7 @@ redis:
 # HAA
 healthauthority:
   api:
-    base_uri: http://healthauthorityapi/v1/
+    base_uri: http://healthauthority-api/v1/
 
 # Debug
 debug: 0
@@ -55,6 +55,10 @@ resources:
   requests:
     cpu: 1m
     memory: 16Mi
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
 
 nodeSelector: {}
 
