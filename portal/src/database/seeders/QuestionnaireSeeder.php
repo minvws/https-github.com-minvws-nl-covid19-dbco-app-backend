@@ -58,7 +58,7 @@ class QuestionnaireSeeder extends Seeder
             DB::table('question')->insert([
                 'uuid' => $questionUuid,
                 'questionnaire_uuid' => $questionnaireUuid,
-                'group' => 'classification',
+                'group_name' => 'classification',
                 'question_type' => 'classificationdetails',
                 'label' => 'Vragen over jullie ontmoeting',
                 'description' => null,
@@ -71,7 +71,7 @@ class QuestionnaireSeeder extends Seeder
             DB::table('question')->insert([
                 'uuid' => $questionUuid,
                 'questionnaire_uuid' => $questionnaireUuid,
-                'group' => 'contactdetails',
+                'group_name' => 'contactdetails',
                 'question_type' => 'contactdetails',
                 'label' => 'Contactgegevens',
                 'description' => null,
@@ -84,7 +84,7 @@ class QuestionnaireSeeder extends Seeder
             DB::table('question')->insert([
                 'uuid' => $questionUuid,
                 'questionnaire_uuid' => $questionnaireUuid,
-                'group' => 'contactdetails',
+                'group_name' => 'contactdetails',
                 'question_type' => 'date',
                 'label' => 'Geboortedatum',
                 'header' => 'Geb. dat.',
@@ -98,7 +98,7 @@ class QuestionnaireSeeder extends Seeder
             DB::table('question')->insert([
                 'uuid' => $questionUuid,
                 'questionnaire_uuid' => $questionnaireUuid,
-                'group' => 'contactdetails',
+                'group_name' => 'contactdetails',
                 'question_type' => 'multiplechoice',
                 'label' => 'Waar ken je deze persoon van?',
                 'header' => 'Relatie',
@@ -198,7 +198,7 @@ class QuestionnaireSeeder extends Seeder
             DB::table('question')->insert([
                 'uuid' => $questionUuid,
                 'questionnaire_uuid' => $questionnaireUuid,
-                'group' => 'contactdetails',
+                'group_name' => 'contactdetails',
                 'question_type' => 'multiplechoice',
                 'label' => 'Is een of meerdere onderstaande zaken van toepassing voor deze persoon?',
                 'header' => 'Prioriteit',
@@ -218,7 +218,7 @@ class QuestionnaireSeeder extends Seeder
                 'question_uuid' => $questionUuid,
                 'label' => 'Ja, één of meerdere dingen',
                 'value' => 'Ja',
-                'trigger' => 'communication_staff',
+                'trigger_name' => 'communication_staff',
                 'created_at' => $now,
                 'updated_at' => $now
             ], [
@@ -226,7 +226,7 @@ class QuestionnaireSeeder extends Seeder
                 'question_uuid' => $questionUuid,
                 'label' => 'Nee, ik denk het niet',
                 'value' => 'Nee',
-                'trigger' => 'communication_index',
+                'trigger_name' => 'communication_index',
                 'created_at' => $now,
                 'updated_at' => $now
             ]]);
