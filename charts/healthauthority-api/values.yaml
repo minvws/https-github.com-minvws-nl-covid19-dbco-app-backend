@@ -89,6 +89,10 @@ resources:
     cpu: 1m
     memory: 16Mi
 
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+
 nodeSelector: {}
 
 tolerations: []

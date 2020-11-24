@@ -32,7 +32,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: {{ .Values bridge.command }}
+          {{ if .Values.bridge.command }}
+          command: {{ .Values.bridge.command }}
+          {{- end }}
           envFrom:
           - configMapRef:
               name: {{ template "app.fullname" . }}
@@ -51,9 +53,10 @@ spec:
             timeoutSeconds: 1
             failureThreshold: 3
             successThreshold: 1
+    {{- with .Values.securityContext }}
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
+{{ toYaml . | indent 8 }}
+    {{- end }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}

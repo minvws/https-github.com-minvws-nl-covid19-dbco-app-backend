@@ -78,9 +78,10 @@ spec:
           volumeMounts:
           - name: storage
             mountPath: /src/storage
+    {{- with .Values.securityContext }}
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
+{{ toYaml . | indent 8 }}
+    {{- end }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
