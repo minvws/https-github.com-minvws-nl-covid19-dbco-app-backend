@@ -6,7 +6,7 @@ namespace DBCO\Shared\Application\Codable;
  *
  * @package DBCO\Shared\Application\Codable
  */
-class DateTimeFormatException extends DecodeException
+class DateTimeFormatException extends DecodePathException
 {
     /**
      * Constructor.
@@ -16,6 +16,6 @@ class DateTimeFormatException extends DecodeException
      */
     public function __construct(array $path, string $format)
     {
-        parent::__construct("Invalid date/time format at path '" . static::convertPathToString($path) . "', expected format '{$format}'");
+        parent::__construct($path, "Invalid date/time format at path '" . static::convertPathToString($path) . "', expected format '{$format}'");
     }
 }
