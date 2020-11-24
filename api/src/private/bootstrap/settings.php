@@ -6,17 +6,17 @@ use Monolog\Logger;
 $debug = filter_var(getenv('DEBUG'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false;
 
 return [
-    'pairingCode.allowedChars' => '0123456789',
-    'pairingCode.length' => 9,
-    'pairingCode.timeToLive' => 900, // 15 minutes
-
-    'displayErrorDetails' => $debug,
-    'logErrors' => true,
-    'logErrorDetails' => true,
+    'errorHandler.displayErrorDetails' => $debug,
+    'errorHandler.logErrors' => true,
+    'errorHandler.logErrorDetails' => $debug,
 
     'logger.name' => 'api',
     'logger.path' => 'php://stdout',
     'logger.level' => $debug ? Logger::DEBUG : Logger::ERROR,
+
+    'pairingCode.allowedChars' => '0123456789',
+    'pairingCode.length' => 9,
+    'pairingCode.timeToLive' => 900, // 15 minutes
 
     'redis' => [
         'host' => DI\env('REDIS_HOST'),
