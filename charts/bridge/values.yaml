@@ -24,7 +24,9 @@ hpa:
 
 # Bridge
 bridge:
-  command: # process:clients or process:caseresults
+  # command: ["process:clients"]
+  # command: ["process:caseresults"]
+  command: 
 
 # Redis
 redis:
