@@ -14,7 +14,7 @@ return [
     'logger.path' => 'php://stdout',
     'logger.level' => $debug ? Logger::DEBUG : Logger::ERROR,
 
-    'pairingCode.allowedChars' => '0123456789',
+    'pairingCode.allowedChars' => 'BCFGJLQRSTUVXYZ23456789',
     'pairingCode.length' => 9,
     'pairingCode.timeToLive' => 900, // 15 minutes
 
