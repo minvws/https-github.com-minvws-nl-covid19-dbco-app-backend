@@ -83,13 +83,13 @@ jobs:
           --set image.repository=test/bridge \
           --set image.tag=latest \
           --set redis.host=redis-master \
-          --set bridge.command=process:clients \
+          --set bridge.command='["process:clients"]' \
           --namespace=default
           helm upgrade -i bridge-caseresults ./charts/bridge \
           --set image.repository=test/bridge \
           --set image.tag=latest \
           --set redis.host=redis-master \
-          --set bridge.command=process:caseresults \
+          --set bridge.command='["process:clients"]' \
           --namespace=default
       - name: Run integration tests
         run: |
