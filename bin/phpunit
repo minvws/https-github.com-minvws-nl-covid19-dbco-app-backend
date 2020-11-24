@@ -20,6 +20,15 @@ fi
 echo "=====[ START CONTAINERS ]====="
 $DOCKER_COMPOSE up -d
 
+if [ $DATABASE_TYPE = "mysql" ]; then
+  echo
+  echo "=====[ START MYSQL DATABASE ]========================="
+  echo "Waiting for MYSQL to launch on ${MYSQL_PORT:-3306}..."
+  while ! echo "SELECT 1" | $DOCKER_COMPOSE run --rm mysqlclient > /dev/null 2>&1; do
+    sleep 0.5
+  done
+fi
+
 if [ $DATABASE_TYPE = "postgres" ]; then
   echo
   echo "=====[ START POSTGRES DATABASE ]========================="
@@ -40,7 +49,15 @@ fi
 
 if [ "$1" == "--setup" ] || [ "$1" == "--reset" ]; then
   CONTAINER=$2
-  
+
+  if [ $DATABASE_TYPE = "mysql" ]; then
+    echo
+    echo "=====[ SETUP MYSQL DATABASE ]========================="
+    $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
+    $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
+    $DOCKER_COMPOSE run --rm mysqlclient < $BASE_PATH/install/mysql/permissions.sql
+  fi
+
   if [ $DATABASE_TYPE = "postgres" ]; then
     echo
     echo "=====[ SETUP POSTGRES DATABASE ]========================="

@@ -47,8 +47,8 @@ class ClientRegisterActionTest extends TestCase
         $pdo = $this->getAppInstance()->getContainer()->get(PDO::class);
         $pdo->query("
             INSERT INTO covidcase (uuid, owner, date_of_symptom_onset, window_expires_at, status)
-            VALUES ('{$caseUuid}', 'Test', TO_DATE('{$dateOfSymptomOnset}', 'YYYY-MM-DD'), TO_DATE('{$windowExpiresAt}', 'YYYY-MM-DD'), 'open')
-        ");
+            VALUES ('{$caseUuid}', 'Test', '{$dateOfSymptomOnset}', '{$windowExpiresAt}', 'open')
+        "); // NOTE: Oracle might need TO_DATE call (untested)
 
         $encodedGeneralKeyPair = getenv('ENCRYPTION_GENERAL_KEY_PAIR');
         $this->assertNotEmpty($encodedGeneralKeyPair);

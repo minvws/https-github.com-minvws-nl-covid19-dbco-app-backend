@@ -113,3 +113,20 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.version=${{ steps.prep.outputs.VERSION }}
             org.opencontainers.image.created=${{ steps.prep.outputs.BUILD_DATE }}
+      - name: Push Bridge container to GitHub Container Registry
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          context: ./bridge
+          file: ./bridge/Dockerfile
+          tags: |
+            ghcr.io/${{ github.repository }}/bridge:${{ steps.prep.outputs.VERSION }}
+            ghcr.io/${{ github.repository }}/bridge:latest
+          labels: |
+            org.opencontainers.image.title=${{ github.event.repository.name }}
+            org.opencontainers.image.description=${{ github.event.repository.description }}
+            org.opencontainers.image.source=${{ github.event.repository.html_url }}
+            org.opencontainers.image.url=${{ github.event.repository.html_url }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.version=${{ steps.prep.outputs.VERSION }}
+            org.opencontainers.image.created=${{ steps.prep.outputs.BUILD_DATE }}            
