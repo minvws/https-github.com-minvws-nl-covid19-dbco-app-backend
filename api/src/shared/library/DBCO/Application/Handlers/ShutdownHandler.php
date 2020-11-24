@@ -6,6 +6,7 @@ namespace DBCO\Shared\Application\Handlers;
 use DBCO\Shared\Application\Actions\ActionException;
 use DBCO\Shared\Application\ResponseEmitter\ResponseEmitter;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 use Slim\App;
 
 /**
@@ -61,7 +62,8 @@ class ShutdownHandler
      */
     public static function register(App $app, ServerRequestInterface $request)
     {
-        $errorHandler = new ErrorHandler($app->getCallableResolver(), $app->getResponseFactory());
+        $logger = $app->getContainer()->get(LoggerInterface::class);
+        $errorHandler = new ErrorHandler($app->getCallableResolver(), $app->getResponseFactory(), $logger);
         $displayErrorDetails = $app->getContainer()->get('errorHandler.displayErrorDetails');
         $logErrors = $app->getContainer()->get('errorHandler.logErrors');
         $logErrorDetails = $app->getContainer()->get('errorHandler.logErrorDetails');
