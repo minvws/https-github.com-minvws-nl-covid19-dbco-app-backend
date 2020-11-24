@@ -40,7 +40,7 @@ spec:
           - secretRef:
               name: {{ template "app.fullname" . }}-encryption
           - secretRef:
-              name: {{ template "app.fullname" . }}-jwt
+              name: {{ template "app.fullname" . }}-private-api-jwt
           ports:
             - name: http
               containerPort: {{ .Values.service.httpPort | default 8080 }}
