@@ -45,7 +45,9 @@ jobs:
           helm repo add bitnami https://charts.bitnami.com/bitnami
       - name: Deploy Helm Charts
         run: |
-          helm upgrade -i redis bitnami/redis --wait
+          helm upgrade -i redis bitnami/redis \
+          --set usePassword=false \
+          --wait
           helm upgrade -i postgres bitnami/postgresql \
           --set postgresqlPassword=changeme \
           --wait
@@ -83,13 +85,13 @@ jobs:
           --set image.repository=test/bridge \
           --set image.tag=latest \
           --set redis.host=redis-master \
-          --set bridge.command='["process:clients"]' \
+          --set bridge.args='["process:clients"]' \
           --namespace=default
           helm upgrade -i bridge-caseresults ./charts/bridge \
           --set image.repository=test/bridge \
           --set image.tag=latest \
           --set redis.host=redis-master \
-          --set bridge.command='["process:clients"]' \
+          --set bridge.args='["process:caseresults"]' \
           --namespace=default
       - name: Run integration tests
         run: |
