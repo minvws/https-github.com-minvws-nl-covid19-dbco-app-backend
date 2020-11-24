@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use DBCO\Worker\Application\Commands\RefreshGeneralTasksCommand;
 use DBCO\Worker\Application\Commands\RefreshQuestionnairesCommand;
+use DBCO\Worker\Application\Commands\StatusCommand;
 use Symfony\Component\Console\Application;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
@@ -11,6 +12,7 @@ return function (Application $app, ContainerInterface $container) {
     $commands = [
         RefreshQuestionnairesCommand::class,
         RefreshGeneralTasksCommand::class,
+        StatusCommand::class
     ];
 
     $commandMap = [];

@@ -27,4 +27,4 @@ RUN set -ex \
 
 WORKDIR /src
 
-ENTRYPOINT ["/src/worker"]
+ENTRYPOINT ["/src/bridge"]
