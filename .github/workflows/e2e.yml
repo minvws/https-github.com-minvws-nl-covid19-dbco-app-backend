@@ -48,8 +48,13 @@ jobs:
           helm upgrade -i redis bitnami/redis \
           --set usePassword=false \
           --wait
-          helm upgrade -i postgres bitnami/postgresql \
-          --set postgresqlPassword=changeme \
+          helm upgrade -i mysql bitnami/mysql \
+          --set db.user=dbco \
+          --set db.password=changeme \
+          --set db.name=dbco \
+          --set root.password=changeme \
+          --set replication.enabled=false \
+          --set master.persistence.enabled=false \
           --wait
           helm upgrade -i public-api ./charts/public-api \
           --set image.repository=test/public-api \
@@ -65,20 +70,20 @@ jobs:
           --set image.repository=test/healthauthority-api \
           --set image.tag=latest \
           --set redis.host=redis-master \
-          --set db.type=postgres \
-          --set db.host=postgres-postgresql \
-          --set db.database=postgres \
-          --set db.username=postgres \
+          --set db.type=mysql \
+          --set db.host=mysql \
+          --set db.database=dbco \
+          --set db.username=dbco \
           --set db.password=changeme \
           --namespace=default
           helm upgrade -i portal ./charts/portal \
           --set image.repository=test/portal \
           --set image.tag=latest \
           --set redis.host=redis-master \
-          --set db.type=postgres \
-          --set db.host=postgres-postgresql \
-          --set db.database=postgres \
-          --set db.username=postgres \
+          --set db.type=mysql \
+          --set db.host=mysql \
+          --set db.database=dbco \
+          --set db.username=dbco \
           --set db.password=changeme \
           --namespace=default
           helm upgrade -i bridge-clients ./charts/bridge \
