@@ -69,7 +69,7 @@ class Task implements JsonSerializable, DecodableDecorator
         $task->communication = $container->communication->decodeString('communication');
         $task->dateOfLastExposure = $container->dateOfLastExposure->decodeDateTimeIfPresent('Y-m-d');
         $task->questionnaireResult =
-            $container->questionnaireResult->decodeObject(QuestionnaireResultModel::class);
+            $container->questionnaireResult->decodeObjectIfPresent(QuestionnaireResultModel::class);
         return $task;
     }
 }
