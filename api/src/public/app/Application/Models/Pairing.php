@@ -7,11 +7,11 @@ namespace DBCO\PublicAPI\Application\Models;
 class Pairing
 {
     /**
-     * Case.
+     * Case UUID.
      *
-     * @var PairingCase
+     * @var string
      */
-    public PairingCase $case;
+    public string $caseUuid;
 
     /**
      * Sealed client public key.
@@ -31,13 +31,13 @@ class Pairing
     /**
      * Pairing constructor.
      *
-     * @param PairingCase $case
+     * @param string      $caseUuid
      * @param string|null $sealedClientPublicKey
      * @param string|null $sealedHealthAuthorityPublicKey
      */
-    public function __construct(PairingCase $case, ?string $sealedClientPublicKey, ?string $sealedHealthAuthorityPublicKey = null)
+    public function __construct(string $caseUuid, ?string $sealedClientPublicKey, ?string $sealedHealthAuthorityPublicKey = null)
     {
-        $this->case = $case;
+        $this->caseUuid = $caseUuid;
         $this->sealedClientPublicKey = $sealedClientPublicKey;
         $this->sealedHealthAuthorityPublicKey = $sealedHealthAuthorityPublicKey;
     }

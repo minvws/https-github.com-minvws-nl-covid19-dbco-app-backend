@@ -16,7 +16,9 @@ return [
 
     'pairingCode.allowedChars' => '0123456789',
     'pairingCode.length' => 9,
-    'pairingCode.timeToLive' => 900, // 15 minutes
+    'pairingCode.expiresDelta' => 900, // 15 minutes
+    'pairingCode.expiredWarningDelta' => 24 * 60 * 60, // 1 day
+    'pairingCode.blockedDelta' => 30 * 24 * 60 * 60, // 30 days
 
     'redis' => [
         'host' => DI\env('REDIS_HOST'),

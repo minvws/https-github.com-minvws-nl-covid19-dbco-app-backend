@@ -12,6 +12,10 @@ use Predis\Client as PredisClient;
  */
 class RedisPairingRequestRepository implements PairingRequestRepository
 {
+    private const PAIRING_REQUEST_KEY_TEMPLATE      = 'pairing-request:%s';
+    private const PAIRING_REQUEST_CASE_KEY_TEMPLATE = 'pairing-request:%s:case';
+    private const CASE_PAIRING_REQUEST_KEY_TEMPLATE = 'case:%s:pairing-request';
+
     /**
      * @var PredisClient
      */
@@ -28,27 +32,37 @@ class RedisPairingRequestRepository implements PairingRequestRepository
     }
 
     /**
-     * Returns the Redis key for the given pairing request code.
-     *
-     * @param string $code
-     *
-     * @return string
+     * @inheritDoc
      */
-    private function getRedisKeyForCode(string $code): string
+    public function isPairingCodeAvailable(string $code): bool
     {
-        return 'pairing-request:' . $code;
+        $pairingRequestKey = sprintf(self::PAIRING_REQUEST_KEY_TEMPLATE, $code);
+
+        // key expires automatically when the code becomes available again, so
+        // if it still exists, we know it is not available
+        return $this->client->exists($pairingRequestKey) === 0;
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
-    public function isActivePairingCode(string $code): bool
+    public function disableActivePairingCodeForCase(string $caseUuid)
     {
-        $key = $this->getRedisKeyForCode($code);
+        // lookup pairing code (if any)
+        $casePairingRequestKey = sprintf(self::CASE_PAIRING_REQUEST_KEY_TEMPLATE, $caseUuid);
+        $data = $this->client->get($casePairingRequestKey);
+        if (!$data) {
+            return;
+        }
 
-        // key expires based on the pairing request expiration time, so
-        // it won't be available anymore if the pairing has expired
-        return $this->client->exists($key);
+        // delete pairing code lookup data
+        $this->client->del($casePairingRequestKey);
+
+        // delete case data for pairing request (not the request itself, so the code remains blocked)
+        $data = json_decode($data);
+        $pairingRequestCaseKey = sprintf(self::PAIRING_REQUEST_CASE_KEY_TEMPLATE, $data->code);
+
+        $this->client->del($pairingRequestCaseKey);
     }
 
     /**
@@ -56,16 +70,32 @@ class RedisPairingRequestRepository implements PairingRequestRepository
      */
     public function storePairingRequest(PairingRequest $request)
     {
-        $key = $this->getRedisKeyForCode($request->code);
-        $expiresInSeconds = $request->codeExpiresAt->getTimestamp() - time();
-        $data = [
-            'codeExpiresAt' => $request->codeExpiresAt->format(DateTime::ATOM),
-            'case' => [
-                'id' => $request->case->id,
-                'expiresAt' => $request->case->expiresAt->format(DateTime::ATOM)
-            ]
+        // store the main pairing request data, this data will be kept until
+        // the pairing code should be become available again
+        $pairingRequestKey = sprintf(self::PAIRING_REQUEST_KEY_TEMPLATE, $request->code);
+        $pairingRequestExpires = $request->codeBlockedUntil->getTimestamp() - time();
+        $pairingRequestData = [
+            'codeBlockedUntil' => $request->codeBlockedUntil->format(DateTime::ATOM)
         ];
+        $this->client->setex($pairingRequestKey, $pairingRequestExpires, json_encode($pairingRequestData));
 
-        $this->client->setex($key, $expiresInSeconds, json_encode($data));
+        // store the case identifier for the duration of the validity of the pairing code
+        $pairingRequestCaseKey = sprintf(self::PAIRING_REQUEST_CASE_KEY_TEMPLATE, $request->code);
+        $pairingRequestCaseExpires = $request->codeExpiredWarningUntil->getTimestamp() - time();
+        $pairingRequestCaseData = [
+            'caseUuid' => $request->caseUuid,
+            'codeExpiresAt' => $request->codeExpiresAt->format(DateTime::ATOM),
+            'codeExpiredWarningUntil' => $request->codeExpiredWarningUntil->format(DateTime::ATOM)
+        ];
+        $this->client->setex($pairingRequestCaseKey, $pairingRequestCaseExpires, json_encode($pairingRequestCaseData));
+
+        // store a reference from the case identifier to the pairing code so we can disable
+        // existing pairing requests for a case when a new pairing request is generated
+        $casePairingRequestKey = sprintf(self::CASE_PAIRING_REQUEST_KEY_TEMPLATE, $request->caseUuid);
+        $casePairingRequestExpires = $request->codeExpiredWarningUntil->getTimestamp() - time();
+        $casePairingRequestData = [
+            'code' => $request->code
+        ];
+        $this->client->setex($casePairingRequestKey, $casePairingRequestExpires, json_encode($casePairingRequestData));
     }
 }

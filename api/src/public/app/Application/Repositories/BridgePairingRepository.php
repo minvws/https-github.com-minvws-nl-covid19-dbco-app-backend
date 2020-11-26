@@ -45,8 +45,8 @@ class BridgePairingRepository implements PairingRepository
 
         $request =
             BridgeRequest::create(self::PAIRING_LIST_KEY)
-                ->setResponseKey(sprintf(self::PAIRING_RESPONSE_LIST_KEY_TEMPLATE, $pairing->case->id))
-                ->setParam('caseUuid', $pairing->case->id)
+                ->setResponseKey(sprintf(self::PAIRING_RESPONSE_LIST_KEY_TEMPLATE, $pairing->caseUuid))
+                ->setParam('caseUuid', $pairing->caseUuid)
                 ->setData(json_encode($requestData))
                 ->setTimeout(self::PAIRING_TIMEOUT);
 
