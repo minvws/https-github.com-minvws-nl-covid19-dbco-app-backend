@@ -13,7 +13,7 @@ service:
   enabled: true
   type: ClusterIP
   httpPort: 8080
-  externalPort: 8081
+  externalPort: 8080
 
 # metrics-server add-on required
 hpa:
