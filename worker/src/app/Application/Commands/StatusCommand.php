@@ -74,7 +74,12 @@ class StatusCommand extends Command
     {
         $redisOK =$this->checkStatus('Redis', $output, fn () => (string)$this->redisClient->ping() === 'PONG');
         $haaOK = $this->checkStatus('Health Authority API', $output, function () {
-            $response = $this->healthAuthorityGuzzleClient->get('ping');
+            $options = [
+                'connect_timeout' => 5,
+                'read_timeout' => 5,
+                'timeout' => 15
+            ];
+            $response = $this->healthAuthorityGuzzleClient->get('ping', $options);
             return $response->getStatusCode() === 200 && (string)$response->getBody() === 'PONG';
         });
 
