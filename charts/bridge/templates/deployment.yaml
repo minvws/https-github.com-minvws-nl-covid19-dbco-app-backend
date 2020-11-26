@@ -42,10 +42,6 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ template "app.fullname" . }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.service.httpPort | default 8080 }}
-              protocol: TCP
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           livenessProbe:

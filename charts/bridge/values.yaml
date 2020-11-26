@@ -9,12 +9,6 @@ image:
 
 imagePullSecrets:
 
-service:
-  enabled: true
-  type: ClusterIP
-  httpPort: 8080
-  externalPort: 8082
-
 # metrics-server add-on required
 hpa:
   enabled: false
@@ -38,7 +32,7 @@ redis:
 # HAA
 healthauthority:
   api:
-    base_uri: http://healthauthority-api/v1/
+    base_uri: http://healthauthority-api:8080/v1/
 
 # Debug
 debug: 0
