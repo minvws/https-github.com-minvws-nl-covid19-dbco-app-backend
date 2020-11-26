@@ -51,7 +51,7 @@ class ApiPairingRepository implements PairingRepository
         $payload = array(
             "iat" => time(),
             "exp" => time() + self::JWT_EXPIRATION_TIME,
-            "http://ggdghor.nl/cid" => $caseUuid
+            "http://ggdghor.nl/caseUuid" => $caseUuid
         );
 
         return JWT::encode($payload, $this->jwtSecret);
@@ -75,8 +75,7 @@ class ApiPairingRepository implements PairingRepository
                 'Authorization' => 'Bearer ' . $this->encodeJWT($caseUuid)
             ],
             'json' => [
-                'caseId' => $caseUuid,
-                'caseExpiresAt' => $expiresAt->format('c')
+                'caseUuid' => $caseUuid
             ]
         ];
 

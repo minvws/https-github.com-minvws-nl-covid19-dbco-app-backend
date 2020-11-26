@@ -39,7 +39,7 @@ class CaseExportActionTest extends TestCase
 
         $request = $this->createRequest('POST', '/v1/cases/' . $caseUuid . '/exports');
         $response = $this->app->handle($request);
-        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertResponseStatusCode(204, $response);
         $this->assertEquals("", (string)$response->getBody());
     }
 }

@@ -20,7 +20,7 @@ use Psr\Log\LoggerInterface;
  */
 class CaseRegisterAction extends Action
 {
-    private const CLAIM_CASE_ID = 'http://ggdghor.nl/cid';
+    private const CLAIM_CASE_UUID = 'http://ggdghor.nl/caseUuid';
 
     /**
      * @var CaseService
@@ -55,36 +55,28 @@ class CaseRegisterAction extends Action
      */
     protected function action(): Response
     {
-        $claimCaseId = null;
+        $claimCaseUuid = null;
         if ($this->jwtConfigHelper->isEnabled()) {
             $jwtClaims = $this->request->getAttribute("jwtClaims");
-            $claimCaseId = $jwtClaims[self::CLAIM_CASE_ID];
+            $claimCaseUuid = $jwtClaims[self::CLAIM_CASE_UUID];
         }
 
         $body = $this->request->getParsedBody();
 
         $errors = [];
 
-        $caseId = $body['caseId'] ?? null;
-        if (empty($caseId)) {
-            $errors[] = ValidationError::body('isRequired', 'caseId is required', ['caseId']);
-        } else if ($this->jwtConfigHelper->isEnabled() && $caseId !== $claimCaseId) {
-            $errors[] = ValidationError::body('invalid', 'caseId does not match claim', ['caseId']);
-        }
-
-        $caseExpiresAt = $body['caseExpiresAt'] ?? null;
-        if (empty($caseExpiresAt)) {
-            $errors[] = ValidationError::body('isRequired', 'caseExpiresAt is required', ['caseExpiresAt']);
-        } else {
-            // TODO: validate timestamp format
-            $caseExpiresAt = new DateTime($caseExpiresAt);
+        $caseUuid = $body['caseUuid'] ?? null;
+        if (empty($caseUuid)) {
+            $errors[] = ValidationError::body('isRequired', 'caseUuid is required', ['caseUuid']);
+        } else if ($this->jwtConfigHelper->isEnabled() && $caseUuid !== $claimCaseUuid) {
+            $errors[] = ValidationError::body('invalid', 'caseUuid does not match claim', ['caseUuid']);
         }
 
         if (count($errors) > 0) {
             throw new ValidationException($this->request, $errors);
         }
 
-        $pairing = $this->caseService->registerCase($caseId, $caseExpiresAt);
-        return $this->respond(new CaseRegisterResponse($pairing));
+        $pairingRequest = $this->caseService->registerCase($caseUuid);
+        return $this->respond(new CaseRegisterResponse($pairingRequest));
     }
 }

@@ -65,7 +65,7 @@ class CaseSubmitActionTest extends TestCase
         $request = $request->withParsedBody([ 'sealedCase' => ['ciphertext' => base64_encode($ciphertext), 'nonce' => base64_encode($nonce)]]);
         $request = $request->withHeader('Content-Type', 'application/json');
         $response = $this->app->handle($request);
-        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertResponseStatusCode(204, $response);
     }
 }
 
