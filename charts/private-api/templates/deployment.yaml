@@ -32,6 +32,10 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.imagePullSecrets }}
+          imagePullSecrets:
+            - name: {{ .Values.imagePullSecrets }}
+          {{- end }}
           envFrom:
           - configMapRef:
               name: {{ template "app.fullname" . }}
