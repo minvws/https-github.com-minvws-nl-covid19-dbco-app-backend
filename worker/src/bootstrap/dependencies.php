@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use DBCO\Worker\Application\Commands\StatusCommand;
 use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -31,7 +32,12 @@ return function (ContainerBuilder $containerBuilder) {
                     ->constructor(get('redis')),
             'healthAuthorityGuzzleClient' =>
                 autowire(GuzzleHttp\Client::class)
-                    ->constructor(get('healthAuthorityAPI'))
+                    ->constructor(get('healthAuthorityAPI')),
+            StatusCommand::class => autowire(StatusCommand::class)
+                ->constructorParameter(
+                    'healthAuthorityGuzzleClient',
+                    get('healthAuthorityGuzzleClient')
+                )
         ]
     );
 };
