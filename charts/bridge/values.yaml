@@ -1,0 +1,67 @@
+# Default values for public-api
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/minvws/nl-covid19-dbco-app-backend-private/bridge
+  tag: 0.1.0
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+
+# metrics-server add-on required
+hpa:
+  enabled: false
+  maxReplicas: 10
+  # average total CPU usage per pod (1-100)
+  cpu:
+  # average memory usage per pod (100Mi-1Gi)
+  memory:
+
+# Bridge
+bridge:
+  # args: ["process:clients"]
+  # args: ["process:caseresults"]
+  args:
+
+# Redis
+redis:
+  host: redis-master
+  port: 6379
+
+# HAA
+healthauthority:
+  api:
+    base_uri: http://healthauthority-api:8080/v1/
+
+# Debug
+debug: 0
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  enabled: false
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+serviceMonitor:
+  enabled: false
+  interval: 15s
+
+resources:
+  limits:
+  requests:
+    cpu: 1m
+    memory: 16Mi
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+podAnnotations: {}
