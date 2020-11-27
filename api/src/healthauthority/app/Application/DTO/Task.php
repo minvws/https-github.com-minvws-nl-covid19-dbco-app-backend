@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DBCO\HealthAuthorityAPI\Application\DTO;
 
+use DBCO\HealthAuthorityAPI\Application\Models\ContactDetails;
 use DBCO\HealthAuthorityAPI\Application\Models\QuestionnaireResult as QuestionnaireResultModel;
 use DBCO\HealthAuthorityAPI\Application\Models\Task as TaskModel;
 use DBCO\Shared\Application\Codable\DecodableDecorator;
@@ -63,13 +64,33 @@ class Task implements JsonSerializable, DecodableDecorator
         $task->uuid = strtolower($container->uuid->decodeString('uuid'));
         $task->taskType = $container->taskType->decodeString('taskType');
         $task->source = $container->source->decodeString('source');
-        $task->label = $container->label->decodeString('label');
         $task->taskContext = $container->taskContext->decodeStringIfPresent('taskContext');
         $task->category = $container->category->decodeString('category');
         $task->communication = $container->communication->decodeString('communication');
         $task->dateOfLastExposure = $container->dateOfLastExposure->decodeDateTimeIfPresent('Y-m-d');
         $task->questionnaireResult =
             $container->questionnaireResult->decodeObjectIfPresent(QuestionnaireResultModel::class);
+
+        if ($task->source === 'portal') {
+            $task->label = $container->label->decodeString();
+        } else {
+            $label = '?';
+
+            if ($task->questionnaireResult) {
+                foreach ($task->questionnaireResult->answers as $answer) {
+                    if ($answer->value instanceof ContactDetails && $answer->value-firstName && $answer->value->lastName) {
+                        $label = $answer->value->firstName . ' ' . substr($answer->value->lastName, 0, 1);
+                        break;
+                    } else if ($answer->value instanceof ContactDetails && $answer->value-firstName) {
+                        $label = $answer->value->firstName;
+                        break;
+                    }
+                }
+            }
+
+            $task->label = $label;
+        }
+
         return $task;
     }
 }
