@@ -42,7 +42,9 @@ return function (ContainerBuilder $containerBuilder) {
                     ->constructorParameter('length', get('pairingCode.length')),
             JWTConfigHelper::class =>
                 autowire(JWTConfigHelper::class)->constructor(get('jwt')),
-            PredisClient::class => autowire(PredisClient::class)->constructor(get('redis'))
+            PredisClient::class =>
+                autowire(PredisClient::class)
+                    ->constructor(get('redis.parameters'), get('redis.options'))
         ]
     );
 };
