@@ -99,7 +99,7 @@ class CaseService
         $this->caseRepository->setExpiry($case, $expiresAt, $pairing->expiresAt);
 
         // apply formatting for readability (TODO: move to view?)
-        return implode('-', str_split($pairing->code, 3));
+        return implode('-', str_split($pairing->code, 4));
     }
 
     /**
