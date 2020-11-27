@@ -20,10 +20,22 @@ return [
     'pairingCode.expiredWarningDelta' => 24 * 60 * 60, // 1 day
     'pairingCode.blockedDelta' => 30 * 24 * 60 * 60, // 30 days
 
-    'redis' => [
+    'redis.parameters' => [
         'host' => DI\env('REDIS_HOST'),
         'port' => DI\env('REDIS_PORT')
     ],
+    'redis.options' =>
+        DI\factory(function () {
+            $service = getenv('REDIS_SENTINEL_SERVICE');
+
+            $options = [];
+            if (!empty($service)) {
+                $options['replication'] = 'sentinel';
+                $options['service'] = $service;
+            }
+
+            return $options;
+        }),
 
     'jwt' => [
         'enabled'   => filter_var(getenv('JWT_ENABLED'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? true,
