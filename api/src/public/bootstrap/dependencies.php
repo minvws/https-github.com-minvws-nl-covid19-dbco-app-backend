@@ -35,7 +35,9 @@ return function (ContainerBuilder $containerBuilder) {
             LoggerInterface::class =>
                 $isTestEnvironment ? autowire(NullLogger::class) : get('logger.default'),
 
-            PredisClient::class => autowire(PredisClient::class)->constructor(get('redis')),
+            PredisClient::class =>
+                autowire(PredisClient::class)
+                    ->constructor(get('redis.parameters'), get('redis.options')),
 
             KeyGenerator::class => autowire(SecureKeyGenerator::class)
                 ->constructorParameter('length', get('signingKey.length'))

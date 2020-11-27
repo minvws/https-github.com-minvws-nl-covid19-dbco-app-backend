@@ -64,7 +64,7 @@ class ClientRegisterActionTest extends TestCase
         $request = $request->withParsedBody([ 'sealedClientPublicKey' => $sealedClientPublicKey ]);
         $request = $request->withHeader('Content-Type', 'application/json');
         $response = $this->app->handle($request);
-        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertResponseStatusCode(201, $response);
 
         $data = json_decode((string)$response->getBody());
         $this->assertNotFalse($data);

@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use DBCO\Bridge\Application\Commands\LaneCommand;
+use DBCO\Bridge\Application\Commands\StatusCommand;
 use DBCO\Bridge\Application\Services\LaneService;
 use DI\ContainerBuilder;
 use function DI\autowire;
@@ -33,9 +34,15 @@ return function (ContainerBuilder $containerBuilder) {
                         get('logger.processors')
                     ),
             PredisClient::class =>
-                autowire(PredisClient::class)->constructor(get('redis')),
+                autowire(PredisClient::class)
+                    ->constructor(get('redis.parameters'), get('redis.options')),
             'healthAuthorityGuzzleClient' =>
-                autowire(GuzzleHttp\Client::class)->constructor(get('healthAuthorityAPI'))
+                autowire(GuzzleHttp\Client::class)->constructor(get('healthAuthorityAPI')),
+            StatusCommand::class => autowire(StatusCommand::class)
+                ->constructorParameter(
+                    'healthAuthorityGuzzleClient',
+                    get('healthAuthorityGuzzleClient')
+                )
         ]
     );
 
