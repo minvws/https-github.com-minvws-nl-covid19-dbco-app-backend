@@ -9,6 +9,9 @@ use function DI\get;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
-        CaseService::class => autowire(CaseService::class)->constructorParameter('pairingCodeTimeToLive', get('pairingCode.timeToLive'))
+        CaseService::class => autowire(CaseService::class)
+            ->constructorParameter('pairingCodeExpiresDelta', get('pairingCode.expiresDelta'))
+            ->constructorParameter('pairingCodeExpiredWarningDelta', get('pairingCode.expiredWarningDelta'))
+            ->constructorParameter('pairingCodeBlockedDelta', get('pairingCode.blockedDelta'))
     ]);
 };
