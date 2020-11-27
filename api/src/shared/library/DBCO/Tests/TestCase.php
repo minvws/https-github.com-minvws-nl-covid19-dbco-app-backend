@@ -5,6 +5,7 @@ namespace DBCO\Shared\Tests;
 
 use Exception;
 use PHPUnit\Framework\TestCase as PHPUnit_TestCase;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -75,6 +76,23 @@ class TestCase extends PHPUnit_TestCase
         }
 
         return new SlimRequest($method, $uri, $h, $cookies, $serverParams, $stream);
+    }
+
+    /**
+     * Asserts the given status code and prints the response body on failure.
+     *
+     * @param int               $statusCode
+     * @param ResponseInterface $response
+     */
+    protected function assertResponseStatusCode(int $statusCode, ResponseInterface $response)
+    {
+        $message = sprintf(
+            "Failed asserting that status code %d matches expected %d, response body:\n%s",
+            $response->getStatusCode(),
+            $statusCode,
+            $response->getBody()
+        );
+        $this->assertEquals($statusCode, $response->getStatusCode(), $message);
     }
 
     /**
