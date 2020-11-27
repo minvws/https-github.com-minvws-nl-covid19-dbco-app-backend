@@ -72,7 +72,9 @@ return function (ContainerBuilder $containerBuilder) {
 
                 return $pdo;
             },
-            PredisClient::class => autowire(PredisClient::class)->constructor(get('redis')),
+            PredisClient::class =>
+                autowire(PredisClient::class)
+                    ->constructor(get('redis.parameters'), get('redis.options')),
             TransactionManager::class => autowire(DbTransactionManager::class),
             EncryptionHelper::class =>
                 autowire(EncryptionHelper::class)
