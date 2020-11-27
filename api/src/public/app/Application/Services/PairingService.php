@@ -1,7 +1,8 @@
 <?php
 namespace DBCO\PublicAPI\Application\Services;
 
-use DBCO\PublicAPI\Application\Models\PairingCase;
+use DBCO\PublicAPI\Application\Exceptions\PairingRequestExpiredException;
+use DBCO\PublicAPI\Application\Exceptions\PairingRequestNotFoundException;
 use DBCO\PublicAPI\Application\Models\Pairing;
 use DBCO\PublicAPI\Application\Repositories\PairingRepository;
 use DBCO\PublicAPI\Application\Repositories\PairingRequestRepository;
@@ -53,31 +54,27 @@ class PairingService
      *
      * @param string $code Pairing code
      *
-     * @return PairingCase
+     * @return string
      *
-     * @throws InvalidPairingCodeException
+     * @throws PairingRequestExpiredException
+     * @throws PairingRequestNotFoundException
      */
-    protected function completePairingRequest(string $code): PairingCase
+    protected function completePairingRequest(string $code): string
     {
-        $case = $this->pairingRequestRepository->completePairingRequest($code);
-        if ($case === null) {
-            throw new InvalidPairingCodeException('Invalid pairing code');
-        }
-
-        return $case;
+        return $this->pairingRequestRepository->completePairingRequest($code);
     }
 
     /**
      * Create pairing.
      *
-     * @param PairingCase $case
-     * @param string      $sealedClientPublicKey
+     * @param string $caseUuid
+     * @param string $sealedClientPublicKey
      *
      * @return Pairing
      */
-    protected function createPairing(PairingCase $case, string $sealedClientPublicKey): Pairing
+    protected function createPairing(string $caseUuid, string $sealedClientPublicKey): Pairing
     {
-        return new Pairing($case, $sealedClientPublicKey);
+        return new Pairing($caseUuid, $sealedClientPublicKey);
     }
 
     /**
@@ -100,19 +97,20 @@ class PairingService
      *
      * @return Pairing
      *
-     * @throws InvalidPairingCodeException
+     * @throws PairingRequestExpiredException
+     * @throws PairingRequestNotFoundException
      */
     public function completePairing(string $pairingCode, string $sealedClientPublicKey): Pairing
     {
         $this->logger->debug('Complete pairing with code ' . $pairingCode);
 
         try {
-            $case = $this->completePairingRequest($pairingCode);
-            $pairing = $this->createPairing($case, $sealedClientPublicKey);
+            $caseUuid = $this->completePairingRequest($pairingCode);
+            $pairing = $this->createPairing($caseUuid, $sealedClientPublicKey);
             $this->storePairing($pairing);
 
-            $this->logger->debug('Completed pairing with code ' . $pairingCode . ' for case ' . $case->id);
-            $this->logger->debug('Case ' . $case->id . ' paired');
+            $this->logger->debug('Completed pairing with code ' . $pairingCode . ' for case ' . $caseUuid);
+            $this->logger->debug('Case ' . $caseUuid . ' paired');
 
             return $pairing;
         } catch (Exception $e) {
