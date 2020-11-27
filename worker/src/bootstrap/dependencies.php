@@ -29,7 +29,7 @@ return function (ContainerBuilder $containerBuilder) {
                     ),
             PredisClient::class =>
                 autowire(PredisClient::class)
-                    ->constructor(get('redis')),
+                    ->constructor(get('redis.parameters'), get('redis.options')),
             'healthAuthorityGuzzleClient' =>
                 autowire(GuzzleHttp\Client::class)
                     ->constructor(get('healthAuthorityAPI')),
