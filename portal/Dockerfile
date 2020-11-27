@@ -10,14 +10,14 @@ RUN apt-get -qq update && \
 # Update npm to latest version because package bundle version is outdated
 RUN npm install npm@6 -g
 
-RUN cd /tmp && curl -L https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip -O
-RUN cd /tmp && curl -L https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip -O
+# RUN cd /tmp && curl -L https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip -O
+# RUN cd /tmp && curl -L https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip -O
 
-RUN unzip /tmp/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip -d /usr/local/ && \
-    ln -s /usr/local/instantclient_19_8/ /usr/local/instantclient && \
-    ln -s /usr/local/instantclient/lib* /usr/lib
+# RUN unzip /tmp/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip -d /usr/local/ && \
+#     ln -s /usr/local/instantclient_19_8/ /usr/local/instantclient && \
+#     ln -s /usr/local/instantclient/lib* /usr/lib
 
-RUN unzip /tmp/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip -d /usr/local
+# RUN unzip /tmp/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip -d /usr/local
 
 RUN docker-php-ext-install zip opcache pdo pdo_pgsql mysqli pdo_mysql
 
