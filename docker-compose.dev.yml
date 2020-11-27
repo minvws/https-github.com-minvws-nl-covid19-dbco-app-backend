@@ -69,7 +69,7 @@ services:
         environment:
             APP_ENV: development
             DEBUG: ${DEBUG:-0}
-            PUBLIC_API_BASE_URI: http://public_api/v1/
+            PUBLIC_API_BASE_URI: http://public_api:8080/v1/
             HEALTHAUTHORITY_ENCRYPTION_GENERAL_KEY_PAIR: ${HEALTHAUTHORITY_ENCRYPTION_GENERAL_KEY_PAIR}
         depends_on:
             - public_api
