@@ -11,29 +11,40 @@ use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Predis\Client as PredisClient;
+use Psr\Log\NullLogger;
 use function DI\autowire;
 use function DI\get;
 
 return function (ContainerBuilder $containerBuilder) {
+    $isTestEnvironment = getenv('APP_ENV') === 'test';
+
     $containerBuilder->addDefinitions(
         [
             'logger.handlers' => [
-                autowire(StreamHandler::class)->constructor(get('logger.path'), get('logger.level'))
+                autowire(StreamHandler::class)
+                    ->constructor(get('logger.path'), get('logger.level'))
             ],
             'logger.processors' => [
                 autowire(UidProcessor::class)
             ],
-            LoggerInterface::class =>
+            'logger.default' =>
                 autowire(Logger::class)
                     ->constructor(
                         get('logger.name'),
                         get('logger.handlers'),
                         get('logger.processors')
                     ),
+            LoggerInterface::class =>
+                $isTestEnvironment ? autowire(NullLogger::class) : get('logger.default'),
+
             PDO::class => function (ContainerInterface $c) {
                 $settings = $c->get('db');
 
-                if ($settings['type'] === 'postgres') {
+                if ($settings['type'] === 'mysql') {
+                    $host = $settings['host'];
+                    $db = $settings['database'];
+                    $dsn = "mysql:host=$host;dbname=$db";
+                } else if ($settings['type'] === 'postgres') {
                     $host = $settings['host'];
                     $db = $settings['database'];
                     $dsn = "pgsql:host=$host;dbname=$db";
@@ -61,7 +72,9 @@ return function (ContainerBuilder $containerBuilder) {
 
                 return $pdo;
             },
-            PredisClient::class => autowire(PredisClient::class)->constructor(get('redis')),
+            PredisClient::class =>
+                autowire(PredisClient::class)
+                    ->constructor(get('redis.parameters'), get('redis.options')),
             TransactionManager::class => autowire(DbTransactionManager::class),
             EncryptionHelper::class =>
                 autowire(EncryptionHelper::class)

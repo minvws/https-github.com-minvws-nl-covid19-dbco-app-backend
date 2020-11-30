@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace DBCO\PublicAPI\Application\Repositories;
 
-use DBCO\PublicAPI\Application\Models\PairingCase;
+use DBCO\PublicAPI\Application\Exceptions\PairingRequestExpiredException;
+use DBCO\PublicAPI\Application\Exceptions\PairingRequestNotFoundException;
 
 /**
  * Used to complete a pairing request.
@@ -13,11 +14,14 @@ use DBCO\PublicAPI\Application\Models\PairingCase;
 interface PairingRequestRepository
 {
     /**
-     * Delete the pairing request and return the case it belonged to.
+     * Delete the pairing request and return the case UUID.
      *
      * @param string $code
      *
-     * @return PairingCase|null The case this pairing request belonged to. Null if it doesn't exist or expired.
+     * @return string The case UUID for the pairing request.
+     *
+     * @throws PairingRequestExpiredException
+     * @throws PairingRequestNotFoundException
      */
-    public function completePairingRequest(string $code): ?PairingCase;
+    public function completePairingRequest(string $code): string;
 }

@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace DBCO\PublicAPI\Application\Actions;
 
+use DBCO\PublicAPI\Application\Exceptions\PairingRequestExpiredException;
+use DBCO\PublicAPI\Application\Exceptions\PairingRequestNotFoundException;
 use DBCO\PublicAPI\Application\Responses\PairingResponse;
-use DBCO\PublicAPI\Application\Services\InvalidPairingCodeException;
 use DBCO\PublicAPI\Application\Services\PairingService;
 use DBCO\Shared\Application\Actions\Action;
 use DBCO\Shared\Application\Actions\ValidationError;
@@ -88,8 +89,11 @@ class PairingAction extends Action
         try {
             $pairing = $this->pairingService->completePairing($pairingCode, $sealedClientPublicKey);
             return $this->respond(new PairingResponse($pairing));
-        } catch (InvalidPairingCodeException $e) {
-            $error = ValidationError::body('invalid', 'Invalid or expired pairing code', ['pairingCode']);
+        } catch (PairingRequestNotFoundException $e) {
+            $error = ValidationError::body('invalid', 'Invalid pairing code', ['pairingCode']);
+            throw new ValidationException($this->request, [$error]);
+        } catch (PairingRequestExpiredException $e) {
+            $error = ValidationError::body('expired', 'Expired pairing code', ['pairingCode']);
             throw new ValidationException($this->request, [$error]);
         }
     }

@@ -92,7 +92,7 @@
                     <thead>
                     <tr>
                         <th scope="col">Naam <i class="icon  icon--eye"></i></th>
-                        <th scope="col">Context (optioneel) <i class="icon  icon--eye"></i></th>
+                        <th scope="col">Toelichting (optioneel) <i class="icon  icon--eye"></i></th>
                         <th scope="col">Categorie</th>
                         <th scope="col">Laatste contact</th>
                         <th scope="col">Wie informeert</th>

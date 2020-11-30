@@ -3,6 +3,7 @@ namespace DBCO\HealthAuthorityAPI\Application\Repositories;
 
 use DateTimeInterface;
 use DBCO\HealthAuthorityAPI\Application\Models\Client;
+use DBCO\HealthAuthorityAPI\Application\Models\ClientCase;
 use Predis\Client as PredisClient;
 use Psr\Log\LoggerInterface;
 
@@ -90,12 +91,12 @@ class RedisClientRepository implements ClientRepository
         return new Client(
             $token,
             new ClientCase($data->case->uuid),
-            $data->clientPublicKey,
-            $data->healthAuthorityPublicKey,
-            $data->healthAuthoritySecretKey,
-            $data->sealedHealthAuthorityPublicKey,
-            $data->receiveKey,
-            $data->transmitKey
+            base64_decode($data->clientPublicKey),
+            base64_decode($data->healthAuthorityPublicKey),
+            base64_decode($data->healthAuthoritySecretKey),
+            base64_decode($data->sealedHealthAuthorityPublicKey),
+            base64_decode($data->receiveKey),
+            base64_decode($data->transmitKey)
         );
     }
 

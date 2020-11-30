@@ -6,9 +6,9 @@ use Monolog\Logger;
 $debug = filter_var(getenv('DEBUG'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false;
 
 return [
-    'displayErrorDetails' => $debug,
-    'logErrors' => true,
-    'logErrorDetails' => true,
+    'errorHandler.displayErrorDetails' => $debug,
+    'errorHandler.logErrors' => true,
+    'errorHandler.logErrorDetails' => $debug,
 
     'logger.name' => 'api',
     'logger.path' => 'php://stdout',
@@ -23,10 +23,22 @@ return [
         'tns' => DI\env('DB_TNS', null)
     ],
 
-    'redis' => [
+    'redis.parameters' => [
         'host' => DI\env('REDIS_HOST'),
         'port' => DI\env('REDIS_PORT')
     ],
+    'redis.options' =>
+        DI\factory(function () {
+            $service = getenv('REDIS_SENTINEL_SERVICE');
+
+            $options = [];
+            if (!empty($service)) {
+                $options['replication'] = 'sentinel';
+                $options['service'] = $service;
+            }
+
+            return $options;
+        }),
 
     'privateAPI.client' => [
         'base_uri' => DI\env('PRIVATE_API_BASE_URI')

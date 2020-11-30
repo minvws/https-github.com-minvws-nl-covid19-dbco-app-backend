@@ -32,13 +32,48 @@ services:
         depends_on:
             - redis
 
+    bridge:
+        build: bridge
+        environment:
+            DEBUG: ${DEBUG:-0}
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api:8080/v1/
+        depends_on:
+            - redis
+            - healthauthority_api
+
+    bridge-clients:
+        build: bridge
+        command: process:clients
+        environment:
+            DEBUG: ${DEBUG:-0}
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api:8080/v1/
+        depends_on:
+            - redis
+            - healthauthority_api
+
+    bridge-caseresults:
+        build: bridge
+        command: process:caseresults
+        environment:
+            DEBUG: ${DEBUG:-0}
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api:8080/v1/
+        depends_on:
+            - redis
+            - healthauthority_api
+
     worker:
         build: worker
         environment:
             DEBUG: ${DEBUG:-0}
             REDIS_HOST: redis
             REDIS_PORT: 6379
-            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api/v1/
+            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api:8080/v1/
         depends_on:
             - redis
             - healthauthority_api
@@ -57,21 +92,9 @@ services:
             DB_TNS: ${HEALTHAUTHORITY_API_DB_TNS:-oracle/XEPDB1}
             REDIS_HOST: redis-haa
             REDIS_PORT: 6379
-            PRIVATE_API_BASE_URI: http://private_api/v1/
+            PRIVATE_API_BASE_URI: http://private_api:8080/v1/
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
             ENCRYPTION_GENERAL_KEY_PAIR: ${HEALTHAUTHORITY_ENCRYPTION_GENERAL_KEY_PAIR}
-
-    pairing-worker:
-        build: worker
-        command: pairing:process-queue
-        environment:
-            DEBUG: ${DEBUG:-0}
-            REDIS_HOST: redis
-            REDIS_PORT: 6379
-            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api/v1/
-        depends_on:
-            - redis
-            - healthauthority_api
 
     portal:
         build:
@@ -94,5 +117,5 @@ services:
             USER_ROLE_ADMIN: ${PORTAL_USER_ROLE_ADMIN:-DBCO-Beheer}
             USER_ROLE_USER: ${PORTAL_USER_ROLE_USER:-DBCO-Gebruiker}
             USER_ROLE_PLANNER: ${PORTAL_USER_ROLE_PLANNER:-DBCO-Werkverdeler}
-            PRIVATE_API_BASE_URI: http://private_api/v1/
+            PRIVATE_API_BASE_URI: http://private_api:8080/v1/
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}

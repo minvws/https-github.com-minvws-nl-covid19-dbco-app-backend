@@ -10,7 +10,7 @@ use JsonSerializable;
 /**
  * Answer option DTO.
  *
- * @package  DBCO\HealthAuthorityAPI\Application\Actions
+ * @package  DBCO\HealthAuthorityAPI\Application\DTO
  */
 class AnswerOption implements JsonSerializable
 {

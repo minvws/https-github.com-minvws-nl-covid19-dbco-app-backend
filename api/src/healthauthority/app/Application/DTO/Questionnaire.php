@@ -9,7 +9,7 @@ use JsonSerializable;
 /**
  * Questionnaire DTO.
  *
- * @package DBCO\HealthAuthorityAPI\Application\Actions
+ * @package DBCO\HealthAuthorityAPI\Application\DTO
  */
 class Questionnaire implements JsonSerializable
 {
