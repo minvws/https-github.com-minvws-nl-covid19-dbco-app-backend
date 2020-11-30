@@ -4,7 +4,9 @@ namespace DBCO\PublicAPI\Application\Services;
 use DBCO\PublicAPI\Application\Models\SealedCase;
 use DBCO\PublicAPI\Application\Models\GeneralTaskList;
 use DBCO\PublicAPI\Application\Repositories\CaseRepository;
+use DBCO\PublicAPI\Application\Repositories\CaseSubmitRepository;
 use DBCO\PublicAPI\Application\Repositories\GeneralTaskRepository;
+use DBCO\Shared\Application\Models\SealedData;
 use Exception;
 use Psr\Log\LoggerInterface;
 
@@ -26,6 +28,11 @@ class CaseService
     private CaseRepository $caseRepository;
 
     /**
+     * @var CaseSubmitRepository
+     */
+    private CaseSubmitRepository $caseSubmitRepository;
+
+    /**
      * @var LoggerInterface
      */
     private LoggerInterface $logger;
@@ -35,16 +42,19 @@ class CaseService
      *
      * @param GeneralTaskRepository $generalTaskRepository
      * @param CaseRepository        $caseRepository
+     * @param CaseSubmitRepository  $caseSubmitRepository
      * @param LoggerInterface       $logger
      */
     public function __construct(
         GeneralTaskRepository $generalTaskRepository,
         CaseRepository $caseRepository,
+        CaseSubmitRepository $caseSubmitRepository,
         LoggerInterface $logger
     )
     {
         $this->generalTaskRepository = $generalTaskRepository;
         $this->caseRepository = $caseRepository;
+        $this->caseSubmitRepository = $caseSubmitRepository;
         $this->logger = $logger;
     }
 
@@ -63,27 +73,29 @@ class CaseService
     /**
      * Returns the case and its task list.
      *
-     * @param string $caseId Case identifier.
+     * @param string $token Case token.
      *
-     * @return SealedCase
+     * @return SealedData
      */
-    public function getCase(string $caseId): SealedCase
+    public function getCase(string $token): ?SealedData
     {
-        // TODO: verify access to case using signed otp
-        return $this->caseRepository->getCase($caseId);
+        return $this->caseRepository->getCase($token);
     }
 
     /**
      * Submit case tasks.
      *
-     * @param string $token       Case token.
-     * @param string $ciphertext  Sealed case ciphertext.
-     * @param string $nonce       Sealed case nonce.
+     * @param string     $token      Case token.
+     * @param SealedData $sealedCase Sealed case.
      */
-    public function submitCase(string $token, string $ciphertext, string $nonce): void
+    public function submitCase(string $token, SealedData $sealedCase): bool
     {
-        // TODO: verify access
-        $sealedCase = new SealedCase($ciphertext, $nonce);
-        $this->caseRepository->submitCase($token, $sealedCase);
+        if (!$this->caseRepository->caseExists($token)) {
+            return false;
+        }
+
+        $this->caseSubmitRepository->submitCase($token, $sealedCase);
+
+        return true;
     }
 }

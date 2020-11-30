@@ -62,7 +62,7 @@ class DbAnswerRepository implements AnswerRepository
                 break;
             default:
                 $answer = new SimpleAnswer();
-                $answer->value = $dbAnswer->spv_value;
+                $answer->value = $dbAnswer->spv_value ?? '';
         }
 
         $answer->uuid = $dbAnswer->uuid;

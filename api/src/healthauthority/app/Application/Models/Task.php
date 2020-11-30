@@ -1,7 +1,7 @@
 <?php
 namespace  DBCO\HealthAuthorityAPI\Application\Models;
 
-use DateTimeImmutable;
+use DateTimeInterface;
 
 /**
  * Task.
@@ -31,12 +31,12 @@ class Task
     /**
      * @var string|null
      */
-    public ?string $taskContext;
+    public ?string $taskContext = null;
 
     /**
-     * @var string|null
+     * @var string
      */
-    public ?string $category;
+    public string $category;
 
     /**
      * @var string
@@ -44,7 +44,12 @@ class Task
     public string $communication;
 
     /**
-     * @var DateTimeImmutable|null
+     * @var DateTimeInterface|null
      */
-    public ?DateTimeImmutable $dateOfLastExposure;
+    public ?DateTimeInterface $dateOfLastExposure = null;
+
+    /**
+     * @var QuestionnaireResult|null
+     */
+    public ?QuestionnaireResult $questionnaireResult = null;
 }

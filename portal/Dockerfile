@@ -10,23 +10,21 @@ RUN apt-get -qq update && \
 # Update npm to latest version because package bundle version is outdated
 RUN npm install npm@6 -g
 
-RUN cd /tmp && curl -L https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip -O
-RUN cd /tmp && curl -L https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip -O
+# RUN cd /tmp && curl -L https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip -O
+# RUN cd /tmp && curl -L https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip -O
 
-RUN unzip /tmp/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip -d /usr/local/ && \
-    ln -s /usr/local/instantclient_19_8/ /usr/local/instantclient && \
-    ln -s /usr/local/instantclient/lib* /usr/lib
+# RUN unzip /tmp/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip -d /usr/local/ && \
+#     ln -s /usr/local/instantclient_19_8/ /usr/local/instantclient && \
+#     ln -s /usr/local/instantclient/lib* /usr/lib
 
-RUN unzip /tmp/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip -d /usr/local
+# RUN unzip /tmp/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip -d /usr/local
 
-RUN docker-php-ext-install zip && \
-    docker-php-ext-install pdo_pgsql && \
-    docker-php-ext-install opcache
+RUN docker-php-ext-install zip opcache pdo pdo_pgsql mysqli pdo_mysql
 
-RUN docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/usr/local/instantclient,19.8 && \
-    echo 'instantclient,/usr/local/instantclient' | pecl install oci8 && \
-    docker-php-ext-install pdo_oci && \
-    docker-php-ext-enable oci8
+# RUN docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/usr/local/instantclient,19.8 && \
+#     echo 'instantclient,/usr/local/instantclient' | pecl install oci8 && \
+#     docker-php-ext-install pdo_oci && \
+#     docker-php-ext-enable oci8
 
 RUN a2enmod rewrite && \
     a2enmod headers && \
@@ -45,6 +43,7 @@ RUN chmod 755 /entrypoint.sh
 COPY assets/portal.ini /usr/local/etc/php/conf.d/portal.ini
 COPY assets/security.conf /etc/apache2/conf-available/security.conf
 COPY assets/apache2.conf /etc/apache2/apache2.conf
+COPY assets/ports.conf /etc/apache2/ports.conf
 COPY assets/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 COPY assets/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_default.conf
 
@@ -57,14 +56,16 @@ RUN cd /src && composer install && \
 RUN set -ex \
 	&& ln -sf /proc/1/fd/1 "/var/log/cron.log" \
 	&& ln -sf /proc/1/fd/1 "/var/log/syslog"
-  
+
 # Install Laravel cmdline
-RUN composer global require laravel/installer  
+RUN composer global require laravel/installer
 
 # Environment
 ENV PATH $PATH:/root/.composer/vendor/bin
 
 WORKDIR /src
+
+EXPOSE 8080/tcp
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["apache2-foreground"]

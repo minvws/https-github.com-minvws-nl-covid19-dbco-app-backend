@@ -30,7 +30,7 @@ class CaseSubmitActionTest extends TestCase
         $request = $request->withParsedBody($body);
         $request = $request->withHeader('Content-Type', 'application/json');
         $response = $this->app->handle($request);
-        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertResponseStatusCode(204, $response);
     }
 }
 
