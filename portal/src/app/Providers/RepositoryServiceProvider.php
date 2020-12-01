@@ -52,10 +52,6 @@ class RepositoryServiceProvider extends ServiceProvider
 
         $this->app->when(ApiCaseExportRepository::class)
             ->needs(GuzzleClient::class)
-            ->give(fn () => new GuzzleClient(config('services.private_api.client_options')));
-
-        $this->app->when(ApiCaseExportRepository::class)
-            ->needs('$jwtSecret')
-            ->give(fn () => config('services.private_api.jwt_secret'));
+            ->give(fn () => new GuzzleClient(config('services.healthauthority_api.client_options')));
     }
 }
