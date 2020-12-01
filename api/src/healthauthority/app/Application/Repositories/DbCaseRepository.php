@@ -125,6 +125,28 @@ class DbCaseRepository implements CaseRepository
         foreach ($case->tasks as $task) {
             $this->storeTask($case->uuid, $task);
         }
+
+        $this->markCaseAsSubmitted($case->uuid);
+    }
+
+    /**
+     * Bump updated field for case.
+     *
+     * @param string $caseUuid
+     */
+    private function markCaseAsSubmitted(string $caseUuid)
+    {
+        $stmt = $this->client->prepare("
+            UPDATE covidcase
+            SET 
+                index_submitted_at = NOW(),
+                updated_at = NOW()
+            WHERE uuid = :caseUuid
+        ");
+
+        $stmt->execute([
+            'caseUuid' => $caseUuid
+        ]);
     }
 
     /**
@@ -309,11 +331,12 @@ class DbCaseRepository implements CaseRepository
      */
     private function storeAnswer(Task $task, Answer $answer)
     {
-        $answerInfo = $this->getAnswerInfo($answer);
+        $answerInfo = $this->getAnswerInfo($task, $answer);
 
-        $this->validateAnswerUpdate($task, $answer, $answerInfo);
-
-        if (!$answerInfo) {
+        if ($answerInfo) {
+            // ignore given uuid and use the one we've determined ourselves
+            $answer->uuid = $answerInfo->uuid;
+        } else {
             // first create answer
             $this->createAnswer($task, $answer);
         }
@@ -331,22 +354,34 @@ class DbCaseRepository implements CaseRepository
     }
 
     /**
-     * Returns basic answer info (taskUuid).
+     * Returns basic answer info (uuid).
      *
+     * @param Task   $task
      * @param Answer $answer
      *
-     * @return stdClass|false Object with taskUuid or false if non-existent.
+     * @return stdClass|false Object with uuid or false if non-existent.
      */
-    private function getAnswerInfo(Answer $answer)
+    private function getAnswerInfo(Task $task, Answer $answer)
     {
+        // NOTE:
+        // We don't simply use the uuid from the answer because the client might simply not know the correct uuid
+        // anymore (re-pairing to a different device) or can't be trusted for different reasons. We know currently
+        // there is always at most one answer for each task/question combination.
+        //
+        // In a future update there can be multiple answers for a task (one entered by the health authority user,
+        // one entered by the index and one that reflects the current value). We will be able to determine the correct
+        // one here based on a type or source field.
+        
         $stmt = $this->client->prepare("
-            SELECT task_uuid
+            SELECT uuid
             FROM answer
-            WHERE uuid = :answerUuid
+            WHERE task_uuid = :taskUuid
+            AND question_uuid = :questionUuid
         ");
 
         $stmt->execute([
-            'answerUuid' => $answer->uuid
+            'taskUuid' => $task->uuid,
+            'questionUuid' => $answer->questionUuid
         ]);
 
         $row = $stmt->fetchObject();
@@ -355,26 +390,8 @@ class DbCaseRepository implements CaseRepository
         }
 
         return (object)[
-            'task_uuid' => $row->task_uuid
+            'uuid' => $row->uuid
         ];
-    }
-
-    /**
-     * Validate answer update.
-     *
-     * @param Task           $task
-     * @param Answer         $answer
-     * @param stdClass|false $answerInfo
-     */
-    private function validateAnswerUpdate(Task $task, Answer $answer, $answerInfo): void
-    {
-        // TODO:
-        //   Do we throw an error and throw away all other data as well, or do we
-        //   silently ignore the invalid data?
-
-        if ($answerInfo && $answerInfo->taskUuid != $task->uuid) {
-            throw new RuntimeException("Update for answer belonging to different task");
-        }
     }
 
     /**
@@ -512,6 +529,27 @@ class DbCaseRepository implements CaseRepository
             'cat2BRisk' => $value->category2BRisk ? 1 : 0,
             'cat3Risk' => $value->category3Risk ? 1 : 0,
             'updatedAt' => $answer->lastModified->format(DateTime::ATOM)
+        ]);
+    }
+
+    /**
+     * Mark case as paired.
+     *
+     * @param string $caseUuid
+     */
+    public function markCaseAsPaired(string $caseUuid): void
+    {
+        $stmt = $this->client->prepare("
+            UPDATE covidcase
+            SET 
+                updated_at = NOW(), 
+                status = :status
+            WHERE uuid = :caseUuid
+        ");
+
+        $stmt->execute([
+            'caseUuid' => $caseUuid,
+            'status' => 'paired'
         ]);
     }
 }
