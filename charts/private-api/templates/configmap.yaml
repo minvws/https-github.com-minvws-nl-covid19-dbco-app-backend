@@ -9,6 +9,9 @@ data:
   APACHE_RUN_USER: {{  .Values.apache.run.user }}
   REDIS_HOST: {{  .Values.redis.host }}
   REDIS_PORT: {{  quote .Values.redis.port }}
+  {{- if .Values.redis.sentinel.service }}
+  REDIS_SENTINEL_SERVICE: {{ .Values.redis.sentinel.service }}
+  {{- end }}
   JWT_ENABLED: {{ quote .Values.jwt.enabled }}
   {{- if .Values.jwt.enabled }}
   JWT_SECURE: {{ quote .Values.jwt.secure }}
