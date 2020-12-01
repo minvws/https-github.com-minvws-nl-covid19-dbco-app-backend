@@ -30,6 +30,8 @@ hpa:
 redis:
   host: redis-master
   port: 6379
+  sentinel:
+    service:
 
 # Apache
 apache:

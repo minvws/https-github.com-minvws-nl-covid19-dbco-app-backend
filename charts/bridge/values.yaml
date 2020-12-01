@@ -28,6 +28,8 @@ bridge:
 redis:
   host: redis-master
   port: 6379
+  sentinel:
+    service:
 
 # HAA
 healthauthority:
