@@ -17,18 +17,18 @@
         <img src="{{ asset('images/illustration-login.svg') }}" class="card-img-top" alt="Afbeelding digitaal contactonderzoek"/>
 
         <div class="card-body">
-            <h1 class="card-title">Digitaal contactonderzoek</h1>
+            <h1 class="card-title">BCO Portaal</h1>
         </div>
 
         <div class="card-body">
-            <p class="card-text">...</p>
+            <p class="card-text">Digitaal contactonderzoek</p>
         </div>
 
         <div class="card-footer">
             <div class="row">
             <div class="col">
 
-            <a href="/auth/identityhub" class="btn  btn-primary  btn-block">Inloggen met IdentityHub</a>
+            <a href="/auth/identityhub" class="btn  btn-primary  btn-block">Inloggen</a>
             </div></div>
             <div class="row mt-4">
                 <div class="col">
