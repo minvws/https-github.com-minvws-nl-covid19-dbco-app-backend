@@ -213,7 +213,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form autocomplete="off">
                     <div class="form-group">
                         <label for="name" class="col-form-label">Casenaam</label>
                         <input type="text" class="form-control" id="name" placeholder="Voer casenaam in">
