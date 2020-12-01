@@ -3,10 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\CovidCase;
-use DateTimeInterface;
 use GuzzleHttp\Client as GuzzleClient;
-use Firebase\JWT\JWT;
-use GuzzleHttp\Exception\GuzzleException;
 
 /**
  * Used for registering a new case for pairing.
@@ -15,55 +12,19 @@ use GuzzleHttp\Exception\GuzzleException;
  */
 class ApiCaseExportRepository implements CaseExportRepository
 {
-    const JWT_EXPIRATION_TIME = 300; // 5 minutes
-
     /**
      * @var GuzzleClient
      */
     private GuzzleClient $client;
 
     /**
-     * @var string
-     */
-    private string $jwtSecret;
-
-    /**
      * Constructor.
      *
      * @param GuzzleClient $client
      */
-    public function __construct(GuzzleClient $client, string $jwtSecret)
+    public function __construct(GuzzleClient $client)
     {
         $this->client = $client;
-        $this->jwtSecret = $jwtSecret;
-    }
-
-    private function encodeJSON(CovidCase $case): array
-    {
-        $tasks = [];
-
-        return [
-            'dateOfSymptomOnset' => $case->dateOfSymptomOnset->format('c'),
-            'tasks' => $tasks
-        ];
-    }
-
-    /**
-     * Encode JWT for registering case.
-     *
-     * @param string $caseUuid
-     *
-     * @return string
-     */
-    private function encodeJWT(string $caseUuid): string
-    {
-        $payload = array(
-            "iat" => time(),
-            "exp" => time() + self::JWT_EXPIRATION_TIME,
-            "http://ggdghor.nl/cid" => $caseUuid
-        );
-
-        return JWT::encode($payload, $this->jwtSecret);
     }
 
     /**
@@ -71,23 +32,18 @@ class ApiCaseExportRepository implements CaseExportRepository
      *
      * @param CovidCase $case The case to pair.
      *
-     * @throws GuzzleException
+     * @returns true if API call succeeds, false otherwise
      */
-    public function export(CovidCase $case): void
+    public function export(CovidCase $case): bool
     {
         $options = [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $this->encodeJWT($case->uuid)
-            ],
-            'json' => $this->encodeJSON($case)
+            // No auth options for healthauthority_api
         ];
 
-        error_log(var_export($options, true));
-
         try {
-            $response = $this->client->post('cases', $options);
+            $response = $this->client->post(sprintf('cases/%s/exports', $case->uuid), $options);
         } catch (\Throwable $t) {
-            print_r($t->getMessage());
+            error_log("API error" . $t->getMessage());
         }
     }
 }
