@@ -151,10 +151,11 @@ class CaseService
     public function updateCase(CovidCase $case)
     {
         $this->caseRepository->updateCase($case);
+    }
 
-        if ($case->status === CovidCase::STATUS_OPEN) {
-            $this->caseExportRepository->export($case);
-        }
+    public function exportCase(CovidCase $case): bool
+    {
+        return $this->caseExportRepository->export($case);
     }
 
     public function openCase(CovidCase $case)
