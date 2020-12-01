@@ -11,5 +11,5 @@ interface CaseExportRepository
      *
      * @param CovidCase $case The case to export.
      */
-    public function export(CovidCase $case): void;
+    public function export(CovidCase $case): bool;
 }

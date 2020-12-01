@@ -7,6 +7,7 @@ use App\Models\Task;
 use App\Services\AuthenticationService;
 use App\Services\CaseService;
 use App\Services\QuestionnaireService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Jenssegers\Date\Date;
 
@@ -141,7 +142,6 @@ class CaseController extends Controller
         $case = $this->caseService->getCase($caseUuid);
 
         if ($case != null && $this->caseService->canAccess($case)) {
-
             $pairingCode = $this->caseService->createPairingCodeForCase($case);
             $isDraftCase = $case->caseStatus() == CovidCase::STATUS_DRAFT;
             // When we show the pairingcode for a new case, we mark the case as 'open'.
@@ -156,5 +156,29 @@ class CaseController extends Controller
             return view('paircase', ['case' => $case, 'pairingCode' => $pairingCode]);
         }
         return redirect()->intended('/');
+    }
+
+    /**
+     * Trigger healthauthority_api to export case data
+     *
+     * @param $caseUuid
+     * @return RedirectResponse
+     */
+    public function exportCase($caseUuid): RedirectResponse
+    {
+        $case = $this->caseService->getCase($caseUuid);
+
+        if ($case === null || !$this->caseService->canAccess($case)) {
+            // This is not the CovidCase you are looking for
+            return redirect()->intended('/');
+        }
+
+        if ($this->caseService->exportCase($case)) {
+            request()->session()->flash('message', 'Case klaargezet voor index');
+        } else {
+            request()->session()->flash('message', 'Fout bij klaarzetten case voor index');
+        }
+
+        return redirect()->intended('/case/' . $caseUuid);
     }
 }
