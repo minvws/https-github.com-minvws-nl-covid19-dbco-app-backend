@@ -27,6 +27,7 @@
                 <!-- Start of question title component -->
                 <div class="align-items-end  mb-3 mt-5">
                     <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Hoe heet de index?</h3>
+                    <p class="mt-2 mb-0  ml-auto">Deze naam is bedoeld om de case makkelijk terug te vinden in het portaal. De naam wordt niet naar HPZone verstuurd.</p>
                 </div>
                 <!-- End of question title component -->
                 @error('name')
