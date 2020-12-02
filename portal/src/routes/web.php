@@ -42,7 +42,7 @@ Route::middleware('auth')->group(function() {
     Route::post('/linktasktoexport', [TaskController::class, 'linkTaskToExport']);
 
     // Trigger to export case to GGD private API
-    Route::get('/exportcase/{uuid}', [CaseController::class, 'exportCase']);
+    Route::get('/notifycaseupdate/{uuid}', [CaseController::class, 'notifyCaseUpdate'])->name('notify-case-update');
 
     // Account
     Route::get('/profile', [UserController::class, 'profile']);

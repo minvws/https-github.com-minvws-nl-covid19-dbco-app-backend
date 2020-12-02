@@ -95,7 +95,6 @@ services:
             PRIVATE_API_BASE_URI: http://private_api:8080/v1/
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
             ENCRYPTION_GENERAL_KEY_PAIR: ${HEALTHAUTHORITY_ENCRYPTION_GENERAL_KEY_PAIR}
-            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api:8080/v1/
 
     portal:
         build:

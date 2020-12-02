@@ -10,7 +10,7 @@ use GuzzleHttp\Client as GuzzleClient;
  *
  * @package App\Repositories
  */
-class ApiCaseExportRepository implements CaseExportRepository
+class ApiCaseUpdateNotificationRepository implements CaseUpdateNotificationRepository
 {
     /**
      * @var GuzzleClient
@@ -28,13 +28,13 @@ class ApiCaseExportRepository implements CaseExportRepository
     }
 
     /**
-     * Fetch pairing code for the given case.case_id
+     * Trigger the healthauthority_api to come pick up the updated case
      *
      * @param CovidCase $case The case to pair.
      *
      * @returns true if API call succeeds, false otherwise
      */
-    public function export(CovidCase $case): bool
+    public function notify(CovidCase $case): bool
     {
         $options = [
             // No auth options for healthauthority_api
@@ -44,6 +44,9 @@ class ApiCaseExportRepository implements CaseExportRepository
             $response = $this->client->post(sprintf('cases/%s/exports', $case->uuid), $options);
         } catch (\Throwable $t) {
             error_log("API error" . $t->getMessage());
+            return false;
         }
+
+        return true;
     }
 }
