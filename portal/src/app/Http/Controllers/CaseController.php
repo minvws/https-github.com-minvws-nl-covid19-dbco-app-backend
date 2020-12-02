@@ -144,27 +144,24 @@ class CaseController extends Controller
         if ($case != null && $this->caseService->canAccess($case)) {
             $pairingCode = $this->caseService->createPairingCodeForCase($case);
             $isDraftCase = $case->caseStatus() == CovidCase::STATUS_DRAFT;
+
             // When we show the pairingcode for a new case, we mark the case as 'open'.
             if ($isDraftCase) {
                 $this->caseService->openCase($case);
             }
             return view('paircase', ['case' => $case, 'pairingCode' => $pairingCode, 'includeQuestionNumber' => $isDraftCase]);
-
-            // When we show the pairingcode, we mark the case as 'open'.
-            $this->caseService->openCase($case);
-
-            return view('paircase', ['case' => $case, 'pairingCode' => $pairingCode]);
         }
         return redirect()->intended('/');
     }
 
     /**
-     * Trigger healthauthority_api to export case data
+     * Trigger healthauthority_api to export case data.
+     * Not to be confused with exporting case data to HPZone.
      *
      * @param $caseUuid
      * @return RedirectResponse
      */
-    public function exportCase($caseUuid): RedirectResponse
+    public function notifyCaseUpdate($caseUuid): RedirectResponse
     {
         $case = $this->caseService->getCase($caseUuid);
 
@@ -173,7 +170,7 @@ class CaseController extends Controller
             return redirect()->intended('/');
         }
 
-        if ($this->caseService->exportCase($case)) {
+        if ($this->caseService->notifyCaseUpdate($case)) {
             request()->session()->flash('message', 'Case klaargezet voor index');
         } else {
             request()->session()->flash('message', 'Fout bij klaarzetten case voor index');
