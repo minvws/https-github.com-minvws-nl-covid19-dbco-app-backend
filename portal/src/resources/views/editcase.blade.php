@@ -127,16 +127,28 @@
                 </table>
                 <!-- End of table component -->
 
-                <!-- Start of table title component -->
+                <!-- Question: discuss app download and pairing with index -->
                 @if ($case->status == 'draft')
                 <div class="align-items-end  mb-3 mt-5">
                     <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Vertel de index welke app ze moeten downloaden</h3>
                     <p class="mt-2 mb-0  ml-auto">De index heeft een app nodig die ze kunnen downloaden in de Play of AppStore waarmee ze de gegevens op een veilige manier met de GGD kunnen delen.</p>
+
+                    <p>
+                        <div class="btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-outline-primary active">
+                                <input name="pairafteropen" type="radio" autocomplete="off"> Ja, maak nieuwe koppelcode voor de app
+                            </label>
+                            <label class="btn btn-outline-primary active">
+                                <input name="pairafteropen" type="radio" autocomplete="off"> Nee
+                            </label>
+                        </div>
+                    </p>
                 </div>
                 @endif
-                <!-- End of table title component -->
+                <!-- End of app and pairing question -->
 
-                <div class="btn-group">
+                <!-- Form submit -->
+                <div class="btn-group mb-3 mt-3">
                     <input type="submit" class="btn btn-primary" value=
                         @if ($case->status == 'draft')
                             "Case openen"
