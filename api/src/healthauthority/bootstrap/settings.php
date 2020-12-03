@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use Monolog\Logger;
+use Psr\Container\ContainerInterface;
 
 $debug = filter_var(getenv('DEBUG'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false;
 
@@ -45,6 +46,9 @@ return [
     ],
     'privateAPI.jwtSecret' => DI\env('PRIVATE_API_JWT_SECRET'),
 
-    'signingKey.length' => 32,
-    'encryption.generalKeyPair' => DI\env('ENCRYPTION_GENERAL_KEY_PAIR')
+    'securityModule.type' => DI\env('SECURITY_MODULE_TYPE', 'hsm'),
+
+    // only used by the simple security module
+    'securityModule.skKeyExchange' => DI\env('SECURITY_MODULE_SK_KEY_EXCHANGE'),
+    'securityModule.skStore' => DI\env('SECURITY_MODULE_SK_STORE'),
 ];
