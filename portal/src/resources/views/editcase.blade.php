@@ -15,7 +15,7 @@
 <?php $questionNr = 1; ?>
 
 <div class="container-xl questionform">
-    <form action="/savecase" method="POST" autocomplete="off">
+    <form action="{{ route('case-save') }}" method="POST" autocomplete="off">
         @csrf
         <input type="hidden" id="caseUuid" name="caseUuid" value="{{ $case->uuid }}">
 

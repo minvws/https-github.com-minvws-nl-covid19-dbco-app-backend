@@ -30,7 +30,7 @@ class CaseController extends Controller
         // Because we want to show the new case immediately, we create a draft case.
         $case = $this->caseService->createDraftCase();
 
-        return redirect()->intended('/editcase/' . $case->uuid);
+        return redirect()->route('case-edit', [$case->uuid]);
     }
 
     public function editCase($caseUuid)
@@ -39,9 +39,12 @@ class CaseController extends Controller
 
         if ($case != null && $this->caseService->canAccess($case)) {
             $case->tasks[] = new Task(); // one empty placeholder
-            return view('editcase', ['case' => $case, 'tasks' => $case->tasks]);
+            return view('editcase', [
+                'case' => $case,
+                'tasks' => $case->tasks
+            ]);
         } else {
-            return redirect()->intended('/');
+            return redirect()->route('cases-list');
         }
     }
 
@@ -58,7 +61,7 @@ class CaseController extends Controller
 
             return view('viewcase', ['case' => $case, 'taskgroups' => $taskgroups]);
         } else {
-            return redirect()->intended('/');
+            return redirect()->route('cases-list');
         }
     }
 
@@ -70,7 +73,7 @@ class CaseController extends Controller
             $tasks = $this->questionnaireService->getRobotFriendlyTaskExport($caseUuid);
             return view('dumpcase', [ 'case' => $case, 'headers' => $tasks['headers'], 'taskcategories' => $tasks['categories'] ]);
         } else {
-            return redirect()->intended('/');
+            return redirect()->route('cases-list');
         }
     }
 
@@ -83,7 +86,10 @@ class CaseController extends Controller
         }
         // Enrich data with some view level helper data
         foreach ($cases as $case) {
-            $case->editCommand = ($case->status == CovidCase::STATUS_DRAFT ? 'editcase' : 'case');
+            $case->editCommand = $case->status === CovidCase::STATUS_DRAFT
+                ? route('case-edit', [$case->uuid])
+                : route('case-view', [$case->uuid])
+            ;
         }
 
         return view('caseoverview', ['cases' => $cases]);
@@ -123,10 +129,10 @@ class CaseController extends Controller
 
         if ($case->status == 'draft') {
             // For draft cases go to the secondary screen to pair the case.
-            return redirect()->intended('/paircase/' . $caseUuid);
+            return redirect()->route('pair-case', [$caseUuid]);
         } else {
             // For existing cases, go to the case's detail page
-            return redirect()->intended('/case/' . $caseUuid);
+            return redirect()->route('view-case', [$caseUuid]);
         }
 
     }
@@ -150,6 +156,6 @@ class CaseController extends Controller
             }
             return view('paircase', ['case' => $case, 'pairingCode' => $pairingCode, 'includeQuestionNumber' => $isDraftCase]);
         }
-        return redirect()->intended('/');
+        return redirect()->route('cases-list');
     }
 }
