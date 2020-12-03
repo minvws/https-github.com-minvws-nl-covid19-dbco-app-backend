@@ -50,7 +50,7 @@ class DbCaseRepository implements CaseRepository
             SELECT COUNT(1) as c
             FROM covidcase c
             WHERE c.uuid = :caseUuid
-            AND c.status = 'open'
+            AND c.status IN ('open', 'paired')
         ");
 
         $stmt->execute([ 'caseUuid' => $caseUuid ]);
@@ -71,7 +71,7 @@ class DbCaseRepository implements CaseRepository
             SELECT c.uuid, c.date_of_symptom_onset, c.window_expires_at
             FROM covidcase c
             WHERE c.uuid = :caseUuid
-            AND c.status = 'open'
+            AND c.status IN ('open', 'paired')
         ");
 
         $stmt->execute([ 'caseUuid' => $caseUuid ]);

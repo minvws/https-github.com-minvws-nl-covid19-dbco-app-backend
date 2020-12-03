@@ -38,7 +38,12 @@ class ErrorHandler extends SlimErrorHandler
         if (!($exception instanceof ActionException)) {
             $message = 'An error occurred while processing your request. Please try again later.';
             if ($this->displayErrorDetails) {
-                $message .= "\n" . $exception->getMessage() . "\n" . $exception->getTraceAsString();
+                $message .= "\n\nException: " . $exception->getMessage() . "\n" . $exception->getTraceAsString();
+                if ($exception->getPrevious()) {
+                    $message .=
+                        "\n\nNested exception: " . $exception->getPrevious()->getMessage() . "\n" .
+                        $exception->getPrevious()->getTraceAsString();
+                }
             }
             $exception = new ActionException($this->request, 'internalError', $message, ActionException::INTERNAL_SERVER_ERROR, $exception);
         }

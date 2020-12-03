@@ -1,7 +1,10 @@
 <?php
 declare(strict_types=1);
 
-use DBCO\HealthAuthorityAPI\Application\Helpers\EncryptionHelper;
+use DBCO\HealthAuthorityAPI\Application\Security\CachedSecurityModule;
+use DBCO\HealthAuthorityAPI\Application\Security\SimpleSecurityModule;
+use DBCO\HealthAuthorityAPI\Application\Security\HSMSecurityModule;
+use DBCO\HealthAuthorityAPI\Application\Security\SecurityModule;
 use DBCO\Shared\Application\Managers\DbTransactionManager;
 use DBCO\Shared\Application\Managers\TransactionManager;
 use DI\ContainerBuilder;
@@ -76,11 +79,21 @@ return function (ContainerBuilder $containerBuilder) {
                 autowire(PredisClient::class)
                     ->constructor(get('redis.parameters'), get('redis.options')),
             TransactionManager::class => autowire(DbTransactionManager::class),
-            EncryptionHelper::class =>
-                autowire(EncryptionHelper::class)
-                    ->constructor(
-                        get('encryption.generalKeyPair')
-                    ),
+            SecurityModule::class => function (ContainerInterface $c) {
+                $type = $c->get('securityModule.type');
+
+                $securityModule = null;
+                if ($type === 'simple') {
+                    $securityModule = new SimpleSecurityModule(
+                        base64_decode($c->get('securityModule.skKeyExchange')),
+                        base64_decode($c->get('securityModule.skStore'))
+                    );
+                } else {
+                    $securityModule = new HSMSecurityModule();
+                }
+
+                return new CachedSecurityModule($securityModule);
+            },
             'privateAPIGuzzleClient' =>
                 autowire(GuzzleHttp\Client::class)
                     ->constructor(get('privateAPI.client'))
