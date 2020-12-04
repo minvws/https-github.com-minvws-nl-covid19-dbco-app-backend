@@ -21,8 +21,8 @@ Route::get('/login', array('as' => 'login', function() {
     return view('login');
 }));
 
-// All pages that are behind auth and role check
-Route::middleware(['auth', 'rolecheck'])->group(function() {
+// All pages that are behind auth and require user role
+Route::middleware(['auth', 'rolecheck:user'])->group(function() {
     // Home (case overview)
     Route::get('/', [CaseController::class, 'listCases']);
 

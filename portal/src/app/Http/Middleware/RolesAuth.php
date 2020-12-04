@@ -22,12 +22,12 @@ class RolesAuth
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $role)
     {
-        if ($this->authService->hasUserRole()) {
+        if ($this->authService->hasRole($role)) {
             return $next($request);
         }
-        $role = config('authorization.roles.user');
+        $role = config('authorization.roles.'.$role);
         abort(403, "Voor deze pagina heb je minimaal de rol '".$role."' nodig.");
         return response('Unauthorized Action', 403);
     }
