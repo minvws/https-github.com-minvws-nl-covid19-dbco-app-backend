@@ -110,6 +110,13 @@ if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "healthauthority_api" ]; then
   echo
 fi
 
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "portal" ]; then
+  echo
+  echo "=====[ RUN TESTS FOR PORTAL ]====="
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit portal
+  echo
+fi
+
 echo
 echo "=====[ STOP CONTAINERS ]====="
 $DOCKER_COMPOSE stop
