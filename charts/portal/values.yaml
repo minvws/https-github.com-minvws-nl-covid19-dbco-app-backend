@@ -44,10 +44,11 @@ db:
 
 # Private JWT
 private:
-  jwt:
-    base_uri: http://private_api:8080/v1/
-    useExistingSecret: false # if true, create a secret with `app.fullname`-jwt in the same namespace
-    secret: changeme
+  api:
+    jwt:
+      base_uri: http://private_api:8080/v1/
+      useExistingSecret: false # if true, create a secret with `app.fullname`-jwt in the same namespace
+      secret: changeme
 
 # TIH
 tih:
