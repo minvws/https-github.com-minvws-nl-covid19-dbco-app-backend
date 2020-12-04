@@ -17,7 +17,7 @@ data:
   DB_HOST: {{ .Values.db.host }}
   DB_DATABASE: {{ .Values.db.database }}
   TIH_REDIRECT_URL: {{ .Values.tih.redirect_url }}
-  PRIVATE_API_BASE_URI: {{ .Values.private.jwt.base_uri }}
+  PRIVATE_API_BASE_URI: {{ .Values.private.api.jwt.base_uri }}
   USER_ROLE_ADMIN: {{ .Values.user.role.admin }}
   USER_ROLE_USER: {{ .Values.user.role.user }}
   USER_ROLE_PLANNER: {{ .Values.user.role.planner }}
