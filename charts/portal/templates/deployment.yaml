@@ -43,7 +43,7 @@ spec:
           - configMapRef:
               name: {{ template "app.fullname" . }}
           - secretRef:
-              name: {{ template "app.fullname" . }}-private-jwt
+              name: {{ template "app.fullname" . }}-private-api-jwt
           - secretRef:
               name: {{ template "app.fullname" . }}-app
           - secretRef:
