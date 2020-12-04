@@ -38,7 +38,7 @@ class CaseController extends Controller
     {
         $case = $this->caseService->getCase($caseUuid);
 
-        if ($case != null && $this->caseService->canAccess($case)) {
+        if ($case !== null && $this->caseService->canAccess($case)) {
             $case->tasks[] = new Task(); // one empty placeholder
             return view('editcase', [
                 'action' => $case->status === CovidCase::STATUS_DRAFT ? 'new' : 'edit',
@@ -54,7 +54,7 @@ class CaseController extends Controller
     {
         $case = $this->caseService->getCase($caseUuid, true);
 
-        if ($case != null && $this->caseService->canAccess($case)) {
+        if ($case !== null && $this->caseService->canAccess($case)) {
 
             $taskgroups = array();
             foreach ($case->tasks as $task) {

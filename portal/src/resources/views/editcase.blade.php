@@ -80,11 +80,21 @@
                 </div>
                 <!-- End of table title component -->
                 <p>
-                    <button class="btn btn-outline-primary" type="button" onClick="$('#taskTable').show();">Ja</button>
-                    <button class="btn btn-outline-primary" type="button" onClick="$('#taskTable').hide();">Nee</button>
+                    <div class="btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-outline-primary active">
+                            <input name="addtasksnow" type="radio" autocomplete="off" value="ja" onClick="$('#taskTable').show();"
+                                   @if (old('addtasksnow') === 'ja') checked @endif
+                            /> Ja
+                        </label>
+                        <label class="btn btn-outline-primary active">
+                            <input name="addtasksnow" type="radio" autocomplete="off" value="nee" onClick="$('#taskTable').hide();"
+                                   @if (old('addtasksnow') === 'nee') checked @endif
+                            /> Nee
+                        </label>
+                    </div>
                 </p>
                 <!-- Start of table component -->
-                <table id="taskTable" class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-form  table-ggd">
+                <table id="taskTable" class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-form  table-ggd" @if (old('addtasksnow') === 'nee') style="display:none" @endif>
                     <!--
                         Modify the col definitions in the colgroup below to change the widths of the the columns.
                         The w-* classes will be automatically generated based on the $sizes array which is defined in the scss/_variables.scss
