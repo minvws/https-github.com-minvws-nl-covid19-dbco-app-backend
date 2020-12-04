@@ -9,7 +9,8 @@ env:
   PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
   PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
   DOCKER_COMPOSE: docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml -f docker-compose.postgres.yml
-  HEALTHAUTHORITY_ENCRYPTION_GENERAL_KEY_PAIR: ${{ secrets.HEALTHAUTHORITY_ENCRYPTION_GENERAL_KEY_PAIR }}
+  HEALTHAUTHORITY_SECURITY_MODULE_DUMMY_SK_KEY_EXCHANGE: ${{ secrets.HEALTHAUTHORITY_SK_KEY_EXCHANGE }}
+  HEALTHAUTHORITY_SECURITY_MODULE_DUMMY_SK_STORE: ${{ secrets.HEALTHAUTHORITY_SK_STORE }}
 
 jobs:
   build:
