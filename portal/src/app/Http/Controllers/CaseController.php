@@ -8,6 +8,7 @@ use App\Services\AuthenticationService;
 use App\Services\CaseService;
 use App\Services\QuestionnaireService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Jenssegers\Date\Date;
 
 class CaseController extends Controller
@@ -40,6 +41,7 @@ class CaseController extends Controller
         if ($case != null && $this->caseService->canAccess($case)) {
             $case->tasks[] = new Task(); // one empty placeholder
             return view('editcase', [
+                'action' => $case->status === CovidCase::STATUS_DRAFT ? 'new' : 'edit',
                 'case' => $case,
                 'tasks' => $case->tasks
             ]);
@@ -104,9 +106,11 @@ class CaseController extends Controller
         if ($case != null && $this->caseService->canAccess($case)) {
 
             $validatedData = $request->validate([
+                'action' => 'required|in:new,edit',
                 'name' => 'required|max:255',
                 'caseId' => 'max:255',
                 'dateOfSymptomOnset' => 'required',
+                'pairafteropen' => 'required_if:action,new'
             ]);
 
             $case->name = $validatedData['name'];
@@ -129,10 +133,10 @@ class CaseController extends Controller
 
         if ($case->status == 'draft') {
             // For draft cases go to the secondary screen to pair the case.
-            return redirect()->route('pair-case', [$caseUuid]);
+            return redirect()->route('case-pair', [$caseUuid]);
         } else {
             // For existing cases, go to the case's detail page
-            return redirect()->route('view-case', [$caseUuid]);
+            return redirect()->route('case-view', [$caseUuid]);
         }
 
     }

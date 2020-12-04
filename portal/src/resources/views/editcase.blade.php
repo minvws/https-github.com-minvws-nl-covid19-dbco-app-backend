@@ -17,6 +17,13 @@
 <div class="container-xl questionform">
     <form action="{{ route('case-save') }}" method="POST" autocomplete="off">
         @csrf
+        <input type="hidden" id="action" name="action" value=
+            @if ($case->status == 'draft')
+                "new"
+            @else
+                "edit"
+            @endif
+        />
         <input type="hidden" id="caseUuid" name="caseUuid" value="{{ $case->uuid }}">
 
         @include ('navbar')
@@ -128,18 +135,28 @@
                 <!-- End of table component -->
 
                 <!-- Question: discuss app download and pairing with index -->
-                @if ($case->status == 'draft')
                 <div class="align-items-end  mb-3 mt-5">
                     <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Vertel de index welke app ze moeten downloaden</h3>
                     <p class="mt-2 mb-0  ml-auto">De index heeft een app nodig die ze kunnen downloaden in de Play of AppStore waarmee ze de gegevens op een veilige manier met de GGD kunnen delen.</p>
 
+                    @if ($case->status == 'draft')
+                    @error('pairafteropen')
+                    <div class="alert alert-danger mt-3">
+                        Kies of de index een koppelcode voor de app nodig heeft.
+                    </div>
+                    @enderror
+
                     <p>
                         <div class="btn-group-toggle" data-toggle="buttons">
                             <label class="btn btn-outline-primary active">
-                                <input name="pairafteropen" type="radio" autocomplete="off"> Ja, maak nieuwe koppelcode voor de app
+                                <input name="pairafteropen" type="radio" autocomplete="off" value="ja"
+                                       @if (old('pairafteropen') === 'ja') checked @endif
+                                /> Ja, maak nieuwe koppelcode voor de app
                             </label>
                             <label class="btn btn-outline-primary active">
-                                <input name="pairafteropen" type="radio" autocomplete="off"> Nee
+                                <input name="pairafteropen" type="radio" autocomplete="off" value="nee"
+                                       @if (old('pairafteropen') === 'nee') checked @endif
+                                /> Nee
                             </label>
                         </div>
                     </p>
