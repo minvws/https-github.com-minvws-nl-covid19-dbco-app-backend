@@ -8,16 +8,11 @@ data:
   APP_DEBUG: {{ quote .Values.app.debug }}
   APP_URL: {{  .Values.app.url }}
   APACHE_RUN_USER: {{  .Values.apache.run.user }}
-  REDIS_HOST: {{  .Values.redis.host }}
-  REDIS_PORT: {{  quote .Values.redis.port }}
-  {{- if .Values.redis.sentinel.service }}
-  REDIS_SENTINEL_SERVICE: {{ .Values.redis.sentinel.service }}
-  {{- end }}
   DB_CONNECTION: {{  .Values.db.type }}
   DB_HOST: {{ .Values.db.host }}
   DB_DATABASE: {{ .Values.db.database }}
   TIH_REDIRECT_URL: {{ .Values.tih.redirect_url }}
-  PRIVATE_API_BASE_URI: {{ .Values.private.api.jwt.base_uri }}
+  PRIVATE_API_BASE_URI: {{ .Values.private.api.base_uri }}
   USER_ROLE_ADMIN: {{ .Values.user.role.admin }}
   USER_ROLE_USER: {{ .Values.user.role.user }}
   USER_ROLE_PLANNER: {{ .Values.user.role.planner }}
