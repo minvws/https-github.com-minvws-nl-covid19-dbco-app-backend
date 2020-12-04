@@ -17,6 +17,7 @@ class CovidCase
 
     public const STATUS_TIMEOUT = 'timeout';
     public const STATUS_EXPIRED = 'expired';
+    public const STATUS_UNKNOWN = 'unknown';
 
     public string $uuid;
 
@@ -41,32 +42,48 @@ class CovidCase
 
     public array $tasks = array();
 
-    public function caseStatus()
+    public function caseStatus(): string
     {
-        if ($this->status == self::STATUS_ARCHIVED) {
-            return self::STATUS_ARCHIVED;
-        } else if ($this->status == self::STATUS_DRAFT) {
-            return self::STATUS_DRAFT;
-        } else if ($this->status == self::STATUS_OPEN && $this->pairingExpiresAt !== null && $this->pairingExpiresAt->isFuture()) {
-            return self::STATUS_OPEN;
-        } else if ($this->status == self::STATUS_OPEN && $this->pairingExpiresAt !== null && $this->pairingExpiresAt->isPast()) {
-            return self::STATUS_TIMEOUT;
-        } else if ($this->status == self::STATUS_PAIRED && $this->windowExpiresAt->isPast() && $this->indexSubmittedAt == null) {
-            return self::STATUS_EXPIRED;
-        } else if ($this->status == self::STATUS_PAIRED && $this->windowExpiresAt->isFuture() && $this->indexSubmittedAt == null) {
-            return self::STATUS_PAIRED;
-        } else if ($this->status == self::STATUS_PAIRED && $this->windowExpiresAt->isFuture() && $this->hasExportables) {
-            return self::STATUS_DELIVERED;
-        } else if ($this->status == self::STATUS_PAIRED && $this->windowExpiresAt->isPast() && $this->hasExportables) {
-            return self::STATUS_PENDING_EXPORT;
-        } else if ($this->status == self::STATUS_PAIRED && $this->windowExpiresAt->isFuture() && $this->indexSubmittedAt != null && !$this->hasExportables) {
-            return self::STATUS_PROCESSED;
-        } else if ($this->status == self::STATUS_PAIRED && $this->windowExpiresAt->isPast() && $this->indexSubmittedAt != null && !$this->hasExportables) {
-            return self::STATUS_COMPLETED;
+        switch ($this->status) {
+            case self::STATUS_ARCHIVED:
+                return self::STATUS_ARCHIVED;
+
+            case self::STATUS_DRAFT:
+                return self::STATUS_DRAFT;
+
+            case self::STATUS_OPEN:
+                if ($this->pairingExpiresAt !== null) {
+                    if ($this->pairingExpiresAt->isFuture()) {
+                        return self::STATUS_OPEN;
+                    } else {
+                        return self::STATUS_TIMEOUT;
+                    }
+                }
+                break;
+
+            case self::STATUS_PAIRED:
+                if ($this->windowExpiresAt !== null) {
+                    if ($this->indexSubmittedAt === null && $this->windowExpiresAt->isFuture()) {
+                        return self::STATUS_PAIRED;
+                    } elseif ($this->indexSubmittedAt === null && $this->windowExpiresAt->isPast()) {
+                        return self::STATUS_EXPIRED;
+                    } elseif ($this->hasExportables && $this->windowExpiresAt->isFuture()) {
+                        return self::STATUS_DELIVERED;
+                    } elseif ($this->hasExportables && $this->windowExpiresAt->isPast()) {
+                        return self::STATUS_PENDING_EXPORT;
+                    } elseif ($this->windowExpiresAt->isFuture() && $this->indexSubmittedAt !== null && !$this->hasExportables) {
+                        return self::STATUS_PROCESSED;
+                    } elseif ($this->windowExpiresAt->isPast() && $this->indexSubmittedAt !== null && !$this->hasExportables) {
+                        return self::STATUS_COMPLETED;
+                    }
+                }
+                break;
         }
+
+        return self::STATUS_UNKNOWN;
     }
 
-    public static function statusLabel($status)
+    public static function statusLabel($status): string
     {
         $labels = [
             self::STATUS_DRAFT => 'Concept',
@@ -79,8 +96,9 @@ class CovidCase
             self::STATUS_ARCHIVED => 'Gearchiveerd',
             self::STATUS_TIMEOUT => 'Koppelcode verlopen',
             self::STATUS_EXPIRED => 'Verlopen',
+            self::STATUS_UNKNOWN => 'Onbekend'
         ];
-        return $labels[$status];
+        return $labels[$status] ?? $labels[self::STATUS_UNKNOWN];
     }
 
     public function isEditable()
