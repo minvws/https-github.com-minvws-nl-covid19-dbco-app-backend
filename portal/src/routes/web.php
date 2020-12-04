@@ -21,8 +21,8 @@ Route::get('/login', array('as' => 'login', function() {
     return view('login');
 }));
 
-// All pages that are behind auth
-Route::middleware('auth')->group(function() {
+// All pages that are behind auth and role check
+Route::middleware(['auth', 'rolecheck'])->group(function() {
     // Home (case overview)
     Route::get('/', [CaseController::class, 'listCases']);
 
@@ -44,12 +44,16 @@ Route::middleware('auth')->group(function() {
     // Trigger to export case to GGD private API
     Route::get('/notifycaseupdate/{uuid}', [CaseController::class, 'notifyCaseUpdate'])->name('notify-case-update');
 
+    Route::get('/task/{uuid}/questionnaire', [TaskController::class, 'viewTaskQuestionnaire']);
+});
+
+// All pages that are behind auth only
+Route::middleware('auth')->group(function () {
     // Account
     Route::get('/profile', [UserController::class, 'profile']);
     Route::post('/logout', [LoginController::class, 'logout']);
-
-    Route::get('/task/{uuid}/questionnaire', [TaskController::class, 'viewTaskQuestionnaire']);
 });
+
 
 Route::get('auth/identityhub', [LoginController::class, 'redirectToProvider']);
 Route::get('auth/login', [LoginController::class, 'handleProviderCallback']);
