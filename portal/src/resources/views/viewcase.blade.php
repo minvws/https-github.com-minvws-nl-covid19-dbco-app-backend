@@ -73,7 +73,7 @@
                     <tr>
                         <th scope="col">Naam <i class="icon  icon--eye"></i></th>
                         <th scope="col">Categorie <i class="icon  icon--eye"></i></th>
-                        <th scope="col">Context <i class="icon  icon--eye"></i></th>
+                        <th scope="col">Toelichting <i class="icon  icon--eye"></i></th>
                         <th scope="col">Gegevens</th>
                         <th scope="col">Geinformeerd</th>
                         <th scope="col"></th>
