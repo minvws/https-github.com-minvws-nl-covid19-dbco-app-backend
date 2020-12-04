@@ -29,25 +29,28 @@ class AuthenticationService
 
     public function hasPlannerRole(): bool
     {
-        $user = $this->getAuthenticatedUser();
-        foreach($user->roles as $role) {
-            if ($role == 'planner') {
-                return true;
-            }
-        }
-        return false;
+        return $this->hasRole('planner');
     }
 
     /**
-     * A user is considered a 'user' if he has at least the user role, but higher
-     * roles are acceptable too.
+     * Check if the logged in user has the user role.
      * @return bool
      */
     public function hasUserRole(): bool
     {
+        return $this->hasRole('user');
+    }
+
+    /**
+     * Check if the logged in user has a certain role
+     * @param string $role The role alias ('user', 'admin', 'planner' etc)
+     * @return bool
+     */
+    public function hasRole(string $requiredRole): bool
+    {
         $user = $this->getAuthenticatedUser();
         foreach($user->roles as $role) {
-            if (in_array($role, ['user', 'planner', 'admin'])) {
+            if ($requiredRole == $role) {
                 return true;
             }
         }
