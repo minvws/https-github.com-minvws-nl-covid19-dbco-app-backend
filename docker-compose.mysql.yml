@@ -12,12 +12,16 @@ services:
         environment:
             MYSQL_DATABASE: portal
             MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+        networks:
+            - healthauthority
 
     mysqlclient:
         image: mysql
         entrypoint: ["mysql", "--host=mysql", "--user=root", "--password=$MYSQL_PASSWORD", "portal"]
         environment:
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        networks:
+            - healthauthority
 
     healthauthority_api:
         depends_on:
