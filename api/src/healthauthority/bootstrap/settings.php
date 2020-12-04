@@ -24,8 +24,10 @@ return [
     ],
 
     'redis.parameters' => [
-        'host' => DI\env('REDIS_HOST'),
-        'port' => DI\env('REDIS_PORT')
+        [
+            'host' => DI\env('REDIS_HOST'),
+            'port' => DI\env('REDIS_PORT')
+        ]
     ],
     'redis.options' =>
         DI\factory(function () {
