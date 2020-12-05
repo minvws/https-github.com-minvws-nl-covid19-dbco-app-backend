@@ -187,6 +187,7 @@ class CaseService
 
         $case = $this->caseRepository->getCase($caseUuid);
         $this->clientRepository->registerClient($client, $case->windowExpiresAt);
+        $this->caseRepository->markCaseAsPaired($caseUuid);
         $this->exportCaseForClient($case, $client);
 
         return $client;

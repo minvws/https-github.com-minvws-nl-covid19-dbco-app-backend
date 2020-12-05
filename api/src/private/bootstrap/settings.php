@@ -14,15 +14,17 @@ return [
     'logger.path' => 'php://stdout',
     'logger.level' => $debug ? Logger::DEBUG : Logger::ERROR,
 
-    'pairingCode.allowedChars' => '0123456789',
-    'pairingCode.length' => 9,
-    'pairingCode.expiresDelta' => 900, // 15 minutes
+    'pairingCode.allowedChars' => '1234567890',
+    'pairingCode.length' => 12,
+    'pairingCode.expiresDelta' => DI\env('PAIRING_CODE_EXPIRES_DELTA', 45 * 60), // 45 minutes
     'pairingCode.expiredWarningDelta' => 24 * 60 * 60, // 1 day
     'pairingCode.blockedDelta' => 30 * 24 * 60 * 60, // 30 days
 
     'redis.parameters' => [
-        'host' => DI\env('REDIS_HOST'),
-        'port' => DI\env('REDIS_PORT')
+        [
+            'host' => DI\env('REDIS_HOST'),
+            'port' => DI\env('REDIS_PORT')
+        ]
     ],
     'redis.options' =>
         DI\factory(function () {
