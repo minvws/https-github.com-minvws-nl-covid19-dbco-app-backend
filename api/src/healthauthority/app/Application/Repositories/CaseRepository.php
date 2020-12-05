@@ -29,6 +29,13 @@ interface CaseRepository
     public function getCase(string $caseUuid): ?CovidCase;
 
     /**
+     * Mark case as paired.
+     *
+     * @param string $caseUuid Case identifier.
+     */
+    public function markCaseAsPaired(string $caseUuid): void;
+
+    /**
      * Store case answers.
      *
      * @param CovidCase $case

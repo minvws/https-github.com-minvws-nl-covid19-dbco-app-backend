@@ -3,9 +3,29 @@ version: '3.7'
 services:
     redis:
         image: redis
+        networks:
+            - private
+            - public
+
+    redis-sentinel:
+        image: bitnami/redis-sentinel
+        environment:
+            REDIS_MASTER_HOST: redis
+        networks:
+            - private
+            - public
 
     redis-haa:
         image: redis
+        networks:
+            - healthauthority
+
+    redis-haa-sentinel:
+        image: bitnami/redis-sentinel
+        environment:
+            REDIS_MASTER_HOST: redis-haa
+        networks:
+            - healthauthority
 
     private_api:
         build:
@@ -13,13 +33,16 @@ services:
             dockerfile: Dockerfile-private
         environment:
             DEBUG: ${DEBUG:-0}
-            REDIS_HOST: redis
-            REDIS_PORT: 6379
+            REDIS_HOST: redis-sentinel
+            REDIS_PORT: 26379
+            REDIS_SENTINEL_SERVICE: mymaster
             JWT_ENABLED: ${PRIVATE_API_JWT_ENABLED:-true}
             JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
             JWT_SECURE: ${PRIVATE_API_JWT_SECURE}
         depends_on:
             - redis
+        networks:
+            - private
 
     public_api:
         build:
@@ -27,57 +50,76 @@ services:
             dockerfile: Dockerfile-public
         environment:
             DEBUG: ${DEBUG:-0}
-            REDIS_HOST: redis
-            REDIS_PORT: 6379
+            REDIS_HOST: redis-sentinel
+            REDIS_PORT: 26379
+            REDIS_SENTINEL_SERVICE: mymaster
         depends_on:
             - redis
+        networks:
+            - public
 
     bridge:
         build: bridge
         environment:
             DEBUG: ${DEBUG:-0}
-            REDIS_HOST: redis
-            REDIS_PORT: 6379
+            REDIS_HOST: redis-sentinel
+            REDIS_PORT: 26379
+            REDIS_SENTINEL_SERVICE: mymaster
             HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api:8080/v1/
         depends_on:
             - redis
             - healthauthority_api
+        networks:
+            - private
+            - healthauthority
 
     bridge-clients:
         build: bridge
         command: process:clients
         environment:
             DEBUG: ${DEBUG:-0}
-            REDIS_HOST: redis
-            REDIS_PORT: 6379
+            REDIS_HOST: redis-sentinel
+            REDIS_PORT: 26379
+            REDIS_SENTINEL_SERVICE: mymaster
             HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api:8080/v1/
         depends_on:
             - redis
             - healthauthority_api
+        networks:
+            - private
+            - healthauthority
 
     bridge-caseresults:
         build: bridge
         command: process:caseresults
         environment:
             DEBUG: ${DEBUG:-0}
-            REDIS_HOST: redis
-            REDIS_PORT: 6379
+            REDIS_HOST: redis-sentinel
+            REDIS_PORT: 26379
+            REDIS_SENTINEL_SERVICE: mymaster
             HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api:8080/v1/
         depends_on:
             - redis
             - healthauthority_api
+        networks:
+            - private
+            - healthauthority
 
     worker:
         build: worker
         environment:
             DEBUG: ${DEBUG:-0}
-            REDIS_HOST: redis
-            REDIS_PORT: 6379
+            REDIS_HOST: redis-sentinel
+            REDIS_PORT: 26379
+            REDIS_SENTINEL_SERVICE: mymaster
             HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api:8080/v1/
         depends_on:
             - redis
             - healthauthority_api
-
+        networks:
+            - private
+            - healthauthority
+              
     healthauthority_api:
         build:
             context: ./api
@@ -90,11 +132,14 @@ services:
             DB_USERNAME: ${HEALTHAUTHORITY_API_DB_USERNAME}
             DB_PASSWORD: ${HEALTHAUTHORITY_API_DB_PASSWORD}
             DB_TNS: ${HEALTHAUTHORITY_API_DB_TNS:-oracle/XEPDB1}
-            REDIS_HOST: redis-haa
-            REDIS_PORT: 6379
+            REDIS_HOST: redis-haa-sentinel
+            REDIS_PORT: 26379
+            REDIS_SENTINEL_SERVICE: mymaster
             PRIVATE_API_BASE_URI: http://private_api:8080/v1/
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
             ENCRYPTION_GENERAL_KEY_PAIR: ${HEALTHAUTHORITY_ENCRYPTION_GENERAL_KEY_PAIR}
+        networks:
+            - healthauthority
 
     portal:
         build:
@@ -104,7 +149,6 @@ services:
             APP_URL: ${PORTAL_APP_URL}
             APP_KEY: ${PORTAL_APP_KEY}
             APP_DEBUG: ${DEBUG:-0}
-            REDIS_HOST: redis
             DB_CONNECTION: ${DATABASE_TYPE}
             DB_HOST: ${DATABASE_TYPE}
             DB_DATABASE: portal
@@ -119,3 +163,16 @@ services:
             USER_ROLE_PLANNER: ${PORTAL_USER_ROLE_PLANNER:-DBCO-Werkverdeler}
             PRIVATE_API_BASE_URI: http://private_api:8080/v1/
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
+            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api:8080/v1/
+        depends_on:
+            - healthauthority_api
+        networks:
+            - healthauthority
+
+networks:
+    public:
+        name: public
+    private:
+        name: private
+    healthauthority:
+        name: healthauthority

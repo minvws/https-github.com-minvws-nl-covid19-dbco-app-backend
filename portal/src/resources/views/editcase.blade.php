@@ -15,7 +15,7 @@
 <?php $questionNr = 1; ?>
 
 <div class="container-xl questionform">
-    <form action="/savecase" method="POST">
+    <form action="/savecase" method="POST" autocomplete="off">
         @csrf
         <input type="hidden" id="caseUuid" name="caseUuid" value="{{ $case->uuid }}">
 
@@ -27,6 +27,7 @@
                 <!-- Start of question title component -->
                 <div class="align-items-end  mb-3 mt-5">
                     <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Hoe heet de index?</h3>
+                    <p class="mt-2 mb-0  ml-auto">Deze naam is bedoeld om de case makkelijk terug te vinden in het portaal. De naam wordt niet naar HPZone verstuurd.</p>
                 </div>
                 <!-- End of question title component -->
                 @error('name')
@@ -68,7 +69,7 @@
                 <!-- Start of table title component -->
                 <div class="align-items-end  mb-3 mt-5">
                     <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Ga je nu samen met de index de contacten in kaart brengen?</h3>
-                    <p class="mt-2 mb-0  ml-auto">Als je wilt dat de index zelf een begin maakt met het in kaart brengen van mensen die misschien besmet zijn, dan kan dat met de app.</p>
+                    <p class="mt-2 mb-0  ml-auto">Ook zonder dat jij contacten klaarzet voor de index, kan de index alvast beginnen met het verzamelen van contacten en hun gegevens.</p>
                 </div>
                 <!-- End of table title component -->
                 <p>

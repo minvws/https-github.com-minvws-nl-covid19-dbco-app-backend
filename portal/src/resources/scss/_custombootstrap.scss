@@ -1,0 +1,9 @@
+$purpleBtn:#5616FF;
+
+.btn-primary {
+    @include button-variant($purpleBtn, darken($purpleBtn, 7.5%), darken($purpleBtn, 10%), lighten($purpleBtn,5%), lighten($purpleBtn, 10%), darken($purpleBtn,30%));
+}
+
+.btn-outline-primary {
+    @include button-outline-variant($purpleBtn, #222222, lighten($purpleBtn,5%), $purpleBtn);
+}

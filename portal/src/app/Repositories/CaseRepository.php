@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\BCOUser;
 use App\Models\CovidCase;
+use DateTimeImmutable;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Jenssegers\Date\Date;
 
@@ -48,10 +49,10 @@ interface CaseRepository
 
     /**
      * @param CovidCase $case
-     * @param Date $windowExpiresAt
-     * @param Date $pairingExpiresAt
+     * @param DateTimeImmutable $windowExpiresAt
+     * @param DateTimeImmutable $pairingExpiresAt
      * @return mixed
      */
-    public function setExpiry(CovidCase $case, Date $windowExpiresAt, Date $pairingExpiresAt);
+    public function setExpiry(CovidCase $case, DateTimeImmutable $windowExpiresAt, DateTimeImmutable $pairingExpiresAt);
 
 }

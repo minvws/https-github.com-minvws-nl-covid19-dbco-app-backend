@@ -12,12 +12,16 @@ services:
         environment:
             POSTGRES_DB: portal
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        networks:
+            - healthauthority
 
     psql:
         image: postgres
         entrypoint: ["psql", "--host=postgres", "--user=postgres", "portal"]
         environment:
             PGPASSWORD: ${POSTGRES_PASSWORD}
+        networks:
+            - healthauthority
 
     healthauthority_api:
         depends_on:
