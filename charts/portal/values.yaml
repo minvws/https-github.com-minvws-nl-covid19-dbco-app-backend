@@ -61,9 +61,11 @@ user:
 apache:
   run:
     user: "www-data"
+    group: "www-data"
 
 # App
 app:
+  env: production
   debug: 0
   url: http://example.com
   key: changeme

@@ -26,6 +26,10 @@ hpa:
   # average http requests per second per pod (k8s-prometheus-adapter)
   requests:
 
+# App
+app:
+  env: production
+
 # Redis
 redis:
   host:
@@ -59,6 +63,7 @@ private:
 apache:
   run:
     user: "www-data"
+    group: "www-data"
 
 # Debug
 debug: 0

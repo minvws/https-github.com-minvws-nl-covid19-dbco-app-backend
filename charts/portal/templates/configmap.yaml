@@ -5,9 +5,11 @@ metadata:
   labels:
     {{- include "app.labels" . | nindent 4 }}
 data:
+  APP_ENV: {{ .Values.app.env }}
   APP_DEBUG: {{ quote .Values.app.debug }}
   APP_URL: {{  .Values.app.url }}
   APACHE_RUN_USER: {{  .Values.apache.run.user }}
+  APACHE_RUN_GROUP: {{  .Values.apache.run.group }}
   DB_CONNECTION: {{  .Values.db.type }}
   DB_HOST: {{ .Values.db.host }}
   DB_DATABASE: {{ .Values.db.database }}
