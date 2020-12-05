@@ -49,8 +49,7 @@ COPY assets/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_def
 
 COPY src /src
 
-RUN cd /src && composer install && \
-    usermod -u 1000 www-data
+RUN cd /src && composer install
 
 # logs should go to stdout / stderr
 RUN set -ex \
@@ -64,6 +63,9 @@ RUN composer global require laravel/installer
 ENV PATH $PATH:/root/.composer/vendor/bin
 
 WORKDIR /src
+
+RUN usermod -u 1000 www-data && \
+  chown -R www-data:www-data /src
 
 EXPOSE 8080/tcp
 
