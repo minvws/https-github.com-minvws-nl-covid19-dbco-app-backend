@@ -152,7 +152,7 @@
                     @if ($case->status == 'draft')
                     @error('pairafteropen')
                     <div class="alert alert-danger mt-3">
-                        Kies of de index een koppelcode voor de app nodig heeft.
+                        Geef aan of de index een koppelcode voor de app nodig heeft.
                     </div>
                     @enderror
 
@@ -161,7 +161,7 @@
                             <label class="btn btn-outline-primary active">
                                 <input name="pairafteropen" type="radio" autocomplete="off" value="ja"
                                        @if (old('pairafteropen') === 'ja') checked @endif
-                                /> Ja, maak nieuwe koppelcode voor de app
+                                /> Ja, maak koppelcode
                             </label>
                             <label class="btn btn-outline-primary active">
                                 <input name="pairafteropen" type="radio" autocomplete="off" value="nee"

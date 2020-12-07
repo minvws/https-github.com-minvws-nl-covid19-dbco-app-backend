@@ -110,11 +110,11 @@ class CaseController extends Controller
                 'name' => 'required|max:255',
                 'caseId' => 'max:255',
                 'dateOfSymptomOnset' => 'required',
-                'pairafteropen' => 'required_if:action,new'
+                'pairafteropen' => 'required_if:action,new|in:ja,nee',
+                'addtasksnow' => 'nullable|in:ja,nee'
             ]);
 
             $case->name = $validatedData['name'];
-
             $case->caseId = $validatedData['caseId'];
             $case->dateOfSymptomOnset = Date::parse($validatedData['dateOfSymptomOnset']);
 
