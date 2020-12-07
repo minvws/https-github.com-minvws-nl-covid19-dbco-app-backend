@@ -24,10 +24,19 @@ return [
         'tns' => DI\env('DB_TNS', null)
     ],
 
-    'redis.parameters' => [
+    'redis.connection' => [
         'host' => DI\env('REDIS_HOST'),
         'port' => DI\env('REDIS_PORT')
     ],
+    'redis.parameters' =>
+        DI\factory(function (ContainerInterface $c) {
+            $service = getenv('REDIS_SENTINEL_SERVICE');
+            if (empty($service)) {
+                return $c->get('redis.connection');
+            } else {
+                return [$c->get('redis.connection')];
+            }
+        }),
     'redis.options' =>
         DI\factory(function () {
             $service = getenv('REDIS_SENTINEL_SERVICE');
