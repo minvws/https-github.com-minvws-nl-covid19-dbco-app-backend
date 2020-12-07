@@ -157,7 +157,7 @@ class EncryptionHelper
      */
     public function sealStoreValue(string $value): string
     {
-        $this->sealStoreValueWithKey($value, SecurityModule::SK_STORE);
+        return $this->sealStoreValueWithKey($value, SecurityModule::SK_STORE);
     }
 
     /**

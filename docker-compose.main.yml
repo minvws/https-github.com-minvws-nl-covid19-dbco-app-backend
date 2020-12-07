@@ -151,10 +151,6 @@ services:
 
 networks:
     public:
-        name: public
     sluice:
-        name: sluice
     private:
-        name: private
     healthauthority:
-        name: healthauthority
