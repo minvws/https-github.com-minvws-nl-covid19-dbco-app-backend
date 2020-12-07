@@ -78,10 +78,10 @@ class Task implements JsonSerializable, DecodableDecorator
 
             if ($task->questionnaireResult) {
                 foreach ($task->questionnaireResult->answers as $answer) {
-                    if ($answer->value instanceof ContactDetails && $answer->value-firstName && $answer->value->lastName) {
+                    if ($answer->value instanceof ContactDetails && $answer->value->firstName && $answer->value->lastName) {
                         $label = $answer->value->firstName . ' ' . substr($answer->value->lastName, 0, 1);
                         break;
-                    } else if ($answer->value instanceof ContactDetails && $answer->value-firstName) {
+                    } else if ($answer->value instanceof ContactDetails && $answer->value->firstName) {
                         $label = $answer->value->firstName;
                         break;
                     }

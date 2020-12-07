@@ -86,12 +86,31 @@ class TestCase extends PHPUnit_TestCase
      */
     protected function assertResponseStatusCode(int $statusCode, ResponseInterface $response)
     {
+        if ($response->getStatusCode() == $statusCode) {
+            $this->assertEquals($statusCode, $response->getStatusCode());
+            return;
+        }
+
+        $body = (string)$response->getBody();
+        if ($response->getStatusCode() >= 400) {
+            $data = json_decode((string)$response->getBody());
+            if (isset($data->type) && isset($data->message)) {
+                $body =
+                    "  JSON error object\n" .
+                    "  Type: {$data->type}\n" .
+                    "  Message:\n" .
+                    "    " .
+                    trim(str_replace("\n", "\n" . str_repeat(" ", 4), $data->message));
+            }
+        }
+
         $message = sprintf(
-            "Failed asserting that status code %d matches expected %d, response body:\n%s",
+            "Failed asserting that status code %d matches expected %d, response:\n%s",
             $response->getStatusCode(),
             $statusCode,
-            $response->getBody()
+            $body
         );
+
         $this->assertEquals($statusCode, $response->getStatusCode(), $message);
     }
 
