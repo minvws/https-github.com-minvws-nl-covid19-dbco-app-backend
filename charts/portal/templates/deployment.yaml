@@ -28,9 +28,6 @@ spec:
       {{- if .Values.serviceAccount.enabled }}
       serviceAccountName: {{ template "app.serviceAccountName" . }}
       {{- end }}
-      volumes:
-      - name: storage
-        emptyDir: {}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
         - name: {{ .Values.imagePullSecrets }}
@@ -65,23 +62,6 @@ spec:
             timeoutSeconds: 1
             failureThreshold: 3
             successThreshold: 1
-          volumeMounts:
-          - name: storage
-            mountPath: /src/storage
-      initContainers:
-        - name: create-storage-dirs
-          image: busybox
-          command:
-          - mkdir
-          - "-p"
-          - /src/storage/app/public
-          - /src/storage/framework/cache/data
-          - /src/storage/framework/sessions
-          - /src/storage/framework/testing
-          - /src/storage/framework/views
-          volumeMounts:
-          - name: storage
-            mountPath: /src/storage
     {{- with .Values.securityContext }}
       securityContext:
 {{ toYaml . | indent 8 }}
