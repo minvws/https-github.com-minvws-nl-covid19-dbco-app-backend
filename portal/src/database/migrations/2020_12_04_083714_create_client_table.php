@@ -20,8 +20,8 @@ class CreateClientTable extends Migration
                                                 ->on('covidcase')
                                                 ->onDelete('cascade');
             $table->string('token');
-            $table->string('rx_key');
-            $table->string('tx_key');
+            $table->string('receive_key');
+            $table->string('transmit_key');
             $table->timestamps();
         });
     }

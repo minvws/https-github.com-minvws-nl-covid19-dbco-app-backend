@@ -8,7 +8,7 @@ use DBCO\HealthAuthorityAPI\Application\DTO\Answer as AnswerDTO;
 use DBCO\HealthAuthorityAPI\Application\Helpers\EncryptionHelper;
 use DBCO\HealthAuthorityAPI\Application\Models\Answer;
 use DBCO\HealthAuthorityAPI\Application\Models\Client;
-use DBCO\HealthAuthorityAPI\Application\Models\ClientCase;
+use DBCO\HealthAuthorityAPI\Application\Models\ClientRegistration;
 use DBCO\HealthAuthorityAPI\Application\Models\CovidCase;
 use DBCO\HealthAuthorityAPI\Application\Models\QuestionnaireResult;
 use DBCO\HealthAuthorityAPI\Application\Models\Task;
@@ -23,6 +23,7 @@ use DBCO\Shared\Application\Managers\TransactionManager;
 use DBCO\Shared\Application\Models\SealedData;
 use Exception;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Responsible for listing tasks.
@@ -155,32 +156,30 @@ class CaseService
      * @param string $caseUuid              Case identifier.
      * @param string $sealedClientPublicKey Sealed client public key.
      *
+     * @return ClientRegistration Client registration data.
+     *
      * @throws CaseNotFoundException
-     * @throws SealedBoxException
      */
-    public function registerClient(string $caseUuid, string $sealedClientPublicKey): Client
+    public function registerClient(string $caseUuid, string $sealedClientPublicKey): ClientRegistration
     {
         $caseExists = $this->caseRepository->caseExists($caseUuid);
         if (!$caseExists) {
             throw new CaseNotFoundException('Case does not exist!');
         }
 
+        $uuid = Uuid::uuid4()->toString();
         $clientPublicKey = $this->encryptionHelper->unsealClientPublicKey($sealedClientPublicKey);
         $healthAuthorityKeyPair = $this->encryptionHelper->createHealthAuthorityKeyPair();
         $healthAuthorityPublicKey = $this->encryptionHelper->getHealthAuthorityPublicKey($healthAuthorityKeyPair);
         $sealedHealthAuthorityPublicKey = $this->encryptionHelper->sealHealthAuthorityPublicKeyForClient($healthAuthorityPublicKey, $clientPublicKey);
-        $healthAuthoritySecretKey = $this->encryptionHelper->getHealthAuthoritySecretKey($healthAuthorityKeyPair);
         [$receiveKey, $transmitKey] = $this->encryptionHelper->deriveSharedSecretKeys($healthAuthorityKeyPair, $clientPublicKey);
         $token = $this->encryptionHelper->deriveSharedToken($receiveKey, $transmitKey);
 
         $client =
             new Client(
+                $uuid,
+                $caseUuid,
                 $token,
-                new ClientCase($caseUuid),
-                $clientPublicKey,
-                $healthAuthorityPublicKey,
-                $healthAuthoritySecretKey,
-                $sealedHealthAuthorityPublicKey,
                 $receiveKey,
                 $transmitKey
             );
@@ -190,18 +189,19 @@ class CaseService
         $this->caseRepository->markCaseAsPaired($caseUuid);
         $this->exportCaseForClient($case, $client);
 
-        return $client;
+        return new ClientRegistration($client, $sealedHealthAuthorityPublicKey);
     }
 
 
     /**
      * Submit case with tasks.
      *
-     * @param string $token          Case token.
+     * @param string $token Case token.
      * @param SealedData $sealedCase Sealed case data.
      *
      * @throws CaseNotFoundException
      * @throws SealedBoxException
+     * @throws Exception
      */
     public function submitCase(string $token, SealedData $sealedCase): void
     {
@@ -214,7 +214,6 @@ class CaseService
         if (empty($json)) {
             throw new SealedBoxException();
         }
-
 
         $decoder = new JSONDecoder();
 
@@ -231,8 +230,9 @@ class CaseService
             );
         $decoder->getContext()->setValue('questionnaires', $questionnaires);
 
+        /** @var $case CovidCase */
         $case = $decoder->decode($json)->decodeObject(CovidCase::class);
-        $case->uuid = $client->case->uuid;
+        $case->uuid = $client->caseUuid;
 
         $this->transactionManager->run(function () use ($case) {
             $this->caseRepository->storeCaseAnswers($case);
