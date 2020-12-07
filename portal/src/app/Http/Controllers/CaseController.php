@@ -117,6 +117,7 @@ class CaseController extends Controller
             $case->name = $validatedData['name'];
             $case->caseId = $validatedData['caseId'];
             $case->dateOfSymptomOnset = Date::parse($validatedData['dateOfSymptomOnset']);
+            $pairafteropen = $validatedData['pairafteropen'];
 
             $this->caseService->updateCase($case);
 
@@ -131,7 +132,7 @@ class CaseController extends Controller
             $this->caseService->deleteRemovedTasks($caseUuid, $keep);
         }
 
-        if ($case->status == 'draft') {
+        if ($case->status == 'draft' && $pairafteropen === 'ja') {
             // For draft cases go to the secondary screen to pair the case.
             return redirect()->route('case-pair', [$caseUuid]);
         } else {
