@@ -41,6 +41,10 @@ Route::middleware('auth')->group(function() {
     Route::get('/dumpcase/{uuid}', [CaseController::class, 'dumpCase'])->name('case-dump');
     Route::post('/linktasktoexport', [TaskController::class, 'linkTaskToExport']);
 
+    // Trigger to export case to GGD private API
+    Route::get('/notifycaseupdate/{uuid}', [CaseController::class, 'notifyCaseUpdate'])->name('notify-case-update');
+
+    // Account
     Route::get('/profile', [UserController::class, 'profile'])->name('user-profile');
     Route::post('/logout', [LoginController::class, 'logout'])->name('user-logout');
 
