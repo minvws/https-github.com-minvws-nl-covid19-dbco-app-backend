@@ -50,6 +50,9 @@ services:
     healthauthority_api:
         environment:
             APP_ENV: development
+            SECURITY_MODULE_TYPE: ${HEALTHAUTHORITY_SECURITY_MODULE_TYPE:-simple}
+            SECURITY_MODULE_SK_KEY_EXCHANGE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_KEY_EXCHANGE}
+            SECURITY_MODULE_SK_STORE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_STORE}
         ports:
             - ${HEALTHAUTHORITY_API_PORT:-8083}:8080
         volumes:
@@ -70,7 +73,7 @@ services:
             APP_ENV: development
             DEBUG: ${DEBUG:-0}
             PUBLIC_API_BASE_URI: http://public_api:8080/v1/
-            HEALTHAUTHORITY_ENCRYPTION_GENERAL_KEY_PAIR: ${HEALTHAUTHORITY_ENCRYPTION_GENERAL_KEY_PAIR}
+            HEALTHAUTHORITY_SK_KEY_EXCHANGE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_KEY_EXCHANGE}
         depends_on:
             - public_api
         volumes:

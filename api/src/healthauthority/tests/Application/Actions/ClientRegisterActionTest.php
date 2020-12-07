@@ -50,10 +50,10 @@ class ClientRegisterActionTest extends TestCase
             VALUES ('{$caseUuid}', 'Test', '{$dateOfSymptomOnset}', '{$windowExpiresAt}', 'open')
         "); // NOTE: Oracle might need TO_DATE call (untested)
 
-        $encodedGeneralKeyPair = getenv('ENCRYPTION_GENERAL_KEY_PAIR');
-        $this->assertNotEmpty($encodedGeneralKeyPair);
-        $generalKeyPair = base64_decode($encodedGeneralKeyPair);
-        $generalPublicKey = sodium_crypto_box_publickey($generalKeyPair);
+        $encodedGeneralSecretKey = getenv('SECURITY_MODULE_SK_KEY_EXCHANGE');
+        $this->assertNotEmpty($encodedGeneralSecretKey);
+        $generalSecretKey = base64_decode($encodedGeneralSecretKey);
+        $generalPublicKey = sodium_crypto_box_publickey_from_secretkey($generalSecretKey);
 
         $clientKeyPair = sodium_crypto_kx_keypair();
         $clientPublicKey = sodium_crypto_kx_publickey($clientKeyPair);
