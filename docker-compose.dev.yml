@@ -78,3 +78,5 @@ services:
             - public_api
         volumes:
             - ./simulator/src:/src
+        networks:
+            - public

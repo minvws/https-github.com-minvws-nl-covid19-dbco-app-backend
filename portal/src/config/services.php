@@ -47,5 +47,13 @@ return [
             // 'debug' => fopen('php://stderr', 'a+')
         ],
         'jwt_secret' => env('PRIVATE_API_JWT_SECRET')
+    ],
+
+    'healthauthority_api' => [
+        'client_options' => [
+            'base_uri' => env('HEALTHAUTHORITY_API_BASE_URI'),
+            // enable to send request/response output to stderr
+            // 'debug' => fopen('php://stderr', 'a+')
+        ]
     ]
 ];
