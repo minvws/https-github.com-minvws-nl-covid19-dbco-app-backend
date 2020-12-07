@@ -48,6 +48,8 @@ spec:
           livenessProbe:
             exec:
               command:
+              - /bin/sh
+              - "-c"
               - /src/bridge
               - status
             initialDelaySeconds: 5
