@@ -36,6 +36,7 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/src/bridge"]
           {{- if .Values.bridge.args }}
           args: {{ .Values.bridge.args }}
           {{- end }}
@@ -51,7 +52,7 @@ spec:
               - status
             initialDelaySeconds: 5
             periodSeconds: 10
-            timeoutSeconds: 1
+            timeoutSeconds: 5
             failureThreshold: 3
             successThreshold: 1
     {{- with .Values.securityContext }}
