@@ -150,6 +150,7 @@ services:
             - healthauthority_api
         networks:
             - healthauthority
+            - private
 
 networks:
     public:
