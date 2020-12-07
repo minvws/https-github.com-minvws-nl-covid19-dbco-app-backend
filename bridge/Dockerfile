@@ -1,4 +1,4 @@
-FROM php:7.4
+FROM php:7.4-cli
 
 # Install packages and extensions
 RUN apt-get -qq update && \
@@ -27,4 +27,4 @@ RUN set -ex \
 
 WORKDIR /src
 
-ENTRYPOINT ["/src/bridge"]
+CMD ["/src/bridge"]
