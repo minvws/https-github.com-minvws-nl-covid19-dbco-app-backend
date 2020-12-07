@@ -3,8 +3,8 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/minvws/nl-covid19-dbco-app-backend-private/healthauthority-api
-  tag: 0.1.2
+  repository: ghcr.io/minvws/nl-covid19-dbco-app-backend-private/portal
+  tag: 0.1.3
   pullPolicy: IfNotPresent
 
 imagePullSecrets:
@@ -25,6 +25,13 @@ hpa:
   memory:
   # average http requests per second per pod (k8s-prometheus-adapter)
   requests:
+
+# Redis
+redis:
+  host:
+  port: 6379
+  sentinel:
+    service:
 
 # Database
 db:
