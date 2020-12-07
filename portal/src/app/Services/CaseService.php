@@ -77,7 +77,7 @@ class CaseService
     {
         $owner = $this->authService->getAuthenticatedUser();
         $assignedTo = null;
-        if (!$this->authService->isPlanner()) {
+        if (!$this->authService->hasPlannerRole()) {
             // Auto assign to yourself if you aren't a planner
             $assignedTo = $owner;
         }

@@ -82,7 +82,7 @@ class CaseController extends Controller
 
     public function listCases()
     {
-        if ($this->authService->isPlanner()) {
+        if ($this->authService->hasPlannerRole()) {
             $cases = $this->caseService->organisationCases();
         } else {
             $cases = $this->caseService->myCases();
