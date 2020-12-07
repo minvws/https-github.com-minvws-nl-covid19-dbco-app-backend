@@ -7,6 +7,7 @@ use App\Models\Task;
 use App\Services\AuthenticationService;
 use App\Services\CaseService;
 use App\Services\QuestionnaireService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Jenssegers\Date\Date;
 
@@ -76,7 +77,7 @@ class CaseController extends Controller
 
     public function listCases()
     {
-        if ($this->authService->isPlanner()) {
+        if ($this->authService->hasPlannerRole()) {
             $cases = $this->caseService->organisationCases();
         } else {
             $cases = $this->caseService->myCases();
@@ -141,9 +142,9 @@ class CaseController extends Controller
         $case = $this->caseService->getCase($caseUuid);
 
         if ($case != null && $this->caseService->canAccess($case)) {
-
-            $pairingCode = $this->caseService->createPairingCodeForCase($caseUuid);
+            $pairingCode = $this->caseService->createPairingCodeForCase($case);
             $isDraftCase = $case->caseStatus() == CovidCase::STATUS_DRAFT;
+
             // When we show the pairingcode for a new case, we mark the case as 'open'.
             if ($isDraftCase) {
                 $this->caseService->openCase($case);
@@ -151,5 +152,30 @@ class CaseController extends Controller
             return view('paircase', ['case' => $case, 'pairingCode' => $pairingCode, 'includeQuestionNumber' => $isDraftCase]);
         }
         return redirect()->intended('/');
+    }
+
+    /**
+     * Trigger healthauthority_api to export case data.
+     * Not to be confused with exporting case data to HPZone.
+     *
+     * @param $caseUuid
+     * @return RedirectResponse
+     */
+    public function notifyCaseUpdate($caseUuid): RedirectResponse
+    {
+        $case = $this->caseService->getCase($caseUuid);
+
+        if ($case === null || !$this->caseService->canAccess($case)) {
+            // This is not the CovidCase you are looking for
+            return redirect()->intended('/');
+        }
+
+        if ($this->caseService->notifyCaseUpdate($case)) {
+            request()->session()->flash('message', 'Case klaargezet voor index');
+        } else {
+            request()->session()->flash('message', 'Fout bij klaarzetten case voor index');
+        }
+
+        return redirect()->intended('/case/' . $caseUuid);
     }
 }

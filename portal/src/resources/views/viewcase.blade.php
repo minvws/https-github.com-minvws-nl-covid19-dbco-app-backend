@@ -26,9 +26,17 @@
                     @endif
                     @if ($case->isEditable())
                         <a class="btn btn-outline-primary" role="button" href="/editcase/{{ $case->uuid }}">Case wijzigen</a>
-                    @endif<a class="btn btn-primary" role="button" href="/dumpcase/{{ $case->uuid }}">Zet in HPZone</a>
+                    @endif
+                    <a class="btn btn-primary" role="button" href="/dumpcase/{{ $case->uuid }}">Zet in HPZone</a>
+                    <a class="btn btn-outline-primary" role="button" href="{{ route('notify-case-update', ['uuid' => $case->uuid]) }}">Klaarzetten voor index</a>
                 </span>
             </h2>
+            <!-- flash message -->
+            @if (session('message'))
+            <p>
+                <div class="alert">{!! session('message') !!}</div>
+            </p>
+            @endif
             <!-- End of page title component -->
             <p>
                 Casenr: {{ $case->caseId }}
@@ -65,7 +73,7 @@
                     <tr>
                         <th scope="col">Naam <i class="icon  icon--eye"></i></th>
                         <th scope="col">Categorie <i class="icon  icon--eye"></i></th>
-                        <th scope="col">Context <i class="icon  icon--eye"></i></th>
+                        <th scope="col">Toelichting <i class="icon  icon--eye"></i></th>
                         <th scope="col">Gegevens</th>
                         <th scope="col">Geinformeerd</th>
                         <th scope="col"></th>

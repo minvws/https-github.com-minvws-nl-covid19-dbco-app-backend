@@ -14,6 +14,7 @@ if [ "$1" == "--reset" ]; then
 
   echo "=====[ RESET ]====="
   $DOCKER_COMPOSE down --remove-orphans -v
+  $DOCKER_COMPOSE build
   echo
 fi
 
@@ -107,6 +108,13 @@ if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "healthauthority_api" ]; then
   echo
   echo "=====[ RUN TESTS FOR HEALTHAUTHORITY API ]====="
   $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority_api
+  echo
+fi
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "portal" ]; then
+  echo
+  echo "=====[ RUN TESTS FOR PORTAL ]====="
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit portal
   echo
 fi
 
