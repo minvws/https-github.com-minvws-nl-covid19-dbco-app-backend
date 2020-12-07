@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Answer;
 use App\Repositories\AnswerRepository;
+use App\Repositories\CaseUpdateNotificationRepository;
 use App\Repositories\CaseRepository;
 use App\Repositories\PairingRepository;
 use App\Repositories\TaskRepository;
@@ -45,6 +46,7 @@ class CaseService
      */
     private AuthenticationService $authService;
 
+    private CaseUpdateNotificationRepository $caseExportRepository;
 
     /**
      * Constructor.
@@ -54,25 +56,28 @@ class CaseService
      * @param PairingRepository $pairingRepository
      * @param AnswerRepository $answerRepository
      * @param AuthenticationService $authService
+     * @param CaseUpdateNotificationRepository $caseExportRepository
      */
     public function __construct(CaseRepository $caseRepository,
                                 TaskRepository $taskRepository,
                                 PairingRepository $pairingRepository,
                                 AnswerRepository $answerRepository,
-                                AuthenticationService $authService)
+                                AuthenticationService $authService,
+                                CaseUpdateNotificationRepository $caseExportRepository)
     {
         $this->caseRepository = $caseRepository;
         $this->taskRepository = $taskRepository;
         $this->pairingRepository = $pairingRepository;
         $this->answerRepository =$answerRepository;
         $this->authService = $authService;
+        $this->caseExportRepository = $caseExportRepository;
     }
 
     public function createDraftCase(): CovidCase
     {
         $owner = $this->authService->getAuthenticatedUser();
         $assignedTo = null;
-        if (!$this->authService->isPlanner()) {
+        if (!$this->authService->hasPlannerRole()) {
             // Auto assign to yourself if you aren't a planner
             $assignedTo = $owner;
         }
@@ -82,18 +87,17 @@ class CaseService
     /**
      * Create pairing code for the given case.
      *
-     * @param string $caseUuid
+     * @param CovidCase $case
      *
      * @return string|null Formatted pairing code.
      */
-    public function createPairingCodeForCase(string $caseUuid): ?string
+    public function createPairingCodeForCase(CovidCase $case): ?string
     {
-        $case = $this->getCase($caseUuid);
         if (!$this->canAccess($case)) {
             return null;
         }
 
-        $expiresAt = Date::now()->addDays(1); // TODO: move to config and/or base on case data
+        $expiresAt = Date::now()->addDays(1)->toDateTimeImmutable(); // TODO: move to config and/or base on case data
         $pairing = $this->pairingRepository->getPairing($case->uuid, $expiresAt);
 
         $this->caseRepository->setExpiry($case, $expiresAt, $pairing->expiresAt);
@@ -147,6 +151,11 @@ class CaseService
     public function updateCase(CovidCase $case)
     {
         $this->caseRepository->updateCase($case);
+    }
+
+    public function notifyCaseUpdate(CovidCase $case): bool
+    {
+        return $this->caseExportRepository->notify($case);
     }
 
     public function openCase(CovidCase $case)

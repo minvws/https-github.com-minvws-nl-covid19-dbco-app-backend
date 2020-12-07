@@ -98,7 +98,7 @@ class IdentityHubProvider extends AbstractProvider implements ProviderInterface
             foreach ($user['roles'] as $role) {
                 $matchedRole = array_search($role['name'], $roles);
                 if ($matchedRole) {
-                    $userRoles[] = $role;
+                    $userRoles[] = $matchedRole;
                 }
             }
         }
