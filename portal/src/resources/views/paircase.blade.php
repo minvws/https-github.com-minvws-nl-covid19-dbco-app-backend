@@ -12,8 +12,6 @@
 </head>
 <body>
 
-<?php $questionNr = 1; ?>
-
 <div class="container-xl questionform">
 
     @include ('navbar')
@@ -23,11 +21,11 @@
 
     <!-- Start of table title component -->
     <div class="align-items-end  mb-3 mt-5">
-        <h3 class="mb-0">@if ($includeQuestionNumber)<div class="question-nr">6</div>@endif Deel de code met de index</h3>
+        <h3 class="mb-0">Deel de code met de index</h3>
         <p class="mt-2 mb-0  ml-auto">Met deze code heeft de index toegang tot de contacten uit de aanleverlijst.</p>
     </div>
     <!-- End of table title component -->
-    <div class="mt-4 mb-4 bg-white w-25 p-4 text-center">
+    <div class="mt-4 mb-4 bg-white p-4 text-center" style="min-width: max-content; max-width: max-content; white-space: nowrap;">
         <h2>{{ $pairingCode }}</h2>
     </div>
 
