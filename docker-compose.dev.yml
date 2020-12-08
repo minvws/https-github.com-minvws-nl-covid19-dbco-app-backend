@@ -60,6 +60,9 @@ services:
             - ./api/src/healthauthority:/src
 
     portal:
+        build:
+            args:
+                - INSTALL_DEV_TOOLS=1
         environment:
             APP_ENV: development
         ports:
