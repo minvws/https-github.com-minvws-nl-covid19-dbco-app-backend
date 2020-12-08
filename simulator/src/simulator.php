@@ -48,10 +48,10 @@ $questionnaire = tryBlock(
 echo "Enter pairing code: ";
 $pairingCode = str_replace('-', '', trim(fgets(STDIN)));
 
-$generalKeyPair = base64_decode($_ENV['HEALTHAUTHORITY_ENCRYPTION_GENERAL_KEY_PAIR']);
+$generalSecretKey = base64_decode($_ENV['HEALTHAUTHORITY_SK_KEY_EXCHANGE']);
 $generalPublicKey = tryBlock(
     'Extract health authority public key',
-    fn () => sodium_crypto_box_publickey($generalKeyPair)
+    fn () => sodium_crypto_box_publickey_from_secretkey($generalSecretKey)
 );
 
 $clientKeyPair = tryBlock('Generate client key pair', function () {
