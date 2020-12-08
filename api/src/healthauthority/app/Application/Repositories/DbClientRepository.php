@@ -108,8 +108,8 @@ class DbClientRepository implements ClientRepository
             $row->uuid,
             $row->case_uuid,
             $token,
-            $row->receive_key,
-            $row->transmit_key
+            $this->unseal($row->receive_key),
+            $this->unseal($row->transmit_key)
         );
     }
 
