@@ -1,0 +1,10 @@
+src/.env
+src/bootstrap/cache/*
+src/node_modules
+src/public/dist/*
+src/storage/app/*
+src/storage/framework/cache/*
+src/storage/framework/sessions/*
+src/storage/framework/views/*
+src/storage/logs/*
+src/vendor
