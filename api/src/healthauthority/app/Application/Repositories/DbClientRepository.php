@@ -2,7 +2,7 @@
 namespace DBCO\HealthAuthorityAPI\Application\Repositories;
 
 use DateTimeInterface;
-use DBCO\HealthAuthorityAPI\Application\Helpers\EncryptionHelper;
+use DBCO\HealthAuthorityAPI\Application\Security\EncryptionHelper;
 use DBCO\HealthAuthorityAPI\Application\Models\Client;
 use PDO;
 

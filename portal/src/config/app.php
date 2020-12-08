@@ -177,6 +177,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
+        App\Providers\SecurityServiceProvider::class,
 
     ],
 

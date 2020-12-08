@@ -46,6 +46,16 @@ services:
             - ./api/src/shared:/shared
             - ./api/src/healthauthority:/src
 
+    healthauthority_api_loadkeys:
+        environment:
+            APP_ENV: test
+            SECURITY_MODULE_TYPE: ${HEALTHAUTHORITY_SECURITY_MODULE_TYPE}
+            SECURITY_MODULE_SK_KEY_EXCHANGE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_KEY_EXCHANGE}
+            SECURITY_MODULE_SK_STORE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_STORE}
+        volumes:
+            - ./api/src/shared:/shared
+            - ./api/src/healthauthority:/src
+
     portal:
         environment:
             APP_ENV: test

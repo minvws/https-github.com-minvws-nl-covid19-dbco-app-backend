@@ -3,7 +3,7 @@ namespace DBCO\HealthAuthorityAPI\Application\Repositories;
 
 use DateTime;
 use DateTimeImmutable;
-use DBCO\HealthAuthorityAPI\Application\Helpers\EncryptionHelper;
+use DBCO\HealthAuthorityAPI\Application\Security\EncryptionHelper;
 use DBCO\HealthAuthorityAPI\Application\Models\ClassificationDetails;
 use DBCO\HealthAuthorityAPI\Application\Models\Answer;
 use DBCO\HealthAuthorityAPI\Application\Models\ContactDetails;

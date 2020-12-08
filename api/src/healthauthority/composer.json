@@ -33,6 +33,7 @@
         "ramsey/uuid": "^4.0",
         "slim/psr7": "^1.1",
         "slim/slim": "^4.5",
+        "symfony/console": "^5.2",
         "tuupola/slim-jwt-auth": "^3.5"
     },
     "require-dev": {

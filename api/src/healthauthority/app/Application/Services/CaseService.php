@@ -5,7 +5,7 @@ use DBCO\HealthAuthorityAPI\Application\DTO\CovidCase as CovidCaseDTO;
 use DBCO\HealthAuthorityAPI\Application\DTO\Task as TaskDTO;
 use DBCO\HealthAuthorityAPI\Application\DTO\QuestionnaireResult as QuestionnaireResultDTO;
 use DBCO\HealthAuthorityAPI\Application\DTO\Answer as AnswerDTO;
-use DBCO\HealthAuthorityAPI\Application\Helpers\EncryptionHelper;
+use DBCO\HealthAuthorityAPI\Application\Security\EncryptionHelper;
 use DBCO\HealthAuthorityAPI\Application\Models\Answer;
 use DBCO\HealthAuthorityAPI\Application\Models\Client;
 use DBCO\HealthAuthorityAPI\Application\Models\ClientRegistration;
