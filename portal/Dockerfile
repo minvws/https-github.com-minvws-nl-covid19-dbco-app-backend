@@ -58,7 +58,7 @@ COPY --from=backend /src /src
 COPY --from=frontend /src/public /src/public
 
 RUN usermod -u 1000 www-data && \
-    chgrp -R www-data:www-data /src/storage /src/bootstrap/cache && \
+    chgrp -R www-data /src/storage /src/bootstrap/cache && \
     chmod -R ug+rwx /src/storage /src/bootstrap/cache
 
 # logs should go to stdout / stderr
