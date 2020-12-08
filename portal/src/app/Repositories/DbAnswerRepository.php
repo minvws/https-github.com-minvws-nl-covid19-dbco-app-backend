@@ -7,10 +7,42 @@ use App\Models\ClassificationDetailsAnswer;
 use App\Models\ContactDetailsAnswer;
 use App\Models\Eloquent\EloquentAnswer;
 use App\Models\SimpleAnswer;
+use App\Security\EncryptionHelper;
 use Illuminate\Support\Collection;
 
 class DbAnswerRepository implements AnswerRepository
 {
+    /**
+     * @var EncryptionHelper
+     */
+    private EncryptionHelper $encryptionHelper;
+
+    /**
+     * Constructor.
+     *
+     * @param EncryptionHelper $encryptionHelper
+     */
+    public function __construct(EncryptionHelper $encryptionHelper)
+    {
+        $this->encryptionHelper = $encryptionHelper;
+    }
+
+    /**
+     * Unseal value.
+     *
+     * @param string|null $sealedValue
+     * 
+     * @return string|null
+     */
+    private function unseal(?string $sealedValue): ?string
+    {
+        if ($sealedValue === null) {
+            return null;
+        } else {
+            return $this->encryptionHelper->unsealStoreValue($sealedValue);
+        }
+    }
+
     public function getAllAnswersByCase(string $caseUuid): Collection
     {
         $dbAnswers = EloquentAnswer::where('case_uuid', $caseUuid)
@@ -48,10 +80,10 @@ class DbAnswerRepository implements AnswerRepository
         switch($dbAnswer->question_type) {
             case 'contactdetails':
                 $answer = new ContactDetailsAnswer();
-                $answer->firstname = $dbAnswer->ctd_firstname;
-                $answer->lastname = $dbAnswer->ctd_lastname;
-                $answer->email = $dbAnswer->ctd_email;
-                $answer->phonenumber = $dbAnswer->ctd_phonenumber;
+                $answer->firstname = $this->unseal($dbAnswer->ctd_firstname);
+                $answer->lastname = $this->unseal($dbAnswer->ctd_lastname);
+                $answer->email = $this->unseal($dbAnswer->ctd_email);
+                $answer->phonenumber = $this->unseal($dbAnswer->ctd_phonenumber);
                 break;
             case 'classificationdetails':
                 $answer = new ClassificationDetailsAnswer();
@@ -62,7 +94,7 @@ class DbAnswerRepository implements AnswerRepository
                 break;
             default:
                 $answer = new SimpleAnswer();
-                $answer->value = $dbAnswer->spv_value ?? '';
+                $answer->value = $this->unseal($dbAnswer->spv_value) ?? '';
         }
 
         $answer->uuid = $dbAnswer->uuid;

@@ -1,15 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace DBCO\HealthAuthorityAPI\Application\Helpers;
+namespace DBCO\HealthAuthorityAPI\Application\Security;
 
-use DBCO\HealthAuthorityAPI\Application\Security\SecurityModule;
 use DBCO\Shared\Application\Models\SealedData;
 
 /**
  * Utility methods for encryption.
  *
- * @package DBCO\HealthAuthorityAPI\Application\Helpers
+ * @package DBCO\HealthAuthorityAPI\Application\Security
  */
 class EncryptionHelper
 {
@@ -22,10 +21,12 @@ class EncryptionHelper
      * Constructor.
      *
      * @param SecurityModule $securityModule
+     * @param SecurityCache  $securityCache
      */
-    public function __construct(SecurityModule $securityModule)
+    public function __construct(SecurityModule $securityModule, SecurityCache $securityCache)
     {
         $this->securityModule = $securityModule;
+        $this->securityCache = $securityCache;
     }
 
     /**
@@ -73,7 +74,7 @@ class EncryptionHelper
     public function unsealClientPublicKey(string $sealedClientPublicKey): string
     {
         // unseal the client public key using the general health authority key exchange key
-        $secretKey = $this->securityModule->getSecretKey(SecurityModule::SK_KEY_EXCHANGE);
+        $secretKey = $this->securityCache->getSecretKey(SecurityModule::SK_KEY_EXCHANGE);
         $publicKey = sodium_crypto_box_publickey_from_secretkey($secretKey);
         $keyPair = sodium_crypto_box_keypair_from_secretkey_and_publickey($secretKey, $publicKey);
         return sodium_crypto_box_seal_open($sealedClientPublicKey, $keyPair);
@@ -171,7 +172,7 @@ class EncryptionHelper
     private function sealStoreValueWithKey(string $value, string $secretKeyIdentifier): string
     {
         $nonce = $this->securityModule->randomBytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
-        $key = $this->securityModule->getSecretKey($secretKeyIdentifier);
+        $key = $this->securityCache->getSecretKey($secretKeyIdentifier);
         $ciphertext = sodium_crypto_secretbox($value, $nonce, $key);
         return json_encode([
             'ciphertext' => base64_encode($ciphertext),
@@ -191,7 +192,7 @@ class EncryptionHelper
         $data = json_decode($sealedValue);
         $ciphertext = base64_decode($data->ciphertext);
         $nonce = base64_decode($data->nonce);
-        $key = $this->securityModule->getSecretKey(SecurityModule::SK_STORE);
+        $key = $this->securityCache->getSecretKey(SecurityModule::SK_STORE);
         return sodium_crypto_secretbox_open($ciphertext, $nonce, $key);
     }
 
