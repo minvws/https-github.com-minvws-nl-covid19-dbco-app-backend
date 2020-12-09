@@ -4,7 +4,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/minvws/nl-covid19-dbco-app-backend-private/private-api
-  tag: 0.1.0
+  tag: 0.1.5
   pullPolicy: IfNotPresent
 
 imagePullSecrets:
@@ -26,10 +26,16 @@ hpa:
   # average http requests per second per pod (k8s-prometheus-adapter)
   requests:
 
+# App
+app:
+  env: production
+
 # Redis
 redis:
   host: redis-master
   port: 6379
+  sentinel:
+    service:
 
 # JWT
 jwt:
@@ -42,6 +48,7 @@ jwt:
 apache:
   run:
     user: "www-data"
+    group: "www-data"
 
 # Debug
 debug: 0
