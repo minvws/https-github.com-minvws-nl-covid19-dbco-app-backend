@@ -12,4 +12,6 @@ class Config
     public string $iosMinimumVersion;
     public string $iosMinimumVersionMessage;
     public string $iosAppStoreURL;
+
+    public array $featureFlags;
 }
