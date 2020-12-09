@@ -15,14 +15,28 @@ class SimpleConfigRepository implements ConfigRepository
      */
     public function getConfig(string $language): Config
     {
+        $upgradeMessage = [
+            'nl_NL' => 'Om de app te gebruiken heb je de laatste versie uit de store nodig.',
+        ];
+
+        if (!isset($upgradeMessage[$language])) {
+            $language = 'nl_NL';
+        }
+
         $config = new Config();
 
         $config->androidMinimumVersion = 1;
-        $config->androidMinimumVersionMessage = 'Please upgrade to the latest store release! (' . $language . ')'; // TODO: translation
+        $config->androidMinimumVersionMessage = $upgradeMessage[$language];
 
         $config->iosMinimumVersion = '1.0.0';
-        $config->iosMinimumVersionMessage = 'Please upgrade to the latest store release! (' . $language . ')'; // TODO: translation
-        $config->iosAppStoreURL = ''; // TODO: not yet known
+        $config->iosMinimumVersionMessage = $upgradeMessage[$language];
+        $config->iosAppStoreURL = 'https://apps.apple.com/nl/app/id1533805739';
+
+        $config->featureFlags = [
+            'enableContactCalling' => true,
+            'enablePerspectiveSharing' => false,
+            'enablePerspectiveCopy' => true
+        ];
 
         return $config;
     }
