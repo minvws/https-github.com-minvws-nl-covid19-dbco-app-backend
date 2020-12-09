@@ -21,7 +21,7 @@
 
     <!-- Start of table title component -->
     <div class="align-items-end  mb-3 mt-5">
-        <h3 class="mb-0">Deel de code met de index</h3>
+        <h3 class="mb-0">@if ($includeQuestionNumber)<div class="question-nr">6</div>@endif Deel de code met de index</h3>
         <p class="mt-2 mb-0  ml-auto">Met deze code heeft de index toegang tot de contacten uit de aanleverlijst.</p>
     </div>
     <!-- End of table title component -->
