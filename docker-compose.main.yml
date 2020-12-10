@@ -58,7 +58,7 @@ services:
 
     bridge-clients:
         build: bridge
-        command: process:clients
+        command: /src/bridge process:clients
         environment:
             DEBUG: ${DEBUG:-0}
             REDIS_HOST: redis
@@ -73,7 +73,7 @@ services:
 
     bridge-caseresults:
         build: bridge
-        command: process:caseresults
+        command: /src/bridge process:caseresults
         environment:
             DEBUG: ${DEBUG:-0}
             REDIS_HOST: redis

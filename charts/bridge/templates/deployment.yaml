@@ -28,14 +28,15 @@ spec:
       {{- if .Values.serviceAccount.enabled }}
       serviceAccountName: {{ template "app.serviceAccountName" . }}
       {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.imagePullSecrets }}
-          imagePullSecrets:
-            - name: {{ .Values.imagePullSecrets }}
-          {{- end }}
+          command: ["/src/bridge"]
           {{- if .Values.bridge.args }}
           args: {{ .Values.bridge.args }}
           {{- end }}
@@ -47,11 +48,13 @@ spec:
           livenessProbe:
             exec:
               command:
+              - /bin/sh
+              - "-c"
               - /src/bridge
               - status
             initialDelaySeconds: 5
             periodSeconds: 10
-            timeoutSeconds: 1
+            timeoutSeconds: 5
             failureThreshold: 3
             successThreshold: 1
     {{- with .Values.securityContext }}
