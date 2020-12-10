@@ -14,7 +14,7 @@ use Throwable;
  */
 class RedisCaseRepository implements CaseRepository
 {
-    const CASE_KEY_TEMPLATE     = 'case:%s'; // case:<token>
+    const CASE_KEY_TEMPLATE    = 'case:%s'; // case:<token>
     const CASE_RESULT_LIST_KEY = 'caseresults';
 
     /**
