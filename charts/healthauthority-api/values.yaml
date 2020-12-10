@@ -47,6 +47,23 @@ db:
   useExistingSecret: false # if true, create a secret with `app.fullname-db` in the same namespace
 
 # Encryption
+security:
+  module:
+    type: hsm
+
+# To use simple security module during development:
+# security.module.sk.exchange.key = docker run --rm php -r "echo base64_encode(sodium_crypto_box_secretkey(sodium_crypto_box_keypair()));"
+# security.module.sk.store = docker run --rm php -r "echo base64_encode(sodium_crypto_secretbox_keygen());"
+
+# security:
+  # module:
+    # type: simple
+    # sk:
+      # useExistingSecret: false # if true, create a secret with `app.fullname-encryption` in the same namespace
+      # key:
+        # exchange:
+      # store:
+
 encryption:
   keypair: changeme
   useExistingSecret: false # if true, create a secret with `app.fullname-encryption-keypair` in the same namespace
