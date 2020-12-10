@@ -50,9 +50,6 @@ services:
     healthauthority_api:
         environment:
             APP_ENV: development
-            SECURITY_MODULE_TYPE: ${HEALTHAUTHORITY_SECURITY_MODULE_TYPE:-simple}
-            SECURITY_MODULE_SK_KEY_EXCHANGE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_KEY_EXCHANGE}
-            SECURITY_MODULE_SK_STORE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_STORE}
         ports:
             - ${HEALTHAUTHORITY_API_PORT:-8083}:8080
         volumes:
@@ -62,9 +59,6 @@ services:
     healthauthority_api_loadkeys:
         environment:
             APP_ENV: development
-            SECURITY_MODULE_TYPE: ${HEALTHAUTHORITY_SECURITY_MODULE_TYPE:-simple}
-            SECURITY_MODULE_SK_KEY_EXCHANGE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_KEY_EXCHANGE}
-            SECURITY_MODULE_SK_STORE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_STORE}
         volumes:
             - ./api/src/shared:/shared
             - ./api/src/healthauthority:/src
