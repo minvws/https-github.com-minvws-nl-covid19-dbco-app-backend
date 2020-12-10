@@ -41,12 +41,10 @@ class RedisPairingRequestRepository implements PairingRequestRepository
         // retrieve and delete pairing request case data
         $pairingRequestKey = sprintf(self::PAIRING_REQUEST_KEY_TEMPLATE, $code);
         $pairingRequestCaseKey = sprintf(self::PAIRING_REQUEST_CASE_KEY_TEMPLATE, $code);
-        [$pairingRequestJson, $pairingRequestCaseJson, $del] =
-            $this->client->transaction()
-                ->get($pairingRequestKey)
-                ->get($pairingRequestCaseKey)
-                ->del($pairingRequestCaseKey)
-                ->execute();
+
+        $pairingRequestJson = $this->client->get($pairingRequestKey);
+        $pairingRequestCaseJson = $this->client->get($pairingRequestCaseKey);
+        $del = $this->client->del($pairingRequestCaseKey);
 
         // check if we there still was case pairing request data
         if ($pairingRequestJson === null || $pairingRequestCaseJson === null || $del === 0) {
