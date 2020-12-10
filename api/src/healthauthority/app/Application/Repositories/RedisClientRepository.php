@@ -109,7 +109,7 @@ class RedisClientRepository implements ClientRepository
         foreach ($tokens as $token) {
             $client = $this->getClient($token);;
             if ($client !== null) {
-                $client[] = $client;
+                $clients[] = $client;
             }
         }
 
