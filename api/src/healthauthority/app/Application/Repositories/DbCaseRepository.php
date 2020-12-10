@@ -199,6 +199,14 @@ class DbCaseRepository implements CaseRepository
             // when the task originates from the app
             $this->updateUserTask($task);
         } else {
+            if ($taskInfo->communication === 'index' && $task->communication === 'staff') {
+                // only allow changing to staff it was originally set to index
+                $task->communication = 'staff';
+            } else {
+                // else keep the current value
+                $task->communication = $taskInfo->communication;
+            }
+
             // update portal task
             $this->updatePortalTask($task);
         }
@@ -219,7 +227,7 @@ class DbCaseRepository implements CaseRepository
     private function getTaskInfo(Task $task)
     {
         $stmt = $this->client->prepare("
-            SELECT case_uuid, source
+            SELECT case_uuid, source, communication
             FROM task
             WHERE uuid = :taskUuid
         ");
@@ -235,7 +243,8 @@ class DbCaseRepository implements CaseRepository
 
         return (object)[
             'caseUuid' => $row->case_uuid,
-            'source' => $row->source
+            'source' => $row->source,
+            'communication' => $row->communication
         ];
     }
 
@@ -337,13 +346,15 @@ class DbCaseRepository implements CaseRepository
             UPDATE task
             SET 
                 questionnaire_uuid = :questionnaireUuid, 
+                communication = :communication,
                 updated_at = NOW()
             WHERE uuid = :taskUuid
         ");
 
         $stmt->execute([
             'questionnaireUuid' => $task->questionnaireResult->questionnaireUuid,
-            'taskUuid' => $task->uuid
+            'taskUuid' => $task->uuid,
+            'communication' => $task->communication
         ]);
     }
 
