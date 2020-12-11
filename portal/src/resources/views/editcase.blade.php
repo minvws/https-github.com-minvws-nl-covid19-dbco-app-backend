@@ -15,8 +15,15 @@
 <?php $questionNr = 1; ?>
 
 <div class="container-xl questionform">
-    <form action="/savecase" method="POST" autocomplete="off">
+    <form action="{{ route('case-save') }}" method="POST" autocomplete="off">
         @csrf
+        <input type="hidden" id="action" name="action" value=
+            @if ($case->status == 'draft')
+                "new"
+            @else
+                "edit"
+            @endif
+        />
         <input type="hidden" id="caseUuid" name="caseUuid" value="{{ $case->uuid }}">
 
         @include ('navbar')
@@ -73,11 +80,21 @@
                 </div>
                 <!-- End of table title component -->
                 <p>
-                    <button class="btn btn-outline-primary" type="button" onClick="$('#taskTable').show();">Ja</button>
-                    <button class="btn btn-outline-primary" type="button" onClick="$('#taskTable').hide();">Nee</button>
+                    <div class="btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-outline-primary active">
+                            <input name="addtasksnow" type="radio" autocomplete="off" value="ja" onClick="$('#taskTable').show();"
+                                   @if (old('addtasksnow') === 'ja') checked @endif
+                            /> Ja
+                        </label>
+                        <label class="btn btn-outline-primary active">
+                            <input name="addtasksnow" type="radio" autocomplete="off" value="nee" onClick="$('#taskTable').hide();"
+                                   @if (old('addtasksnow') === 'nee') checked @endif
+                            /> Nee
+                        </label>
+                    </div>
                 </p>
                 <!-- Start of table component -->
-                <table id="taskTable" class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-form  table-ggd">
+                <table id="taskTable" class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-form  table-ggd" @if (old('addtasksnow') === 'nee') style="display:none" @endif>
                     <!--
                         Modify the col definitions in the colgroup below to change the widths of the the columns.
                         The w-* classes will be automatically generated based on the $sizes array which is defined in the scss/_variables.scss
@@ -127,16 +144,38 @@
                 </table>
                 <!-- End of table component -->
 
-                <!-- Start of table title component -->
-                @if ($case->status == 'draft')
+                <!-- Question: discuss app download and pairing with index -->
                 <div class="align-items-end  mb-3 mt-5">
                     <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Vertel de index welke app ze moeten downloaden</h3>
                     <p class="mt-2 mb-0  ml-auto">De index heeft een app nodig die ze kunnen downloaden in de Play of AppStore waarmee ze de gegevens op een veilige manier met de GGD kunnen delen.</p>
-                </div>
-                @endif
-                <!-- End of table title component -->
 
-                <div class="btn-group">
+                    @if ($case->status == 'draft')
+                    @error('pairafteropen')
+                    <div class="alert alert-danger mt-3">
+                        Geef aan of de index een koppelcode voor de app nodig heeft.
+                    </div>
+                    @enderror
+
+                    <p>
+                        <div class="btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-outline-primary active">
+                                <input name="pairafteropen" type="radio" autocomplete="off" value="ja"
+                                       @if (old('pairafteropen') === 'ja') checked @endif
+                                /> Ja, maak koppelcode
+                            </label>
+                            <label class="btn btn-outline-primary active">
+                                <input name="pairafteropen" type="radio" autocomplete="off" value="nee"
+                                       @if (old('pairafteropen') === 'nee') checked @endif
+                                /> Nee
+                            </label>
+                        </div>
+                    </p>
+                    @endif
+                </div>
+                <!-- End of app and pairing question -->
+
+                <!-- Form submit -->
+                <div class="btn-group mb-3 mt-3">
                     <input type="submit" class="btn btn-primary" value=
                         @if ($case->status == 'draft')
                             "Case openen"
