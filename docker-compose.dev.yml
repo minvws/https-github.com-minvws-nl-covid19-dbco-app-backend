@@ -56,7 +56,7 @@ services:
             - ./api/src/shared:/shared
             - ./api/src/healthauthority:/src
 
-    healthauthority_api_loadkeys:
+    healthauthority_api_cachekeys:
         environment:
             APP_ENV: development
         volumes:
@@ -80,10 +80,12 @@ services:
             APP_ENV: development
             DEBUG: ${DEBUG:-0}
             PUBLIC_API_BASE_URI: http://public_api:8080/v1/
-            HEALTHAUTHORITY_SK_KEY_EXCHANGE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_KEY_EXCHANGE}
+            REDIS_HOST: redis-haa
+            REDIS_PORT: 6379
         depends_on:
             - public_api
         volumes:
             - ./simulator/src:/src
         networks:
             - public
+            - healthauthority

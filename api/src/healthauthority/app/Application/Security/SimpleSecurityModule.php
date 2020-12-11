@@ -79,18 +79,6 @@ class SimpleSecurityModule implements SecurityModule
     /**
      * @inheritdoc
      */
-    public function renameSecretKey(string $oldIdentifier, string $newIdentifier)
-    {
-        if ($oldIdentifier === self::SK_STORE_NEW && $newIdentifier === self::SK_STORE) {
-            // don't do anything, as we don't really replace the store secret key
-        } else {
-            throw new RuntimeException('Unsupported key identifier combination "' . $oldIdentifier . '" / "' . $newIdentifier . '"');
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function randomBytes(int $length): string
     {
         return random_bytes($length);
