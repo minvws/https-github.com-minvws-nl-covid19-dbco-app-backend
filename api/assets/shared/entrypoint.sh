@@ -8,7 +8,7 @@ if [ "$APP_ENV" != "production" ]; then
     cp -f /etc/apache2/mods-available/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork.conf
 
     echo "Disabling opcache"
-    rm  /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+    rm  /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini || true
 fi
 
 touch /var/log/cron.log
