@@ -52,6 +52,7 @@ class CacheKeysCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->securityService->cacheKeys();
+        $output->writeln("Keys cached successfully!");
         return Command::SUCCESS;
     }
 }

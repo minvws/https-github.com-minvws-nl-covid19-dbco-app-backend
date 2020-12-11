@@ -46,7 +46,7 @@ services:
             - ./api/src/shared:/shared
             - ./api/src/healthauthority:/src
 
-    healthauthority_api_loadkeys:
+    healthauthority_api_cachekeys:
         environment:
             APP_ENV: test
             SECURITY_MODULE_TYPE: ${HEALTHAUTHORITY_SECURITY_MODULE_TYPE}
