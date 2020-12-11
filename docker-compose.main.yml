@@ -123,11 +123,11 @@ services:
             - healthauthority
             - private
 
-    healthauthority_api_loadkeys:
+    healthauthority_api_cachekeys:
         build:
             context: ./api
             dockerfile: Dockerfile-healthauthority
-        command: /src/console security:load-keys
+        command: /src/console security:cache-keys
         environment:
             DEBUG: ${DEBUG:-0}
             DB_TYPE: ${DATABASE_TYPE}
