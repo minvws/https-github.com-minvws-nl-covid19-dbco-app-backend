@@ -32,3 +32,11 @@ $(".chk-upload-completed").click(function() {
         linkTaskToExport(taskId, exportId);
     }
 });
+
+$(".copy-card-values").click(function() {
+    alert("copy-card-values");
+});
+
+$(".copy-row-value").click(function() {
+    alert("copy-row-value");
+});
