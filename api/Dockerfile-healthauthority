@@ -2,22 +2,10 @@ FROM php:7.4-apache
 
 # Install packages and extensions
 RUN apt-get -qq update && \
-    apt-get -y install curl git wget vim unzip libzip-dev libpq-dev libicu-dev apt-transport-https apt-transport-https ca-certificates gnupg libaio1 \
+    apt-get -y install curl git wget vim unzip libzip-dev libpq-dev libicu-dev apt-transport-https apt-transport-https ca-certificates gnupg libaio1 python3 python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install zip opcache pdo pdo_pgsql mysqli pdo_mysql
-
-# RUN cd /tmp && \
-#   curl -L https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip -O && \
-#   curl -L https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip -O && \
-#   unzip /tmp/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip -d /usr/local/ && \
-#   ln -s /usr/local/instantclient_19_8/ /usr/local/instantclient && \
-#   ln -s /usr/local/instantclient/lib* /usr/lib && \
-#   unzip /tmp/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip -d /usr/local && \
-#   docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/usr/local/instantclient,19.8 && \
-#   echo 'instantclient,/usr/local/instantclient' | pecl install oci8 && \
-#   docker-php-ext-install pdo_oci && \
-#   docker-php-ext-enable oci8
 
 RUN a2enmod rewrite && \
     a2enmod headers && \
@@ -30,20 +18,25 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
     composer self-update
 
 # Copy assets and sources
-COPY assets/default.conf /etc/apache2/sites-available/000-default.conf
-COPY assets/entrypoint.sh /entrypoint.sh
+COPY assets/shared/default.conf /etc/apache2/sites-available/000-default.conf
+COPY assets/shared/entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
-COPY assets/api.ini /usr/local/etc/php/conf.d/api.ini
-COPY assets/security.conf /etc/apache2/conf-available/security.conf
-COPY assets/apache2.conf /etc/apache2/apache2.conf
-COPY assets/ports.conf /etc/apache2/ports.conf
-COPY assets/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
-COPY assets/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_default.conf
+COPY assets/shared/api.ini /usr/local/etc/php/conf.d/api.ini
+COPY assets/shared/security.conf /etc/apache2/conf-available/security.conf
+COPY assets/shared/apache2.conf /etc/apache2/apache2.conf
+COPY assets/shared/ports.conf /etc/apache2/ports.conf
+COPY assets/shared/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
+COPY assets/shared/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_default.conf
+
+COPY assets/healthauthority/cs_pkcs11_R2.cfg /etc/utimaco/cs_pkcs11_R2.cfg
+COPY assets/healthauthority/libcs_pkcs11_R2.so /usr/lib/utimaco/libcs_pkcs11_R2.so
+ENV PKCS_MODULE=/usr/lib/utimaco/libcs_pkcs11_R2.so
 
 COPY src/shared /shared
 COPY src/healthauthority /src
 
 RUN cd /src && composer install && \
+    pip3 install python-pkcs11 && \
     usermod -u 1000 www-data
 
 # logs should go to stdout / stderr

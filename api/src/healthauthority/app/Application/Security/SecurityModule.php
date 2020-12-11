@@ -41,16 +41,6 @@ interface SecurityModule
     public function deleteSecretKey(string $identifier): void;
 
     /**
-     * Rename key.
-     *
-     * @param string $oldIdentifier
-     * @param string $newIdentifier
-     *
-     * @return mixed
-     */
-    public function renameSecretKey(string $oldIdentifier, string $newIdentifier);
-
-    /**
      * Get random bytes.
      *
      * @param int $length

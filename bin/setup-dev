@@ -49,3 +49,14 @@ $BASE_PATH/bin/update-dev
 echo
 echo "=====[ SEED PORTAL ]====="
 $DOCKER_COMPOSE run --rm --entrypoint php portal artisan db:seed
+
+echo
+echo "=====[ CREATE KEYS ]====="
+$DOCKER_COMPOSE run --rm healthauthority_api /src/console security:create-key-exchange-secret-key
+$DOCKER_COMPOSE run --rm healthauthority_api /src/console security:create-store-secret-key
+
+echo
+echo "=====[ FILL REDIS CACHE ]====="
+$DOCKER_COMPOSE run --rm worker /src/worker questionnaire:refresh-all
+$DOCKER_COMPOSE run --rm worker /src/worker task:refresh-general
+$DOCKER_COMPOSE run --rm healthauthority_api /src/console security:cache-keys

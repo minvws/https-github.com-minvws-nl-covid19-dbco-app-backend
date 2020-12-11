@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DBCO\HealthAuthorityAPI\Tests\Application\Actions;
 
 use DBCO\HealthAuthorityAPI\Application\Models\Client;
-use DBCO\HealthAuthorityAPI\Application\Models\ClientCase;
 use DBCO\HealthAuthorityAPI\Application\Repositories\CaseRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\ClientRepository;
 use Exception;
@@ -30,12 +29,9 @@ class CaseSubmitActionTest extends TestCase
 
         $client =
             new Client(
+                Uuid::uuid4()->toString(),
+                Uuid::uuid4()->toString(),
                 $token,
-                new ClientCase(Uuid::uuid4()->toString()),
-                '',
-                '',
-                '',
-                '',
                 $secretKey,
                 ''
             );
@@ -48,7 +44,6 @@ class CaseSubmitActionTest extends TestCase
 
         $stubCaseRepository = $this->createStub(CaseRepository::class);
         $stubCaseRepository->method('caseExists')->willReturn(true);
-
 
         $container = $this->getAppInstance()->getContainer();
         $container->set(ClientRepository::class, $stubClientRepository);

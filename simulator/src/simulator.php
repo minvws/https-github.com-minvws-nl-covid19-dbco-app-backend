@@ -3,6 +3,7 @@ require_once 'vendor/autoload.php';
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\RequestException;
+use Predis\Client as PredisClient;
 use Ramsey\Uuid\Uuid;
 
 function tryBlock(string $description, callable $callback) {
@@ -45,14 +46,30 @@ $questionnaire = tryBlock(
     }
 );
 
+
+$generalPublicKey = null;
+if (isset($_ENV['HEALTHAUTHORITY_PK_KEY_EXCHANGE'])) {
+    $generalPublicKey = base64_decode($_ENV['HEALTHAUTHORITY_PK_KEY_EXCHANGE']);
+} else if (isset($_ENV['REDIS_HOST'])) {
+    $generalPublicKey = tryBlock(
+        'Extract health authority public key from secret key in Redis',
+        function () {
+            $redisClient = new PredisClient(['host' => $_ENV['REDIS_HOST'], 'port' => $_ENV['REDIS_PORT'] ?? 6379]);
+            $secretKey = base64_decode($redisClient->get('secretKey:key_exchange'));
+            if ($secretKey !== null) {
+                return sodium_crypto_box_publickey_from_secretkey($secretKey);
+            } else {
+                throw new Exception("Health authority key exchange secret key not available in Redis!");
+            }
+        }
+    );
+} else {
+    echo "ERROR: No key exchange public key specified\n";
+    exit(-1);
+}
+
 echo "Enter pairing code: ";
 $pairingCode = str_replace('-', '', trim(fgets(STDIN)));
-
-$generalSecretKey = base64_decode($_ENV['HEALTHAUTHORITY_SK_KEY_EXCHANGE']);
-$generalPublicKey = tryBlock(
-    'Extract health authority public key',
-    fn () => sodium_crypto_box_publickey_from_secretkey($generalSecretKey)
-);
 
 $clientKeyPair = tryBlock('Generate client key pair', function () {
    return sodium_crypto_kx_keypair();
