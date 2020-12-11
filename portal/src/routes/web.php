@@ -32,7 +32,7 @@ Route::middleware(['auth', 'rolecheck:user'])->group(function() {
     Route::post('/savecase', [CaseController::class, 'saveCase']);
 
     // Editing open cases
-    Route::get('/case/{uuid}', [CaseController::class, 'viewCase']);
+    Route::get('/case/{uuid}', [CaseController::class, 'viewCase'])->name('case-view');
 
     // Create a pairing code
     Route::get('/paircase/{caseUuid}', [CaseController::class, 'pairCase']);
