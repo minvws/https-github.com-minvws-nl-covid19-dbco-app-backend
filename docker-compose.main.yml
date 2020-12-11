@@ -116,9 +116,6 @@ services:
             REDIS_PORT: 6379
             PRIVATE_API_BASE_URI: http://private_api:8080/v1/
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
-            SECURITY_MODULE_TYPE: hsm
-            SECURITY_MODULE_USER_PIN: ${HSM_USER_PIN}
-            SECURITY_MODULE_SLOT_LABEL: "CryptoServer PKCS11 Token"
         networks:
             - healthauthority
             - private
@@ -140,9 +137,6 @@ services:
             REDIS_PORT: 6379
             PRIVATE_API_BASE_URI: http://private_api:8080/v1/
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
-            SECURITY_MODULE_TYPE: hsm
-            SECURITY_MODULE_USER_PIN: ${HSM_USER_PIN}
-            SECURITY_MODULE_SLOT_LABEL: "CryptoServer PKCS11 Token"
         networks:
             - healthauthority
             - private
@@ -180,25 +174,6 @@ services:
         networks:
             - healthauthority
             - private
-
-    hsm:
-        build:
-            context: ../nl-covid19-dbco-app-hsm-private/hsm-simulator
-            dockerfile: Dockerfile
-        networks:
-            - healthauthority
-
-    hsm-setup:
-        build:
-            context: ../nl-covid19-dbco-app-hsm-private/hsm-simulator
-            dockerfile: Dockerfile.hsm-setup
-        command: /setup-hsm
-        environment:
-            SIM_HOST: hsm
-            SO_PIN: ${HSM_SO_PIN}
-            USER_PIN: ${HSM_USER_PIN}
-        networks:
-            - healthauthority
 
 networks:
     public:
