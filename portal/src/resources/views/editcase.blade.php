@@ -170,8 +170,8 @@
                             </label>
                         </div>
                     </p>
+                    @endif
                 </div>
-                @endif
                 <!-- End of app and pairing question -->
 
                 <!-- Form submit -->
