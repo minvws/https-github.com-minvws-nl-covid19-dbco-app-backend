@@ -27,8 +27,9 @@
                     @if ($case->isEditable())
                         <a class="btn btn-outline-primary" role="button" href="{{ route('case-edit', [$case->uuid]) }}">Case wijzigen</a>
                     @endif
-                    <a class="btn btn-primary" role="button" href="{{ route('case-dump', [$case->uuid]) }}">Zet in HPZone</a>
                     <a class="btn btn-outline-primary" role="button" href="{{ route('notify-case-update', ['uuid' => $case->uuid]) }}">Klaarzetten voor index</a>
+                    <a class="btn btn-primary" role="button" href="{{ route('case-dump', [$case->uuid]) }}">Zet in HPZone</a>
+
                 </span>
             </h2>
             <!-- flash message -->
