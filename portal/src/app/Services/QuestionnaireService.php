@@ -54,12 +54,15 @@ class QuestionnaireService
 
         // Hypothetically each task could've used a different questionnaire (once we have
         // more than one task type). For now this isn't supported and we assume all tasks have
-        // used the same questionnaire.
-        $task = $tasks->first();
+        // used the same questionnaire. (Note: not all tasks might have been submitted, so it's not
+        // guaranteed that the first task has the questionnaire)
         $questions = [];
-        if ($task && $task->questionnaireUuid) {
-            // Do we have filled out questions?
-            $questions = $this->questionRepository->getQuestions($task->questionnaireUuid);
+        foreach ($tasks as $task) {
+            if ($task->questionnaireUuid) {
+                // Do we have filled out questions?
+                $questions = $this->questionRepository->getQuestions($task->questionnaireUuid);
+                break; // We only need one set of questions beause of the 'same questionnaire' assumption.
+            }
         }
         $questionTypeByQuestionUuid = [];
 
