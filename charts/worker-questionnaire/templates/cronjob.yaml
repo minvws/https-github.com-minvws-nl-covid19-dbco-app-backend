@@ -1,0 +1,56 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "app.fullname" . }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.schedule }}
+  successfulJobsHistoryLimit: {{ .Values.successfulJobsHistoryLimit }}
+  concurrencyPolicy: {{ .Values.concurrencyPolicy }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            {{- include "app.selectorLabels" . | nindent 12 }}
+          annotations:
+            {{- range $key, $value := .Values.podAnnotations }}
+            {{ $key }}: {{ $value | quote }}
+            {{- end }}
+        spec:
+          {{- if .Values.serviceAccount.enabled }}
+          serviceAccountName: {{ template "app.serviceAccountName" . }}
+          {{- end }}
+          {{- if .Values.imagePullSecrets }}
+          imagePullSecrets:
+            - name: {{ .Values.imagePullSecrets }}
+          {{- end }}
+          containers:
+            - name: {{ .Chart.Name }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              command: ["/src/worker"]
+              args: {{ .Values.worker.args }}
+              envFrom:
+              - configMapRef:
+                  name: {{ template "app.fullname" . }}
+              resources:
+{{ toYaml .Values.resources | indent 16 }}
+          restartPolicy: {{ .Values.restartPolicy }}
+        {{- with .Values.securityContext }}
+          securityContext:
+{{ toYaml . | indent 12 }}
+        {{- end }}
+        {{- with .Values.nodeSelector }}
+          nodeSelector:
+{{ toYaml . | indent 12 }}
+        {{- end }}
+        {{- with .Values.affinity }}
+          affinity:
+{{ toYaml . | indent 12 }}
+        {{- end }}
+        {{- with .Values.tolerations }}
+          tolerations:
+{{ toYaml . | indent 12 }}
+        {{- end }}
