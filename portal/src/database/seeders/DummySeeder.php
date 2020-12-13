@@ -213,7 +213,7 @@ class DummySeeder extends Seeder
                     $birthdateQuestionUuid = (string)$question->uuid;
                 } else if ($question->label == 'Waar ken je deze persoon van?') {
                     $relationshipQuestionUuid = (string)$question->uuid;
-                } else if ($question->label == 'Is een of meerdere onderstaande zaken van toepassing voor deze persoon?') {
+                } else if ($question->header == 'Prioriteit') {
                     $priorityQuestionUuid = (string)$question->uuid;
                 }
             }
