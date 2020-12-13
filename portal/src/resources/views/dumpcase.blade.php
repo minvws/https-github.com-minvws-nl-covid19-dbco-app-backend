@@ -37,16 +37,16 @@
                             <button class="copy-card-values btn btn-outline-primary btn-sm">Kopieer deze gegevens</button>
                         </div>
                     </h5>
-                    <ul class="list-group">
-                        <li class="copy-row-value list-group-item list-group-item-action">
-                            <span>Naam (volledig)</span>
-                            <span>{{ $case->name }}</span>
-                        </li>
-                        <li class="copy-row-value list-group-item list-group-item-action">
-                            <span>HPZone casenummer</span>
-                            <span>{{ $case->caseId }}</span>
-                        </li>
-                    </ul>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col col-4">Naam (volledig)</div>
+                            <div class="col">{{ $case->name }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-4">HPZone casenummer</div>
+                            <div class="col">{{ $case->caseId }}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -65,14 +65,6 @@
                             <div class="col">{{ $user->name }}</div>
                         </div>
                         <div class="row">
-                            <div class="col col-4">Telefoonnummer</div>
-                            <div class="col">-</div>
-                        </div>
-                        <div class="row">
-                            <div class="col col-4">E-mailadres</div>
-                            <div class="col">-</div>
-                        </div>
-                        <div class="row">
                             <div class="col col-4">Datum contactonderzoek</div>
                             <div class="col">-</div>
                         </div>
@@ -82,7 +74,7 @@
             <!-- end of section -->
 
             <!-- Section: Informatie over index zelf -->
-            <div class="card mt-4 mb-4">
+            <div class="card mt-4">
                 <div class="card-body">
                     <h5 class="card-title">
                         Informatie over de index zelf
@@ -103,71 +95,60 @@
                 </div>
             </div>
             <!-- end of section -->
-
-        <?php
-        $groupTitles = [
-            '1' => '1 - Huisgenoten',
-            '2a' => '2a - Nauwe contacten',
-            '2b' => '2b - Nauwe contacten',
-            '3' => '3 - Overige contacten'
-        ];
-        ?>
-
-        @foreach ($taskcategories as $category => $tasks)
-            <!-- Start of table title component -->
-                <div class="d-flex  align-items-end  mb-3 mt-4">
-                    <h2 class="mb-0">{{ $groupTitles[$category] }}</h2>
-                </div>
-                <!-- End of table title component -->
-
-                <!-- Start of table component -->
-                <table
-                    class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-hover table-ggd">
-                    <!--
-                        Modify the col definitions in the colgroup below to change the widths of the the columns.
-                        The w-* classes will be automatically generated based on the $sizes array which is defined in the scss/_variables.scss
-                    -->
-                    <colgroup>
-                        @foreach ($headers as $fieldUuid => $header)
-                            <col class="w-auto"/>
-                        @endforeach
-                        <col class="w-auto"/>
-                    </colgroup>
-                    <thead>
-                    <tr>
-                        @foreach ($headers as $fieldUuid => $header)
-                            <th scope="col">{{ $header }}</th>
-                        @endforeach
-
-                        <th>HPZone</th>
-                    </tr>
-
-                    </thead>
-                    <tbody>
-                    @foreach ($tasks as $task)
-                        <tr>
-                            @foreach ($headers as $fieldUuid => $header)
-                                <td>
-                                    {{ $task[$fieldUuid] ?? ''}}
-                                </td>
+            <?php
+            $groupTitles = [
+                '1' => ['title' => '1 - Huisgenoten', 'nameLabelPostfix' => 'van de huisgenoot'],
+                '2a' => ['title' => '2a - Nauwe contacten', 'nameLabelPostfix' => 'van het nauwe contact'],
+                '2b' => ['title' => '2b - Nauwe contacten', 'nameLabelPostfix' => 'van het nauwe contact'],
+                '3' => ['title' =>'3 - Overige contacten', 'nameLabelPostfix' => 'van het overig contact']
+            ];
+            ?>
+            <!-- Section: Contactonderzoek -->
+           `<div class="card mt-4 mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        Contactonderzoek
+                        <div class="float-right">
+                            <button class="copy-card-values btn btn-outline-primary btn-sm">Kopieer deze gegevens</button>
+                        </div>
+                    </h5>
+                    <div class="container">
+                        @foreach ($taskcategories as $category => $tasks)
+                            <div class="row">
+                                <div class="col">
+                                    <h6 class="mb-0">{{ $groupTitles[$category]['title'] }}</h6>
+                                </div>
+                            </div>
+                            @foreach ($tasks as $task)
+                                @foreach ($task['data'] as $key => $value)
+                                <div class="row">
+                                    <div class="col-4">
+                                        {{ $key }}
+                                    </div>
+                                    <div class="col">
+                                        {{ $value ?? '-'}}
+                                    </div>
+                                </div>
+                                @endforeach
+                                <div class="row">
+                                    <!-- spacer -->
+                                </div>
+                                <div class="invisible">
+                                    @if ($task['enableExport'])
+                                        <input type="text" size="10" id="remote_{{ $task['uuid'] }}"
+                                                   value="{{ $task['exportId'] }}"/>
+                                        <input type="checkbox" class="chk-upload-completed"
+                                                   id="upload_{{ $task['uuid'] }}"/>
+                                    @else
+                                        {{ $task['exportId'] }}
+                                    @endif
+                                </div>
                             @endforeach
-
-                            <td>
-                                @if ($task['task.enableExport'])
-                                    <input type="text" size="10" id="remote_{{ $task['task.uuid'] }}"
-                                           value="{{ $task['task.exportId'] }}"/>
-                                    <input type="checkbox" class="chk-upload-completed"
-                                           id="upload_{{ $task['task.uuid'] }}"/>
-                                @else
-                                    {{ $task['task.exportId'] }}
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-                <!-- End of table component -->
-            @endforeach
+                    <!-- End of table component -->
+                        @endforeach
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -48,6 +48,13 @@ class QuestionnaireService
         $questionnaire->questions = $this->questionRepository->getQuestions($questionnaire->uuid)->all();
     }
 
+    /**
+     * This is currently obsolete as we use the ExportFriendlyTaskExport for both RPA and manual copy/paste
+     * We keep this around for a little while though in case the RPA team prefers a tabulated view of the data.
+     * (this method is vary table oriented with headers and such)
+     * @param string $caseUuid
+     * @return array
+     */
     public function getRobotFriendlyTaskExport(string $caseUuid): array
     {
         $tasks = $this->taskRepository->getTasks($caseUuid);
@@ -146,5 +153,71 @@ class QuestionnaireService
             'headers' => $headers,
             'categories' => $tasksPerCategory
         ];
+    }
+
+    public function getExportFriendlyTaskExport(string $caseUuid): array
+    {
+        $tasks = $this->taskRepository->getTasks($caseUuid);
+
+        // Hypothetically each task could've used a different questionnaire (once we have
+        // more than one task type). For now this isn't supported and we assume all tasks have
+        // used the same questionnaire. (Note: not all tasks might have been submitted, so it's not
+        // guaranteed that the first task has the questionnaire)
+        $questions = [];
+        foreach ($tasks as $task) {
+            if ($task->questionnaireUuid) {
+                // Do we have filled out questions?
+                $questions = $this->questionRepository->getQuestions($task->questionnaireUuid);
+                break; // We only need one set of questions beause of the 'same questionnaire' assumption.
+            }
+        }
+
+        $answers = $this->answerRepository->getAllAnswersByCase($caseUuid);
+        $answersByTaskAndQuestion = [];
+        foreach($answers as $answer) {
+            $answersByTaskAndQuestion[$answer->taskUuid][$answer->questionUuid] = $answer;
+        }
+
+        $records = [];
+
+        foreach ($tasks as $task) {
+            $records[$task->uuid] = [
+                'uuid' => $task->uuid,
+                'context' => $task->taskContext,
+                'dateoflastexposure' => $task->dateOfLastExposure !== null ? Date::parse($task->dateOfLastExposure)->format("Y-m-d") : '',
+                'communication' => $task->communication,
+                'exportId' => $task->exportId,
+                'enableExport' => $task->exportedAt === null || $task->exportedAt < $task->updatedAt
+            ];
+
+            foreach ($questions as $question) {
+                $answer = $answersByTaskAndQuestion[$task->uuid][$question->uuid] ?? null;
+                switch ($question->questionType) {
+                    case 'contactdetails':
+                        // ContactDetailsAnswer, turns into 4 distinct columns
+                        $records[$task->uuid]['data']['firstname'] = $answer->firstname ?? null;
+                        $records[$task->uuid]['data']['lastname'] = $answer->lastname ?? null;
+                        $records[$task->uuid]['data']['email'] = $answer->email ?? null;
+                        $records[$task->uuid]['data']['phonenumber'] = $answer->phonenumber ?? null;
+                        break;
+                    case 'classificationdetails':
+                        // We don't display the classification details, they have only been used to update the category.
+                        break;
+                    default:
+                        // SimpleAnswer
+                        $header = $question->header;
+                        $records[$task->uuid]['data'][$header] = $answer->value ?? null;
+                }
+            }
+        }
+        $tasksPerCategory = [];
+
+        foreach ($tasks as $task) {
+            $tasksPerCategory[$task->category][] = $records[$task->uuid];
+        }
+        ksort($tasksPerCategory);
+
+        // multidimensional array, rows are tasks, each column is a question-answer (referred to by question-uuid). Multi value questions are sub arrays.
+        return $tasksPerCategory;
     }
 }
