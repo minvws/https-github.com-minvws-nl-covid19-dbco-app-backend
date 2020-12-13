@@ -74,12 +74,11 @@ class CaseController extends Controller
         $user = $this->authService->getAuthenticatedUser();
 
         if ($case !== null && $this->caseService->canAccess($case)) {
-            $tasks = $this->questionnaireService->getRobotFriendlyTaskExport($caseUuid);
+            $tasksPerCategory = $this->questionnaireService->getExportFriendlyTaskExport($caseUuid);
             return view('dumpcase', [
                 'user' => $user,
                 'case' => $case,
-                'headers' => $tasks['headers'],
-                'taskcategories' => $tasks['categories']
+                'taskcategories' => $tasksPerCategory
             ]);
         } else {
             return redirect()->route('cases-list');

@@ -62,6 +62,7 @@ class QuestionnaireSeeder extends Seeder
                 'question_type' => 'classificationdetails',
                 'label' => 'Vragen over jullie ontmoeting',
                 'description' => null,
+                'sort_order' => 10,
                 'relevant_for_categories' => QuestionnaireSeeder::ALL_CATEGORIES,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -75,6 +76,7 @@ class QuestionnaireSeeder extends Seeder
                 'question_type' => 'contactdetails',
                 'label' => 'Contactgegevens',
                 'description' => null,
+                'sort_order' => 20,
                 'relevant_for_categories' => QuestionnaireSeeder::ALL_CATEGORIES,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -87,8 +89,9 @@ class QuestionnaireSeeder extends Seeder
                 'group_name' => 'contactdetails',
                 'question_type' => 'date',
                 'label' => 'Geboortedatum',
-                'header' => 'Geb. dat.',
+                'header' => 'Geboortedatum',
                 'description' => null,
+                'sort_order' => 30,
                 'relevant_for_categories' => '1',
                 'created_at' => $now,
                 'updated_at' => $now
@@ -101,8 +104,9 @@ class QuestionnaireSeeder extends Seeder
                 'group_name' => 'contactdetails',
                 'question_type' => 'multiplechoice',
                 'label' => 'Waar ken je deze persoon van?',
-                'header' => 'Relatie',
+                'header' => 'Relatie tot de index',
                 'description' => null,
+                'sort_order' => 40,
                 'relevant_for_categories' => '2a,2b',
                 'created_at' => $now,
                 'updated_at' => $now
@@ -208,6 +212,7 @@ class QuestionnaireSeeder extends Seeder
                     "<li>Woont in een zorginstelling of asielzoekerscentrum (bijvoorbeeld bejaardentehuis)</li>" .
                     "<li>Spreekt slecht of geen Nederlands</li>" .
                     "<li>Werkt in de zorg, onderwijs of een contactberoep (bijvoorbeeld kapper)</li></ul>",
+                'sort_order' => 50,
                 'relevant_for_categories' => '1,2a,2b',
                 'created_at' => $now,
                 'updated_at' => $now
