@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ExportField;
 use App\Models\Questionnaire;
 use App\Models\SimpleAnswer;
 use App\Repositories\AnswerRepository;
@@ -168,7 +169,7 @@ class QuestionnaireService
             if ($task->questionnaireUuid) {
                 // Do we have filled out questions?
                 $questions = $this->questionRepository->getQuestions($task->questionnaireUuid);
-                break; // We only need one set of questions beause of the 'same questionnaire' assumption.
+                break; // We only need one set of questions because of the 'same questionnaire' assumption.
             }
         }
 
@@ -182,12 +183,16 @@ class QuestionnaireService
 
         foreach ($tasks as $task) {
             $records[$task->uuid] = [
-                'uuid' => $task->uuid,
-                'context' => $task->taskContext,
-                'dateoflastexposure' => $task->dateOfLastExposure !== null ? Date::parse($task->dateOfLastExposure)->format("Y-m-d") : '',
-                'communication' => $task->communication,
-                'exportId' => $task->exportId,
-                'enableExport' => $task->exportedAt === null || $task->exportedAt < $task->updatedAt
+                'uuid' => new ExportField($task->uuid),
+                'context' => new ExportField($task->taskContext),
+                'dateoflastexposure' => $task->dateOfLastExposure !== null ?
+                    new ExportField($task->dateOfLastExposure,
+                                    Date::parse($task->dateOfLastExposure)->format('d-m-Y (l)'),
+                                    Date::parse($task->dateOfLastExposure)->format('Y-m-d')) : null,
+                'communication' => new ExportField($task->communication),
+                'exportId' => new ExportField($task->exportId),
+                'needsExport' => $task->exportedAt === null || $task->exportedAt < $task->updatedAt,
+                'data' => ['label' => new ExportField($task->label) ],
             ];
 
             foreach ($questions as $question) {
@@ -195,10 +200,22 @@ class QuestionnaireService
                 switch ($question->questionType) {
                     case 'contactdetails':
                         // ContactDetailsAnswer, turns into 4 distinct columns
-                        $records[$task->uuid]['data']['firstname'] = $answer->firstname ?? null;
-                        $records[$task->uuid]['data']['lastname'] = $answer->lastname ?? null;
-                        $records[$task->uuid]['data']['email'] = $answer->email ?? null;
-                        $records[$task->uuid]['data']['phonenumber'] = $answer->phonenumber ?? null;
+                        $lastNameExportField = new ExportField($answer->lastname ?? null);
+                        $records[$task->uuid]['data']['lastname'] = $lastNameExportField;
+                        $records[$task->uuid]['data']['firstname'] = new ExportField($answer->firstname ?? null);
+                        $records[$task->uuid]['data']['email'] = new ExportField($answer->email ?? null);
+                        $records[$task->uuid]['data']['phonenumber'] = new ExportField($answer->phonenumber ?? null);
+
+                        // Currently we only support a 'new data' indicator for the task as a whole, but if there
+                        // is new data, we render that button next to the lastname field.
+                        if ($records[$task->uuid]['needsExport']) {
+                            $lastNameExportField->isUpdated = true;
+                        }
+
+                        if ($answer->firstname != null && $answer->lastname != null) {
+                            // We should hide the task label if the user has replaced it with the full name.
+                            unset($records[$task->uuid]['data']['label']);
+                        }
                         break;
                     case 'classificationdetails':
                         // We don't display the classification details, they have only been used to update the category.
@@ -206,7 +223,7 @@ class QuestionnaireService
                     default:
                         // SimpleAnswer
                         $header = $question->header;
-                        $records[$task->uuid]['data'][$header] = $answer->value ?? null;
+                        $records[$task->uuid]['data'][$header] = $this->createSimpleExportField($question->questionType, $answer->value ?? null);
                 }
             }
         }
@@ -219,5 +236,22 @@ class QuestionnaireService
 
         // multidimensional array, rows are tasks, each column is a question-answer (referred to by question-uuid). Multi value questions are sub arrays.
         return $tasksPerCategory;
+    }
+
+    private function createSimpleExportField($questionType, $answerValue)
+    {
+        if ($answerValue == null) {
+            return new ExportField(null);
+        }
+        switch ($questionType)
+        {
+            case 'date':
+                return new ExportField(
+                    $answerValue,
+                    Date::parse($answerValue)->format('d-m-Y (l)'),
+                    Date::parse($answerValue)->format('Y-m-d')
+                );
+
+        }
     }
 }

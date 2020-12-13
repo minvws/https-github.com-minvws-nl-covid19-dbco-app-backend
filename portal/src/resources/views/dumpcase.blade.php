@@ -12,7 +12,9 @@
 </head>
 <body>
 
-<!-- todo make something here that is horitontally scrollable -->
+<!-- clipboard buffer -->
+<input id="clipboard" class="clipboard-offscreen" aria-hidden="true">
+
 <div class="container-xl">
 
     @include ('navbar', [
@@ -38,13 +40,26 @@
                         </div>
                     </h5>
                     <div class="container">
-                        <div class="row">
+                        <div class="row copyable" data-copyvalue="{{ $case->name }}">
                             <div class="col col-4">Naam (volledig)</div>
-                            <div class="col">{{ $case->name }}</div>
+                            <div class="col">
+                                {{ $case->name }}
+                                <div class="float-right">
+                                    <span class="row-action copy">Kopieer</span>
+                                    <span class="row-status"></span>
+                                </div>
+
+                            </div>
                         </div>
-                        <div class="row">
+                        <div class="row copyable" data-copyvalue="{{ $case->caseId }}">
                             <div class="col col-4">HPZone casenummer</div>
-                            <div class="col">{{ $case->caseId }}</div>
+                            <div class="col">
+                                {{ $case->caseId }}
+                                <div class="float-right">
+                                    <span class="row-action copy">Kopieer</span>
+                                    <span class="row-status"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -60,13 +75,26 @@
                         </div>
                     </h5>
                     <div class="container">
-                        <div class="row">
+                        <div class="row copyable" data-copyvalue="{{ $user->name }}">
                             <div class="col col-4">Naam (volledig)</div>
-                            <div class="col">{{ $user->name }}</div>
+                            <div class="col">
+                                {{ $user->name }}
+                                <div class="float-right">
+                                    <span class="row-action copy">Kopieer</span>
+                                    <span class="row-status"></span>
+                                </div>
+
+                            </div>
                         </div>
-                        <div class="row">
+                        <div class="row copyable" data-copyvalue="-">
                             <div class="col col-4">Datum contactonderzoek</div>
-                            <div class="col">-</div>
+                            <div class="col">
+                                -
+                                <div class="float-right">
+                                    <span class="row-action copy">Kopieer</span>
+                                    <span class="row-status"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -83,13 +111,25 @@
                         </div>
                     </h5>
                     <div class="container">
-                        <div class="row">
+                        <div class="row copyable" data-copyvalue="{{ $case->dateOfSymptomOnset }}">
                             <div class="col col-4">Datum eerste ziektedag (EZD)</div>
-                            <div class="col">{{ $case->name }}</div>
+                            <div class="col">
+                                {{ $case->dateOfSymptomOnset }}
+                                <div class="float-right">
+                                    <span class="row-action copy">Kopieer</span>
+                                    <span class="row-status"></span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="row">
+                        <div class="row copyable" data-copyvalue="-">
                             <div class="col col-4">Datum start besmettelijke periode</div>
-                            <div class="col">-</div>
+                            <div class="col">
+                                -
+                                <div class="float-right">
+                                    <span class="row-action copy">Kopieer</span>
+                                    <span class="row-status"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -97,10 +137,18 @@
             <!-- end of section -->
             <?php
             $groupTitles = [
-                '1' => ['title' => '1 - Huisgenoten', 'nameLabelPostfix' => 'van de huisgenoot'],
-                '2a' => ['title' => '2a - Nauwe contacten', 'nameLabelPostfix' => 'van het nauwe contact'],
-                '2b' => ['title' => '2b - Nauwe contacten', 'nameLabelPostfix' => 'van het nauwe contact'],
-                '3' => ['title' =>'3 - Overige contacten', 'nameLabelPostfix' => 'van het overig contact']
+                '1' => ['title' => '1 - Huisgenoten', 'postfix' => 'van de huisgenoot'],
+                '2a' => ['title' => '2a - Nauwe contacten', 'postfix' => 'van het nauwe contact'],
+                '2b' => ['title' => '2b - Nauwe contacten', 'postfix' => 'van het nauwe contact'],
+                '3' => ['title' =>'3 - Overige contacten', 'postfix' => 'van het overig contact']
+            ];
+
+            $fieldLabels = [
+                'lastname' => ['label' => 'Achternaam', 'postfix' => true],
+                'firstname' => ['label' => 'Voornaam'],
+                'email' => ['label' => 'E-mailadres'],
+                'phonenumber' => ['label' => 'Telefoonnummer'],
+                'label' => ['label' => 'Naam', 'postfix' => true],
             ];
             ?>
             <!-- Section: Contactonderzoek -->
@@ -116,32 +164,53 @@
                         @foreach ($taskcategories as $category => $tasks)
                             <div class="row">
                                 <div class="col">
-                                    <h6 class="mb-0">{{ $groupTitles[$category]['title'] }}</h6>
+                                    <h6 class="mb-2">{{ $groupTitles[$category]['title'] }}</h6>
                                 </div>
                             </div>
                             @foreach ($tasks as $task)
-                                @foreach ($task['data'] as $key => $value)
-                                <div class="row">
-                                    <div class="col-4">
-                                        {{ $key }}
+                                <div class="case-task">
+                                    @foreach ($task['data'] as $key => $value)
+                                        <div class="row copyable" data-copyvalue="{{ $value->copyValue ?? '-' }}">
+                                            <div class="col-4">
+                                                {{ $fieldLabels[$key]['label'] ?? $key }}
+                                                @if ($fieldLabels[$key]['postfix'] ?? false)
+                                                    {{ $groupTitles[$category]['postfix'] ?? '' }}
+                                                @endif
+                                            </div>
+                                            <div class="col">
+                                                {{ $value->displayValue ?? '-'}}
+                                                <div class="float-right">
+                                                    @if ($value->isUpdated ?? false)
+                                                        <button class="btn btn-outline-secondary btn-sm py-0 new-data">Nieuwe gegevens</button>
+                                                    @endif
+                                                    <span class="row-action copy">Kopieer</span>
+                                                    <span class="row-status"></span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    <div class="row copyable" data-copyvalue="{{ $task['dateoflastexposure']->copyValue ?? '-' }}">
+                                        <div class="col-4">
+                                            Laatste contactmoment
+                                        </div>
+                                        <div class="col">
+                                            {{ $task['dateoflastexposure']->displayValue ?? '-' }}
+                                        </div>
                                     </div>
-                                    <div class="col">
-                                        {{ $value ?? '-'}}
+                                    <div class="row">
+                                        <!-- spacer -->
                                     </div>
-                                </div>
-                                @endforeach
-                                <div class="row">
-                                    <!-- spacer -->
-                                </div>
-                                <div class="invisible">
-                                    @if ($task['enableExport'])
-                                        <input type="text" size="10" id="remote_{{ $task['uuid'] }}"
-                                                   value="{{ $task['exportId'] }}"/>
-                                        <input type="checkbox" class="chk-upload-completed"
-                                                   id="upload_{{ $task['uuid'] }}"/>
-                                    @else
-                                        {{ $task['exportId'] }}
-                                    @endif
+                                    <div class="invisible">
+                                        @if ($task['needsExport'])
+                                            <input type="text" size="10" id="remote_{{ $task['uuid']->value }}"
+                                                       value="{{ $task['exportId']->value }}"/>
+                                            <input type="checkbox" class="chk-upload-completed"
+                                                       id="upload_{{ $task['uuid']->value }}"/>
+                                        @else
+                                            {{ $task['exportId']->value }}
+                                        @endif
+                                    </div>
                                 </div>
                             @endforeach
                     <!-- End of table component -->
