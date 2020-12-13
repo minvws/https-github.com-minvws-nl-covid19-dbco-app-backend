@@ -190,12 +190,28 @@
                                             </div>
                                         </div>
                                     @endforeach
+                                    <div class="row copyable" data-copyvalue="{{ $task['context']->copyValue ?? '-' }}">
+                                        <div class="col-4">
+                                            Toelichting
+                                        </div>
+                                        <div class="col">
+                                            {{ $task['context']->displayValue ?? '-' }}
+                                            <div class="float-right">
+                                                <span class="row-action copy">Kopieer</span>
+                                                <span class="row-status"></span>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row copyable" data-copyvalue="{{ $task['dateoflastexposure']->copyValue ?? '-' }}">
                                         <div class="col-4">
                                             Laatste contactmoment
                                         </div>
                                         <div class="col">
                                             {{ $task['dateoflastexposure']->displayValue ?? '-' }}
+                                            <div class="float-right">
+                                                <span class="row-action copy">Kopieer</span>
+                                                <span class="row-status"></span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
