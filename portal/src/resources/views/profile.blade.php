@@ -18,7 +18,7 @@
             <h2 class="mt-4  mb-4  font-weight-normal d-flex align-items-end">
                 <span class="font-weight-bold">{{ $user->name }}</span>
                 <span class="ml-auto">
-                    <form action="/logout" method="POST" autocomplete="off">
+                    <form action="{{ route('user-logout') }}" method="POST" autocomplete="off">
                         @csrf
                         <button class="btn btn-primary" role="button">Uitloggen</button>
                     </form>

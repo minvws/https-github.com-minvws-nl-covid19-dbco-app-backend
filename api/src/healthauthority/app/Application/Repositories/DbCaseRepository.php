@@ -3,6 +3,7 @@ namespace DBCO\HealthAuthorityAPI\Application\Repositories;
 
 use DateTime;
 use DateTimeImmutable;
+use DBCO\HealthAuthorityAPI\Application\Security\EncryptionHelper;
 use DBCO\HealthAuthorityAPI\Application\Models\ClassificationDetails;
 use DBCO\HealthAuthorityAPI\Application\Models\Answer;
 use DBCO\HealthAuthorityAPI\Application\Models\ContactDetails;
@@ -28,13 +29,36 @@ class DbCaseRepository implements CaseRepository
     private PDO $client;
 
     /**
+     * @var EncryptionHelper
+     */
+    private EncryptionHelper $encryptionHelper;
+
+    /**
      * Constructor.
      *
-     * @param PDO $client
+     * @param PDO              $client
+     * @param EncryptionHelper $encryptionHelper
      */
-    public function __construct(PDO $client)
+    public function __construct(PDO $client, EncryptionHelper $encryptionHelper)
     {
         $this->client = $client;
+        $this->encryptionHelper = $encryptionHelper;
+    }
+
+    /**
+     * Seal value.
+     *
+     * @param string|null $value
+     *
+     * @return string|null
+     */
+    private function seal(?string $value): ?string
+    {
+        if ($value === null) {
+            return null;
+        } else {
+            return $this->encryptionHelper->sealStoreValue($value);
+        }
     }
 
     /**
@@ -175,6 +199,14 @@ class DbCaseRepository implements CaseRepository
             // when the task originates from the app
             $this->updateUserTask($task);
         } else {
+            if ($taskInfo->communication === 'index' && $task->communication === 'staff') {
+                // only allow changing to staff it was originally set to index
+                $task->communication = 'staff';
+            } else {
+                // else keep the current value
+                $task->communication = $taskInfo->communication;
+            }
+
             // update portal task
             $this->updatePortalTask($task);
         }
@@ -195,7 +227,7 @@ class DbCaseRepository implements CaseRepository
     private function getTaskInfo(Task $task)
     {
         $stmt = $this->client->prepare("
-            SELECT case_uuid, source
+            SELECT case_uuid, source, communication
             FROM task
             WHERE uuid = :taskUuid
         ");
@@ -211,7 +243,8 @@ class DbCaseRepository implements CaseRepository
 
         return (object)[
             'caseUuid' => $row->case_uuid,
-            'source' => $row->source
+            'source' => $row->source,
+            'communication' => $row->communication
         ];
     }
 
@@ -313,13 +346,15 @@ class DbCaseRepository implements CaseRepository
             UPDATE task
             SET 
                 questionnaire_uuid = :questionnaireUuid, 
+                communication = :communication,
                 updated_at = NOW()
             WHERE uuid = :taskUuid
         ");
 
         $stmt->execute([
             'questionnaireUuid' => $task->questionnaireResult->questionnaireUuid,
-            'taskUuid' => $task->uuid
+            'taskUuid' => $task->uuid,
+            'communication' => $task->communication
         ]);
     }
 
@@ -435,7 +470,7 @@ class DbCaseRepository implements CaseRepository
         $stmt->execute([
             'answerUuid' => $answer->uuid,
             'questionUuid' => $answer->questionUuid,
-            'value' => $value->value,
+            'value' => $this->seal($value->value),
             'updatedAt' => $answer->lastModified->format(DateTime::ATOM)
         ]);
     }
@@ -461,7 +496,7 @@ class DbCaseRepository implements CaseRepository
         $stmt->execute([
             'answerUuid' => $answer->uuid,
             'questionUuid' => $answer->questionUuid,
-            'value' => $value->value !== null ? $value->value->format('Y-m-d') : null,
+            'value' => $value->value !== null ? $this->seal($value->value->format('Y-m-d')) : null,
             'updatedAt' => $answer->lastModified->format(DateTime::ATOM)
         ]);
     }
@@ -489,10 +524,10 @@ class DbCaseRepository implements CaseRepository
         $stmt->execute([
             'answerUuid' => $answer->uuid,
             'questionUuid' => $answer->questionUuid,
-            'firstName' => $value->firstName,
-            'lastName' => $value->lastName,
-            'phoneNumber' => $value->phoneNumber,
-            'email' => $value->email,
+            'firstName' => $this->seal($value->firstName),
+            'lastName' => $this->seal($value->lastName),
+            'phoneNumber' => $this->seal($value->phoneNumber),
+            'email' => $this->seal($value->email),
             'updatedAt' => $answer->lastModified->format(DateTime::ATOM)
         ]);
 

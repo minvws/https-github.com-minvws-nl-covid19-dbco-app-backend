@@ -39,5 +39,5 @@ $DOCKER_COMPOSE run --rm --entrypoint composer simulator install
 
 echo
 echo "=====[ UPDATE QUESTIONNAIRE/TASK CACHE ]====="
-$DOCKER_COMPOSE run --rm worker questionnaire:refresh-all
-$DOCKER_COMPOSE run --rm worker task:refresh-general
+$DOCKER_COMPOSE run --rm worker /src/worker questionnaire:refresh-all
+$DOCKER_COMPOSE run --rm worker /src/worker task:refresh-general

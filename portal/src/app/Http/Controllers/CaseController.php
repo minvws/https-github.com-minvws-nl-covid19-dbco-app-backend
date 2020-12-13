@@ -9,6 +9,7 @@ use App\Services\CaseService;
 use App\Services\QuestionnaireService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Jenssegers\Date\Date;
 
 class CaseController extends Controller
@@ -31,18 +32,22 @@ class CaseController extends Controller
         // Because we want to show the new case immediately, we create a draft case.
         $case = $this->caseService->createDraftCase();
 
-        return redirect()->intended('/editcase/' . $case->uuid);
+        return redirect()->route('case-edit', [$case->uuid]);
     }
 
     public function editCase($caseUuid)
     {
         $case = $this->caseService->getCase($caseUuid);
 
-        if ($case != null && $this->caseService->canAccess($case)) {
+        if ($case !== null && $this->caseService->canAccess($case)) {
             $case->tasks[] = new Task(); // one empty placeholder
-            return view('editcase', ['case' => $case, 'tasks' => $case->tasks]);
+            return view('editcase', [
+                'action' => $case->status === CovidCase::STATUS_DRAFT ? 'new' : 'edit',
+                'case' => $case,
+                'tasks' => $case->tasks
+            ]);
         } else {
-            return redirect()->intended('/');
+            return redirect()->route('cases-list');
         }
     }
 
@@ -50,7 +55,7 @@ class CaseController extends Controller
     {
         $case = $this->caseService->getCase($caseUuid, true);
 
-        if ($case != null && $this->caseService->canAccess($case)) {
+        if ($case !== null && $this->caseService->canAccess($case)) {
 
             $taskgroups = array();
             foreach ($case->tasks as $task) {
@@ -59,7 +64,7 @@ class CaseController extends Controller
 
             return view('viewcase', ['case' => $case, 'taskgroups' => $taskgroups]);
         } else {
-            return redirect()->intended('/');
+            return redirect()->route('cases-list');
         }
     }
 
@@ -76,9 +81,9 @@ class CaseController extends Controller
                 'headers' => $tasks['headers'],
                 'taskcategories' => $tasks['categories']
             ]);
+        } else {
+            return redirect()->route('cases-list');
         }
-
-        return redirect()->intended('/');
     }
 
     public function listCases()
@@ -90,7 +95,10 @@ class CaseController extends Controller
         }
         // Enrich data with some view level helper data
         foreach ($cases as $case) {
-            $case->editCommand = ($case->status == CovidCase::STATUS_DRAFT ? 'editcase' : 'case');
+            $case->editCommand = $case->status === CovidCase::STATUS_DRAFT
+                ? route('case-edit', [$case->uuid])
+                : route('case-view', [$case->uuid])
+            ;
         }
 
         return view('caseoverview', ['cases' => $cases]);
@@ -105,15 +113,18 @@ class CaseController extends Controller
         if ($case != null && $this->caseService->canAccess($case)) {
 
             $validatedData = $request->validate([
+                'action' => 'required|in:new,edit',
                 'name' => 'required|max:255',
                 'caseId' => 'max:255',
                 'dateOfSymptomOnset' => 'required',
+                'pairafteropen' => 'required_if:action,new|in:ja,nee',
+                'addtasksnow' => 'nullable|in:ja,nee'
             ]);
 
             $case->name = $validatedData['name'];
-
             $case->caseId = $validatedData['caseId'];
             $case->dateOfSymptomOnset = Date::parse($validatedData['dateOfSymptomOnset']);
+            $pairafteropen = $validatedData['pairafteropen'];
 
             $this->caseService->updateCase($case);
 
@@ -128,12 +139,12 @@ class CaseController extends Controller
             $this->caseService->deleteRemovedTasks($caseUuid, $keep);
         }
 
-        if ($case->status == 'draft') {
+        if ($case->status == 'draft' && $pairafteropen === 'ja') {
             // For draft cases go to the secondary screen to pair the case.
-            return redirect()->intended('/paircase/' . $caseUuid);
+            return redirect()->route('case-pair', [$caseUuid]);
         } else {
             // For existing cases, go to the case's detail page
-            return redirect()->intended('/case/' . $caseUuid);
+            return redirect()->route('case-view', [$caseUuid]);
         }
 
     }
@@ -157,7 +168,7 @@ class CaseController extends Controller
             }
             return view('paircase', ['case' => $case, 'pairingCode' => $pairingCode, 'includeQuestionNumber' => $isDraftCase]);
         }
-        return redirect()->intended('/');
+        return redirect()->route('cases-list');
     }
 
     /**
