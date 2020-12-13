@@ -146,8 +146,8 @@
 
                 <!-- Question: discuss app download and pairing with index -->
                 <div class="align-items-end  mb-3 mt-5">
-                    <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Vertel de index welke app ze moeten downloaden</h3>
-                    <p class="mt-2 mb-0  ml-auto">De index heeft een app nodig die ze kunnen downloaden in de Play of AppStore waarmee ze de gegevens op een veilige manier met de GGD kunnen delen.</p>
+                    <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Gaat de index zelf gegevens aanvullen via de app?</h3>
+                    <p class="mt-2 mb-0  ml-auto">De index heeft de GGD Contact app nodig om op een veilige manier gegevens met de GGD te kunnen delen. Deze app is beschikbaar in de App Store en Google Play Store.</p>
 
                     @if ($case->status == 'draft')
                     @error('pairafteropen')
