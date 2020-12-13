@@ -135,7 +135,7 @@
                 </div>
             </div>
             <!-- end of section -->
-            
+
             <!-- Section: Contactonderzoek -->
            `<div class="card mt-4 mb-4">
                 <div class="card-body">
