@@ -10,7 +10,9 @@
     </td>
     <td>
         <label class='sr-only' for="categorie1">Categorie</label>
-        <select class="form-control" id="category1" name="tasks[{{ $row }}][category]">
+        <select class="form-control" id="category1" name="tasks[{{ $row }}][category]"
+                @if($errors->get("tasks.$row.category")) style="background:red" @endif
+        >
             <option disabled selected>Selecteer</option>
             <?php $options = array('1', '2a', '2b', '3'); ?>
             @foreach ($options as $option)
@@ -20,7 +22,9 @@
     </td>
     <td>
         <label class="sr-only" for="date1">Laatste contact</label>
-        <select class="form-control" id="lastcontact1" name="tasks[{{ $row }}][dateOfLastExposure]">
+        <select class="form-control" id="lastcontact1" name="tasks[{{ $row }}][dateOfLastExposure]"
+                @if($errors->get("tasks.$row.dateOfLastExposure")) style="background:red" @endif
+        >
             @for ($i = 13; $i >= 0; $i--)
                 <?php
                 $date = Date::parse("-$i days")->format("Y-m-d");
