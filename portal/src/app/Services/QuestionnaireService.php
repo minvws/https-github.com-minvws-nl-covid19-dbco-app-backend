@@ -234,7 +234,6 @@ class QuestionnaireService
         }
         ksort($tasksPerCategory);
 
-        // multidimensional array, rows are tasks, each column is a question-answer (referred to by question-uuid). Multi value questions are sub arrays.
         return $tasksPerCategory;
     }
 
@@ -253,5 +252,23 @@ class QuestionnaireService
                 );
 
         }
+    }
+
+    public function getCopyData($tasksPerCategory, $groupTitles, $fieldLabels)
+    {
+        $copy = "";
+
+        foreach($tasksPerCategory as $category => $tasks) {
+            $copy .= $groupTitles[$category]['title']."\n\n";
+
+            foreach ($tasks as $task) {
+                foreach ($task['data'] as $key => $value) {
+                    $key = ($fieldLabels[$key]['label'] ?? $key);
+                    $copy .= $key . ": " . ($value->displayValue ?? '-') . "\n";
+                }
+            }
+        }
+
+        return $copy;
     }
 }
