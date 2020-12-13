@@ -250,7 +250,10 @@ class QuestionnaireService
                     Date::parse($answerValue)->format('d-m-Y (l)'),
                     Date::parse($answerValue)->format('Y-m-d')
                 );
-
+            default:
+                return new ExportField(
+                    $answerValue
+                );
         }
     }
 
