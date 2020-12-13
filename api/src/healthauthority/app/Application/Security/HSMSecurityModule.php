@@ -39,7 +39,9 @@ class HSMSecurityModule implements SecurityModule
      */
     public function generateSecretKey(string $identifier): string
     {
-        return hex2bin($this->exec('createkeyaes', $identifier));
+        $seed = hex2bin($this->exec('createkeyaes', $identifier));
+        $keypair = sodium_crypto_box_seed_keypair($seed);
+        return sodium_crypto_box_secretkey($keypair);
     }
 
     /**
@@ -47,7 +49,9 @@ class HSMSecurityModule implements SecurityModule
      */
     public function getSecretKey(string $identifier): string
     {
-        return hex2bin($this->exec('getkeyaes', $identifier));
+        $seed = hex2bin($this->exec('getkeyaes', $identifier));
+        $keypair = sodium_crypto_box_seed_keypair($seed);
+        return sodium_crypto_box_secretkey($keypair);
     }
 
     /**
