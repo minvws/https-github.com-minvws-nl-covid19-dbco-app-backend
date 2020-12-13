@@ -178,7 +178,7 @@ class DummySeeder extends Seeder
                 'source' => 'portal',
                 'label' => 'Lois L.',
                 'task_context' => "It's complicated",
-                'category' => '2a',
+                'category' => '1',
                 'date_of_last_exposure' => date('Y-m-d'),
                 'communication' => 'index',
                 'informed_by_index' => 1,
