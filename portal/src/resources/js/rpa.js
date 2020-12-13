@@ -40,7 +40,14 @@ function copyToClipboard(value)
 }
 
 $(".copy-card-values").click(function() {
-    alert("copy-card-values");
+    var value = $(this).data('copyvalue');
+    copyToClipboard(value);
+    var btn = $(this);
+    var org = btn.html();
+    btn.html('&check; Gekopieerd');
+    setTimeout(function() {
+        btn.html(org);
+    }, 3000);
 });
 
 $(".copyable.row").click(function() {
@@ -51,7 +58,7 @@ $(".copyable.row").click(function() {
     statusLabel.html('Gekopieerd');
     setTimeout(function() {
         statusLabel.html('&check;');
-    }, 1000);
+    }, 2000);
     statusLabel.css('display', 'block');
 
     var copyAction = $(this).find('.row-action').first();

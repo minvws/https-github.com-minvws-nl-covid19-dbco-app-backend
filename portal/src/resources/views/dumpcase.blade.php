@@ -13,7 +13,7 @@
 <body>
 
 <!-- clipboard buffer -->
-<input id="clipboard" class="clipboard-offscreen" aria-hidden="true">
+<textarea id="clipboard" class="clipboard-offscreen" aria-hidden="true" ></textarea>
 
 <div class="container-xl">
 
@@ -34,14 +34,14 @@
             <div class="card mt-4">
                 <div class="card-body">
                     <h5 class="card-title">
-                        Gegevens index
+                        Gegevens case
                         <div class="float-right">
-                            <button class="copy-card-values btn btn-outline-primary btn-sm">Kopieer deze gegevens</button>
+                            <button data-copyvalue="{{ $copydata['case'] }}" class="copy-card-values btn btn-outline-primary btn-sm">Kopieer deze gegevens</button>
                         </div>
                     </h5>
                     <div class="container">
                         <div class="row copyable" data-copyvalue="{{ $case->name }}">
-                            <div class="col col-4">Naam (volledig)</div>
+                            <div class="col col-4">Naam</div>
                             <div class="col">
                                 {{ $case->name }}
                                 <div class="float-right">
@@ -71,7 +71,7 @@
                     <h5 class="card-title">
                         Informatie BCO-medewerker
                         <div class="float-right">
-                            <button class="copy-card-values btn btn-outline-primary btn-sm">Kopieer deze gegevens</button>
+                            <button data-copyvalue="{{ $copydata['user'] }}" class="copy-card-values btn btn-outline-primary btn-sm">Kopieer deze gegevens</button>
                         </div>
                     </h5>
                     <div class="container">
@@ -107,24 +107,24 @@
                     <h5 class="card-title">
                         Informatie over de index zelf
                         <div class="float-right">
-                            <button class="copy-card-values btn btn-outline-primary btn-sm">Kopieer deze gegevens</button>
+                            <button data-copyvalue="{{ $copydata['index'] }}" class="copy-card-values btn btn-outline-primary btn-sm">Kopieer deze gegevens</button>
                         </div>
                     </h5>
                     <div class="container">
-                        <div class="row copyable" data-copyvalue="{{ $case->dateOfSymptomOnset }}">
+                        <div class="row copyable" data-copyvalue="{{ $case->dateOfSymptomOnset->format("Y-m-d") }}">
                             <div class="col col-4">Datum eerste ziektedag (EZD)</div>
                             <div class="col">
-                                {{ $case->dateOfSymptomOnset }}
+                                {{ $case->dateOfSymptomOnset->format('d-m-Y (l)') }}
                                 <div class="float-right">
                                     <span class="row-action copy">Kopieer</span>
                                     <span class="row-status"></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="row copyable" data-copyvalue="-">
+                        <div class="row copyable" data-copyvalue="{{ $case->calculateContagiousPeriodStart()->format('Y-m-d') }}">
                             <div class="col col-4">Datum start besmettelijke periode</div>
                             <div class="col">
-                                -
+                                {{ $case->calculateContagiousPeriodStart()->format('d-m-Y (l)') }}
                                 <div class="float-right">
                                     <span class="row-action copy">Kopieer</span>
                                     <span class="row-status"></span>
@@ -135,29 +135,14 @@
                 </div>
             </div>
             <!-- end of section -->
-            <?php
-            $groupTitles = [
-                '1' => ['title' => '1 - Huisgenoten', 'postfix' => 'van de huisgenoot'],
-                '2a' => ['title' => '2a - Nauwe contacten', 'postfix' => 'van het nauwe contact'],
-                '2b' => ['title' => '2b - Nauwe contacten', 'postfix' => 'van het nauwe contact'],
-                '3' => ['title' =>'3 - Overige contacten', 'postfix' => 'van het overig contact']
-            ];
-
-            $fieldLabels = [
-                'lastname' => ['label' => 'Achternaam', 'postfix' => true],
-                'firstname' => ['label' => 'Voornaam'],
-                'email' => ['label' => 'E-mailadres'],
-                'phonenumber' => ['label' => 'Telefoonnummer'],
-                'label' => ['label' => 'Naam', 'postfix' => true],
-            ];
-            ?>
+            
             <!-- Section: Contactonderzoek -->
            `<div class="card mt-4 mb-4">
                 <div class="card-body">
                     <h5 class="card-title">
                         Contactonderzoek
                         <div class="float-right">
-                            <button class="copy-card-values btn btn-outline-primary btn-sm">Kopieer deze gegevens</button>
+                            <button data-copyvalue="{{ $copydata['contacts'] }}" class="copy-card-values btn btn-outline-primary btn-sm">Kopieer deze gegevens</button>
                         </div>
                     </h5>
                     <div class="container">
