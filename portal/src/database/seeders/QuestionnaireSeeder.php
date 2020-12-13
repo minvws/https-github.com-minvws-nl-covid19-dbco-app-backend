@@ -204,14 +204,16 @@ class QuestionnaireSeeder extends Seeder
                 'questionnaire_uuid' => $questionnaireUuid,
                 'group_name' => 'contactdetails',
                 'question_type' => 'multiplechoice',
-                'label' => 'Is een of meerdere onderstaande zaken van toepassing voor deze persoon?',
+                'label' => 'Geldt één of meer van deze dingen voor deze persoon?',
                 'header' => 'Prioriteit',
-                'description' => "<ul><li>Student</li>" .
-                    "<li>70 jaar of ouder</li>" .
+                'description' => "<p>Voor deze groepen is het extra belangrijk dat we ze snel informeren en het juiste advies geven.</p>" .
+                    "<ul><li>Tussen de 15 en 29 jaar</li>" .
+                    "<li>55 jaar of ouder</li>" .
                     "<li>Gezondheidsklachten of extra gezondheidsrisico's</li>" .
                     "<li>Woont in een zorginstelling of asielzoekerscentrum (bijvoorbeeld bejaardentehuis)</li>" .
-                    "<li>Spreekt slecht of geen Nederlands</li>" .
-                    "<li>Werkt in de zorg, onderwijs of een contactberoep (bijvoorbeeld kapper)</li></ul>",
+                    "<li>Gaat naar school of kinderopvang</li>" .
+                    "<li>Werkt in de zorg, onderwijs of kinderopvang</li>" .
+                    "<li>Heeft een ander contactberoep (bijvoorbeeld kapper)</li></ul>",
                 'sort_order' => 50,
                 'relevant_for_categories' => '1,2a,2b',
                 'created_at' => $now,
@@ -221,7 +223,7 @@ class QuestionnaireSeeder extends Seeder
             DB::table('answer_option')->insert([[
                 'uuid' => (string)Str::uuid(),
                 'question_uuid' => $questionUuid,
-                'label' => 'Ja, één of meerdere dingen',
+                'label' => 'Ja, één of meer',
                 'value' => 'Ja',
                 'trigger_name' => 'communication_staff',
                 'created_at' => $now,
