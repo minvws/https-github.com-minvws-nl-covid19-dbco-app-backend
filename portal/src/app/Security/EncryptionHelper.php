@@ -30,10 +30,6 @@ class EncryptionHelper
     public function unsealStoreValue(string $sealedValue): string
     {
         $data = json_decode($sealedValue);
-        if (json_last_error() != JSON_ERROR_NONE) {
-            // Data is not encrypted.
-            return $sealedValue;
-        }
         $ciphertext = base64_decode($data->ciphertext);
         $nonce = base64_decode($data->nonce);
         $key = $this->securityCache->getSecretKey(SecurityCache::SK_STORE);
