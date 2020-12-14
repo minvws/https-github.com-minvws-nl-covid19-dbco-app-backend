@@ -49,6 +49,11 @@ spec:
               protocol: TCP
           resources:
 {{ toYaml .Values.resources | indent 12 }}
+          {{- if eq .Values.security.module.type "hsm"}}
+          volumeMounts:
+          - name: pkcs11
+            mountPath: /etc/utimaco
+          {{- end }}
           livenessProbe:
             httpGet:
               path: /status
@@ -73,4 +78,10 @@ spec:
     {{- with .Values.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- if eq .Values.security.module.type "hsm"}}
+      volumes:
+      - name: pkcs11
+        secret:
+          secretName: {{ template "app.fullname" . }}-pkcs11
     {{- end }}

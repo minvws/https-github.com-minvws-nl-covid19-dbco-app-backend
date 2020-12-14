@@ -50,6 +50,31 @@ db:
 security:
   module:
     type: hsm
+    hsm:
+      useExistingSecret: false
+      slot:
+        label: slot1
+      user:
+        pin: changeme
+      pkcs11: |
+        [Global]
+        Logging = 0
+
+        KeysExternal = true
+        KeyStore = /data/utimaco/slot1.pks
+
+        SlotMultiSession = true
+        SlotCount = 30
+        KeepLeadZeros = false
+
+        FallbackInterval = 0
+
+        [CryptoServer]
+        Device = { hsm }
+
+        CommandTimeout = 300000
+        ConnectionTimeout = 60000
+        KeepAlive = true
 
 # To use simple security module during development:
 # security.module.sk.exchange.key = docker run --rm php -r "echo base64_encode(sodium_crypto_box_secretkey(sodium_crypto_box_keypair()));"
