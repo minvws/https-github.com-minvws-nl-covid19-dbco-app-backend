@@ -43,7 +43,7 @@ spec:
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           volumeMounts:
-          - name: config
+          - name: pkcs11
             mountPath: /etc/utimaco
           - name: storage
             mountPath: /data/utimaco/
@@ -64,7 +64,7 @@ spec:
 {{ toYaml . | indent 8 }}
     {{- end }}
       volumes:
-      - name: config
+      - name: pkcs11
         secret:
           secretName: {{ template "app.fullname" . }}-pkcs11
     {{- if not .Values.persistence.enabled }}
