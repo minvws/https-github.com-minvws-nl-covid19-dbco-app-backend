@@ -7,8 +7,7 @@ if (empty($redisSentinelService)) {
     $redis = [
         'host' => env('REDIS_HOST', '127.0.0.1'),
         'password' => env('REDIS_PASSWORD', null),
-        'port' => env('REDIS_PORT', '6379'),
-        'database' => env('REDIS_CACHE_DB', '1'),
+        'port' => env('REDIS_PORT', '6379')
     ];
 } else {
     $redis = [
@@ -20,8 +19,7 @@ if (empty($redisSentinelService)) {
             'replication' => 'sentinel',
             'service' => $redisSentinelService,
             'parameters' => [
-                'password' => env('REDIS_PASSWORD', null),
-                'database' => env('REDIS_CACHE_DB', '1')
+                'password' => env('REDIS_PASSWORD', null)
             ]
         ]
     ];
@@ -148,7 +146,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => ''
         ],
 
         'default' => $redis,

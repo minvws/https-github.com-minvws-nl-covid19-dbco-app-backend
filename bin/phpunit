@@ -14,6 +14,7 @@ if [ "$1" == "--reset" ]; then
 
   echo "=====[ RESET ]====="
   $DOCKER_COMPOSE down --remove-orphans -v
+  docker volume rm "${PROJECT_NAME}_${DATABASE_TYPE}-data"
   $DOCKER_COMPOSE build
   echo
 fi

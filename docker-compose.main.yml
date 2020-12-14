@@ -116,10 +116,33 @@ services:
             REDIS_PORT: 6379
             PRIVATE_API_BASE_URI: http://private_api:8080/v1/
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
-            SECURITY_MODULE_TYPE: ${HEALTHAUTHORITY_SECURITY_MODULE_TYPE}
         networks:
             - healthauthority
             - private
+
+    healthauthority_api_cachekeys:
+        build:
+            context: ./api
+            dockerfile: Dockerfile-healthauthority
+        command: /src/console security:cache-keys
+        environment:
+            DEBUG: ${DEBUG:-0}
+            DB_TYPE: ${DATABASE_TYPE}
+            DB_HOST: ${DATABASE_TYPE}
+            DB_DATABASE: portal
+            DB_USERNAME: ${HEALTHAUTHORITY_API_DB_USERNAME}
+            DB_PASSWORD: ${HEALTHAUTHORITY_API_DB_PASSWORD}
+            DB_TNS: ${HEALTHAUTHORITY_API_DB_TNS:-oracle/XEPDB1}
+            REDIS_HOST: redis-haa
+            REDIS_PORT: 6379
+            PRIVATE_API_BASE_URI: http://private_api:8080/v1/
+            PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
+        networks:
+            - healthauthority
+            - private
+        depends_on:
+            - redis-haa
+            - private_api
 
     portal:
         build:
@@ -154,10 +177,6 @@ services:
 
 networks:
     public:
-        name: public
     sluice:
-        name: sluice
     private:
-        name: private
     healthauthority:
-        name: healthauthority

@@ -9,32 +9,17 @@ class Client
     /**
      * @var string
      */
+    public string $uuid;
+
+    /**
+     * @var string
+     */
+    public string $caseUuid;
+
+    /**
+     * @var string
+     */
     public string $token;
-
-    /**
-     * @var ClientCase
-     */
-    public ClientCase $case;
-
-    /**
-     * @var string
-     */
-    public string $clientPublicKey;
-
-    /**
-     * @var string
-     */
-    public string $healthAuthorityPublicKey;
-
-    /**
-     * @var string
-     */
-    public string $healthAuthoritySecretKey;
-
-    /**
-     * @var string
-     */
-    public string $sealedHealthAuthorityPublicKey;
 
     /**
      * @var string
@@ -49,32 +34,23 @@ class Client
     /**
      * Constructor.
      *
-     * @param string     $token
-     * @param ClientCase $case
-     * @param string     $clientPublicKey
-     * @param string     $healthAuthorityPublicKey
-     * @param string     $healthAuthoritySecretKey
-     * @param string     $sealedHealthAuthorityPublicKey
-     * @param string     $receiveKey
-     * @param string     $transmitKey
+     * @param string $uuid
+     * @param string $caseUuid
+     * @param string $token
+     * @param string $receiveKey
+     * @param string $transmitKey
      */
     public function __construct(
+        string $uuid,
+        string $caseUuid,
         string $token,
-        ClientCase $case,
-        string $clientPublicKey,
-        string $healthAuthorityPublicKey,
-        string $healthAuthoritySecretKey,
-        string $sealedHealthAuthorityPublicKey,
         string $receiveKey,
         string $transmitKey
     )
     {
+        $this->uuid = $uuid;
         $this->token = $token;
-        $this->case = $case;
-        $this->clientPublicKey = $clientPublicKey;
-        $this->healthAuthorityPublicKey = $healthAuthorityPublicKey;
-        $this->healthAuthoritySecretKey = $healthAuthoritySecretKey;
-        $this->sealedHealthAuthorityPublicKey = $sealedHealthAuthorityPublicKey;
+        $this->caseUuid = $caseUuid;
         $this->receiveKey = $receiveKey;
         $this->transmitKey = $transmitKey;
     }
