@@ -110,4 +110,11 @@ class CovidCase
         return true;
     }
 
+    public function calculateContagiousPeriodStart(): Date
+    {
+        $date = $this->dateOfSymptomOnset->clone();
+        $date->addDays(-2);
+        return $date;
+    }
+
 }

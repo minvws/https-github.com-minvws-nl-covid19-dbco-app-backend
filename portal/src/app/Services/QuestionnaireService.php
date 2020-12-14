@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ExportField;
 use App\Models\Questionnaire;
 use App\Models\SimpleAnswer;
 use App\Repositories\AnswerRepository;
@@ -48,6 +49,13 @@ class QuestionnaireService
         $questionnaire->questions = $this->questionRepository->getQuestions($questionnaire->uuid)->all();
     }
 
+    /**
+     * This is currently obsolete as we use the ExportFriendlyTaskExport for both RPA and manual copy/paste
+     * We keep this around for a little while though in case the RPA team prefers a tabulated view of the data.
+     * (this method is vary table oriented with headers and such)
+     * @param string $caseUuid
+     * @return array
+     */
     public function getRobotFriendlyTaskExport(string $caseUuid): array
     {
         $tasks = $this->taskRepository->getTasks($caseUuid);
@@ -146,5 +154,124 @@ class QuestionnaireService
             'headers' => $headers,
             'categories' => $tasksPerCategory
         ];
+    }
+
+    public function getExportFriendlyTaskExport(string $caseUuid): array
+    {
+        $tasks = $this->taskRepository->getTasks($caseUuid);
+
+        // Hypothetically each task could've used a different questionnaire (once we have
+        // more than one task type). For now this isn't supported and we assume all tasks have
+        // used the same questionnaire. (Note: not all tasks might have been submitted, so it's not
+        // guaranteed that the first task has the questionnaire)
+        $questions = [];
+        foreach ($tasks as $task) {
+            if ($task->questionnaireUuid) {
+                // Do we have filled out questions?
+                $questions = $this->questionRepository->getQuestions($task->questionnaireUuid);
+                break; // We only need one set of questions because of the 'same questionnaire' assumption.
+            }
+        }
+
+        $answers = $this->answerRepository->getAllAnswersByCase($caseUuid);
+        $answersByTaskAndQuestion = [];
+        foreach($answers as $answer) {
+            $answersByTaskAndQuestion[$answer->taskUuid][$answer->questionUuid] = $answer;
+        }
+
+        $records = [];
+
+        foreach ($tasks as $task) {
+            $records[$task->uuid] = [
+                'uuid' => new ExportField($task->uuid),
+                'context' => new ExportField($task->taskContext),
+                'dateoflastexposure' => $task->dateOfLastExposure !== null ?
+                    new ExportField($task->dateOfLastExposure,
+                                    Date::parse($task->dateOfLastExposure)->format('d-m-Y (l)'),
+                                    Date::parse($task->dateOfLastExposure)->format('Y-m-d')) : null,
+                'communication' => new ExportField($task->communication),
+                'exportId' => new ExportField($task->exportId),
+                'needsExport' => $task->exportedAt === null || $task->exportedAt < $task->updatedAt,
+                'data' => ['label' => new ExportField($task->label) ],
+            ];
+
+            foreach ($questions as $question) {
+                $answer = $answersByTaskAndQuestion[$task->uuid][$question->uuid] ?? null;
+                switch ($question->questionType) {
+                    case 'contactdetails':
+                        // ContactDetailsAnswer, turns into 4 distinct columns
+                        $lastNameExportField = new ExportField($answer->lastname ?? null);
+                        $records[$task->uuid]['data']['lastname'] = $lastNameExportField;
+                        $records[$task->uuid]['data']['firstname'] = new ExportField($answer->firstname ?? null);
+                        $records[$task->uuid]['data']['email'] = new ExportField($answer->email ?? null);
+                        $records[$task->uuid]['data']['phonenumber'] = new ExportField($answer->phonenumber ?? null);
+
+                        // Currently we only support a 'new data' indicator for the task as a whole, but if there
+                        // is new data, we render that button next to the lastname field.
+                        if ($records[$task->uuid]['needsExport']) {
+                            $lastNameExportField->isUpdated = true;
+                        }
+
+                        if ($answer->firstname != null && $answer->lastname != null) {
+                            // We should hide the task label if the user has replaced it with the full name.
+                            unset($records[$task->uuid]['data']['label']);
+                        }
+                        break;
+                    case 'classificationdetails':
+                        // We don't display the classification details, they have only been used to update the category.
+                        break;
+                    default:
+                        // SimpleAnswer
+                        $header = $question->header;
+                        $records[$task->uuid]['data'][$header] = $this->createSimpleExportField($question->questionType, $answer->value ?? null);
+                }
+            }
+        }
+        $tasksPerCategory = [];
+
+        foreach ($tasks as $task) {
+            $tasksPerCategory[$task->category][] = $records[$task->uuid];
+        }
+        ksort($tasksPerCategory);
+
+        return $tasksPerCategory;
+    }
+
+    private function createSimpleExportField($questionType, $answerValue)
+    {
+        if ($answerValue == null) {
+            return new ExportField(null);
+        }
+        switch ($questionType)
+        {
+            case 'date':
+                return new ExportField(
+                    $answerValue,
+                    Date::parse($answerValue)->format('d-m-Y (l)'),
+                    Date::parse($answerValue)->format('Y-m-d')
+                );
+            default:
+                return new ExportField(
+                    $answerValue
+                );
+        }
+    }
+
+    public function getCopyData($tasksPerCategory, $groupTitles, $fieldLabels)
+    {
+        $copy = "";
+
+        foreach($tasksPerCategory as $category => $tasks) {
+            $copy .= $groupTitles[$category]['title']."\n\n";
+
+            foreach ($tasks as $task) {
+                foreach ($task['data'] as $key => $value) {
+                    $key = ($fieldLabels[$key]['label'] ?? $key);
+                    $copy .= $key . ": " . ($value->displayValue ?? '-') . "\n";
+                }
+            }
+        }
+
+        return $copy;
     }
 }

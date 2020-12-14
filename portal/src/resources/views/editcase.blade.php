@@ -93,6 +93,21 @@
                         </label>
                     </div>
                 </p>
+
+                @error('tasks.*')
+                <div class="alert alert-danger">
+                    Vul de ontbrekende gegevens in:
+                    <ul>
+                        @if ($errors->get("tasks.*.category"))
+                            <li>vul voor elk contact de <strong>categorie</strong> in</li>
+                        @endif
+                        @if ($errors->get("tasks.*.dateOfLastExposure"))
+                            <li>vul voor elk contact de <strong>datum laatste contact</strong> in</li>
+                        @endif
+                    </ul>
+                </div>
+                @enderror
+
                 <!-- Start of table component -->
                 <table id="taskTable" class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-form  table-ggd" @if (old('addtasksnow') === 'nee') style="display:none" @endif>
                     <!--

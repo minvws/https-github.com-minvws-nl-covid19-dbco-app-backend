@@ -62,4 +62,9 @@ class AuthenticationService
         return auth()->logout();
     }
 
+    public function getCopyData(BCOUser $user)
+    {
+        return "Naam (volledig): ".$user->name;
+    }
+
 }
