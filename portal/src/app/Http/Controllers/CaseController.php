@@ -122,7 +122,7 @@ class CaseController extends Controller
             $case->name = $validatedData['name'];
             $case->caseId = $validatedData['caseId'];
             $case->dateOfSymptomOnset = Date::parse($validatedData['dateOfSymptomOnset']);
-            $pairafteropen = $validatedData['pairafteropen'];
+            $pairafteropen = $validatedData['pairafteropen'] ?? 'nee';
 
             $this->caseService->updateCase($case);
 
