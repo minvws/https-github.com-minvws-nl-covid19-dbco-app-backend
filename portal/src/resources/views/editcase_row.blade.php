@@ -10,7 +10,7 @@
     </td>
     <td>
         <label class='sr-only' for="categorie1">Categorie</label>
-        <select class="form-control @if($errors->get("tasks.$row.dateOfLastExposure")) bg-warning @endif" id="category1" name="tasks[{{ $row }}][category]">
+        <select class="form-control @if($errors->get("tasks.$row.category")) bg-warning @endif" id="category1" name="tasks[{{ $row }}][category]">
             <option disabled selected>Selecteer</option>
             <?php $options = array('1', '2a', '2b', '3'); ?>
             @foreach ($options as $option)
