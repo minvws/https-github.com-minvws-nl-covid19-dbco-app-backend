@@ -24,6 +24,7 @@ jobs:
           helm template ./charts/public-api | ./kubeval --strict
           helm template ./charts/private-api | ./kubeval --strict
           helm template ./charts/healthauthority-api | ./kubeval --strict
+          helm template ./charts/healthauthority-hsm | ./kubeval --strict
           helm template ./charts/portal | ./kubeval --strict
           helm template ./charts/bridge | ./kubeval --strict
           helm template ./charts/worker-questionnaire | ./kubeval --strict
