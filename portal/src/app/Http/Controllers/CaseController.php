@@ -144,7 +144,11 @@ class CaseController extends Controller
                 'caseId' => 'max:255',
                 'dateOfSymptomOnset' => 'required',
                 'pairafteropen' => 'required_if:action,new|in:ja,nee',
-                'addtasksnow' => 'nullable|in:ja,nee'
+                'addtasksnow' => 'nullable|in:ja,nee',
+                'tasks.*.uuid' => 'nullable',
+                'tasks.*.label' => 'nullable',
+                'tasks.*.category' => 'required_with:tasks.*.label',
+                'tasks.*.dateOfLastExposure' => 'required_with:tasks.*.label'
             ]);
 
             $case->name = $validatedData['name'];
@@ -156,11 +160,15 @@ class CaseController extends Controller
 
             $keep = array();
             foreach ($request->input('tasks') as $rawTask) {
-                if (!empty($rawTask['label'])) { // skip empty auto-added table rows
-                    $keep[] = $rawTask['uuid'];
+                if (!empty($rawTask['label'])) { // skip empty auto-added table row
                     $this->caseService->createOrUpdateTask($caseUuid, $rawTask);
+
+                    if (!empty($rawTask['uuid'])) {
+                        $keep[] = $rawTask['uuid'];
+                    }
                 }
             }
+
             // Delete tasks that are no longer in the posted form
             $this->caseService->deleteRemovedTasks($caseUuid, $keep);
         }
