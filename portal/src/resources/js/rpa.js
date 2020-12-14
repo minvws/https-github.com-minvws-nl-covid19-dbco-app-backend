@@ -32,3 +32,55 @@ $(".chk-upload-completed").click(function() {
         linkTaskToExport(taskId, exportId);
     }
 });
+
+function copyToClipboard(value)
+{
+    $('#clipboard').val(value).select();
+    document.execCommand('Copy');
+}
+
+$(".copy-card-values").click(function() {
+    var value = $(this).data('copyvalue');
+    copyToClipboard(value);
+    var btn = $(this);
+    var org = btn.html();
+    btn.html('&check; Gekopieerd');
+    setTimeout(function() {
+        btn.html(org);
+    }, 3000);
+});
+
+$(".copyable.row").click(function() {
+    var value = $(this).data('copyvalue');
+    copyToClipboard(value);
+
+    var statusLabel = $(this).find('.row-status').first();
+    statusLabel.html('Gekopieerd');
+    setTimeout(function() {
+        statusLabel.html('&check;');
+    }, 2000);
+    statusLabel.css('display', 'block');
+
+    var copyAction = $(this).find('.row-action').first();
+    copyAction.css('display', 'none');
+
+    var newDataLabel = $(this).parent().find('.new-data');
+    if (newDataLabel.closest('.copyable.row').is($(this))) {
+        // fadeOut doesn't work properly if it's under our hover layer, so we hide directly.
+        newDataLabel.hide();
+    } else {
+        newDataLabel.fadeOut();
+    }
+});
+
+$(".copyable.row").hover(function() {
+    var statusLabel = $(this).find('.row-status').first();
+    statusLabel.css('display', 'none');
+    var copyAction = $(this).find('.row-action').first();
+    copyAction.css('display', 'block');
+}, function() {
+    var copyAction = $(this).find('.row-action').first();
+    copyAction.css('display', 'none');
+    var statusLabel = $(this).find('.row-status').first();
+    statusLabel.css('display', 'block');
+});
