@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace DBCO\HealthAuthorityAPI\Application\Security;
 
 /**
- * Security module.
+ * Security cache.
  *
  * @package DBCO\HealthAuthorityAPI\Application\Security
  */
-interface SecurityModuleCache
+interface SecurityCache
 {
     /**
      * Cache contains the secret key with the given identifier?

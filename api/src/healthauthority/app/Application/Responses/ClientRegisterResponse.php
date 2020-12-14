@@ -1,7 +1,7 @@
 <?php
 namespace DBCO\HealthAuthorityAPI\Application\Responses;
 
-use DBCO\HealthAuthorityAPI\Application\Models\Client;
+use DBCO\HealthAuthorityAPI\Application\Models\ClientRegistration;
 use DBCO\Shared\Application\Responses\Response;
 use JsonSerializable;
 
@@ -11,18 +11,18 @@ use JsonSerializable;
 class ClientRegisterResponse extends Response implements JsonSerializable
 {
     /**
-     * @var Client
+     * @var ClientRegistration
      */
-    private Client $client;
+    private ClientRegistration $registration;
 
     /**
      * Constructor.
      *
-     * @param Client $client
+     * @param ClientRegistration $registration
      */
-    public function __construct(Client $client)
+    public function __construct(ClientRegistration $registration)
     {
-       $this->client = $client;
+       $this->registration = $registration;
     }
 
     /**
@@ -40,7 +40,7 @@ class ClientRegisterResponse extends Response implements JsonSerializable
     {
         return [
             'sealedHealthAuthorityPublicKey' =>
-                base64_encode($this->client->sealedHealthAuthorityPublicKey)
+                base64_encode($this->registration->sealedHealthAuthorityPublicKey)
         ];
     }
 }

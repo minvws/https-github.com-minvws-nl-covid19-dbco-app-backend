@@ -25,11 +25,11 @@
                 <?php
                 $date = Date::parse("-$i days")->format("Y-m-d");
                 $label = Date::parse("-$i days")->format('j M l');
-                $selected = (!isset($task['dateOfLastExposure']) || $date != $task['dateOfLastExposure'] ?: 'selected="selected"')
+                $selected = (!isset($task['dateOfLastExposure']) || $date != $task['dateOfLastExposure']) ?: 'selected="selected"'
                 ?>
                 <option value="{{ $date }}" {{ $selected }}>{{ $label }}</option>
             @endfor
-            <option disabled selected>Selecteer</option>
+            <option disabled @if (!isset($task['dateOfLastExposure'])) selected @endif>Selecteer</option>
         </select>
     </td>
     <td>

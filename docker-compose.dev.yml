@@ -50,11 +50,21 @@ services:
     healthauthority_api:
         environment:
             APP_ENV: development
-            SECURITY_MODULE_TYPE: ${HEALTHAUTHORITY_SECURITY_MODULE_TYPE:-simple}
-            SECURITY_MODULE_SK_KEY_EXCHANGE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_KEY_EXCHANGE}
-            SECURITY_MODULE_SK_STORE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_STORE}
+            SECURITY_MODULE_TYPE: hsm
+            SECURITY_MODULE_USER_PIN: ${HSM_USER_PIN}
+            SECURITY_MODULE_SLOT_LABEL: "CryptoServer PKCS11 Token"
         ports:
             - ${HEALTHAUTHORITY_API_PORT:-8083}:8080
+        volumes:
+            - ./api/src/shared:/shared
+            - ./api/src/healthauthority:/src
+
+    healthauthority_api_cachekeys:
+        environment:
+            APP_ENV: development
+            SECURITY_MODULE_TYPE: hsm
+            SECURITY_MODULE_USER_PIN: ${HSM_USER_PIN}
+            SECURITY_MODULE_SLOT_LABEL: "CryptoServer PKCS11 Token"
         volumes:
             - ./api/src/shared:/shared
             - ./api/src/healthauthority:/src
@@ -76,10 +86,31 @@ services:
             APP_ENV: development
             DEBUG: ${DEBUG:-0}
             PUBLIC_API_BASE_URI: http://public_api:8080/v1/
-            HEALTHAUTHORITY_SK_KEY_EXCHANGE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_KEY_EXCHANGE}
+            REDIS_HOST: redis-haa
+            REDIS_PORT: 6379
         depends_on:
             - public_api
         volumes:
             - ./simulator/src:/src
         networks:
             - public
+            - healthauthority
+
+    hsm:
+        build:
+            context: ../nl-covid19-dbco-app-hsm-private/hsm-simulator
+            dockerfile: Dockerfile
+        networks:
+            - healthauthority
+
+    hsm-setup:
+        build:
+            context: ../nl-covid19-dbco-app-hsm-private/hsm-simulator
+            dockerfile: Dockerfile.hsm-setup
+        command: /setup-hsm
+        environment:
+            SIM_HOST: hsm
+            SO_PIN: ${HSM_SO_PIN}
+            USER_PIN: ${HSM_USER_PIN}
+        networks:
+            - healthauthority

@@ -13,11 +13,25 @@ use RuntimeException;
 class HSMSecurityModule implements SecurityModule
 {
     /**
-     * Constructor.
+     * Execute command.
+     *
+     * @param string $command Command name.
+     * @param array  $args    Command arguments.
+     *
+     * @return string Last output line.
      */
-    public function __construct()
+    private function exec(string $command, ...$args): string
     {
-        throw new RuntimeException('Not implemented!'); // TODO
+        $escapedCommand = escapeshellcmd(__DIR__ . '/../../../python/' . $command . '.py');
+        $escapedArgs = array_map('escapeshellarg', $args);
+        $template = '%s' . str_repeat(' %s', count($escapedArgs));
+
+        $lastLine = exec(sprintf($template, $escapedCommand, ...$escapedArgs), $fullOutput, $status);
+        if ($status !== 0) {
+            throw new RuntimeException('Error executing command "' . $command . ": " . $lastLine);
+        }
+
+        return $lastLine;
     }
 
     /**
@@ -25,7 +39,9 @@ class HSMSecurityModule implements SecurityModule
      */
     public function generateSecretKey(string $identifier): string
     {
-        throw new RuntimeException('Not implemented!'); // TODO
+        $seed = hex2bin($this->exec('createkeyaes', $identifier));
+        $keypair = sodium_crypto_box_seed_keypair($seed);
+        return sodium_crypto_box_secretkey($keypair);
     }
 
     /**
@@ -33,7 +49,9 @@ class HSMSecurityModule implements SecurityModule
      */
     public function getSecretKey(string $identifier): string
     {
-        throw new RuntimeException('Not implemented!'); // TODO
+        $seed = hex2bin($this->exec('getkeyaes', $identifier));
+        $keypair = sodium_crypto_box_seed_keypair($seed);
+        return sodium_crypto_box_secretkey($keypair);
     }
 
     /**
@@ -41,15 +59,7 @@ class HSMSecurityModule implements SecurityModule
      */
     public function deleteSecretKey(string $identifier): void
     {
-        throw new RuntimeException('Not implemented!'); // TODO
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renameSecretKey(string $oldIdentifier, string $newIdentifier)
-    {
-        throw new RuntimeException('Not implemented!'); // TODO
+        $this->exec('deletekeyaes', $identifier);
     }
 
     /**
@@ -57,6 +67,6 @@ class HSMSecurityModule implements SecurityModule
      */
     public function randomBytes(int $length): string
     {
-        throw new RuntimeException('Not implemented!'); // TODO
+        return hex2bin($this->exec('getrandombytes', $length));
     }
 }

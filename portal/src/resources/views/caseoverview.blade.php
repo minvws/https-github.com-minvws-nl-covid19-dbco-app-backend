@@ -23,7 +23,7 @@
 
                 <!-- Start of add button component -->
                 <span class="ml-auto">
-                    <a href="/newcase" class="btn  btn-primary  ml-auto">
+                    <a href="{{ route('case-new') }}" class="btn  btn-primary  ml-auto">
                         Nieuwe case
                     </a>
                 </span>
@@ -79,7 +79,7 @@
                             </thead>
                             <tbody>
                             @foreach($cases as $case)
-                                <tr role="button" class="custom-link clickable-row" data-href="/{{ $case->editCommand }}/{{ $case->uuid }}">
+                                <tr role="button" class="custom-link clickable-row" data-href="{{ $case->editCommand }}">
                                     <th scope="row">{{ Str::limit($case->name, 30, '...') }}</th>
                                     <td>{{ Str::limit($case->caseId, 30, '...') }}</td>
                                     <td>{{ $case->dateOfSymptomOnset != NULL ? $case->dateOfSymptomOnset->format('l j M') : '' }}</td>
