@@ -58,6 +58,9 @@ tih:
   useExistingSecret: false # if true, create a secret with `app.fullname`-tih in the same namespace
 
 # User roles
+allow:
+  demo:
+    login: false # if true, see roles below
 user:
   role:
     admin: DBCO-Beheer
