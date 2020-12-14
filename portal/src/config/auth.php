@@ -114,4 +114,5 @@ return [
 
     'password_timeout' => 10800,
 
+    'allow_demo_login' => env('ALLOW_DEMO_LOGIN', false),
 ];
