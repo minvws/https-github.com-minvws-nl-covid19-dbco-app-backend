@@ -17,9 +17,7 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/login', array('as' => 'login', function() {
-    return view('login');
-}));
+Route::get('/login', [LoginController::class, 'login'])->name('login');
 
 // All pages that are behind auth and require user role
 Route::middleware(['auth', 'rolecheck:user'])->group(function() {

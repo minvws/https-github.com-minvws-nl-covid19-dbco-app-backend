@@ -30,9 +30,10 @@
 
             <a href="/auth/identityhub" class="btn  btn-primary  btn-block">Inloggen</a>
             </div></div>
+            @if ($allowDemoLogin)
             <div class="row mt-4">
                 <div class="col">
-            <a href="/auth/stub?role=user" class="btn  btn-primary  btn-block">Demo login: Gebruiker</a>
+                    <a href="/auth/stub?role=user" class="btn  btn-primary  btn-block">Demo login: Gebruiker</a>
                 </div>
                 <div class="col">
                     <a href="/auth/stub?role=admin" class="btn  btn-primary  btn-block">Demo login: Beheerder</a>
@@ -41,6 +42,7 @@
                     <a href="/auth/stub?role=planner" class="btn  btn-primary  btn-block">Demo login: Verdeler</a>
                 </div>
             </div>
+            @endif
         </div>
     </div>
 </div>

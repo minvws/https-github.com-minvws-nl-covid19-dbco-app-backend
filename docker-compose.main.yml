@@ -166,6 +166,7 @@ services:
             USER_ROLE_ADMIN: ${PORTAL_USER_ROLE_ADMIN:-DBCO-Beheer}
             USER_ROLE_USER: ${PORTAL_USER_ROLE_USER:-DBCO-Gebruiker}
             USER_ROLE_PLANNER: ${PORTAL_USER_ROLE_PLANNER:-DBCO-Werkverdeler}
+            ALLOW_DEMO_LOGIN: ${PORTAL_ALLOW_DEMO_LOGIN}
             PRIVATE_API_BASE_URI: http://private_api:8080/v1/
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
             HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api:8080/v1/
