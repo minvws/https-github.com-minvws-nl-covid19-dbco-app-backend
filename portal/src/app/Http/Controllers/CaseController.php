@@ -62,7 +62,10 @@ class CaseController extends Controller
                 $taskgroups[$task->communication][] = $task;
             }
 
-            return view('viewcase', ['case' => $case, 'taskgroups' => $taskgroups]);
+            return view('viewcase', [
+                'case' => $case,
+                'taskgroups' => $taskgroups
+            ]);
         } else {
             return redirect()->route('cases-list');
         }
@@ -119,6 +122,7 @@ class CaseController extends Controller
         } else {
             $cases = $this->caseService->myCases();
         }
+
         // Enrich data with some view level helper data
         foreach ($cases as $case) {
             $case->editCommand = $case->status === CovidCase::STATUS_DRAFT
