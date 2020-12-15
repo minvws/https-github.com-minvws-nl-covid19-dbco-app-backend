@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Answer;
 use App\Models\ClassificationDetailsAnswer;
 use App\Models\ContactDetailsAnswer;
+use App\Models\Task;
 use App\Repositories\AnswerRepository;
 use App\Repositories\CaseUpdateNotificationRepository;
 use App\Repositories\CaseRepository;
@@ -241,6 +242,11 @@ class CaseService
         foreach ($case->tasks as $task) {
             $items = $tasksProgress[$task->uuid] ?? [];
 
+            if (isset($items['name_data']) && isset($items['classification']) && isset($items['contact'])) {
+                $task->progress = Task::TASK_DATA_CONTACTABLE;
+            } else {
+                $task->progress = Task::TASK_DATA_INCOMPLETE;
+            }
         }
     }
 
