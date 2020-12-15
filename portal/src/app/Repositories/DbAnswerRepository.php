@@ -31,7 +31,7 @@ class DbAnswerRepository implements AnswerRepository
      * Unseal value.
      *
      * @param string|null $sealedValue
-     * 
+     *
      * @return string|null
      */
     private function unseal(?string $sealedValue): ?string
@@ -48,7 +48,10 @@ class DbAnswerRepository implements AnswerRepository
         $dbAnswers = EloquentAnswer::where('case_uuid', $caseUuid)
             ->select('answer.*', 'question.question_type')
             ->join('task', 'answer.task_uuid', '=', 'task.uuid')
-            ->join('question', 'answer.question_uuid', '=', 'question.uuid')->get();
+            ->join('question', 'answer.question_uuid', '=', 'question.uuid')
+            ->orderBy('task.uuid')
+            ->orderBy('question.sort_order')
+            ->get();
 
         $answers = array();
 

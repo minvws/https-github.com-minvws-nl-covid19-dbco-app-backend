@@ -212,4 +212,16 @@ class CaseService
         $tasks = array_values($tasksByTaskUuid);
     }
 
+    public function getCopyDataCase(CovidCase $case)
+    {
+        return "Naam: ".$case->name."\n"
+            ."Case ID: ".$case->caseId;
+    }
+
+    public function getCopyDataIndex(CovidCase $case)
+    {
+        return "Datum eerste ziektedag (EZD): ".$case->dateOfSymptomOnset->format('d-m-Y').
+            "\nDatum start besmettelijke periode: ".$case->calculateContagiousPeriodStart()->format('d-m-Y');
+    }
+
 }
