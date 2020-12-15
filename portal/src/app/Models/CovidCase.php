@@ -40,6 +40,9 @@ class CovidCase
     public ?Date $windowExpiresAt;
     public ?Date $pairingExpiresAt;
 
+    /**
+     * @var Task[]
+     */
     public array $tasks = array();
 
     public function caseStatus(): string
