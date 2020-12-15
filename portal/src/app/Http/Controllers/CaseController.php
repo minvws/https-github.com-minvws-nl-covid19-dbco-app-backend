@@ -180,7 +180,6 @@ class CaseController extends Controller
             // For existing cases, go to the case's detail page
             return redirect()->route('case-view', [$caseUuid]);
         }
-
     }
 
     /**
