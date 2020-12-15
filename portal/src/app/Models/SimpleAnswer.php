@@ -6,9 +6,9 @@ class SimpleAnswer extends Answer
 {
     public string $value;
 
-    public function progressContribution()
+    public function progressContribution(): bool
     {
-        return 0;
+        return false;
     }
 
     public function toFormValue()

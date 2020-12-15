@@ -9,19 +9,12 @@ class ContactDetailsAnswer extends Answer
     public ?string $email;
     public ?string $phonenumber;
 
-    public function progressContribution()
+    public function progressContribution(): bool
     {
-        $progress = 0;
-        if (!empty($this->firstname)) {
-            $progress += 25;
-        }
-        if (!empty($this->lastname)) {
-            $progress += 25;
-        }
-        if (!empty($this->email) || !empty($this->phonenumber)) {
-            $progress += 25;
-        }
-        return $progress;
+        return
+            !empty($this->firstname) &&
+            !empty($this->lastname) &&
+            (!empty($this->email) || !empty($this->phonenumber));
     }
 
     public function toFormValue()

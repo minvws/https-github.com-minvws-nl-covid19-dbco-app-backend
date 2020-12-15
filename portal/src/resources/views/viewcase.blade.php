@@ -102,9 +102,9 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                @if ($task->progress === "complete")
+                                @if ($task->progress === \App\Models\Task::TASK_DATA_COMPLETE)
                                     <img src="{{ asset('images/check-100.svg') }}">
-                                @elseif ($task->progress === "contact")
+                                @elseif ($task->progress === \App\Models\Task::TASK_DATA_CONTACTABLE)
                                         <img src="{{ asset('images/check-50.svg') }}">
                                 @else
                                     <img src="{{ asset('images/check-warn.svg') }}">
