@@ -29,6 +29,11 @@ class Task
     public string $label;
 
     /**
+     * @var string
+     */
+    public ?string $derivedLabel = null;
+
+    /**
      * @var string|null
      */
     public ?string $taskContext = null;
