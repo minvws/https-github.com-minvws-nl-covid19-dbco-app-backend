@@ -12,7 +12,9 @@ class DbQuestionRepository implements QuestionRepository
 {
     public function getQuestions(string $questionnaireUuid): Collection
     {
-        $dbQuestions = EloquentQuestion::where('questionnaire_uuid', $questionnaireUuid)->get();
+        $dbQuestions = EloquentQuestion::where('questionnaire_uuid', $questionnaireUuid)
+            ->orderBy('sort_order')
+            ->get();
 
         $questions = [];
         foreach ($dbQuestions as $dbQuestion) {

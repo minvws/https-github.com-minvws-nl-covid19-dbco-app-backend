@@ -71,10 +71,42 @@ class CaseController extends Controller
     public function dumpCase($caseUuid)
     {
         $case = $this->caseService->getCase($caseUuid);
+        $user = $this->authService->getAuthenticatedUser();
 
-        if ($case != null && $this->caseService->canAccess($case)) {
-            $tasks = $this->questionnaireService->getRobotFriendlyTaskExport($caseUuid);
-            return view('dumpcase', [ 'case' => $case, 'headers' => $tasks['headers'], 'taskcategories' => $tasks['categories'] ]);
+        if ($case !== null && $this->caseService->canAccess($case)) {
+            $tasksPerCategory = $this->questionnaireService->getExportFriendlyTaskExport($caseUuid);
+
+            // TODO: Replace these getCopyData methods by ascii templates
+            $copydata['user'] = $this->authService->getCopyData($user);
+            $copydata['case'] = $this->caseService->getCopyDataCase($case);
+            $copydata['index'] = $this->caseService->getCopyDataIndex($case);
+
+            $groupTitles = [
+                '1' => ['title' => '1 - Huisgenoten', 'postfix' => 'van de huisgenoot'],
+                '2a' => ['title' => '2a - Nauwe contacten', 'postfix' => 'van het nauwe contact'],
+                '2b' => ['title' => '2b - Nauwe contacten', 'postfix' => 'van het nauwe contact'],
+                '3' => ['title' =>'3 - Overige contacten', 'postfix' => 'van het overig contact']
+            ];
+
+            $fieldLabels = [
+                'lastname' => ['label' => 'Achternaam', 'postfix' => true],
+                'firstname' => ['label' => 'Voornaam'],
+                'email' => ['label' => 'E-mailadres'],
+                'phonenumber' => ['label' => 'Telefoonnummer'],
+                'label' => ['label' => 'Naam', 'postfix' => true],
+            ];
+
+            $copydata['contacts'] = $this->questionnaireService->getCopyData($tasksPerCategory, $groupTitles, $fieldLabels);
+
+
+            return view('dumpcase', [
+                'groupTitles' => $groupTitles,
+                'fieldlabels' => $fieldLabels,
+                'user' => $user,
+                'case' => $case,
+                'copydata' => $copydata,
+                'taskcategories' => $tasksPerCategory
+            ]);
         } else {
             return redirect()->route('cases-list');
         }
@@ -112,7 +144,11 @@ class CaseController extends Controller
                 'caseId' => 'max:255',
                 'dateOfSymptomOnset' => 'required',
                 'pairafteropen' => 'required_if:action,new|in:ja,nee',
-                'addtasksnow' => 'nullable|in:ja,nee'
+                'addtasksnow' => 'nullable|in:ja,nee',
+                'tasks.*.uuid' => 'nullable',
+                'tasks.*.label' => 'nullable',
+                'tasks.*.category' => 'required_with:tasks.*.label',
+                'tasks.*.dateOfLastExposure' => 'required_with:tasks.*.label'
             ]);
 
             $case->name = $validatedData['name'];
@@ -124,11 +160,15 @@ class CaseController extends Controller
 
             $keep = array();
             foreach ($request->input('tasks') as $rawTask) {
-                if (!empty($rawTask['label'])) { // skip empty auto-added table rows
-                    $keep[] = $rawTask['uuid'];
+                if (!empty($rawTask['label'])) { // skip empty auto-added table row
                     $this->caseService->createOrUpdateTask($caseUuid, $rawTask);
+
+                    if (!empty($rawTask['uuid'])) {
+                        $keep[] = $rawTask['uuid'];
+                    }
                 }
             }
+
             // Delete tasks that are no longer in the posted form
             $this->caseService->deleteRemovedTasks($caseUuid, $keep);
         }

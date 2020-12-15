@@ -93,6 +93,21 @@
                         </label>
                     </div>
                 </p>
+
+                @error('tasks.*')
+                <div class="alert alert-danger">
+                    Vul de ontbrekende gegevens in:
+                    <ul>
+                        @if ($errors->get("tasks.*.category"))
+                            <li>vul voor elk contact de <strong>categorie</strong> in</li>
+                        @endif
+                        @if ($errors->get("tasks.*.dateOfLastExposure"))
+                            <li>vul voor elk contact de <strong>datum laatste contact</strong> in</li>
+                        @endif
+                    </ul>
+                </div>
+                @enderror
+
                 <!-- Start of table component -->
                 <table id="taskTable" class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-form  table-ggd" @if (old('addtasksnow') === 'nee') style="display:none" @endif>
                     <!--
@@ -146,8 +161,8 @@
 
                 <!-- Question: discuss app download and pairing with index -->
                 <div class="align-items-end  mb-3 mt-5">
-                    <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Vertel de index welke app ze moeten downloaden</h3>
-                    <p class="mt-2 mb-0  ml-auto">De index heeft een app nodig die ze kunnen downloaden in de Play of AppStore waarmee ze de gegevens op een veilige manier met de GGD kunnen delen.</p>
+                    <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Gaat de index zelf gegevens aanvullen via de app?</h3>
+                    <p class="mt-2 mb-0  ml-auto">De index heeft de GGD Contact app nodig om op een veilige manier gegevens met de GGD te kunnen delen. Deze app is beschikbaar in de App Store en Google Play Store.</p>
 
                     @if ($case->status == 'draft')
                     @error('pairafteropen')
