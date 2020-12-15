@@ -9,9 +9,13 @@ class ClassificationDetailsAnswer extends Answer
     public bool $category2BRisk = false;
     public bool $category3Risk = false;
 
-    public function progressContribution()
+    public function progressContribution(): bool
     {
-        return 0;
+        return
+            $this->category1Risk ||
+            $this->category2ARisk ||
+            $this->category2BRisk ||
+            $this->category3Risk;
     }
 
     public function toFormValue()
