@@ -97,15 +97,17 @@
                             <td class="text-center">
                                 @if ($task->informedByIndex)
                                     <img src="{{ asset('images/done.svg') }}">
-                                @elseif ($task->communication == 'index')
+                                @else
                                     Nog niet
                                 @endif
                             </td>
                             <td class="text-center">
-                                @if ($task->submittedByUser())
-                                    <img src="{{ asset('images/progress-'.$task->progress.'.svg') }}">
+                                @if ($task->progress === "complete")
+                                    <img src="{{ asset('images/check-100.svg') }}">
+                                @elseif ($task->progress === "contact")
+                                        <img src="{{ asset('images/check-50.svg') }}">
                                 @else
-                                    <img src="{{ asset('images/progress-warn.svg') }}">
+                                    <img src="{{ asset('images/check-warn.svg') }}">
                                 @endif
                             </td>
                             <td class="text-center">
