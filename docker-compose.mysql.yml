@@ -23,7 +23,7 @@ services:
         networks:
             - healthauthority
 
-    healthauthority_api:
+    healthauthority-api:
         depends_on:
           - mysql
 
