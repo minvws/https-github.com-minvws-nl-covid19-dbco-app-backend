@@ -46,25 +46,4 @@ class Task
     public ?string $exportId = null;
 
     public ?Date $exportedAt = null;
-
-    /**
-     * @return bool true if the task has enough submitted answers to be contacted
-     */
-    public function hasContactData(): bool
-    {
-        // No questionnaire means no answer have been provided at all
-        if ($this->questionnaireUuid === null) {
-            return false;
-        }
-    }
-
-    /**
-     * @return bool true if the task has completed all answers
-     */
-    public function hasAllData(): bool
-    {
-        if (!$this->hasContactData()) {
-            return false;
-        }
-    }
 }
