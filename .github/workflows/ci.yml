@@ -33,10 +33,10 @@ jobs:
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit worker
 
       - name: Private Api - Run phpunit
-        run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit private_api
+        run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit private-api
 
       - name: Public Api - Run phpunit
-        run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit public_api
+        run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit public-api
 
       - name: Health Authority Api - Run phpunit
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority_api
