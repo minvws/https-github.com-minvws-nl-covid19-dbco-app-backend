@@ -5,17 +5,10 @@ metadata:
   labels:
     {{- include "app.labels" . | nindent 4 }}
 data:
-  APP_ENV: {{ .Values.app.env }}
   DEBUG: {{ quote .Values.debug }}
-  APACHE_RUN_USER: {{  .Values.apache.run.user }}
-  APACHE_RUN_GROUP: {{  .Values.apache.run.group }}
   REDIS_HOST: {{  .Values.redis.host }}
   REDIS_PORT: {{  quote .Values.redis.port }}
   {{- if .Values.redis.sentinel.service }}
   REDIS_SENTINEL_SERVICE: {{ .Values.redis.sentinel.service }}
   {{- end }}
-  SECURITY_MODULE_TYPE: {{ .Values.security.module.type }}
-  DB_TYPE: {{ .Values.db.type }}
-  DB_HOST: {{ .Values.db.host }}
-  DB_DATABASE: {{ .Values.db.database }}
-  PRIVATE_API_BASE_URI: {{ .Values.private.api.base_uri }}
+  HEALTHAUTHORITY_API_BASE_URI: {{  .Values.healthauthority.api.base_uri }}
