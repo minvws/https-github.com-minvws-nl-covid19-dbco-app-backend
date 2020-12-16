@@ -161,11 +161,9 @@ class CaseController extends Controller
             $keep = array();
             foreach ($request->input('tasks') as $rawTask) {
                 if (!empty($rawTask['label'])) { // skip empty auto-added table row
-                    $this->caseService->createOrUpdateTask($caseUuid, $rawTask);
+                    $keepUuid = $this->caseService->createOrUpdateTask($caseUuid, $rawTask);
 
-                    if (!empty($rawTask['uuid'])) {
-                        $keep[] = $rawTask['uuid'];
-                    }
+                    $keep[] = $keepUuid;
                 }
             }
 
