@@ -204,7 +204,7 @@ class CaseController extends Controller
     }
 
     /**
-     * Trigger healthauthority_api to export case data.
+     * Trigger healthauthority-api to export case data.
      * Not to be confused with exporting case data to HPZone.
      *
      * @param $caseUuid
