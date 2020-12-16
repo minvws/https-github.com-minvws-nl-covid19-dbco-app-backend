@@ -3,6 +3,8 @@ name: release
 on:
   push:
     tags: ['*']
+    branches:
+      - main
 
 jobs:
   push_to_registry:
@@ -22,7 +24,8 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          VERSION=sha-${GITHUB_SHA::8}
+          # latest version/tag will track the main branch
+          VERSION="latest"
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF/refs\/tags\//}
           fi
@@ -36,7 +39,6 @@ jobs:
           file: ./api/Dockerfile-private
           tags: |
             ghcr.io/${{ github.repository }}/private-api:${{ steps.prep.outputs.VERSION }}
-            ghcr.io/${{ github.repository }}/private-api:latest
           labels: |
             org.opencontainers.image.title=${{ github.event.repository.name }}
             org.opencontainers.image.description=${{ github.event.repository.description }}
@@ -53,7 +55,6 @@ jobs:
           file: ./api/Dockerfile-public
           tags: |
             ghcr.io/${{ github.repository }}/public-api:${{ steps.prep.outputs.VERSION }}
-            ghcr.io/${{ github.repository }}/public-api:latest
           labels: |
             org.opencontainers.image.title=${{ github.event.repository.name }}
             org.opencontainers.image.description=${{ github.event.repository.description }}
@@ -70,7 +71,6 @@ jobs:
           file: ./api/Dockerfile-healthauthority
           tags: |
             ghcr.io/${{ github.repository }}/healthauthority-api:${{ steps.prep.outputs.VERSION }}
-            ghcr.io/${{ github.repository }}/healthauthority-api:latest
           labels: |
             org.opencontainers.image.title=${{ github.event.repository.name }}
             org.opencontainers.image.description=${{ github.event.repository.description }}
@@ -87,7 +87,6 @@ jobs:
           file: ./portal/Dockerfile
           tags: |
             ghcr.io/${{ github.repository }}/portal:${{ steps.prep.outputs.VERSION }}
-            ghcr.io/${{ github.repository }}/portal:latest
           labels: |
             org.opencontainers.image.title=${{ github.event.repository.name }}
             org.opencontainers.image.description=${{ github.event.repository.description }}
@@ -104,7 +103,6 @@ jobs:
           file: ./worker/Dockerfile
           tags: |
             ghcr.io/${{ github.repository }}/worker:${{ steps.prep.outputs.VERSION }}
-            ghcr.io/${{ github.repository }}/worker:latest
           labels: |
             org.opencontainers.image.title=${{ github.event.repository.name }}
             org.opencontainers.image.description=${{ github.event.repository.description }}
@@ -121,7 +119,6 @@ jobs:
           file: ./bridge/Dockerfile
           tags: |
             ghcr.io/${{ github.repository }}/bridge:${{ steps.prep.outputs.VERSION }}
-            ghcr.io/${{ github.repository }}/bridge:latest
           labels: |
             org.opencontainers.image.title=${{ github.event.repository.name }}
             org.opencontainers.image.description=${{ github.event.repository.description }}
