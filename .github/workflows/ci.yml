@@ -39,4 +39,4 @@ jobs:
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit public-api
 
       - name: Health Authority Api - Run phpunit
-        run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority_api
+        run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority-api
