@@ -68,3 +68,17 @@ This increases the chance that we might be able to use your contribution (or it 
 
 Note that all commits should be signed using a gpg key.
 
+## Release process
+
+Prepare release (e.g. `VERSION=0.2.0`):
+
+* Update version numbers for each Helm Chart `charts/[APP_NAME]` in `Chart.yaml` and `values.yaml`.
+* Create Pull Request and make sure CI and E2E tests are working before merging changes.
+
+Create a release in Github from the (stable) main branch. This will create a Git tag (e.g. `0.2.0`).
+
+Docker Images will be pushed to private Github Container Registry:
+`ghcr.io/minvws/nl-covid19-dbco-app-backend-private/[APP_NAME]:[VERSION]`
+
+The `latest` docker tag will track the main branch. This is useful for development or test environments.
+In production we will use tags with version numbers only.

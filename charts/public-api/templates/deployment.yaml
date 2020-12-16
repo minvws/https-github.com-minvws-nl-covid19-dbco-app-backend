@@ -10,8 +10,6 @@ spec:
   {{- end }}
   strategy:
     type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
   selector:
     matchLabels:
       {{- include "app.selectorLabels" . | nindent 6 }}

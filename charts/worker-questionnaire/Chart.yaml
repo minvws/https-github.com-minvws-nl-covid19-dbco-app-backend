@@ -1,9 +1,9 @@
 apiVersion: v1
 version: 0.1.7
 appVersion: 0.1.7
-name: portal
+name: worker-questionnaire
 engine: gotpl
-description: Portal Helm chart for Kubernetes
+description: Worker questionnaire Helm chart for Kubernetes
 home: https://github.com/minvws/nl-covid19-dbco-app-backend-private
 sources:
 - https://github.com/minvws/nl-covid19-dbco-app-backend-private
