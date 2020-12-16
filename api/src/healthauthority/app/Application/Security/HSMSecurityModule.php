@@ -26,9 +26,10 @@ class HSMSecurityModule implements SecurityModule
         $escapedArgs = array_map('escapeshellarg', $args);
         $template = '%s' . str_repeat(' %s', count($escapedArgs));
 
-        $lastLine = exec(sprintf($template, $escapedCommand, ...$escapedArgs), $fullOutput, $status);
+        $fullCommand = sprintf($template, $escapedCommand, ...$escapedArgs);
+        $lastLine = exec($fullCommand, $fullOutput, $status);
         if ($status !== 0) {
-            throw new RuntimeException('Error executing command "' . $command . ": " . $lastLine);
+            throw new RuntimeException('Error executing command "' . $fullCommand . ": " . $lastLine . print_r($fullOutput, true));
         }
 
         return $lastLine;
