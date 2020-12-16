@@ -7,11 +7,11 @@ metadata:
 data:
   APP_ENV: {{ .Values.app.env }}
   APP_DEBUG: {{ quote .Values.app.debug }}
-  APP_URL: {{  .Values.app.url }}
-  APACHE_RUN_USER: {{  .Values.apache.run.user }}
-  APACHE_RUN_GROUP: {{  .Values.apache.run.group }}
-  REDIS_HOST: {{  .Values.redis.host }}
-  REDIS_PORT: {{  quote .Values.redis.port }}
+  APP_URL: {{ .Values.app.url }}
+  APACHE_RUN_USER: {{ .Values.apache.run.user }}
+  APACHE_RUN_GROUP: {{ .Values.apache.run.group }}
+  REDIS_HOST: {{ .Values.redis.host }}
+  REDIS_PORT: {{ quote .Values.redis.port }}
   {{- if .Values.redis.sentinel.service }}
   REDIS_SENTINEL_SERVICE: {{ .Values.redis.sentinel.service }}
   {{- end }}
@@ -21,7 +21,7 @@ data:
   TIH_REDIRECT_URL: {{ .Values.tih.redirect_url }}
   PRIVATE_API_BASE_URI: {{ .Values.private.api.base_uri }}
   {{- if .Values.allow.demo.login }}
-  ALLOW_DEMO_LOGIN: {{ .Values.allow.demo.login }}
+  ALLOW_DEMO_LOGIN: {{ quote .Values.allow.demo.login }}
   USER_ROLE_ADMIN: {{ .Values.user.role.admin }}
   USER_ROLE_USER: {{ .Values.user.role.user }}
   USER_ROLE_PLANNER: {{ .Values.user.role.planner }}
