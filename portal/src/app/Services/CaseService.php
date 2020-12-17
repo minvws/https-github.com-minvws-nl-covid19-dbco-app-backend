@@ -171,7 +171,12 @@ class CaseService
         $this->updateCase($case);
     }
 
-    public function createOrUpdateTask($caseUuid, $taskFormValues)
+    /**
+     * @param $caseUuid
+     * @param $taskFormValues
+     * @return String The uuid of the newly credted record (or the updated one)
+     */
+    public function createOrUpdateTask($caseUuid, $taskFormValues): String
     {
         if (isset($taskFormValues['uuid'])) {
             $task = $this->taskRepository->getTask($taskFormValues['uuid']);
@@ -181,14 +186,16 @@ class CaseService
             $task->dateOfLastExposure = isset($taskFormValues['dateOfLastExposure']) ? Date::parse($taskFormValues['dateOfLastExposure']) : null;
             $task->communication = $taskFormValues['communication'] ?? 'staff';
             $this->taskRepository->updateTask($task);
+            return $task->uuid;
         } else {
-            $this->taskRepository->createTask($caseUuid,
+            $newTask = $this->taskRepository->createTask($caseUuid,
                 $taskFormValues['label'],
                 $taskFormValues['taskContext'],
                 $taskFormValues['category'] ?? '3',
                 $taskFormValues['communication'] ?? 'staff',
                 isset($taskFormValues['dateOfLastExposure']) ? Date::parse($taskFormValues['dateOfLastExposure']) : null,
             );
+            return $newTask->uuid;
         }
     }
 

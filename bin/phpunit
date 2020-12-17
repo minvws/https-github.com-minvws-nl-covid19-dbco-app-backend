@@ -77,7 +77,7 @@ if [ "$1" == "--setup" ] || [ "$1" == "--reset" ]; then
   fi
 fi
 
-if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "healthauthority_api" ] || [ "$CONTAINER" == "portal" ]; then
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "healthauthority-api" ] || [ "$CONTAINER" == "portal" ]; then
   echo
   echo "=====[ RUN MIGRATIONS ]====="
   $DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
@@ -91,24 +91,24 @@ if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "worker" ]; then
   echo
 fi
 
-if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "private_api" ]; then
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "private-api" ]; then
   echo
   echo "=====[ RUN TESTS FOR PRIVATE API ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit private_api
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit private-api
   echo
 fi
 
-if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "public_api" ]; then
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "public-api" ]; then
   echo
   echo "=====[ RUN TESTS FOR PUBLIC API ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit public_api
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit public-api
   echo
 fi
 
-if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "healthauthority_api" ]; then
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "healthauthority-api" ]; then
   echo
   echo "=====[ RUN TESTS FOR HEALTHAUTHORITY API ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority_api
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority-api
   echo
 fi
 

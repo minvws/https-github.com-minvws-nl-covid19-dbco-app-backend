@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-    private_api:
+    private-api:
         environment:
             APP_ENV: development
         ports:
@@ -10,7 +10,7 @@ services:
             - ./api/src/shared:/shared
             - ./api/src/private:/src
 
-    public_api:
+    public-api:
         environment:
             APP_ENV: development
         ports:
@@ -47,7 +47,7 @@ services:
         volumes:
             - ./bridge/src:/src
 
-    healthauthority_api:
+    healthauthority-api:
         environment:
             APP_ENV: development
             SECURITY_MODULE_TYPE: hsm
@@ -58,8 +58,9 @@ services:
         volumes:
             - ./api/src/shared:/shared
             - ./api/src/healthauthority:/src
+            - ./api/assets/healthauthority/cs_pkcs11_R2.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
 
-    healthauthority_api_cachekeys:
+    healthauthority-hsm:
         environment:
             APP_ENV: development
             SECURITY_MODULE_TYPE: hsm
@@ -68,6 +69,7 @@ services:
         volumes:
             - ./api/src/shared:/shared
             - ./api/src/healthauthority:/src
+            - ./api/assets/healthauthority/cs_pkcs11_R2_keystore.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
 
     portal:
         build:
@@ -85,11 +87,11 @@ services:
         environment:
             APP_ENV: development
             DEBUG: ${DEBUG:-0}
-            PUBLIC_API_BASE_URI: http://public_api:8080/v1/
+            PUBLIC_API_BASE_URI: http://public-api:8080/v1/
             REDIS_HOST: redis-haa
             REDIS_PORT: 6379
         depends_on:
-            - public_api
+            - public-api
         volumes:
             - ./simulator/src:/src
         networks:

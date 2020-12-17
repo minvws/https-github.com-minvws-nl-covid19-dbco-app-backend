@@ -212,7 +212,7 @@ class QuestionnaireService
                             $lastNameExportField->isUpdated = true;
                         }
 
-                        if ($answer->firstname != null && $answer->lastname != null) {
+                        if ($answer && $answer->firstname != null && $answer->lastname != null) {
                             // We should hide the task label if the user has replaced it with the full name.
                             unset($records[$task->uuid]['data']['label']);
                         }

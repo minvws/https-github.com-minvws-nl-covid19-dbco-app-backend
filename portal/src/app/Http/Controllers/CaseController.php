@@ -158,18 +158,16 @@ class CaseController extends Controller
             $case->name = $validatedData['name'];
             $case->caseId = $validatedData['caseId'];
             $case->dateOfSymptomOnset = Date::parse($validatedData['dateOfSymptomOnset']);
-            $pairafteropen = $validatedData['pairafteropen'];
+            $pairafteropen = $validatedData['pairafteropen'] ?? 'nee';
 
             $this->caseService->updateCase($case);
 
             $keep = array();
             foreach ($request->input('tasks') as $rawTask) {
                 if (!empty($rawTask['label'])) { // skip empty auto-added table row
-                    $this->caseService->createOrUpdateTask($caseUuid, $rawTask);
+                    $keepUuid = $this->caseService->createOrUpdateTask($caseUuid, $rawTask);
 
-                    if (!empty($rawTask['uuid'])) {
-                        $keep[] = $rawTask['uuid'];
-                    }
+                    $keep[] = $keepUuid;
                 }
             }
 
@@ -209,7 +207,7 @@ class CaseController extends Controller
     }
 
     /**
-     * Trigger healthauthority_api to export case data.
+     * Trigger healthauthority-api to export case data.
      * Not to be confused with exporting case data to HPZone.
      *
      * @param $caseUuid

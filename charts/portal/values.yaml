@@ -4,7 +4,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/minvws/nl-covid19-dbco-app-backend-private/portal
-  tag: 0.1.5
+  tag: 0.1.7
   pullPolicy: IfNotPresent
 
 imagePullSecrets:
@@ -45,7 +45,7 @@ db:
 # Private JWT
 private:
   api:
-    base_uri: http://private_api:8080/v1/
+    base_uri: http://private-api:8080/v1/
     jwt:
       useExistingSecret: false # if true, create a secret with `app.fullname`-jwt in the same namespace
       secret: changeme
@@ -58,6 +58,9 @@ tih:
   useExistingSecret: false # if true, create a secret with `app.fullname`-tih in the same namespace
 
 # User roles
+allow:
+  demo:
+    login: false # if true, see roles below
 user:
   role:
     admin: DBCO-Beheer
