@@ -38,8 +38,8 @@ RUN cd /src && composer install && \
 
 # logs should go to stdout / stderr
 RUN set -ex \
-	&& ln -sf /proc/1/fd/1 "/var/log/cron.log" \
-	&& ln -sf /proc/1/fd/1 "/var/log/syslog" \
+    && ln -sf /proc/1/fd/1 "/var/log/cron.log" \
+    && ln -sf /proc/1/fd/1 "/var/log/syslog" \
     && chown -R --no-dereference "www-data:www-data" /src/var/cache
 
 # Environment
