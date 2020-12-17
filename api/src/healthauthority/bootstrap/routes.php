@@ -24,7 +24,13 @@ return function (App $app) {
     $app->post('/v1/cases/{caseUuid}/clients', ClientRegisterAction::class);
     $app->put('/v1/cases/{token}', CaseSubmitAction::class);
 
+    $app->get('/v1/ping', function (Request $request, Response $response) {
+        $response->getBody()->write('PONG');
+        return $response->withStatus(200);
+    });
+
     $app->get('/status', function (Request $request, Response $response) {
+        $response->getBody()->write('OK');
         return $response->withStatus(200);
     });
 };

@@ -3,14 +3,9 @@ declare(strict_types=1);
 
 namespace DBCO\HealthAuthorityAPI\Tests\Application\Actions;
 
-use DBCO\HealthAuthorityAPI\Application\Models\Client;
-use DBCO\HealthAuthorityAPI\Application\Models\ClientCase;
-use DBCO\HealthAuthorityAPI\Application\Repositories\ClientRepository;
 use DBCO\HealthAuthorityAPI\Application\Services\CaseService;
-use DI\Container;
 use Exception;
 use DBCO\HealthAuthorityAPI\Tests\TestCase;
-use Ramsey\Uuid\Uuid;
 
 /**
  * Export case tests.
@@ -39,7 +34,7 @@ class CaseExportActionTest extends TestCase
 
         $request = $this->createRequest('POST', '/v1/cases/' . $caseUuid . '/exports');
         $response = $this->app->handle($request);
-        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertResponseStatusCode(204, $response);
         $this->assertEquals("", (string)$response->getBody());
     }
 }

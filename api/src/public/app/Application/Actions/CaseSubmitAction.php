@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace DBCO\PublicAPI\Application\Actions;
 
-use DBCO\PublicAPI\Application\Models\SealedCase;
 use DBCO\PublicAPI\Application\Responses\CaseSubmitResponse;
 use DBCO\PublicAPI\Application\Services\CaseService;
 use DBCO\Shared\Application\Actions\Action;
 use DBCO\Shared\Application\Actions\ValidationError;
 use DBCO\Shared\Application\Actions\ValidationException;
+use DBCO\Shared\Application\DTO\SealedData as SealedDataDTO;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
@@ -92,9 +92,9 @@ class CaseSubmitAction extends Action
             throw new ValidationException($this->request, $errors);
         }
 
-        $ciphertext = $body['sealedCase']['ciphertext'];
-        $nonce = $body['sealedCase']['nonce'];
-        $this->caseService->submitCase($token, $ciphertext, $nonce);
+        // we don't do anything with the result as it could
+        // expose if a case exists or not
+        $this->caseService->submitCase($token, SealedDataDTO::jsonUnserialize($body['sealedCase']));
 
         return $this->respond(new CaseSubmitResponse());
     }

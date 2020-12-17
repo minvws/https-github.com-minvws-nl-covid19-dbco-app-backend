@@ -7,6 +7,21 @@ DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
 echo "=====[ SETUP CONTAINERS ]======================="
 $DOCKER_COMPOSE up -d --remove-orphans
 
+if [ $DATABASE_TYPE = "mysql" ]; then
+  echo
+  echo "=====[ SETUP MYSQL DATABASE ]========================="
+  echo "Waiting for MySQL to launch on ${MYSQL_PORT:-3306}..."
+  while ! nc -z localhost ${MYSQL_PORT:-3306}; do
+    sleep 0.5
+  done
+
+  sleep 5
+
+  $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
+  $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
+  $DOCKER_COMPOSE run --rm mysqlclient < $BASE_PATH/install/mysql/permissions.sql
+fi
+
 if [ $DATABASE_TYPE = "postgres" ]; then
   echo
   echo "=====[ SETUP POSTGRES DATABASE ]========================="
@@ -37,3 +52,8 @@ $BASE_PATH/bin/update-dev
 echo
 echo "=====[ SEED PORTAL ]====="
 $DOCKER_COMPOSE run --rm --entrypoint php portal artisan db:seed
+
+echo
+echo "=====[ FILL REDIS CACHE ]====="
+$DOCKER_COMPOSE run --rm worker /src/worker questionnaire:refresh-all
+$DOCKER_COMPOSE run --rm worker /src/worker task:refresh-general

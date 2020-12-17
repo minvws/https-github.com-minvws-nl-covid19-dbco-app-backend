@@ -2,14 +2,14 @@ version: '3.7'
 
 # test overrides
 services:
-    private_api:
+    private-api:
         environment:
             APP_ENV: test
         volumes:
             - ./api/src/shared:/shared
             - ./api/src/private:/src
 
-    public_api:
+    public-api:
         environment:
             APP_ENV: test
         volumes:
@@ -19,22 +19,47 @@ services:
     worker:
         environment:
             APP_ENV: test
-        volumes:
-            - ./worker/src:/src
+        command: bash -c "echo DISABLED"
 
-    healthauthority_api:
+    bridge:
         environment:
             APP_ENV: test
+        command: bash -c "echo DISABLED"
+
+    bridge-clients:
+        environment:
+            APP_ENV: test
+        command: bash -c "echo DISABLED"
+
+    bridge-caseresults:
+        environment:
+            APP_ENV: test
+        command: bash -c "echo DISABLED"
+
+    healthauthority-api:
+        environment:
+            APP_ENV: test
+            SECURITY_MODULE_TYPE: ${HEALTHAUTHORITY_SECURITY_MODULE_TYPE}
+            SECURITY_MODULE_SK_KEY_EXCHANGE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_KEY_EXCHANGE}
+            SECURITY_MODULE_SK_STORE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_STORE}
         volumes:
             - ./api/src/shared:/shared
             - ./api/src/healthauthority:/src
+            - ./api/assets/healthauthority/cs_pkcs11_R2.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
+
+    healthauthority-hsm:
+        environment:
+            APP_ENV: test
+            SECURITY_MODULE_TYPE: ${HEALTHAUTHORITY_SECURITY_MODULE_TYPE}
+            SECURITY_MODULE_SK_KEY_EXCHANGE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_KEY_EXCHANGE}
+            SECURITY_MODULE_SK_STORE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_STORE}
+        volumes:
+            - ./api/src/shared:/shared
+            - ./api/src/healthauthority:/src
+            - ./api/assets/healthauthority/cs_pkcs11_R2_keystore.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
 
     portal:
         environment:
             APP_ENV: test
         volumes:
             - ./portal/src:/src
-
-    pairing-worker:
-        build: worker
-        command: bash -c "echo DISABLED"

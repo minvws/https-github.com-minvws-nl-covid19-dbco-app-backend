@@ -11,16 +11,20 @@ echo "=====[ UPDATE WORKER ]====="
 $DOCKER_COMPOSE run --rm --entrypoint composer worker install
 
 echo
+echo "=====[ UPDATE BRIDGE ]====="
+$DOCKER_COMPOSE run --rm --entrypoint composer bridge install
+
+echo
 echo "=====[ UPDATE PRIVATE API ]====="
-$DOCKER_COMPOSE run --rm --entrypoint composer private_api install
+$DOCKER_COMPOSE run --rm --entrypoint composer private-api install
 
 echo
 echo "=====[ UPDATE PUBLIC API ]====="
-$DOCKER_COMPOSE run --rm --entrypoint composer public_api install
+$DOCKER_COMPOSE run --rm --entrypoint composer public-api install
 
 echo
 echo "=====[ UPDATE HEALTHAUTHORITY API ]====="
-$DOCKER_COMPOSE run --rm --entrypoint composer healthauthority_api install
+$DOCKER_COMPOSE run --rm --entrypoint composer healthauthority-api install
 
 echo
 echo "=====[ UPDATE PORTAL ]====="
@@ -28,3 +32,12 @@ $DOCKER_COMPOSE run --rm --entrypoint composer portal install
 $DOCKER_COMPOSE run --rm --entrypoint npm portal install
 $DOCKER_COMPOSE run --rm --entrypoint npm portal run dev
 $DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
+
+echo
+echo "=====[ UPDATE SIMULATOR ]====="
+$DOCKER_COMPOSE run --rm --entrypoint composer simulator install
+
+echo
+echo "=====[ UPDATE QUESTIONNAIRE/TASK CACHE ]====="
+$DOCKER_COMPOSE run --rm worker /src/worker questionnaire:refresh-all
+$DOCKER_COMPOSE run --rm worker /src/worker task:refresh-general

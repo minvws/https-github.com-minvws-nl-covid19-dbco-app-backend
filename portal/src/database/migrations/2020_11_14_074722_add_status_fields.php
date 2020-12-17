@@ -14,8 +14,8 @@ class AddStatusFields extends Migration
     public function up()
     {
         Schema::table('covidcase', function (Blueprint $table) {
-            $table->date('pairing_expires_at')->nullable();
-            $table->date('window_expires_at')->nullable();
+            $table->datetime('pairing_expires_at')->nullable();
+            $table->datetime('window_expires_at')->nullable();
         });
     }
 
