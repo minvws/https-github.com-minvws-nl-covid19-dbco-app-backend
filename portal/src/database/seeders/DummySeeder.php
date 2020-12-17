@@ -156,6 +156,7 @@ class DummySeeder extends Seeder
             $taskUuidLex = (string)Str::uuid();
             $taskUuidLois = (string)Str::uuid();
             $taskUuidMartha = (string)Str::uuid();
+            $taskUuidZod = (string)Str::uuid();
 
             DB::table('task')->insert([[
                 'uuid' => $taskUuidLex,
@@ -193,6 +194,20 @@ class DummySeeder extends Seeder
                 'label' => 'Martha K.',
                 'task_context' => "Mother",
                 'category' => '2a',
+                'date_of_last_exposure' => date('Y-m-d'),
+                'communication' => 'index',
+                'informed_by_index' => 0,
+                'questionnaire_uuid' => $questionnaireUuid,
+                'created_at' => $now,
+                'updated_at' => $now
+            ], [
+                'uuid' => $taskUuidZod,
+                'case_uuid' => $caseUuid,
+                'task_type' => 'contact',
+                'source' => 'portal',
+                'label' => 'General Zod',
+                'task_context' => "Nemesis. Has no contact details answer",
+                'category' => '3',
                 'date_of_last_exposure' => date('Y-m-d'),
                 'communication' => 'index',
                 'informed_by_index' => 0,
@@ -319,6 +334,13 @@ class DummySeeder extends Seeder
                 'task_uuid' => $taskUuidMartha,
                 'question_uuid' => $priorityQuestionUuid,
                 'spv_value' => 'Ja',
+                'created_at' => $now,
+                'updated_at' => $now
+            ], [
+                'uuid' => (string)Str::uuid(),
+                'task_uuid' => $taskUuidZod,
+                'question_uuid' => $priorityQuestionUuid,
+                'spv_value' => 'Nee',
                 'created_at' => $now,
                 'updated_at' => $now
             ]]);

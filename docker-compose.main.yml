@@ -1,5 +1,9 @@
 version: '3.7'
 
+volumes:
+    hsm-data:
+        driver: local
+
 services:
     redis:
         image: redis
@@ -11,7 +15,7 @@ services:
         networks:
             - healthauthority
 
-    private_api:
+    private-api:
         build:
             context: ./api
             dockerfile: Dockerfile-private
@@ -28,7 +32,7 @@ services:
             - private
             - sluice
 
-    public_api:
+    public-api:
         build:
             context: ./api
             dockerfile: Dockerfile-public
@@ -48,10 +52,10 @@ services:
             DEBUG: ${DEBUG:-0}
             REDIS_HOST: redis
             REDIS_PORT: 6379
-            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api:8080/v1/
+            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority-api:8080/v1/
         depends_on:
             - redis
-            - healthauthority_api
+            - healthauthority-api
         networks:
             - sluice
             - healthauthority
@@ -63,10 +67,10 @@ services:
             DEBUG: ${DEBUG:-0}
             REDIS_HOST: redis
             REDIS_PORT: 6379
-            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api:8080/v1/
+            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority-api:8080/v1/
         depends_on:
             - redis
-            - healthauthority_api
+            - healthauthority-api
         networks:
             - sluice
             - healthauthority
@@ -78,10 +82,10 @@ services:
             DEBUG: ${DEBUG:-0}
             REDIS_HOST: redis
             REDIS_PORT: 6379
-            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api:8080/v1/
+            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority-api:8080/v1/
         depends_on:
             - redis
-            - healthauthority_api
+            - healthauthority-api
         networks:
             - sluice
             - healthauthority
@@ -92,15 +96,15 @@ services:
             DEBUG: ${DEBUG:-0}
             REDIS_HOST: redis
             REDIS_PORT: 6379
-            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api:8080/v1/
+            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority-api:8080/v1/
         depends_on:
             - redis
-            - healthauthority_api
+            - healthauthority-api
         networks:
             - sluice
             - healthauthority
               
-    healthauthority_api:
+    healthauthority-api:
         build:
             context: ./api
             dockerfile: Dockerfile-healthauthority
@@ -114,17 +118,17 @@ services:
             DB_TNS: ${HEALTHAUTHORITY_API_DB_TNS:-oracle/XEPDB1}
             REDIS_HOST: redis-haa
             REDIS_PORT: 6379
-            PRIVATE_API_BASE_URI: http://private_api:8080/v1/
+            PRIVATE_API_BASE_URI: http://private-api:8080/v1/
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
         networks:
             - healthauthority
             - private
 
-    healthauthority_api_cachekeys:
+    healthauthority-hsm:
         build:
             context: ./api
             dockerfile: Dockerfile-healthauthority
-        command: /src/console security:cache-keys
+        command: /src/console security:manage-keys
         environment:
             DEBUG: ${DEBUG:-0}
             DB_TYPE: ${DATABASE_TYPE}
@@ -135,14 +139,16 @@ services:
             DB_TNS: ${HEALTHAUTHORITY_API_DB_TNS:-oracle/XEPDB1}
             REDIS_HOST: redis-haa
             REDIS_PORT: 6379
-            PRIVATE_API_BASE_URI: http://private_api:8080/v1/
+            PRIVATE_API_BASE_URI: http://private-api:8080/v1/
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
         networks:
             - healthauthority
             - private
+        volumes:
+            - hsm-data:/hsm
         depends_on:
             - redis-haa
-            - private_api
+            - private-api
 
     portal:
         build:
@@ -166,11 +172,12 @@ services:
             USER_ROLE_ADMIN: ${PORTAL_USER_ROLE_ADMIN:-DBCO-Beheer}
             USER_ROLE_USER: ${PORTAL_USER_ROLE_USER:-DBCO-Gebruiker}
             USER_ROLE_PLANNER: ${PORTAL_USER_ROLE_PLANNER:-DBCO-Werkverdeler}
-            PRIVATE_API_BASE_URI: http://private_api:8080/v1/
+            ALLOW_DEMO_LOGIN: ${PORTAL_ALLOW_DEMO_LOGIN}
+            PRIVATE_API_BASE_URI: http://private-api:8080/v1/
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
-            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority_api:8080/v1/
+            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority-api:8080/v1/
         depends_on:
-            - healthauthority_api
+            - healthauthority-api
         networks:
             - healthauthority
             - private

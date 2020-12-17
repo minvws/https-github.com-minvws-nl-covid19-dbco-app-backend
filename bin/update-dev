@@ -16,15 +16,15 @@ $DOCKER_COMPOSE run --rm --entrypoint composer bridge install
 
 echo
 echo "=====[ UPDATE PRIVATE API ]====="
-$DOCKER_COMPOSE run --rm --entrypoint composer private_api install
+$DOCKER_COMPOSE run --rm --entrypoint composer private-api install
 
 echo
 echo "=====[ UPDATE PUBLIC API ]====="
-$DOCKER_COMPOSE run --rm --entrypoint composer public_api install
+$DOCKER_COMPOSE run --rm --entrypoint composer public-api install
 
 echo
 echo "=====[ UPDATE HEALTHAUTHORITY API ]====="
-$DOCKER_COMPOSE run --rm --entrypoint composer healthauthority_api install
+$DOCKER_COMPOSE run --rm --entrypoint composer healthauthority-api install
 
 echo
 echo "=====[ UPDATE PORTAL ]====="

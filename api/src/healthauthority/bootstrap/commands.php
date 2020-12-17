@@ -4,6 +4,7 @@ declare(strict_types=1);
 use DBCO\HealthAuthorityAPI\Application\Commands\CreateKeyExchangeSecretKeyCommand;
 use DBCO\HealthAuthorityAPI\Application\Commands\CreateStoreSecretKeyCommand;
 use DBCO\HealthAuthorityAPI\Application\Commands\GetKeyExchangePublicKeyCommand;
+use DBCO\HealthAuthorityAPI\Application\Commands\ManageKeysCommand;
 use DBCO\Shared\Application\ConsoleApplication;
 use DBCO\HealthAuthorityAPI\Application\Commands\CacheKeysCommand;
 use Psr\Container\ContainerInterface;
@@ -14,7 +15,8 @@ return function (ConsoleApplication $app, ContainerInterface $container) {
         CreateStoreSecretKeyCommand::class,
         CreateKeyExchangeSecretKeyCommand::class,
         GetKeyExchangePublicKeyCommand::class,
-        CacheKeysCommand::class
+        CacheKeysCommand::class,
+        ManageKeysCommand::class
     ];
 
     $commandMap = [];

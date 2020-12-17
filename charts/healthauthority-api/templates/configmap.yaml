@@ -14,6 +14,7 @@ data:
   {{- if .Values.redis.sentinel.service }}
   REDIS_SENTINEL_SERVICE: {{ .Values.redis.sentinel.service }}
   {{- end }}
+  SECURITY_MODULE_TYPE: {{ .Values.security.module.type }}
   DB_TYPE: {{ .Values.db.type }}
   DB_HOST: {{ .Values.db.host }}
   DB_DATABASE: {{ .Values.db.database }}

@@ -23,6 +23,8 @@
                 <span class="ml-auto">
                     @if ($case->caseStatus() == \App\Models\CovidCase::STATUS_TIMEOUT)
                         <a class="btn btn-outline-primary" role="button" href="{{ route('case-pair', [$case->uuid]) }}">Nieuwe koppelcode</a>
+                    @elseif ($case->caseStatus() == \App\Models\CovidCase::STATUS_OPEN)
+                        <a class="btn btn-outline-primary" role="button" href="{{ route('case-pair', [$case->uuid]) }}">Vervang koppelcode</a>
                     @endif
                     @if ($case->isEditable())
                         <a class="btn btn-outline-primary" role="button" href="{{ route('case-edit', [$case->uuid]) }}">Case wijzigen</a>
