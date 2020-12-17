@@ -48,9 +48,11 @@ RUN cd /src && composer install && \
 
 # logs should go to stdout / stderr
 RUN set -ex && \
-    ln -sf /proc/1/fd/1 "/var/log/syslog" && \
-    ln -sf /proc/1/fd/1 "/var/log/apache2/access.log" && \
-    ln -sf /proc/1/fd/2 "/var/log/apache2/error.log"
+    ln -sfT /dev/stderr "/var/log/apache2/error.log" && \
+    ln -sfT /dev/stdout "/var/log/apache2/access.log" && \
+    ln -sfT /dev/stdout "/var/log/apache2/other_vhosts_access.log" && \
+    chown -R --no-dereference "www-data:www-data" "/var/log/apache2" && \
+    ln -sfT /dev/stdout "/var/log/syslog"
 
 # Environment
 ENV PATH $PATH:/root/.composer/vendor/bin
