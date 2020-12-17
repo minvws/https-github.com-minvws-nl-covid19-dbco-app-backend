@@ -244,8 +244,8 @@ class DummySeeder extends Seeder
                 'uuid' => (string)Str::uuid(),
                 'task_uuid' => $taskUuidLex,
                 'question_uuid' => $contactQuestionUuid,
-                'ctd_firstname' => null,
-                'ctd_lastname' => null,
+                'ctd_firstname' => 'Lex',
+                'ctd_lastname' => 'Luthor',
                 'ctd_email' => 'lex@luthor.dc',
                 'ctd_phonenumber' => '0612345678',
                 'created_at' => $now,
@@ -255,9 +255,9 @@ class DummySeeder extends Seeder
                 'task_uuid' => $taskUuidLois,
                 'question_uuid' => $contactQuestionUuid,
                 'ctd_firstname' => 'Lois',
-                'ctd_lastname' => null,
+                'ctd_lastname' => 'Lane',
                 'ctd_email' => 'lane.lois@dailyplanet.dc',
-                'ctd_phonenumber' => null,
+                'ctd_phonenumber' => '+31612345678',
                 'created_at' => $now,
                 'updated_at' => $now
             ], [
