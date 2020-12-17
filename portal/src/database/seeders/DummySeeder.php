@@ -276,7 +276,7 @@ class DummySeeder extends Seeder
                 'uuid' => (string)Str::uuid(),
                 'task_uuid' => $taskUuidLois,
                 'question_uuid' => $birthdateQuestionUuid,
-                'spv_value' => Date('1976-10-12'),
+                'spv_value' => null,
                 'created_at' => $now,
                 'updated_at' => $now
             ], [
