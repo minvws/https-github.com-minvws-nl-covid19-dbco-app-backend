@@ -57,10 +57,12 @@ tih:
   client_secret: changeme
   useExistingSecret: false # if true, create a secret with `app.fullname`-tih in the same namespace
 
-# User roles
+# Allow demo login
 allow:
   demo:
-    login: false # if true, see roles below
+    login: false
+
+# User roles
 user:
   role:
     admin: DBCO-Beheer
