@@ -49,13 +49,9 @@ class RedisClientRepository implements ClientRepository
         $clientKey = sprintf(self::CLIENT_KEY_TEMPLATE, $client->token);
 
         $data = [
-            'case' => [
-                'uuid' => $client->case->uuid
-            ],
-            'clientPublicKey' => base64_encode($client->clientPublicKey),
-            'healthAuthorityPublicKey' => base64_encode($client->healthAuthorityPublicKey),
-            'healthAuthoritySecretKey' => base64_encode($client->healthAuthoritySecretKey),
-            'sealedHealthAuthorityPublicKey' => base64_encode($client->sealedHealthAuthorityPublicKey),
+            'uuid' => $client->uuid,
+            'caseUuid' => $client->caseUuid,
+            'token' => $client->token,
             'receiveKey' => base64_encode($client->receiveKey),
             'transmitKey' => base64_encode($client->transmitKey)
         ];
@@ -65,7 +61,7 @@ class RedisClientRepository implements ClientRepository
         $this->client->setex($clientKey, $expires, json_encode($data));
 
         // store client for case
-        $caseClientsKey = sprintf(self::CASE_CLIENTS_KEY_TEMPLATE, $client->case->uuid);
+        $caseClientsKey = sprintf(self::CASE_CLIENTS_KEY_TEMPLATE, $client->caseUuid);
         $this->client->rpush($caseClientsKey, [$client->token]);
         $this->client->expire($caseClientsKey, $expires);
     }
@@ -88,14 +84,11 @@ class RedisClientRepository implements ClientRepository
         }
 
         return new Client(
+            $data->uuid,
+            $data->caseUuid,
             $token,
-            new ClientCase($data->case->uuid),
-            $data->clientPublicKey,
-            $data->healthAuthorityPublicKey,
-            $data->healthAuthoritySecretKey,
-            $data->sealedHealthAuthorityPublicKey,
-            $data->receiveKey,
-            $data->transmitKey
+            base64_decode($data->receiveKey),
+            base64_decode($data->transmitKey)
         );
     }
 
@@ -116,7 +109,7 @@ class RedisClientRepository implements ClientRepository
         foreach ($tokens as $token) {
             $client = $this->getClient($token);;
             if ($client !== null) {
-                $client[] = $client;
+                $clients[] = $client;
             }
         }
 

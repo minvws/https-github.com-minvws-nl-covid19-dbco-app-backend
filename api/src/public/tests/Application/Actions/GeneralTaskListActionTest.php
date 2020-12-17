@@ -41,7 +41,7 @@ class GeneralTaskListActionTest extends TestCase
             $request = $this->createRequest('GET', '/v1/tasks');
             $response = $this->app->handle($request);
 
-            $this->assertEquals(200, $response->getStatusCode());
+            $this->assertResponseStatusCode(200, $response);
             foreach ($tasksCacheData['headers'] as $header) {
                 $this->assertEquals($header['values'], $response->getHeader($header['name']));
             }

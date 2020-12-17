@@ -3,11 +3,11 @@
 namespace App\Repositories;
 
 use App\Models\Pairing;
+use DateTimeImmutable;
 use DateTimeInterface;
 use GuzzleHttp\Client as GuzzleClient;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Exception\GuzzleException;
-use Jenssegers\Date\Date;
 
 /**
  * Used for registering a new case for pairing.
@@ -51,7 +51,7 @@ class ApiPairingRepository implements PairingRepository
         $payload = array(
             "iat" => time(),
             "exp" => time() + self::JWT_EXPIRATION_TIME,
-            "http://ggdghor.nl/cid" => $caseUuid
+            "http://ggdghor.nl/caseUuid" => $caseUuid
         );
 
         return JWT::encode($payload, $this->jwtSecret);
@@ -75,8 +75,7 @@ class ApiPairingRepository implements PairingRepository
                 'Authorization' => 'Bearer ' . $this->encodeJWT($caseUuid)
             ],
             'json' => [
-                'caseId' => $caseUuid,
-                'caseExpiresAt' => $expiresAt->format('c')
+                'caseUuid' => $caseUuid
             ]
         ];
 
@@ -85,7 +84,7 @@ class ApiPairingRepository implements PairingRepository
 
         $pairing = new Pairing();
         $pairing->code = $data->pairingCode;
-        $pairing->expiresAt = new Date($data->pairingCodeExpiresAt);
+        $pairing->expiresAt = new DateTimeImmutable($data->pairingCodeExpiresAt);
 
         return $pairing;
     }

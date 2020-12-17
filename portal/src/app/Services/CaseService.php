@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Answer;
 use App\Repositories\AnswerRepository;
+use App\Repositories\CaseUpdateNotificationRepository;
 use App\Repositories\CaseRepository;
 use App\Repositories\PairingRepository;
 use App\Repositories\TaskRepository;
@@ -45,6 +46,7 @@ class CaseService
      */
     private AuthenticationService $authService;
 
+    private CaseUpdateNotificationRepository $caseExportRepository;
 
     /**
      * Constructor.
@@ -54,25 +56,28 @@ class CaseService
      * @param PairingRepository $pairingRepository
      * @param AnswerRepository $answerRepository
      * @param AuthenticationService $authService
+     * @param CaseUpdateNotificationRepository $caseExportRepository
      */
     public function __construct(CaseRepository $caseRepository,
                                 TaskRepository $taskRepository,
                                 PairingRepository $pairingRepository,
                                 AnswerRepository $answerRepository,
-                                AuthenticationService $authService)
+                                AuthenticationService $authService,
+                                CaseUpdateNotificationRepository $caseExportRepository)
     {
         $this->caseRepository = $caseRepository;
         $this->taskRepository = $taskRepository;
         $this->pairingRepository = $pairingRepository;
         $this->answerRepository =$answerRepository;
         $this->authService = $authService;
+        $this->caseExportRepository = $caseExportRepository;
     }
 
     public function createDraftCase(): CovidCase
     {
         $owner = $this->authService->getAuthenticatedUser();
         $assignedTo = null;
-        if (!$this->authService->isPlanner()) {
+        if (!$this->authService->hasPlannerRole()) {
             // Auto assign to yourself if you aren't a planner
             $assignedTo = $owner;
         }
@@ -82,24 +87,23 @@ class CaseService
     /**
      * Create pairing code for the given case.
      *
-     * @param string $caseUuid
+     * @param CovidCase $case
      *
      * @return string|null Formatted pairing code.
      */
-    public function createPairingCodeForCase(string $caseUuid): ?string
+    public function createPairingCodeForCase(CovidCase $case): ?string
     {
-        $case = $this->getCase($caseUuid);
         if (!$this->canAccess($case)) {
             return null;
         }
 
-        $expiresAt = Date::now()->addDays(1); // TODO: move to config and/or base on case data
+        $expiresAt = Date::now()->addDays(1)->toDateTimeImmutable(); // TODO: move to config and/or base on case data
         $pairing = $this->pairingRepository->getPairing($case->uuid, $expiresAt);
 
         $this->caseRepository->setExpiry($case, $expiresAt, $pairing->expiresAt);
 
         // apply formatting for readability (TODO: move to view?)
-        return implode('-', str_split($pairing->code, 3));
+        return implode('-', str_split($pairing->code, 4));
     }
 
     /**
@@ -149,13 +153,23 @@ class CaseService
         $this->caseRepository->updateCase($case);
     }
 
+    public function notifyCaseUpdate(CovidCase $case): bool
+    {
+        return $this->caseExportRepository->notify($case);
+    }
+
     public function openCase(CovidCase $case)
     {
         $case->status = CovidCase::STATUS_OPEN;
         $this->updateCase($case);
     }
 
-    public function createOrUpdateTask($caseUuid, $taskFormValues)
+    /**
+     * @param $caseUuid
+     * @param $taskFormValues
+     * @return String The uuid of the newly credted record (or the updated one)
+     */
+    public function createOrUpdateTask($caseUuid, $taskFormValues): String
     {
         if (isset($taskFormValues['uuid'])) {
             $task = $this->taskRepository->getTask($taskFormValues['uuid']);
@@ -165,14 +179,16 @@ class CaseService
             $task->dateOfLastExposure = isset($taskFormValues['dateOfLastExposure']) ? Date::parse($taskFormValues['dateOfLastExposure']) : null;
             $task->communication = $taskFormValues['communication'] ?? 'staff';
             $this->taskRepository->updateTask($task);
+            return $task->uuid;
         } else {
-            $this->taskRepository->createTask($caseUuid,
+            $newTask = $this->taskRepository->createTask($caseUuid,
                 $taskFormValues['label'],
                 $taskFormValues['taskContext'],
                 $taskFormValues['category'] ?? '3',
                 $taskFormValues['communication'] ?? 'staff',
                 isset($taskFormValues['dateOfLastExposure']) ? Date::parse($taskFormValues['dateOfLastExposure']) : null,
                 );
+            return $newTask->uuid;
         }
     }
 
@@ -201,6 +217,18 @@ class CaseService
         }
 
         $tasks = array_values($tasksByTaskUuid);
+    }
+
+    public function getCopyDataCase(CovidCase $case)
+    {
+        return "Naam: ".$case->name."\n"
+            ."Case ID: ".$case->caseId;
+    }
+
+    public function getCopyDataIndex(CovidCase $case)
+    {
+        return "Datum eerste ziektedag (EZD): ".$case->dateOfSymptomOnset->format('d-m-Y').
+            "\nDatum start besmettelijke periode: ".$case->calculateContagiousPeriodStart()->format('d-m-Y');
     }
 
 }

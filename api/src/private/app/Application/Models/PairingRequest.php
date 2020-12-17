@@ -3,6 +3,7 @@ namespace DBCO\PrivateAPI\Application\Models;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use DateTimeZone;
 use Exception;
 use RuntimeException;
 
@@ -12,11 +13,11 @@ use RuntimeException;
 class PairingRequest
 {
     /**
-     * Case.
+     * Case UUID.
      *
-     * @var PairingCase
+     * @var string
      */
-    public PairingCase $case;
+    public string $caseUuid;
 
     /**
      * Random generated pairing code that can be communicated out-of-band
@@ -27,27 +28,52 @@ class PairingRequest
     public string $code;
 
     /**
-     * Expiration date/time for the pairing code. After this time it is not
-     * possible anymore to link the device to the case. Datetime is stored
-     * in UTC.
+     * Expiration date/time for the pairing code. After this time the code will be threated as invalid and
+     * it is not possible anymore to link the device to the case.
      *
-     * @var DateTimeImmutable|null
+     * @var DateTimeInterface
      */
-    public ?DateTimeImmutable $codeExpiresAt;
+    public DateTimeInterface $codeExpiresAt;
+
+    /**
+     * After the code is not valid anymore a warning will be shown when the user
+     * tries to pair with a code that has expired until the given date/time.
+     *
+     * @var DateTimeInterface
+     */
+    public DateTimeInterface $codeExpiredWarningUntil;
+
+    /**
+     * Code is not available for pairing requests until this time.
+     *
+     * @var DateTimeInterface
+     */
+    public DateTimeInterface $codeBlockedUntil;
 
     /**
      * Pairing request constructor.
      *
-     * @param PairingCase       $case
+     * @param string            $caseUuid
      * @param string            $code
      * @param DateTimeInterface $codeExpiresAt
+     * @param DateTimeInterface $codeExpiredWarningUntil
+     * @param DateTimeInterface $codeBlockedUntil
      */
-    public function __construct(PairingCase $case, string $code, DateTimeInterface $codeExpiresAt)
+    public function __construct(
+        string $caseUuid,
+        string $code,
+        DateTimeInterface $codeExpiresAt,
+        DateTimeInterface $codeExpiredWarningUntil,
+        DateTimeInterface $codeBlockedUntil
+    )
     {
         try {
-            $this->case = $case;
+            $this->caseUuid = $caseUuid;
             $this->code = $code;
-            $this->codeExpiresAt = new DateTimeImmutable('@' . $codeExpiresAt->getTimestamp());
+            $tz = new DateTimeZone('UTC');
+            $this->codeExpiresAt = new DateTimeImmutable('@' . $codeExpiresAt->getTimestamp(), $tz);
+            $this->codeExpiredWarningUntil = new DateTimeImmutable('@' . $codeExpiredWarningUntil->getTimestamp(), $tz);
+            $this->codeBlockedUntil = new DateTimeImmutable('@' . $codeBlockedUntil->getTimestamp(), $tz);
         } catch (Exception $e) {
             // should not be possible
             throw new RuntimeException($e->getMessage(), $e->getCode(), $e);

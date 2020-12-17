@@ -76,7 +76,7 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
         $stmt = $this->client->prepare('
             SELECT
                 uuid,
-                "group",
+                group_name,
                 question_type,
                 label,
                 description,
@@ -106,7 +106,7 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
             }
 
             $question->uuid = $row->uuid;
-            $question->group = $row->group;
+            $question->group = $row->group_name;
             $question->questionType = $row->question_type;
             $question->label = $row->label;
             $question->description = $row->description;
@@ -136,7 +136,7 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
                 question_uuid,
                 label,
                 value,
-                trigger
+                trigger_name
             FROM answer_option
             WHERE question_uuid = :question_uuid
         ');
@@ -146,7 +146,7 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
             $options[] = new AnswerOption(
                 $row->label,
                 $row->value,
-                $row->trigger
+                $row->trigger_name
             );
         }
 
@@ -187,7 +187,7 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
             INSERT INTO question (
                 uuid,
                 questionnaire_uuid,
-                "group",
+                group_name,
                 question_type,
                 label,
                 description,
@@ -195,7 +195,7 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
             ) VALUES (
                 :uuid,
                 :questionnaire_uuid,
-                :group,
+                :group_name,
                 :question_type,
                 :label,
                 :description,
@@ -206,7 +206,7 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
         $res = $stmt->execute([
             'uuid' => $question->uuid,
             'questionnaire_uuid' => $questionnaire->uuid,
-            'group' => $question->group,
+            'group_name' => $question->group,
             'question_type' => $question->questionType,
             'label' => $question->label,
             'description' => $question->description,
@@ -228,13 +228,13 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
                 question_uuid,
                 label,
                 value,
-                trigger
+                trigger_name
             ) VALUES (
                 :uuid,
                 :question_uuid,
                 :label,
                 :value,
-                :trigger
+                :trigger_name
             )
         ');
 
@@ -243,7 +243,7 @@ class DbQuestionnaireRepository implements QuestionnaireRepository
             'question_uuid' => $question->uuid,
             'label' => $option->label,
             'value' => $option->value,
-            'trigger' => $option->trigger,
+            'trigger_name' => $option->trigger,
         ]);
     }
 }

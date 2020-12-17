@@ -60,6 +60,8 @@ class CreateOrganizationTable extends Migration
     public function down()
     {
         Schema::table('covidcase', function (Blueprint $table) {
+            $table->dropForeign('covidcase_organisation_uuid_foreign');
+            $table->dropForeign('covidcase_assigned_uuid_foreign');
             $table->dropColumn('organisation_uuid');
             $table->dropColumn('assigned_uuid');
         });

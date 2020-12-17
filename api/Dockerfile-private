@@ -20,14 +20,15 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
     composer self-update
 
 # Copy assets and sources
-COPY assets/default.conf /etc/apache2/sites-available/000-default.conf
-COPY assets/entrypoint.sh /entrypoint.sh
+COPY assets/shared/default.conf /etc/apache2/sites-available/000-default.conf
+COPY assets/shared/entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
-COPY assets/api.ini /usr/local/etc/php/conf.d/api.ini
-COPY assets/security.conf /etc/apache2/conf-available/security.conf
-COPY assets/apache2.conf /etc/apache2/apache2.conf
-COPY assets/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
-COPY assets/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_default.conf
+COPY assets/shared/api.ini /usr/local/etc/php/conf.d/api.ini
+COPY assets/shared/security.conf /etc/apache2/conf-available/security.conf
+COPY assets/shared/apache2.conf /etc/apache2/apache2.conf
+COPY assets/shared/ports.conf /etc/apache2/ports.conf
+COPY assets/shared/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
+COPY assets/shared/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_default.conf
 
 COPY src/shared /shared
 COPY src/private /src
@@ -37,13 +38,16 @@ RUN cd /src && composer install && \
 
 # logs should go to stdout / stderr
 RUN set -ex \
-	&& ln -sf /proc/1/fd/1 "/var/log/cron.log" \
-	&& ln -sf /proc/1/fd/1 "/var/log/syslog"
+    && ln -sf /proc/1/fd/1 "/var/log/cron.log" \
+    && ln -sf /proc/1/fd/1 "/var/log/syslog" \
+    && chown -R --no-dereference "www-data:www-data" /src/var/cache
 
 # Environment
 ENV PATH $PATH:/root/.composer/vendor/bin
 
 WORKDIR /src
+
+EXPOSE 8080/tcp
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["apache2-foreground"]

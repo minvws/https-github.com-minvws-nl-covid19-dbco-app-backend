@@ -1,0 +1,32 @@
+version: '3.7'
+
+volumes:
+    mysql-data:
+        driver: local
+
+services:
+    mysql:
+        image: mysql
+        volumes:
+            - mysql-data:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: portal
+            MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+        networks:
+            - healthauthority
+
+    mysqlclient:
+        image: mysql
+        entrypoint: ["mysql", "--host=mysql", "--user=root", "--password=$MYSQL_PASSWORD", "portal"]
+        environment:
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        networks:
+            - healthauthority
+
+    healthauthority-api:
+        depends_on:
+          - mysql
+
+    portal:
+        depends_on:
+          - mysql

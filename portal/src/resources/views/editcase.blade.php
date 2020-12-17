@@ -15,8 +15,15 @@
 <?php $questionNr = 1; ?>
 
 <div class="container-xl questionform">
-    <form action="/savecase" method="POST">
+    <form action="{{ route('case-save') }}" method="POST" autocomplete="off">
         @csrf
+        <input type="hidden" id="action" name="action" value=
+            @if ($case->status == 'draft')
+                "new"
+            @else
+                "edit"
+            @endif
+        />
         <input type="hidden" id="caseUuid" name="caseUuid" value="{{ $case->uuid }}">
 
         @include ('navbar')
@@ -27,6 +34,7 @@
                 <!-- Start of question title component -->
                 <div class="align-items-end  mb-3 mt-5">
                     <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Hoe heet de index?</h3>
+                    <p class="mt-2 mb-0  ml-auto">Deze naam is bedoeld om de case makkelijk terug te vinden in het portaal. De naam wordt niet naar HPZone verstuurd.</p>
                 </div>
                 <!-- End of question title component -->
                 @error('name')
@@ -68,15 +76,40 @@
                 <!-- Start of table title component -->
                 <div class="align-items-end  mb-3 mt-5">
                     <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Ga je nu samen met de index de contacten in kaart brengen?</h3>
-                    <p class="mt-2 mb-0  ml-auto">Als je wilt dat de index zelf een begin maakt met het in kaart brengen van mensen die misschien besmet zijn, dan kan dat met de app.</p>
+                    <p class="mt-2 mb-0  ml-auto">Ook zonder dat jij contacten klaarzet voor de index, kan de index alvast beginnen met het verzamelen van contacten en hun gegevens.</p>
                 </div>
                 <!-- End of table title component -->
                 <p>
-                    <button class="btn btn-outline-primary" type="button" onClick="$('#taskTable').show();">Ja</button>
-                    <button class="btn btn-outline-primary" type="button" onClick="$('#taskTable').hide();">Nee</button>
+                    <div class="btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-outline-primary active">
+                            <input name="addtasksnow" type="radio" autocomplete="off" value="ja" onClick="$('#taskTable').show();"
+                                   @if (old('addtasksnow') === 'ja') checked @endif
+                            /> Ja
+                        </label>
+                        <label class="btn btn-outline-primary active">
+                            <input name="addtasksnow" type="radio" autocomplete="off" value="nee" onClick="$('#taskTable').hide();"
+                                   @if (old('addtasksnow') === 'nee') checked @endif
+                            /> Nee
+                        </label>
+                    </div>
                 </p>
+
+                @error('tasks.*')
+                <div class="alert alert-danger">
+                    Vul de ontbrekende gegevens in:
+                    <ul>
+                        @if ($errors->get("tasks.*.category"))
+                            <li>vul voor elk contact de <strong>categorie</strong> in</li>
+                        @endif
+                        @if ($errors->get("tasks.*.dateOfLastExposure"))
+                            <li>vul voor elk contact de <strong>datum laatste contact</strong> in</li>
+                        @endif
+                    </ul>
+                </div>
+                @enderror
+
                 <!-- Start of table component -->
-                <table id="taskTable" class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-form  table-ggd">
+                <table id="taskTable" class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-form  table-ggd" @if (old('addtasksnow') === 'nee') style="display:none" @endif>
                     <!--
                         Modify the col definitions in the colgroup below to change the widths of the the columns.
                         The w-* classes will be automatically generated based on the $sizes array which is defined in the scss/_variables.scss
@@ -92,7 +125,7 @@
                     <thead>
                     <tr>
                         <th scope="col">Naam <i class="icon  icon--eye"></i></th>
-                        <th scope="col">Context (optioneel) <i class="icon  icon--eye"></i></th>
+                        <th scope="col">Toelichting (optioneel) <i class="icon  icon--eye"></i></th>
                         <th scope="col">Categorie</th>
                         <th scope="col">Laatste contact</th>
                         <th scope="col">Wie informeert</th>
@@ -126,16 +159,38 @@
                 </table>
                 <!-- End of table component -->
 
-                <!-- Start of table title component -->
-                @if ($case->status == 'draft')
+                <!-- Question: discuss app download and pairing with index -->
                 <div class="align-items-end  mb-3 mt-5">
-                    <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Vertel de index welke app ze moeten downloaden</h3>
-                    <p class="mt-2 mb-0  ml-auto">De index heeft een app nodig die ze kunnen downloaden in de Play of AppStore waarmee ze de gegevens op een veilige manier met de GGD kunnen delen.</p>
-                </div>
-                @endif
-                <!-- End of table title component -->
+                    <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Gaat de index zelf gegevens aanvullen via de app?</h3>
+                    <p class="mt-2 mb-0  ml-auto">De index heeft de GGD Contact app nodig om op een veilige manier gegevens met de GGD te kunnen delen. Deze app is beschikbaar in de App Store en Google Play Store.</p>
 
-                <div class="btn-group">
+                    @if ($case->status == 'draft')
+                    @error('pairafteropen')
+                    <div class="alert alert-danger mt-3">
+                        Geef aan of de index een koppelcode voor de app nodig heeft.
+                    </div>
+                    @enderror
+
+                    <p>
+                        <div class="btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-outline-primary active">
+                                <input name="pairafteropen" type="radio" autocomplete="off" value="ja"
+                                       @if (old('pairafteropen') === 'ja') checked @endif
+                                /> Ja, maak koppelcode
+                            </label>
+                            <label class="btn btn-outline-primary active">
+                                <input name="pairafteropen" type="radio" autocomplete="off" value="nee"
+                                       @if (old('pairafteropen') === 'nee') checked @endif
+                                /> Nee
+                            </label>
+                        </div>
+                    </p>
+                    @endif
+                </div>
+                <!-- End of app and pairing question -->
+
+                <!-- Form submit -->
+                <div class="btn-group mb-3 mt-3">
                     <input type="submit" class="btn btn-primary" value=
                         @if ($case->status == 'draft')
                             "Case openen"

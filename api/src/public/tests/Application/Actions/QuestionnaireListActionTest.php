@@ -46,7 +46,7 @@ class QuestionnaireListActionTest extends TestCase
             $request = $this->createRequest('GET', '/v1/questionnaires');
             $response = $this->app->handle($request);
 
-            $this->assertEquals(200, $response->getStatusCode());
+            $this->assertResponseStatusCode(200, $response);
             foreach ($questionnairesCacheData['headers'] as $header) {
                 $this->assertEquals($header['values'], $response->getHeader($header['name']));
             }

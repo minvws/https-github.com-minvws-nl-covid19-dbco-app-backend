@@ -91,7 +91,7 @@ class DummySeeder extends Seeder
                 'category' => '2a',
                 'date_of_last_exposure' => date('Y-m-d'),
                 'communication' => 'staff',
-                'informed_by_index' => false,
+                'informed_by_index' => 0,
                 'created_at' => $now,
                 'updated_at' => $now
             ], [
@@ -104,7 +104,7 @@ class DummySeeder extends Seeder
                 'category' => '1',
                 'date_of_last_exposure' => date('Y-m-d'),
                 'communication' => 'staff',
-                'informed_by_index' => false,
+                'informed_by_index' => 0,
                 'created_at' => $now,
                 'updated_at' => $now
             ], [
@@ -117,7 +117,7 @@ class DummySeeder extends Seeder
                 'category' => '3',
                 'date_of_last_exposure' => date('Y-m-d'),
                 'communication' => 'index',
-                'informed_by_index' => false,
+                'informed_by_index' => 0,
                 'created_at' => $now,
                 'updated_at' => $now
             ], [
@@ -130,7 +130,7 @@ class DummySeeder extends Seeder
                 'category' => '2b',
                 'date_of_last_exposure' => date('Y-m-d'),
                 'communication' => 'staff',
-                'informed_by_index' => false,
+                'informed_by_index' => 0,
                 'created_at' => $now,
                 'updated_at' => $now
             ]]);
@@ -156,6 +156,7 @@ class DummySeeder extends Seeder
             $taskUuidLex = (string)Str::uuid();
             $taskUuidLois = (string)Str::uuid();
             $taskUuidMartha = (string)Str::uuid();
+            $taskUuidZod = (string)Str::uuid();
 
             DB::table('task')->insert([[
                 'uuid' => $taskUuidLex,
@@ -167,7 +168,7 @@ class DummySeeder extends Seeder
                 'category' => '2b',
                 'date_of_last_exposure' => date('Y-m-d'),
                 'communication' => 'staff',
-                'informed_by_index' => false,
+                'informed_by_index' => 0,
                 'questionnaire_uuid' => $questionnaireUuid,
                 'created_at' => $now,
                 'updated_at' => $now,
@@ -181,7 +182,7 @@ class DummySeeder extends Seeder
                 'category' => '1',
                 'date_of_last_exposure' => date('Y-m-d'),
                 'communication' => 'index',
-                'informed_by_index' => true,
+                'informed_by_index' => 1,
                 'questionnaire_uuid' => $questionnaireUuid,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -195,7 +196,21 @@ class DummySeeder extends Seeder
                 'category' => '2a',
                 'date_of_last_exposure' => date('Y-m-d'),
                 'communication' => 'index',
-                'informed_by_index' => false,
+                'informed_by_index' => 0,
+                'questionnaire_uuid' => $questionnaireUuid,
+                'created_at' => $now,
+                'updated_at' => $now
+            ], [
+                'uuid' => $taskUuidZod,
+                'case_uuid' => $caseUuid,
+                'task_type' => 'contact',
+                'source' => 'portal',
+                'label' => 'General Zod',
+                'task_context' => "Nemesis. Has no contact details answer",
+                'category' => '3',
+                'date_of_last_exposure' => date('Y-m-d'),
+                'communication' => 'index',
+                'informed_by_index' => 0,
                 'questionnaire_uuid' => $questionnaireUuid,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -213,7 +228,7 @@ class DummySeeder extends Seeder
                     $birthdateQuestionUuid = (string)$question->uuid;
                 } else if ($question->label == 'Waar ken je deze persoon van?') {
                     $relationshipQuestionUuid = (string)$question->uuid;
-                } else if ($question->label == 'Is een of meerdere onderstaande zaken van toepassing voor deze persoon?') {
+                } else if ($question->header == 'Prioriteit') {
                     $priorityQuestionUuid = (string)$question->uuid;
                 }
             }
@@ -321,6 +336,13 @@ class DummySeeder extends Seeder
                 'spv_value' => 'Ja',
                 'created_at' => $now,
                 'updated_at' => $now
+            ], [
+                'uuid' => (string)Str::uuid(),
+                'task_uuid' => $taskUuidZod,
+                'question_uuid' => $priorityQuestionUuid,
+                'spv_value' => 'Nee',
+                'created_at' => $now,
+                'updated_at' => $now
             ]]);
 
             $caseUuid = (string)Str::uuid();
@@ -351,7 +373,7 @@ class DummySeeder extends Seeder
                 'category' => '2a',
                 'date_of_last_exposure' => date('Y-m-d'),
                 'communication' => 'staff',
-                'informed_by_index' => false,
+                'informed_by_index' => 0,
                 'created_at' => $now,
                 'updated_at' => $now,
                 'export_id' => 'abcd1234',
@@ -366,7 +388,7 @@ class DummySeeder extends Seeder
                 'category' => '3',
                 'date_of_last_exposure' => date('Y-m-d'),
                 'communication' => 'index',
-                'informed_by_index' => false,
+                'informed_by_index' => 0,
                 'created_at' => $now,
                 'updated_at' => $now,
                 'export_id' => null,

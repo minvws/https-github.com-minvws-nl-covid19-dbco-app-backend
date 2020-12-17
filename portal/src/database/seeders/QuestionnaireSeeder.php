@@ -58,10 +58,11 @@ class QuestionnaireSeeder extends Seeder
             DB::table('question')->insert([
                 'uuid' => $questionUuid,
                 'questionnaire_uuid' => $questionnaireUuid,
-                'group' => 'classification',
+                'group_name' => 'classification',
                 'question_type' => 'classificationdetails',
                 'label' => 'Vragen over jullie ontmoeting',
                 'description' => null,
+                'sort_order' => 10,
                 'relevant_for_categories' => QuestionnaireSeeder::ALL_CATEGORIES,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -71,10 +72,11 @@ class QuestionnaireSeeder extends Seeder
             DB::table('question')->insert([
                 'uuid' => $questionUuid,
                 'questionnaire_uuid' => $questionnaireUuid,
-                'group' => 'contactdetails',
+                'group_name' => 'contactdetails',
                 'question_type' => 'contactdetails',
                 'label' => 'Contactgegevens',
                 'description' => null,
+                'sort_order' => 20,
                 'relevant_for_categories' => QuestionnaireSeeder::ALL_CATEGORIES,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -84,11 +86,12 @@ class QuestionnaireSeeder extends Seeder
             DB::table('question')->insert([
                 'uuid' => $questionUuid,
                 'questionnaire_uuid' => $questionnaireUuid,
-                'group' => 'contactdetails',
+                'group_name' => 'contactdetails',
                 'question_type' => 'date',
                 'label' => 'Geboortedatum',
-                'header' => 'Geb. dat.',
+                'header' => 'Geboortedatum',
                 'description' => null,
+                'sort_order' => 30,
                 'relevant_for_categories' => '1',
                 'created_at' => $now,
                 'updated_at' => $now
@@ -98,11 +101,12 @@ class QuestionnaireSeeder extends Seeder
             DB::table('question')->insert([
                 'uuid' => $questionUuid,
                 'questionnaire_uuid' => $questionnaireUuid,
-                'group' => 'contactdetails',
+                'group_name' => 'contactdetails',
                 'question_type' => 'multiplechoice',
                 'label' => 'Waar ken je deze persoon van?',
-                'header' => 'Relatie',
+                'header' => 'Relatie tot de index',
                 'description' => null,
+                'sort_order' => 40,
                 'relevant_for_categories' => '2a,2b',
                 'created_at' => $now,
                 'updated_at' => $now
@@ -198,16 +202,19 @@ class QuestionnaireSeeder extends Seeder
             DB::table('question')->insert([
                 'uuid' => $questionUuid,
                 'questionnaire_uuid' => $questionnaireUuid,
-                'group' => 'contactdetails',
+                'group_name' => 'contactdetails',
                 'question_type' => 'multiplechoice',
-                'label' => 'Is een of meerdere onderstaande zaken van toepassing voor deze persoon?',
+                'label' => 'Geldt één of meer van deze dingen voor deze persoon?',
                 'header' => 'Prioriteit',
-                'description' => "<ul><li>Student</li>" .
-                    "<li>70 jaar of ouder</li>" .
+                'description' => "<p>Voor deze groepen is het extra belangrijk dat we ze snel informeren en het juiste advies geven.</p>" .
+                    "<ul><li>Tussen de 15 en 29 jaar</li>" .
+                    "<li>55 jaar of ouder</li>" .
                     "<li>Gezondheidsklachten of extra gezondheidsrisico's</li>" .
                     "<li>Woont in een zorginstelling of asielzoekerscentrum (bijvoorbeeld bejaardentehuis)</li>" .
-                    "<li>Spreekt slecht of geen Nederlands</li>" .
-                    "<li>Werkt in de zorg, onderwijs of een contactberoep (bijvoorbeeld kapper)</li></ul>",
+                    "<li>Gaat naar school of kinderopvang</li>" .
+                    "<li>Werkt in de zorg, onderwijs of kinderopvang</li>" .
+                    "<li>Heeft een ander contactberoep (bijvoorbeeld kapper)</li></ul>",
+                'sort_order' => 50,
                 'relevant_for_categories' => '1,2a,2b',
                 'created_at' => $now,
                 'updated_at' => $now
@@ -216,9 +223,9 @@ class QuestionnaireSeeder extends Seeder
             DB::table('answer_option')->insert([[
                 'uuid' => (string)Str::uuid(),
                 'question_uuid' => $questionUuid,
-                'label' => 'Ja, één of meerdere dingen',
+                'label' => 'Ja, één of meer',
                 'value' => 'Ja',
-                'trigger' => 'communication_staff',
+                'trigger_name' => 'communication_staff',
                 'created_at' => $now,
                 'updated_at' => $now
             ], [
@@ -226,7 +233,7 @@ class QuestionnaireSeeder extends Seeder
                 'question_uuid' => $questionUuid,
                 'label' => 'Nee, ik denk het niet',
                 'value' => 'Nee',
-                'trigger' => 'communication_index',
+                'trigger_name' => 'communication_index',
                 'created_at' => $now,
                 'updated_at' => $now
             ]]);
