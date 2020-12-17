@@ -42,6 +42,11 @@ db:
   password: changeme
   useExistingSecret: false # if true, create a secret with `app.fullname`-db in the same namespace
 
+# HAA
+healthauthority:
+  api:
+    base_uri: http://healthauthority-api:8080/v1/
+
 # Private JWT
 private:
   api:
