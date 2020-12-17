@@ -20,9 +20,7 @@ data:
   DB_DATABASE: {{ .Values.db.database }}
   TIH_REDIRECT_URL: {{ .Values.tih.redirect_url }}
   PRIVATE_API_BASE_URI: {{ .Values.private.api.base_uri }}
-  {{- if .Values.allow.demo.login }}
   ALLOW_DEMO_LOGIN: {{ quote .Values.allow.demo.login }}
   USER_ROLE_ADMIN: {{ .Values.user.role.admin }}
   USER_ROLE_USER: {{ .Values.user.role.user }}
   USER_ROLE_PLANNER: {{ .Values.user.role.planner }}
-  {{- end }}
