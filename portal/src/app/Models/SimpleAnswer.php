@@ -6,9 +6,14 @@ class SimpleAnswer extends Answer
 {
     public string $value;
 
-    public function progressContribution(): bool
+    public function isCompleted(): bool
     {
-        return false;
+        return !empty($this->value);
+    }
+
+    public function isContactable(): bool
+    {
+        return !empty($this->value);
     }
 
     public function toFormValue()
