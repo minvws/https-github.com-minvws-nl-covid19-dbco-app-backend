@@ -9,11 +9,19 @@ class ContactDetailsAnswer extends Answer
     public ?string $email;
     public ?string $phonenumber;
 
-    public function progressContribution(): bool
+    public function isCompleted(): bool
     {
         return
             !empty($this->firstname) &&
             !empty($this->lastname) &&
+            !empty($this->email) &&
+            !empty($this->phonenumber);
+    }
+
+    public function isContactable(): bool
+    {
+        return
+            (!empty($this->firstname) || !empty($this->lastname)) &&
             (!empty($this->email) || !empty($this->phonenumber));
     }
 
