@@ -74,10 +74,10 @@ RUN set -eux; \
 	done; \
 	\
 # logs should go to stdout / stderr
-	ln -sfT /dev/stderr "$APACHE_LOG_DIR/error.log"; \
-	ln -sfT /dev/stdout "$APACHE_LOG_DIR/access.log"; \
-	ln -sfT /dev/stdout "$APACHE_LOG_DIR/other_vhosts_access.log"; \
-	chown -R --no-dereference "$APACHE_RUN_USER:$APACHE_RUN_GROUP" "$APACHE_LOG_DIR"; \
+    ln -sfT /dev/stderr "$APACHE_LOG_DIR/error.log"; \
+    ln -sfT /dev/stdout "$APACHE_LOG_DIR/access.log"; \
+    ln -sfT /dev/stdout "$APACHE_LOG_DIR/other_vhosts_access.log"; \
+    chown -R --no-dereference "$APACHE_RUN_USER:$APACHE_RUN_GROUP" "$APACHE_LOG_DIR"; \
     ln -sfT /dev/stdout "/var/log/syslog"; \
     chown -R --no-dereference "$APACHE_RUN_USER:$APACHE_RUN_GROUP" /src/var/cache
 
