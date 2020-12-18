@@ -191,8 +191,6 @@ class DbCaseRepository implements CaseRepository
 
         $this->validateTaskUpdate($caseUuid, $task, $taskInfo);
 
-        $task->derivedLabel = $this->deriveLabel($task, $taskInfo);
-
         if ($task->source === 'app' && !$taskInfo) {
             // user created task (source "app") needs to be created
             $this->createUserTask($caseUuid, $task);
@@ -229,7 +227,7 @@ class DbCaseRepository implements CaseRepository
     private function getTaskInfo(Task $task)
     {
         $stmt = $this->client->prepare("
-            SELECT case_uuid, source, communication, label
+            SELECT case_uuid, source, communication
             FROM task
             WHERE uuid = :taskUuid
         ");
@@ -246,8 +244,7 @@ class DbCaseRepository implements CaseRepository
         return (object)[
             'caseUuid' => $row->case_uuid,
             'source' => $row->source,
-            'communication' => $row->communication,
-            'label' => $row->label
+            'communication' => $row->communication
         ];
     }
 
@@ -278,39 +275,6 @@ class DbCaseRepository implements CaseRepository
     }
 
     /**
-     * Derive label from answers.
-     *
-     * @param Task           $task
-     * @param stdClass|false $taskInfo
-     *
-     * @return string
-     */
-    private function deriveLabel(Task $task, $taskInfo)
-    {
-        if ($task->source === 'portal' && $taskInfo) {
-            $label = $taskInfo->label;
-        } else {
-            $label = '?';
-        }
-
-        if (!$task->questionnaireResult) {
-            return $label;
-        }
-
-        foreach ($task->questionnaireResult->answers as $answer) {
-            if ($answer->value instanceof ContactDetails && $answer->value->firstName && $answer->value->lastName) {
-                $label = $answer->value->firstName . ' ' . substr($answer->value->lastName, 0, 1);
-                break;
-            } else if ($answer->value instanceof ContactDetails && $answer->value->firstName) {
-                $label = $answer->value->firstName;
-                break;
-            }
-        }
-
-        return $label;
-    }
-
-    /**
      * Create user task (source "app").
      *
      * @param string $caseUuid
@@ -320,11 +284,11 @@ class DbCaseRepository implements CaseRepository
     {
         $stmt = $this->client->prepare("
             INSERT INTO task (
-                uuid, case_uuid, task_type, source, derived_label, task_context, 
+                uuid, case_uuid, task_type, source, label, task_context, 
                 category, communication, questionnaire_uuid, informed_by_index, created_at, updated_at
             )
             VALUES (
-                :taskUuid, :caseUuid, :taskType, :source, :derivedLabel, :taskContext, 
+                :taskUuid, :caseUuid, :taskType, :source, :label, :taskContext, 
                 :category, :communication, :questionnaireUuid, 0, NOW(), NOW()
             )
         ");
@@ -334,7 +298,7 @@ class DbCaseRepository implements CaseRepository
             'caseUuid' => $caseUuid,
             'taskType' => $task->taskType,
             'source' => $task->source,
-            'derivedLabel' => $this->seal($task->derivedLabel),
+            'label' => $task->label,
             'taskContext' => $task->taskContext,
             'category' => $task->category,
             'communication' => $task->communication,
@@ -352,7 +316,7 @@ class DbCaseRepository implements CaseRepository
         $stmt = $this->client->prepare("
             UPDATE task
             SET
-                derived_label = :derivedLabel,
+                label = :label,
                 task_context = :taskContext,
                 category = :category,
                 communication = :communication,
@@ -362,7 +326,7 @@ class DbCaseRepository implements CaseRepository
         ");
 
         $stmt->execute([
-            'derivedLabel' => $this->seal($task->derivedLabel),
+            'label' => $task->label,
             'taskContext' => $task->taskContext,
             'category' => $task->category,
             'communication' => $task->communication,
@@ -381,7 +345,6 @@ class DbCaseRepository implements CaseRepository
         $stmt = $this->client->prepare("
             UPDATE task
             SET 
-                derived_label = :derivedLabel,
                 questionnaire_uuid = :questionnaireUuid, 
                 communication = :communication,
                 updated_at = NOW()
@@ -389,7 +352,6 @@ class DbCaseRepository implements CaseRepository
         ");
 
         $stmt->execute([
-            'derivedLabel' => $this->seal($task->derivedLabel),
             'questionnaireUuid' => $task->questionnaireResult->questionnaireUuid,
             'taskUuid' => $task->uuid,
             'communication' => $task->communication
