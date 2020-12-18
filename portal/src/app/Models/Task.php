@@ -14,7 +14,9 @@ class Task
 
     public string $source;
 
-    public string $label;
+    public ?string $label;
+
+    public ?string $derivedLabel;
 
     public ?string $category;
 

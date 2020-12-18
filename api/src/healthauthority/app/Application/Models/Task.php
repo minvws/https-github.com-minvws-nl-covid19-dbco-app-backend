@@ -24,9 +24,14 @@ class Task
     public string $source;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $label;
+    public ?string $label;
+
+    /**
+     * @var string|null
+     */
+    public ?string $derivedLabel = null;
 
     /**
      * @var string|null

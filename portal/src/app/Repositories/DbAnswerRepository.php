@@ -27,22 +27,6 @@ class DbAnswerRepository implements AnswerRepository
         $this->encryptionHelper = $encryptionHelper;
     }
 
-    /**
-     * Unseal value.
-     *
-     * @param string|null $sealedValue
-     *
-     * @return string|null
-     */
-    private function unseal(?string $sealedValue): ?string
-    {
-        if ($sealedValue === null) {
-            return null;
-        } else {
-            return $this->encryptionHelper->unsealStoreValue($sealedValue);
-        }
-    }
-
     public function getAllAnswersByCase(string $caseUuid): Collection
     {
         $dbAnswers = EloquentAnswer::where('case_uuid', $caseUuid)
@@ -83,10 +67,10 @@ class DbAnswerRepository implements AnswerRepository
         switch($dbAnswer->question_type) {
             case 'contactdetails':
                 $answer = new ContactDetailsAnswer();
-                $answer->firstname = $this->unseal($dbAnswer->ctd_firstname);
-                $answer->lastname = $this->unseal($dbAnswer->ctd_lastname);
-                $answer->email = $this->unseal($dbAnswer->ctd_email);
-                $answer->phonenumber = $this->unseal($dbAnswer->ctd_phonenumber);
+                $answer->firstname = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->ctd_firstname);
+                $answer->lastname = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->ctd_lastname);
+                $answer->email = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->ctd_email);
+                $answer->phonenumber = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->ctd_phonenumber);
                 break;
             case 'classificationdetails':
                 $answer = new ClassificationDetailsAnswer();
@@ -97,7 +81,7 @@ class DbAnswerRepository implements AnswerRepository
                 break;
             default:
                 $answer = new SimpleAnswer();
-                $answer->value = $this->unseal($dbAnswer->spv_value) ?? '';
+                $answer->value = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->spv_value) ?? '';
         }
 
         $answer->uuid = $dbAnswer->uuid;
