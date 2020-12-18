@@ -86,7 +86,7 @@ class ApiCaseExportRepository implements CaseExportRepository
             if ($e instanceof BadResponseException) {
                 $this->logger->debug("Response:\n" . (string)$e->getResponse()->getBody());
             }
-            throw new RuntimeException('Error exporting case to private API');
+            throw new RuntimeException('Error exporting case to private API', 0, $e);
         }
     }
 }

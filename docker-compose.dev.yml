@@ -1,20 +1,20 @@
 version: '3.7'
 
 services:
-    private_api:
+    private-api:
         environment:
             APP_ENV: development
         ports:
-            - ${PRIVATE_API_PORT:-8081}:80
+            - ${PRIVATE_API_PORT:-8081}:8080
         volumes:
             - ./api/src/shared:/shared
             - ./api/src/private:/src
 
-    public_api:
+    public-api:
         environment:
             APP_ENV: development
         ports:
-            - ${PUBLIC_API_PORT:-8082}:80
+            - ${PUBLIC_API_PORT:-8082}:8080
         volumes:
             - ./api/src/shared:/shared
             - ./api/src/public:/src
@@ -26,26 +26,93 @@ services:
         volumes:
             - ./worker/src:/src
 
-    pairing-worker:
-        build: worker
+    bridge:
+        build: bridge
         environment:
             APP_ENV: development
         volumes:
-            - ./worker/src:/src
+            - ./bridge/src:/src
 
-    healthauthority_api:
+    bridge-clients:
+        build: bridge
         environment:
             APP_ENV: development
+        volumes:
+            - ./bridge/src:/src
+
+    bridge-caseresults:
+        build: bridge
+        environment:
+            APP_ENV: development
+        volumes:
+            - ./bridge/src:/src
+
+    healthauthority-api:
+        environment:
+            APP_ENV: development
+            SECURITY_MODULE_TYPE: hsm
+            SECURITY_MODULE_USER_PIN: ${HSM_USER_PIN}
+            SECURITY_MODULE_SLOT_LABEL: "CryptoServer PKCS11 Token"
         ports:
-            - ${HEALTHAUTHORITY_API_PORT:-8083}:80
+            - ${HEALTHAUTHORITY_API_PORT:-8083}:8080
         volumes:
             - ./api/src/shared:/shared
             - ./api/src/healthauthority:/src
+            - ./api/assets/healthauthority/cs_pkcs11_R2.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
+
+    healthauthority-hsm:
+        environment:
+            APP_ENV: development
+            SECURITY_MODULE_TYPE: hsm
+            SECURITY_MODULE_USER_PIN: ${HSM_USER_PIN}
+            SECURITY_MODULE_SLOT_LABEL: "CryptoServer PKCS11 Token"
+        volumes:
+            - ./api/src/shared:/shared
+            - ./api/src/healthauthority:/src
+            - ./api/assets/healthauthority/cs_pkcs11_R2_keystore.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
 
     portal:
+        build:
+            args:
+                - INSTALL_DEV_TOOLS=1
         environment:
             APP_ENV: development
         ports:
-            - ${PORTAL_PORT:-8084}:80
+            - ${PORTAL_PORT:-8084}:8080
         volumes:
             - ./portal/src:/src
+
+    simulator:
+        build: simulator
+        environment:
+            APP_ENV: development
+            DEBUG: ${DEBUG:-0}
+            PUBLIC_API_BASE_URI: http://public-api:8080/v1/
+            REDIS_HOST: redis-haa
+            REDIS_PORT: 6379
+        depends_on:
+            - public-api
+        volumes:
+            - ./simulator/src:/src
+        networks:
+            - public
+            - healthauthority
+
+    hsm:
+        build:
+            context: ../nl-covid19-dbco-app-hsm-private/hsm-simulator
+            dockerfile: Dockerfile
+        networks:
+            - healthauthority
+
+    hsm-setup:
+        build:
+            context: ../nl-covid19-dbco-app-hsm-private/hsm-simulator
+            dockerfile: Dockerfile.hsm-setup
+        command: /setup-hsm
+        environment:
+            SIM_HOST: hsm
+            SO_PIN: ${HSM_SO_PIN}
+            USER_PIN: ${HSM_USER_PIN}
+        networks:
+            - healthauthority

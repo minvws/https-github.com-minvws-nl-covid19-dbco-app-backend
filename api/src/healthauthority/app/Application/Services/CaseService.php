@@ -1,19 +1,29 @@
 <?php
 namespace DBCO\HealthAuthorityAPI\Application\Services;
 
-use DBCO\HealthAuthorityAPI\Application\DTO\CaseExport;
-use DBCO\HealthAuthorityAPI\Application\Helpers\EncryptionHelper;
+use DBCO\HealthAuthorityAPI\Application\DTO\CovidCase as CovidCaseDTO;
+use DBCO\HealthAuthorityAPI\Application\DTO\Task as TaskDTO;
+use DBCO\HealthAuthorityAPI\Application\DTO\QuestionnaireResult as QuestionnaireResultDTO;
+use DBCO\HealthAuthorityAPI\Application\DTO\Answer as AnswerDTO;
+use DBCO\HealthAuthorityAPI\Application\Security\EncryptionHelper;
+use DBCO\HealthAuthorityAPI\Application\Models\Answer;
 use DBCO\HealthAuthorityAPI\Application\Models\Client;
-use DBCO\HealthAuthorityAPI\Application\Models\ClientCase;
+use DBCO\HealthAuthorityAPI\Application\Models\ClientRegistration;
 use DBCO\HealthAuthorityAPI\Application\Models\CovidCase;
+use DBCO\HealthAuthorityAPI\Application\Models\QuestionnaireResult;
+use DBCO\HealthAuthorityAPI\Application\Models\Task;
 use DBCO\HealthAuthorityAPI\Application\Models\TaskList;
 use DBCO\HealthAuthorityAPI\Application\Repositories\CaseExportRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\CaseRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\ClientRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\GeneralTaskRepository;
+use DBCO\HealthAuthorityAPI\Application\Repositories\QuestionnaireRepository;
+use DBCO\Shared\Application\Codable\JSONDecoder;
+use DBCO\Shared\Application\Managers\TransactionManager;
 use DBCO\Shared\Application\Models\SealedData;
 use Exception;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Responsible for listing tasks.
@@ -43,9 +53,19 @@ class CaseService
     private CaseExportRepository $caseExportRepository;
 
     /**
+     * @var QuestionnaireRepository
+     */
+    private QuestionnaireRepository $questionnaireRepository;
+
+    /**
      * @var EncryptionHelper
      */
     private EncryptionHelper $encryptionHelper;
+
+    /**
+     * @var TransactionManager
+     */
+    private TransactionManager $transactionManager;
 
     /**
      * @var LoggerInterface
@@ -55,19 +75,23 @@ class CaseService
     /**
      * Constructor.
      *
-     * @param GeneralTaskRepository $generalTaskRepository
-     * @param CaseRepository        $caseRepository
-     * @param ClientRepository      $clientRepository
-     * @param CaseExportRepository  $caseExportRepository
-     * @param EncryptionHelper      $encryptionHelper
-     * @param LoggerInterface       $logger
+     * @param GeneralTaskRepository   $generalTaskRepository
+     * @param CaseRepository          $caseRepository
+     * @param ClientRepository        $clientRepository
+     * @param CaseExportRepository    $caseExportRepository
+     * @param QuestionnaireRepository $questionnaireRepository
+     * @param EncryptionHelper        $encryptionHelper
+     * @param TransactionManager      $transactionManager
+     * @param LoggerInterface         $logger
      */
     public function __construct(
         GeneralTaskRepository $generalTaskRepository,
         CaseRepository $caseRepository,
         ClientRepository $clientRepository,
         CaseExportRepository $caseExportRepository,
+        QuestionnaireRepository $questionnaireRepository,
         EncryptionHelper $encryptionHelper,
+        TransactionManager $transactionManager,
         LoggerInterface $logger
     )
     {
@@ -75,7 +99,9 @@ class CaseService
         $this->caseRepository = $caseRepository;
         $this->clientRepository = $clientRepository;
         $this->caseExportRepository = $caseExportRepository;
+        $this->questionnaireRepository = $questionnaireRepository;
         $this->encryptionHelper = $encryptionHelper;
+        $this->transactionManager = $transactionManager;
         $this->logger = $logger;
     }
 
@@ -99,7 +125,7 @@ class CaseService
      */
     private function exportCaseForClient(CovidCase $case, Client $client)
     {
-        $json = json_encode(new CaseExport($case));
+        $json = json_encode(new CovidCaseDTO($case));
         $sealedCase = $this->encryptionHelper->sealMessageForClient($json, $client->transmitKey);
         $this->caseExportRepository->exportCase($client->token, $sealedCase, $case->windowExpiresAt);
     }
@@ -130,52 +156,52 @@ class CaseService
      * @param string $caseUuid              Case identifier.
      * @param string $sealedClientPublicKey Sealed client public key.
      *
+     * @return ClientRegistration Client registration data.
+     *
      * @throws CaseNotFoundException
-     * @throws SealedBoxException
      */
-    public function registerClient(string $caseUuid, string $sealedClientPublicKey): Client
+    public function registerClient(string $caseUuid, string $sealedClientPublicKey): ClientRegistration
     {
         $caseExists = $this->caseRepository->caseExists($caseUuid);
         if (!$caseExists) {
             throw new CaseNotFoundException('Case does not exist!');
         }
 
+        $uuid = Uuid::uuid4()->toString();
         $clientPublicKey = $this->encryptionHelper->unsealClientPublicKey($sealedClientPublicKey);
         $healthAuthorityKeyPair = $this->encryptionHelper->createHealthAuthorityKeyPair();
         $healthAuthorityPublicKey = $this->encryptionHelper->getHealthAuthorityPublicKey($healthAuthorityKeyPair);
         $sealedHealthAuthorityPublicKey = $this->encryptionHelper->sealHealthAuthorityPublicKeyForClient($healthAuthorityPublicKey, $clientPublicKey);
-        $healthAuthoritySecretKey = $this->encryptionHelper->getHealthAuthoritySecretKey($healthAuthorityKeyPair);
         [$receiveKey, $transmitKey] = $this->encryptionHelper->deriveSharedSecretKeys($healthAuthorityKeyPair, $clientPublicKey);
         $token = $this->encryptionHelper->deriveSharedToken($receiveKey, $transmitKey);
 
         $client =
             new Client(
+                $uuid,
+                $caseUuid,
                 $token,
-                new ClientCase($caseUuid),
-                $clientPublicKey,
-                $healthAuthorityPublicKey,
-                $healthAuthoritySecretKey,
-                $sealedHealthAuthorityPublicKey,
                 $receiveKey,
                 $transmitKey
             );
 
         $case = $this->caseRepository->getCase($caseUuid);
         $this->clientRepository->registerClient($client, $case->windowExpiresAt);
+        $this->caseRepository->markCaseAsPaired($caseUuid);
         $this->exportCaseForClient($case, $client);
 
-        return $client;
+        return new ClientRegistration($client, $sealedHealthAuthorityPublicKey);
     }
 
 
     /**
      * Submit case with tasks.
      *
-     * @param string $token             Case token.
+     * @param string $token Case token.
      * @param SealedData $sealedCase Sealed case data.
      *
      * @throws CaseNotFoundException
      * @throws SealedBoxException
+     * @throws Exception
      */
     public function submitCase(string $token, SealedData $sealedCase): void
     {
@@ -184,11 +210,32 @@ class CaseService
             throw new CaseNotFoundException('Case does not exist!'); // TODO: different error?
         }
 
-        $data = $this->encryptionHelper->unsealMessageFromClient($sealedCase, $client->receiveKey);
-        if (empty($data)) {
+        $json = $this->encryptionHelper->unsealMessageFromClient($sealedCase, $client->receiveKey);
+        if (empty($json)) {
             throw new SealedBoxException();
         }
 
-        // TODO: this is a dummy implementation, we still need to process the data
+        $decoder = new JSONDecoder();
+
+        $decoder->getContext()->registerDecorator(CovidCase::class, CovidCaseDTO::class);
+        $decoder->getContext()->registerDecorator(Task::class, TaskDTO::class);
+        $decoder->getContext()->registerDecorator(QuestionnaireResult::class, QuestionnaireResultDTO::class);
+        $decoder->getContext()->registerDecorator(Answer::class, AnswerDTO::class);
+
+        $questionnaireList = $this->questionnaireRepository->getQuestionnaires();
+        $questionnaires =
+            array_combine(
+                array_map(fn ($q) => $q->uuid, $questionnaireList->questionnaires),
+                $questionnaireList->questionnaires
+            );
+        $decoder->getContext()->setValue('questionnaires', $questionnaires);
+
+        /** @var $case CovidCase */
+        $case = $decoder->decode($json)->decodeObject(CovidCase::class);
+        $case->uuid = $client->caseUuid;
+
+        $this->transactionManager->run(function () use ($case) {
+            $this->caseRepository->storeCaseAnswers($case);
+        });
     }
 }

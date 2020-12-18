@@ -87,4 +87,9 @@ class LoginController extends Controller
         Auth::logout();
         return redirect()->intended('/');
     }
+
+    public function login()
+    {
+        return view('login', ['allowDemoLogin' => config('auth.allow_demo_login') ]);
+    }
 }

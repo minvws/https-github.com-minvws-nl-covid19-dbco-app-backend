@@ -22,13 +22,24 @@
                 <span class="font-weight-bold">{{ $case->name }}</span>
                 <span class="ml-auto">
                     @if ($case->caseStatus() == \App\Models\CovidCase::STATUS_TIMEOUT)
-                        <a class="btn btn-outline-primary" role="button" href="/paircase/{{ $case->uuid }}">Nieuwe koppelcode</a>
+                        <a class="btn btn-outline-primary" role="button" href="{{ route('case-pair', [$case->uuid]) }}">Nieuwe koppelcode</a>
+                    @elseif ($case->caseStatus() == \App\Models\CovidCase::STATUS_OPEN)
+                        <a class="btn btn-outline-primary" role="button" href="{{ route('case-pair', [$case->uuid]) }}">Vervang koppelcode</a>
                     @endif
                     @if ($case->isEditable())
-                        <a class="btn btn-outline-primary" role="button" href="/editcase/{{ $case->uuid }}">Case wijzigen</a>
-                    @endif<a class="btn btn-primary" role="button" href="/dumpcase/{{ $case->uuid }}">Zet in HPZone</a>
+                        <a class="btn btn-outline-primary" role="button" href="{{ route('case-edit', [$case->uuid]) }}">Case wijzigen</a>
+                    @endif
+                    <a class="btn btn-outline-primary" role="button" href="{{ route('notify-case-update', ['uuid' => $case->uuid]) }}">Klaarzetten voor index</a>
+                    <a class="btn btn-primary" role="button" href="{{ route('case-dump', [$case->uuid]) }}">Zet in HPZone</a>
+
                 </span>
             </h2>
+            <!-- flash message -->
+            @if (session('message'))
+            <p>
+                <div class="alert">{!! session('message') !!}</div>
+            </p>
+            @endif
             <!-- End of page title component -->
             <p>
                 Casenr: {{ $case->caseId }}
@@ -36,7 +47,10 @@
             </p>
 
         <?php
-        $groups = array('staff' => 'GGD Informeert', 'index' => 'Index Informeert', 'other' => 'Overige contacten')
+        $groups = array('staff' => 'GGD Informeert',
+                        'index' => 'Index Informeert',
+                        'other' => 'Overige contacten',
+                        'none'  => 'Informeren niet nodig')
         ?>
 
         @foreach ($taskgroups as $taskgroup => $tasks)
@@ -65,7 +79,7 @@
                     <tr>
                         <th scope="col">Naam <i class="icon  icon--eye"></i></th>
                         <th scope="col">Categorie <i class="icon  icon--eye"></i></th>
-                        <th scope="col">Context <i class="icon  icon--eye"></i></th>
+                        <th scope="col">Toelichting <i class="icon  icon--eye"></i></th>
                         <th scope="col">Gegevens</th>
                         <th scope="col">Geinformeerd</th>
                         <th scope="col"></th>
@@ -123,13 +137,14 @@
                             fill="#001E49"/>
                     </svg>
                 </button>
+                <!-- DBCO-458: Button hidden until delete functionality is ready (DBCO-223)
                 <button class="btn">
                     <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M13.2422 15.5L13.75 4.78125H14.6172C14.9375 4.78125 15.2031 4.51562 15.2031 4.19531C15.2031 3.86719 14.9375 3.60156 14.6172 3.60156H11.2656V2.53125C11.2656 1.44531 10.5312 0.742188 9.35156 0.742188H6.63281C5.45312 0.742188 4.71875 1.44531 4.71875 2.53125V3.60156H1.38281C1.0625 3.60156 0.796875 3.86719 0.796875 4.19531C0.796875 4.51562 1.0625 4.78125 1.38281 4.78125H2.25L2.75781 15.5078C2.80469 16.5938 3.51562 17.2656 4.60938 17.2656H11.3906C12.4766 17.2656 13.1875 16.5859 13.2422 15.5ZM5.96875 2.60156C5.96875 2.1875 6.27344 1.89062 6.71875 1.89062H9.27344C9.71875 1.89062 10.0234 2.1875 10.0234 2.60156V3.60156H5.96875V2.60156ZM4.73438 16.0859C4.3125 16.0859 4 15.7734 3.97656 15.3359L3.46875 4.78125H12.5L12.0156 15.3359C12 15.7812 11.6953 16.0859 11.2578 16.0859H4.73438ZM10.1875 14.8203C10.4375 14.8203 10.625 14.6094 10.6406 14.3203L10.8594 6.625C10.8672 6.34375 10.6719 6.11719 10.4141 6.11719C10.1719 6.11719 9.96875 6.34375 9.96094 6.61719L9.74219 14.3125C9.73438 14.5938 9.92188 14.8203 10.1875 14.8203ZM5.8125 14.8203C6.07031 14.8203 6.26562 14.5938 6.25781 14.3125L6.03906 6.61719C6.03125 6.34375 5.82031 6.11719 5.58594 6.11719C5.32031 6.11719 5.13281 6.33594 5.14062 6.625L5.35938 14.3203C5.36719 14.6094 5.55469 14.8203 5.8125 14.8203ZM8 14.8203C8.25 14.8203 8.46094 14.5938 8.46094 14.3125V6.625C8.46094 6.34375 8.25 6.11719 8 6.11719C7.75 6.11719 7.53906 6.34375 7.53906 6.625V14.3125C7.53906 14.5938 7.75 14.8203 8 14.8203Z"
                             fill="#001E49"/>
                     </svg>
-                </button>
+                </button> --> 
             </div>
 
             <div class="sidebar-content">

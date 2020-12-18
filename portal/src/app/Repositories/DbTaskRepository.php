@@ -96,7 +96,7 @@ class DbTaskRepository implements TaskRepository
         $dbTask->communication = $communication;
         $dbTask->source = 'portal';
         $dbTask->task_type = 'contact';
-        $dbTask->informed_by_index = false;
+        $dbTask->informed_by_index = 0;
 
         $dbTask->save();
         return $this->taskFromEloquentModel($dbTask);
@@ -110,7 +110,7 @@ class DbTaskRepository implements TaskRepository
         $task->category = $dbTask->category;
         $task->communication = $dbTask->communication;
         $task->dateOfLastExposure = $dbTask->date_of_last_exposure !== NULL ? new Date($dbTask->date_of_last_exposure) : null;
-        $task->informedByIndex = $dbTask->informed_by_index;
+        $task->informedByIndex = $dbTask->informed_by_index === 1;
         $task->exportedAt = $dbTask->exported_at !== null ? new Date($dbTask->exported_at) : null;
         $task->label = $dbTask->label;
         $task->nature = $dbTask->nature;

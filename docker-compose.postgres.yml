@@ -11,15 +11,20 @@ services:
             - postgres-data:/var/lib/postgresql/data
         environment:
             POSTGRES_DB: portal
+            POSTGRES_USER: postgres
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        networks:
+            - healthauthority
 
     psql:
         image: postgres
         entrypoint: ["psql", "--host=postgres", "--user=postgres", "portal"]
         environment:
             PGPASSWORD: ${POSTGRES_PASSWORD}
+        networks:
+            - healthauthority
 
-    healthauthority_api:
+    healthauthority-api:
         depends_on:
           - postgres
 

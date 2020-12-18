@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Jenssegers\Date\Date;
+use DateTimeImmutable;
 
 class Pairing
 {
     public string $code;
-    public Date $expiresAt;
+    public DateTimeImmutable $expiresAt;
 }

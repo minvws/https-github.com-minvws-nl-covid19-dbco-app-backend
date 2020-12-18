@@ -17,6 +17,20 @@ class ErrorHandler extends SlimErrorHandler
     /**
      * @inheritdoc
      */
+    protected function writeToErrorLog(): void
+    {
+        if ($this->displayErrorDetails) {
+            parent::writeToErrorLog(); // log all errors if display error details is on
+        } else if (!($this->exception instanceof ActionException)) {
+            parent::writeToErrorLog(); // unexpected error
+        } else if ($this->exception->getCode() === ActionException::INTERNAL_SERVER_ERROR) {
+            parent::writeToErrorLog(); // explicit internal error
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function respond(): Response
     {
         $exception = $this->exception;
@@ -24,7 +38,12 @@ class ErrorHandler extends SlimErrorHandler
         if (!($exception instanceof ActionException)) {
             $message = 'An error occurred while processing your request. Please try again later.';
             if ($this->displayErrorDetails) {
-                $message .= "\n" . $exception->getMessage() . "\n" . $exception->getTraceAsString();
+                $message .= "\n\nException: " . $exception->getMessage() . "\n" . $exception->getTraceAsString();
+                if ($exception->getPrevious()) {
+                    $message .=
+                        "\n\nNested exception: " . $exception->getPrevious()->getMessage() . "\n" .
+                        $exception->getPrevious()->getTraceAsString();
+                }
             }
             $exception = new ActionException($this->request, 'internalError', $message, ActionException::INTERNAL_SERVER_ERROR, $exception);
         }

@@ -20,7 +20,7 @@ class ConfigActionTest extends TestCase
         $request = $this->createRequest('GET', '/v1/config');
         $response = $this->app->handle($request);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertResponseStatusCode(200, $response);
 
         $json = (string)$response->getBody();
         $config = json_decode($json, true);
