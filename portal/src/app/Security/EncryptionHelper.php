@@ -35,4 +35,20 @@ class EncryptionHelper
         $key = $this->securityCache->getSecretKey(SecurityCache::SK_STORE);
         return sodium_crypto_secretbox_open($ciphertext, $nonce, $key);
     }
+
+    /**
+     * Unseal value from the store using the general store encryption key.
+     *
+     * @param string|null $sealedValue Sealed value.
+     *
+     * @return string|null Unsealed value.
+     */
+    public function unsealOptionalStoreValue(?string $sealedValue): ?string
+    {
+        if ($sealedValue === null) {
+            return null;
+        } else {
+            return $this->unsealStoreValue($sealedValue);
+        }
+    }
 }
