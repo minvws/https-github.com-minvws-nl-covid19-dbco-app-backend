@@ -11,12 +11,16 @@ services:
             - oracle-data:/opt/oracle/oradata
         environment:
             ORACLE_PWD: ${ORACLE_PASSWORD}
-
+        networks:
+            - healthauthority
+            -
     sqlplus:
         image: ${ORACLE_IMAGE:-oracle/database:18.4.0-xe}
         entrypoint: sqlplus -L SYSTEM/"${ORACLE_PASSWORD}"@oracle/XEPDB1
+        networks:
+            - healthauthority
 
-    healthauthority_api:
+    healthauthority-api:
         depends_on:
           - oracle
 

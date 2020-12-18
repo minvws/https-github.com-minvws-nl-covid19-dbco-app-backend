@@ -1,7 +1,8 @@
 <?php
 namespace DBCO\PublicAPI\Application\Responses;
 
-use DBCO\PublicAPI\Application\Models\SealedCase;
+use DBCO\Shared\Application\DTO\SealedData as SealedDataDTO;
+use DBCO\Shared\Application\Models\SealedData;
 use DBCO\Shared\Application\Responses\Response;
 use JsonSerializable;
 
@@ -11,16 +12,16 @@ use JsonSerializable;
 class CaseResponse extends Response implements JsonSerializable
 {
     /**
-     * @var SealedCase
+     * @var SealedData
      */
-    private SealedCase $case;
+    private SealedData $case;
 
     /**
      * Constructor.
      *
-     * @param SealedCase $case
+     * @param SealedData $case
      */
-    public function __construct(SealedCase $case)
+    public function __construct(SealedData $case)
     {
         $this->case = $case;
     }
@@ -31,10 +32,7 @@ class CaseResponse extends Response implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'sealedCase' => [
-                'ciphertext' => base64_encode($this->case->ciphertext),
-                'nonce' => base64_encode($this->case->nonce)
-            ]
+            'sealedCase' => new SealedDataDTO($this->case)
         ];
     }
 }

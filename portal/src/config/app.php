@@ -165,7 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
-        Yajra\Oci8\Oci8ServiceProvider::class,
+        // Yajra\Oci8\Oci8ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -177,6 +177,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
+        App\Providers\SecurityServiceProvider::class,
 
     ],
 

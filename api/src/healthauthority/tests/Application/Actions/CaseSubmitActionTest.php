@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace DBCO\HealthAuthorityAPI\Tests\Application\Actions;
 
 use DBCO\HealthAuthorityAPI\Application\Models\Client;
-use DBCO\HealthAuthorityAPI\Application\Models\ClientCase;
+use DBCO\HealthAuthorityAPI\Application\Repositories\CaseRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\ClientRepository;
-use DI\Container;
 use Exception;
 use DBCO\HealthAuthorityAPI\Tests\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -30,27 +29,30 @@ class CaseSubmitActionTest extends TestCase
 
         $client =
             new Client(
+                Uuid::uuid4()->toString(),
+                Uuid::uuid4()->toString(),
                 $token,
-                new ClientCase(Uuid::uuid4()->toString()),
-                '',
-                '',
-                '',
-                '',
                 $secretKey,
                 ''
             );
 
-        /** @var $c Container */
         $stubClientRepository = $this->createStub(ClientRepository::class);
         $stubClientRepository->method('getClient')->willReturnCallback(function ($t) use ($client, $token) {
             $this->assertEquals($token, $t);
             return $client;
         });
 
+        $stubCaseRepository = $this->createStub(CaseRepository::class);
+        $stubCaseRepository->method('caseExists')->willReturn(true);
+
         $container = $this->getAppInstance()->getContainer();
         $container->set(ClientRepository::class, $stubClientRepository);
+        $container->set(CaseRepository::class, $stubCaseRepository);
 
-        $data = ['tasks' => []];
+        $data = [
+            'dateOfSymptomOnset' => date('Y-m-d'),
+            'tasks' => []
+        ];
         $nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
         $ciphertext = sodium_crypto_secretbox(json_encode($data), $nonce, $secretKey);
 
@@ -58,7 +60,7 @@ class CaseSubmitActionTest extends TestCase
         $request = $request->withParsedBody([ 'sealedCase' => ['ciphertext' => base64_encode($ciphertext), 'nonce' => base64_encode($nonce)]]);
         $request = $request->withHeader('Content-Type', 'application/json');
         $response = $this->app->handle($request);
-        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertResponseStatusCode(204, $response);
     }
 }
 

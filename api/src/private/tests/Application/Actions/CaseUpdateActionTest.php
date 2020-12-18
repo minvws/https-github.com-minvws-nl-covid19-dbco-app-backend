@@ -63,7 +63,7 @@ class CaseUpdateActionTest extends TestCase
         $request = $request->withHeader('Content-Type', 'application/json');
         $request = $this->requestWithAuthorization($request, $token);
         $response = $this->app->handle($request);
-        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertResponseStatusCode(204, $response);
 
         // 2nd time should work just as well
         $request = $this->createRequest('PUT', '/v1/cases/' . $token);
@@ -71,7 +71,7 @@ class CaseUpdateActionTest extends TestCase
         $request = $request->withHeader('Content-Type', 'application/json');
         $request = $this->requestWithAuthorization($request, $token);
         $response = $this->app->handle($request);
-        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertResponseStatusCode(204, $response);
     }
 
     /**
@@ -96,7 +96,7 @@ class CaseUpdateActionTest extends TestCase
         $request = $request->withParsedBody($data);
         $request = $request->withHeader('Content-Type', 'application/json');
         $response = $this->app->handle($request);
-        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertResponseStatusCode(401, $response);
 
         // invalid authorization
         $request = $this->createRequest('POST', '/v1/cases');
@@ -104,7 +104,7 @@ class CaseUpdateActionTest extends TestCase
         $request = $request->withHeader('Content-Type', 'application/json');
         $request = $request->withHeader('Authorization', 'Bearer this.is.not.correct');
         $response = $this->app->handle($request);
-        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertResponseStatusCode(401, $response);
 
         // invalid secret
         $request = $this->createRequest('PUT', '/v1/cases/' . $token);
@@ -112,7 +112,7 @@ class CaseUpdateActionTest extends TestCase
         $request = $request->withHeader('Content-Type', 'application/json');
         $request = $this->requestWithAuthorization($request, $token, 'not.the.correct.secret');
         $response = $this->app->handle($request);
-        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertResponseStatusCode(401, $response);
     }
 
     /**
@@ -140,7 +140,7 @@ class CaseUpdateActionTest extends TestCase
         $request = $this->requestWithAuthorization($request, $tokenClaim);
         $response = $this->app->handle($request);
 
-        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertResponseStatusCode(400, $response);
 
         $payload = (string)$response->getBody();
         $data = json_decode($payload);

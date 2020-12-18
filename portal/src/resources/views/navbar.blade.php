@@ -29,7 +29,7 @@
                     <a class="nav-link" href="#">Helpdesk</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/profile">{{ $userName }}</a>
+                    <a class="nav-link" href="{{ route('user-profile')}}">{{ $userName }}</a>
                 </li>
             </ul>
         </div>

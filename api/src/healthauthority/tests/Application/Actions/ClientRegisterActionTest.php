@@ -47,13 +47,13 @@ class ClientRegisterActionTest extends TestCase
         $pdo = $this->getAppInstance()->getContainer()->get(PDO::class);
         $pdo->query("
             INSERT INTO covidcase (uuid, owner, date_of_symptom_onset, window_expires_at, status)
-            VALUES ('{$caseUuid}', 'Test', TO_DATE('{$dateOfSymptomOnset}', 'YYYY-MM-DD'), TO_DATE('{$windowExpiresAt}', 'YYYY-MM-DD'), 'open')
-        ");
+            VALUES ('{$caseUuid}', 'Test', '{$dateOfSymptomOnset}', '{$windowExpiresAt}', 'open')
+        "); // NOTE: Oracle might need TO_DATE call (untested)
 
-        $encodedGeneralKeyPair = getenv('ENCRYPTION_GENERAL_KEY_PAIR');
-        $this->assertNotEmpty($encodedGeneralKeyPair);
-        $generalKeyPair = base64_decode($encodedGeneralKeyPair);
-        $generalPublicKey = sodium_crypto_box_publickey($generalKeyPair);
+        $encodedGeneralSecretKey = getenv('SECURITY_MODULE_SK_KEY_EXCHANGE');
+        $this->assertNotEmpty($encodedGeneralSecretKey);
+        $generalSecretKey = base64_decode($encodedGeneralSecretKey);
+        $generalPublicKey = sodium_crypto_box_publickey_from_secretkey($generalSecretKey);
 
         $clientKeyPair = sodium_crypto_kx_keypair();
         $clientPublicKey = sodium_crypto_kx_publickey($clientKeyPair);
@@ -64,7 +64,7 @@ class ClientRegisterActionTest extends TestCase
         $request = $request->withParsedBody([ 'sealedClientPublicKey' => $sealedClientPublicKey ]);
         $request = $request->withHeader('Content-Type', 'application/json');
         $response = $this->app->handle($request);
-        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertResponseStatusCode(201, $response);
 
         $data = json_decode((string)$response->getBody());
         $this->assertNotFalse($data);
