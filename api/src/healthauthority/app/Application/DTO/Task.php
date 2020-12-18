@@ -70,7 +70,26 @@ class Task implements JsonSerializable, DecodableDecorator
         $task->dateOfLastExposure = $container->dateOfLastExposure->decodeDateTimeIfPresent('Y-m-d');
         $task->questionnaireResult =
             $container->questionnaireResult->decodeObjectIfPresent(QuestionnaireResultModel::class);
-        $task->label = $container->label->decodeStringIfPresent();
+
+        if ($task->source === 'portal') {
+            $task->label = $container->label->decodeString();
+        } else {
+            $label = '?';
+
+            if ($task->questionnaireResult) {
+                foreach ($task->questionnaireResult->answers as $answer) {
+                    if ($answer->value instanceof ContactDetails && $answer->value->firstName && $answer->value->lastName) {
+                        $label = $answer->value->firstName . ' ' . substr($answer->value->lastName, 0, 1);
+                        break;
+                    } else if ($answer->value instanceof ContactDetails && $answer->value->firstName) {
+                        $label = $answer->value->firstName;
+                        break;
+                    }
+                }
+            }
+
+            $task->label = $label;
+        }
 
         return $task;
     }
