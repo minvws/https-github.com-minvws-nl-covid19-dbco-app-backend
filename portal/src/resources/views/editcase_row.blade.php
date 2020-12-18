@@ -2,11 +2,7 @@
     <td>
         <input class="form-control" type="hidden" name="tasks[{{ $row }}][uuid]" value="{{ $task['uuid'] ?? '' }}">
         <label class="sr-only" for="label">Label</label>
-        @if (!empty($task['derivedLabel']))
-            {{ $task['derivedLabel'] }}
-        @else
-            <input type="text" maxlength="255" class="form-control auto-row-clone" id="label" name="tasks[{{ $row }}][label]" value="{{ $task['label'] ?? '' }}" placeholder="Voeg contact toe">
-        @endif
+        <input type="text" maxlength="255" class="form-control auto-row-clone" id="label" name="tasks[{{ $row }}][label]" value="{{ $task['label'] ?? '' }}" placeholder="Voeg contact toe">
     </td>
     <td>
         <label class="sr-only" for="context1">Context</label>
