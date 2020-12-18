@@ -4,28 +4,12 @@ namespace App\Repositories;
 
 use App\Models\Eloquent\EloquentTask;
 use App\Models\Task;
-use App\Security\EncryptionHelper;
 use Illuminate\Support\Collection;
 use Jenssegers\Date\Date;
 use Monolog\DateTimeImmutable;
 
 class DbTaskRepository implements TaskRepository
 {
-    /**
-     * @var EncryptionHelper
-     */
-    private EncryptionHelper $encryptionHelper;
-
-    /**
-     * Constructor.
-     *
-     * @param EncryptionHelper $encryptionHelper
-     */
-    public function __construct(EncryptionHelper $encryptionHelper)
-    {
-        $this->encryptionHelper = $encryptionHelper;
-    }
-
     /**
      * Returns task list.
      *
@@ -129,7 +113,6 @@ class DbTaskRepository implements TaskRepository
         $task->informedByIndex = $dbTask->informed_by_index === 1;
         $task->exportedAt = $dbTask->exported_at !== null ? new Date($dbTask->exported_at) : null;
         $task->label = $dbTask->label;
-        $task->derivedLabel = $this->encryptionHelper->unsealOptionalStoreValue($dbTask->derived_label);
         $task->nature = $dbTask->nature;
         $task->source = $dbTask->source;
         $task->taskContext = $dbTask->task_context;
