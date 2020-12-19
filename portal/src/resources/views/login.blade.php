@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GGD BCO portaal - Login</title>
-
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-    <script src="{{ mix('js/app.js') }}"></script>
-</head>
-<body>
+<x-layout>
+<x-slot name="title">
+    Login
+</x-slot>
 
 <!-- Start of login component -->
 <div class="container-login">
@@ -49,5 +41,4 @@
 <!-- End of login component -->
 
 <!-- Bootstrap core JavaScript -->
-</body>
-</html>
+</x-layout>
