@@ -135,23 +135,17 @@
                 </div>
             </div>
             <!-- end of section -->
-
             <!-- Section: Contactonderzoek -->
-           `<div class="card mt-4 mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        Contactonderzoek
-                        <div class="float-right">
-                            <button data-copyvalue="{{ $copydata['contacts'] }}" class="copy-card-values btn btn-outline-primary btn-sm">Kopieer deze gegevens</button>
-                        </div>
-                    </h5>
-                    <div class="container">
-                        @foreach ($taskcategories as $category => $tasks)
-                            <div class="row">
-                                <div class="col">
-                                    <h6 class="mb-2">{{ $groupTitles[$category]['title'] }}</h6>
-                                </div>
+            @foreach ($taskcategories as $category => $tasks)
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            {{ $groupTitles[$category]['title'] }}
+                            <div class="float-right">
+                                <button data-copyvalue="{{ $copydata['contacts'][$category] }}" class="copy-card-values btn btn-outline-primary btn-sm">Kopieer deze gegevens</button>
                             </div>
+                        </h5>
+                        <div class="container">
                             @foreach ($tasks as $task)
                                 <div class="case-task">
                                     @foreach ($task['data'] as $key => $value)
@@ -214,11 +208,13 @@
                                     </div>
                                 </div>
                             @endforeach
-                    <!-- End of table component -->
-                        @endforeach
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
+            <p>
+                <!-- bottom spacer -->
+            </p>
         </div>
     </div>
 </div>
