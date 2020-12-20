@@ -96,8 +96,10 @@ class CaseController extends Controller
                 'label' => ['label' => 'Naam', 'postfix' => true],
             ];
 
-            $copydata['contacts'] = $this->questionnaireService->getCopyData($tasksPerCategory, $groupTitles, $fieldLabels);
-
+            $copydata['contacts'] = [];
+            foreach ($tasksPerCategory as $category => $tasks) {
+                $copydata['contacts'][$category] = $this->questionnaireService->getCopyData($tasks, $fieldLabels);
+            }
 
             return view('dumpcase', [
                 'groupTitles' => $groupTitles,

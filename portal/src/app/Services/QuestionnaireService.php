@@ -257,21 +257,19 @@ class QuestionnaireService
         }
     }
 
-    public function getCopyData($tasksPerCategory, $groupTitles, $fieldLabels)
+    public function getCopyData($tasks, $fieldLabels): string
     {
-        $copy = "";
+        $copy = [];
 
-        foreach($tasksPerCategory as $category => $tasks) {
-            $copy .= $groupTitles[$category]['title']."\n\n";
-
-            foreach ($tasks as $task) {
-                foreach ($task['data'] as $key => $value) {
-                    $key = ($fieldLabels[$key]['label'] ?? $key);
-                    $copy .= $key . ": " . ($value->displayValue ?? '-') . "\n";
-                }
+        foreach ($tasks as $task) {
+            $copyRec = '';
+            foreach ($task['data'] as $key => $value) {
+                $key = ($fieldLabels[$key]['label'] ?? $key);
+                $copyRec .= $key . ": " . ($value->displayValue ?? '-') . "\n";
             }
+            $copy[] = $copyRec;
         }
 
-        return $copy;
+        return implode("\n", $copy);
     }
 }
