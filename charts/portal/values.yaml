@@ -4,7 +4,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/minvws/nl-covid19-dbco-app-backend-private/portal
-  tag: 0.1.7
+  tag: 0.2.1
   pullPolicy: IfNotPresent
 
 imagePullSecrets:
@@ -42,6 +42,11 @@ db:
   password: changeme
   useExistingSecret: false # if true, create a secret with `app.fullname`-db in the same namespace
 
+# HAA
+healthauthority:
+  api:
+    base_uri: http://healthauthority-api:8080/v1/
+
 # Private JWT
 private:
   api:
@@ -57,10 +62,12 @@ tih:
   client_secret: changeme
   useExistingSecret: false # if true, create a secret with `app.fullname`-tih in the same namespace
 
-# User roles
+# Allow demo login
 allow:
   demo:
-    login: false # if true, see roles below
+    login: false
+
+# User roles
 user:
   role:
     admin: DBCO-Beheer
