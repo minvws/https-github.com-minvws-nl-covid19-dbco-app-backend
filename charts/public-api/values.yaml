@@ -4,7 +4,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/minvws/nl-covid19-dbco-app-backend-private/public-api
-  tag: 0.1.7
+  tag: 0.2.1
   pullPolicy: IfNotPresent
 
 imagePullSecrets:
