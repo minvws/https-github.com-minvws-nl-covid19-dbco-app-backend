@@ -15,7 +15,6 @@ use DateTime;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Jenssegers\Date\Date;
-use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 /**
  * Responsible for managing cases.
