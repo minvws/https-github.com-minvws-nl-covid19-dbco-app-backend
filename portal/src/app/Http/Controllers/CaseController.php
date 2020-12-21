@@ -7,22 +7,27 @@ use App\Models\Task;
 use App\Services\AuthenticationService;
 use App\Services\CaseService;
 use App\Services\QuestionnaireService;
+use App\Services\TaskService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 use Jenssegers\Date\Date;
 
 class CaseController extends Controller
 {
     private CaseService $caseService;
+    private TaskService $taskService;
     private QuestionnaireService $questionnaireService;
     private AuthenticationService $authService;
 
     public function __construct(CaseService $caseService,
+                                TaskService $taskService,
                                 QuestionnaireService $questionnaireService,
                                 AuthenticationService $authService)
     {
         $this->caseService = $caseService;
+        $this->taskService = $taskService;
         $this->questionnaireService = $questionnaireService;
         $this->authService = $authService;
     }
@@ -74,7 +79,8 @@ class CaseController extends Controller
         $user = $this->authService->getAuthenticatedUser();
 
         if ($case !== null && $this->caseService->canAccess($case)) {
-            $tasksPerCategory = $this->questionnaireService->getExportFriendlyTaskExport($caseUuid);
+            $caseExport = $this->questionnaireService->getExportFriendlyTaskExport($case);
+            $tasksPerCategory = $caseExport['tasks'];
 
             // TODO: Replace these getCopyData methods by ascii templates
             $copydata['user'] = $this->authService->getCopyData($user);
@@ -106,6 +112,8 @@ class CaseController extends Controller
                 'fieldlabels' => $fieldLabels,
                 'user' => $user,
                 'case' => $case,
+                'copiedFields' => $caseExport['case']['copiedFields'],
+                'needsExport' => $caseExport['case']['needsExport'],
                 'copydata' => $copydata,
                 'taskcategories' => $tasksPerCategory
             ]);
@@ -228,5 +236,61 @@ class CaseController extends Controller
         }
 
         return redirect()->intended('/case/' . $caseUuid);
+    }
+
+    public function markAsCopied(Request $request)
+    {
+        $caseUuid = $request->input('caseId');
+        $taskUuid = $request->input('taskId');
+        $fieldName = $request->input('fieldName');
+
+        $case = $this->caseService->getCase($caseUuid);
+        if ($case === null) {
+            return response()->json(['error' => "Case $caseUuid is invalid"], Response::HTTP_BAD_REQUEST);
+        }
+
+        if (!$this->caseService->canAccess($case)) {
+            return response()->json(['error' => 'Access denied'], Response::HTTP_FORBIDDEN);
+        }
+
+        $task = null;
+        if ($taskUuid != null) {
+            $task = $this->taskService->getTask($taskUuid);
+
+            if ($task === null) {
+                return response()->json(['error' => "Task $taskUuid is invalid"], Response::HTTP_BAD_REQUEST);
+            }
+
+            if (!$this->taskService->canAccess($task)) {
+                return response()->json(['error' => 'Access denied'], Response::HTTP_FORBIDDEN);
+            }
+        }
+
+        $this->caseService->markAsCopied($case, $task, $fieldName);
+
+        return response()->json(['success' => 'success'], Response::HTTP_OK);
+    }
+
+    public function linkCaseToExport(Request $request)
+    {
+        $exportId = trim($request->input('exportId'));
+        if (empty($exportId)) {
+            return response()->json(['error' => "Export ID is invalid"], Response::HTTP_BAD_REQUEST);
+        }
+
+        $caseUuid = $request->input('caseId');
+        $case = $this->caseService->getCase($caseUuid);
+
+        if ($case === null) {
+            return response()->json(['error' => "Task $taskUuid is invalid"], Response::HTTP_BAD_REQUEST);
+        }
+
+        if (!$this->caseService->canAccess($case)) {
+            return response()->json(['error' => 'Access denied'], Response::HTTP_FORBIDDEN);
+        }
+
+        $this->caseService->linkCaseToExport($case, $exportId);
+
+        return response()->json(['success' => 'success'], Response::HTTP_OK);
     }
 }

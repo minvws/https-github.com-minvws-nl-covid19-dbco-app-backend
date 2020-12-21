@@ -7,12 +7,15 @@ use App\Repositories\AnswerRepository;
 use App\Repositories\CaseUpdateNotificationRepository;
 use App\Repositories\CaseRepository;
 use App\Repositories\PairingRepository;
+use App\Repositories\StateRepository;
 use App\Repositories\TaskRepository;
 use App\Models\CovidCase;
+use App\Models\Task;
 use DateTime;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Jenssegers\Date\Date;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 /**
  * Responsible for managing cases.
@@ -49,6 +52,11 @@ class CaseService
     private CaseUpdateNotificationRepository $caseExportRepository;
 
     /**
+     * @var StateRepository
+     */
+    private StateRepository $stateRepository;
+
+    /**
      * Constructor.
      *
      * @param CaseRepository $caseRepository
@@ -57,13 +65,15 @@ class CaseService
      * @param AnswerRepository $answerRepository
      * @param AuthenticationService $authService
      * @param CaseUpdateNotificationRepository $caseExportRepository
+     * @param StateRepository $stateRepository
      */
     public function __construct(CaseRepository $caseRepository,
                                 TaskRepository $taskRepository,
                                 PairingRepository $pairingRepository,
                                 AnswerRepository $answerRepository,
                                 AuthenticationService $authService,
-                                CaseUpdateNotificationRepository $caseExportRepository)
+                                CaseUpdateNotificationRepository $caseExportRepository,
+                                StateRepository $stateRepository)
     {
         $this->caseRepository = $caseRepository;
         $this->taskRepository = $taskRepository;
@@ -71,6 +81,7 @@ class CaseService
         $this->answerRepository =$answerRepository;
         $this->authService = $authService;
         $this->caseExportRepository = $caseExportRepository;
+        $this->stateRepository = $stateRepository;
     }
 
     public function createDraftCase(): CovidCase
@@ -229,6 +240,28 @@ class CaseService
     {
         return "Datum eerste ziektedag (EZD): ".$case->dateOfSymptomOnset->format('d-m-Y').
             "\nDatum start besmettelijke periode: ".$case->calculateContagiousPeriodStart()->format('d-m-Y');
+    }
+
+    public function markAsCopied(CovidCase $case, ?Task $task, string $fieldName): void
+    {
+        $firstTime = $this->stateRepository->markFieldAsCopied($case->uuid, $task->uuid ?? null, $fieldName);
+        if ($firstTime) {
+            if ($task != null) {
+                // Task level copy
+                $task->copiedAt = Date::now();
+                $this->taskRepository->updateTask($task);
+            } else {
+                $case->copiedAt = Date::now();
+                $this->caseRepository->updateCase($case);
+            }
+        }
+    }
+
+    public function linkCaseToExport(CovidCase $case, string $exportId): void
+    {
+        $case->exportId = $exportId;
+        $case->exportedAt = Date::now();
+        $this->caseRepository->updateCase($case);
     }
 
 }
