@@ -377,7 +377,8 @@ class DummySeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now,
                 'export_id' => 'abcd1234',
-                'exported_at' => $now
+                'exported_at' => $now,
+                'copied_at' => $now,
             ], [
                 'uuid' => (string)Str::uuid(),
                 'case_uuid' => $caseUuid,
@@ -392,7 +393,8 @@ class DummySeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now,
                 'export_id' => null,
-                'exported_at' => null
+                'exported_at' => null,
+                'copied_at' => null,
             ]]);
 
             $caseUuid = (string)Str::uuid();

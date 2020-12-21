@@ -42,6 +42,7 @@ class Task
     public ?string $exportId = null;
 
     public ?Date $exportedAt = null;
+    public ?Date $copiedAt = null;
 
     /**
      * @return bool true if the task has submitted answers by the user.
