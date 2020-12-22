@@ -7,8 +7,8 @@ use Jenssegers\Date\Date;
 class Task
 {
     public const TASK_DATA_INCOMPLETE = 'incomplete';
-    public const TASK_DATA_CONTACTABLE = 'contact';
-    public const TASK_DATA_COMPLETE = 'compelte';
+    public const TASK_DATA_CONTACTABLE = 'contactable';
+    public const TASK_DATA_COMPLETE = 'complete';
 
     public string $uuid;
 

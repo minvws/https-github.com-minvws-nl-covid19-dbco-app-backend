@@ -211,63 +211,47 @@ class CaseService
     /**
      * Task completion progress is divided into three buckets to keep the UI simple:
      * - 'completed': all details are available, all questions answered
-     * - 'contact': we have enough basic data to contact the person
+     * - 'contactable': we have enough basic data to contact the person
      * - 'other': too much is still missing, provide the user UI warnings
      *
      * @param CovidCase $case
      */
     private function applyProgress(CovidCase $case): void
     {
-        $tasksProgress = [];
+        foreach ($case->tasks as &$task) {
+            $task->progress = Task::TASK_DATA_INCOMPLETE;
 
-        // Check the Task entity for basics:
-        // 1. task has a date of last exposure
-        foreach ($case->tasks as $task) {
-            $tasksProgress[$task->uuid]['questionnaire'] = null;
-
-            if ($task->dateOfLastExposure !== null) {
-                $tasksProgress[$task->uuid]['exposure_date'] = true;
-            }
-        }
-
-        // Check questionnaire answers:
-        // 2. task has a name
-        // 3. task has a classification
-        // 4. task has enough contact details; currently: phonenumber
-        $answers = $this->answerRepository->getAllAnswersByCase($case->uuid);
-
-        foreach ($answers as $answer) {
-            assert($answer instanceof Answer);
-
-            if (!isset($tasksProgress[$answer->taskUuid]['questionnaire'])) {
-                // This task has answered (parts of) the questionnaire
-                $tasksProgress[$answer->taskUuid]['questionnaire'] = true;
+            if ($task->dateOfLastExposure === null) {
+                // No last exposure date: keep incomplete and move to next
+                continue;
             }
 
-            // One missing question will mark the whole questionnaire incomplete
-            $tasksProgress[$answer->taskUuid]['questionnaire'] = $tasksProgress[$answer->taskUuid]['questionnaire'] && $answer->isCompleted();
+            // Check Task questionnaire answers for classification and contact details.
+            // Any missed question will mark the Task partially-complete.
+            $hasClassification = false;
+            $hasContactDetails = false;
+            $isComplete = true;
+            $answers = $this->answerRepository->getAllAnswersByTask($task->uuid);
 
-             if ($answer instanceof ClassificationDetailsAnswer) {
-                $tasksProgress[$answer->taskUuid]['classification'] = $answer->isContactable();
-            } elseif ($answer instanceof ContactDetailsAnswer) {
-                $tasksProgress[$answer->taskUuid]['contact'] = $answer->isContactable();
-            }
-        }
+            foreach ($answers as $answer) {
+                assert($answer instanceof Answer);
 
-        // Determine the level of completion of each Task, update the associated CovidCase
-        foreach ($case->tasks as $task) {
-            if (isset($tasksProgress[$task->uuid]['exposure_date'])
-                && isset($tasksProgress[$task->uuid]['classification'])
-                && isset($tasksProgress[$task->uuid]['contact'])
-            ) {
-                if ($tasksProgress[$task->uuid]['questionnaire'] === true) {
-                    $task->progress = Task::TASK_DATA_COMPLETE;
-                } else {
-                    $task->progress = Task::TASK_DATA_CONTACTABLE;
+                // Classification and ContactDetails answers
+                if ($answer instanceof ClassificationDetailsAnswer) {
+                    $hasClassification = $answer->isContactable();
+                } elseif ($answer instanceof ContactDetailsAnswer) {
+                    $hasContactDetails = $answer->isContactable();
                 }
-            } else {
-                $task->progress = Task::TASK_DATA_INCOMPLETE;
+
+                $isComplete = $isComplete && $answer->isCompleted();
             }
+
+            if ($isComplete && $hasClassification && $hasContactDetails) {
+                $task->progress = Task::TASK_DATA_COMPLETE;
+            } elseif ($hasClassification && $hasContactDetails) {
+                $task->progress = Task::TASK_DATA_CONTACTABLE;
+            }
+
         }
     }
 
