@@ -17,6 +17,8 @@ use App\Repositories\OrganisationRepository;
 use App\Repositories\PairingRepository;
 use App\Repositories\QuestionnaireRepository;
 use App\Repositories\QuestionRepository;
+use App\Repositories\SessionStateRepository;
+use App\Repositories\StateRepository;
 use App\Repositories\TaskRepository;
 use App\Repositories\DbTaskRepository;
 use App\Repositories\UserRepository;
@@ -41,6 +43,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(QuestionRepository::class, DbQuestionRepository::class);
         $this->app->bind(UserRepository::class, DbUserRepository::class);
         $this->app->bind(OrganisationRepository::class, DbOrganisationRepository::class);
+        $this->app->bind(StateRepository::class, SessionStateRepository::class);
 
         $this->app->when(ApiPairingRepository::class)
                   ->needs(GuzzleClient::class)

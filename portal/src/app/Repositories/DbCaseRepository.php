@@ -52,6 +52,8 @@ class DbCaseRepository implements CaseRepository
         ->whereNotNull('questionnaire_uuid')
         ->where(function($query) {
             $query->whereNull('exported_at')->orWhereRaw('exported_at < updated_at');
+        })->where(function($query) {
+            $query->whereNull('copied_at')->orWhereRaw('copied_at < updated_at');
         })->get();
 
         $case->hasExportables = ($exportableTasks->count() > 0);
@@ -131,6 +133,9 @@ class DbCaseRepository implements CaseRepository
         $dbCase->case_id = $case->caseId;
         $dbCase->name = $case->name;
         $dbCase->status = $case->status;
+        $dbCase->copied_at = $case->copiedAt != null ? $case->copiedAt->toDateTimeImmutable() : null;
+        $dbCase->exported_at = $case->exportedAt != null ? $case->exportedAt->toDateTimeImmutable() : null;
+        $dbCase->export_id = $case->exportId;
         $dbCase->date_of_symptom_onset = $case->dateOfSymptomOnset != null ? $case->dateOfSymptomOnset->toDateTimeImmutable() : null;
         $dbCase->save();
     }
@@ -159,6 +164,10 @@ class DbCaseRepository implements CaseRepository
         $case->owner = $dbCase->owner;
         $case->status = $dbCase->status;
         $case->updatedAt = new Date($dbCase->updated_at);
+        $case->createdAt = new Date($dbCase->created_at);
+        $case->copiedAt = $dbCase->copied_at != null ? new Date($dbCase->copied_at) : null;
+        $case->exportedAt = $dbCase->exported_at != null ? new Date($dbCase->exported_at) : null;
+        $case->exportId = $dbCase->export_id;
         $case->pairingExpiresAt = $dbCase->pairing_expires_at != null ? new Date($dbCase->pairing_expires_at) : null;
         $case->windowExpiresAt = $dbCase->window_expires_at != null ? new Date($dbCase->window_expires_at) : null;
         $case->indexSubmittedAt = $dbCase->index_submitted_at != null ? new Date($dbCase->index_submitted_at) : null;

@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
+use App\Models\CovidCase;
 use App\Models\ExportField;
 use App\Models\Questionnaire;
 use App\Models\SimpleAnswer;
 use App\Repositories\AnswerRepository;
 use App\Repositories\QuestionnaireRepository;
 use App\Repositories\QuestionRepository;
+use App\Repositories\StateRepository;
 use App\Repositories\TaskRepository;
 use Jenssegers\Date\Date;
 
@@ -17,17 +19,20 @@ class QuestionnaireService
     private QuestionnaireRepository $questionnaireRepository;
     private TaskRepository $taskRepository;
     private AnswerRepository $answerRepository;
+    private StateRepository $stateRepository;
 
     public function __construct(
         QuestionRepository $questionRepository,
         QuestionnaireRepository $questionnaireRepository,
         TaskRepository $taskRepository,
-        AnswerRepository $answerRepository)
+        AnswerRepository $answerRepository,
+        StateRepository $stateRepository)
     {
         $this->questionRepository = $questionRepository;
         $this->questionnaireRepository = $questionnaireRepository;
         $this->taskRepository = $taskRepository;
         $this->answerRepository = $answerRepository;
+        $this->stateRepository = $stateRepository;
     }
 
     public function getLatestQuestionnaire(string $taskType): ?Questionnaire
@@ -115,7 +120,8 @@ class QuestionnaireService
                 'task.dateoflastexposure' => $task->dateOfLastExposure !== null ? Date::parse($task->dateOfLastExposure)->format("Y-m-d"): '',
                 'task.communication' => $task->communication,
                 'task.exportId' => $task->exportId,
-                'task.enableExport' => $task->exportedAt === null || $task->exportedAt < $task->updatedAt
+                'task.enableExport' => ($task->exportedAt === null || $task->exportedAt < $task->updatedAt) &&
+                    ($task->copiedAt === null || $task->copiedAt < $task->updatedAt)
             ];
 
         }
@@ -156,9 +162,15 @@ class QuestionnaireService
         ];
     }
 
-    public function getExportFriendlyTaskExport(string $caseUuid): array
+    public function getExportFriendlyTaskExport(CovidCase $case): array
     {
-        $tasks = $this->taskRepository->getTasks($caseUuid);
+        $tasks = $this->taskRepository->getTasks($case->uuid);
+
+        $needsExport = ($case->exportedAt === null || $case->exportedAt < $case->updatedAt) &&
+            ($case->copiedAt === null || $case->copiedAt < $case->updatedAt);
+        if ($needsExport) {
+            $this->stateRepository->clearCopiedFields($case->uuid, null);
+        }
 
         // Hypothetically each task could've used a different questionnaire (once we have
         // more than one task type). For now this isn't supported and we assume all tasks have
@@ -173,7 +185,16 @@ class QuestionnaireService
             }
         }
 
-        $answers = $this->answerRepository->getAllAnswersByCase($caseUuid);
+        if (!count($questions)) {
+            // None of the tasks has a filled out questionnaire.
+            // Let's use the one they should've filled out as template for the copy/paste screen
+            $questionnaire = $this->questionnaireRepository->getLatestQuestionnaire('contact');
+            if ($questionnaire) {
+                $questions = $this->questionRepository->getQuestions($questionnaire->uuid);
+            }
+        }
+
+        $answers = $this->answerRepository->getAllAnswersByCase($case->uuid);
         $answersByTaskAndQuestion = [];
         foreach($answers as $answer) {
             $answersByTaskAndQuestion[$answer->taskUuid][$answer->questionUuid] = $answer;
@@ -182,6 +203,15 @@ class QuestionnaireService
         $records = [];
 
         foreach ($tasks as $task) {
+
+            $taskNeedsExport = ($task->exportedAt === null || $task->exportedAt < $task->updatedAt) &&
+                ($task->copiedAt === null || $task->copiedAt < $task->updatedAt);
+
+            // If we need to export, als clear previously stored copy fieldnames.
+            if ($taskNeedsExport) {
+                $this->stateRepository->clearCopiedFields($case->uuid, $task->uuid);
+            }
+
             $records[$task->uuid] = [
                 'uuid' => new ExportField($task->uuid),
                 'context' => new ExportField($task->taskContext),
@@ -191,7 +221,8 @@ class QuestionnaireService
                                     Date::parse($task->dateOfLastExposure)->format('Y-m-d')) : null,
                 'communication' => new ExportField($task->communication),
                 'exportId' => new ExportField($task->exportId),
-                'needsExport' => $task->exportedAt === null || $task->exportedAt < $task->updatedAt,
+                'needsExport' => $taskNeedsExport,
+                'copiedFields' => $this->stateRepository->getCopiedFields($case->uuid, $task->uuid),
                 'data' => ['label' => new ExportField($task->label) ],
             ];
 
@@ -234,7 +265,13 @@ class QuestionnaireService
         }
         ksort($tasksPerCategory);
 
-        return $tasksPerCategory;
+        return [
+            'case' => [
+                'needsExport' => $needsExport,
+                'copiedFields' => $this->stateRepository->getCopiedFields($case->uuid, null),
+            ],
+            'tasks' => $tasksPerCategory
+        ];
     }
 
     private function createSimpleExportField($questionType, $answerValue)
@@ -257,21 +294,19 @@ class QuestionnaireService
         }
     }
 
-    public function getCopyData($tasksPerCategory, $groupTitles, $fieldLabels)
+    public function getCopyData($tasks, $fieldLabels): string
     {
-        $copy = "";
+        $copy = [];
 
-        foreach($tasksPerCategory as $category => $tasks) {
-            $copy .= $groupTitles[$category]['title']."\n\n";
-
-            foreach ($tasks as $task) {
-                foreach ($task['data'] as $key => $value) {
-                    $key = ($fieldLabels[$key]['label'] ?? $key);
-                    $copy .= $key . ": " . ($value->displayValue ?? '-') . "\n";
-                }
+        foreach ($tasks as $task) {
+            $copyRec = '';
+            foreach ($task['data'] as $key => $value) {
+                $key = ($fieldLabels[$key]['label'] ?? $key);
+                $copyRec .= $key . ": " . ($value->displayValue ?? '-') . "\n";
             }
+            $copy[] = $copyRec;
         }
 
-        return $copy;
+        return implode("\n", $copy);
     }
 }

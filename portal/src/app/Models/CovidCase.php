@@ -36,9 +36,14 @@ class CovidCase
     public bool $hasExportables;
 
     public ?Date $indexSubmittedAt;
+    public ?Date $createdAt;
     public ?Date $updatedAt;
     public ?Date $windowExpiresAt;
     public ?Date $pairingExpiresAt;
+
+    public ?string $exportId = null;
+    public ?Date $exportedAt = null;
+    public ?Date $copiedAt = null;
 
     public array $tasks = array();
 

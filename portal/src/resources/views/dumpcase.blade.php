@@ -40,24 +40,34 @@
                         </div>
                     </h5>
                     <div class="container">
-                        <div class="row copyable" data-copyvalue="{{ $case->name }}">
+                        <div class="row copyable"
+                             data-copyvalue="{{ $case->name }}"
+                             data-case="{{$case->uuid}}"
+                             data-copyfield="name">
                             <div class="col col-4">Naam</div>
                             <div class="col">
                                 {{ $case->name }}
                                 <div class="float-right">
                                     <span class="row-action copy">Kopieer</span>
-                                    <span class="row-status"></span>
+                                    <span class="row-status">@if (in_array('name', $copiedFields))
+                                            &check;
+                                        @endif</span>
                                 </div>
 
                             </div>
                         </div>
-                        <div class="row copyable" data-copyvalue="{{ $case->caseId }}">
+                        <div class="row copyable"
+                             data-copyvalue="{{ $case->caseId }}"
+                             data-case="{{$case->uuid}}"
+                             data-copyfield="caseid">
                             <div class="col col-4">HPZone casenummer</div>
                             <div class="col">
                                 {{ $case->caseId }}
                                 <div class="float-right">
                                     <span class="row-action copy">Kopieer</span>
-                                    <span class="row-status"></span>
+                                    <span class="row-status">@if (in_array('caseid', $copiedFields))
+                                        &check;
+                                        @endif</span>
                                 </div>
                             </div>
                         </div>
@@ -75,24 +85,34 @@
                         </div>
                     </h5>
                     <div class="container">
-                        <div class="row copyable" data-copyvalue="{{ $user->name }}">
+                        <div class="row copyable"
+                             data-copyvalue="{{ $user->name }}"
+                             data-case="{{$case->uuid}}"
+                             data-copyfield="username">
                             <div class="col col-4">Naam (volledig)</div>
                             <div class="col">
                                 {{ $user->name }}
                                 <div class="float-right">
                                     <span class="row-action copy">Kopieer</span>
-                                    <span class="row-status"></span>
+                                    <span class="row-status">@if (in_array('username', $copiedFields))
+                                        &check;
+                                        @endif</span>
                                 </div>
 
                             </div>
                         </div>
-                        <div class="row copyable" data-copyvalue="-">
+                        <div class="row copyable"
+                             data-copyvalue="{{ $case->createdAt->format("Y-m-d") }}"
+                             data-case="{{$case->uuid}}"
+                             data-copyfield="casecreated">
                             <div class="col col-4">Datum contactonderzoek</div>
                             <div class="col">
-                                -
+                                {{ $case->createdAt->format('d-m-Y (l)') }}
                                 <div class="float-right">
                                     <span class="row-action copy">Kopieer</span>
-                                    <span class="row-status"></span>
+                                    <span class="row-status">@if (in_array('casecreated', $copiedFields))
+                                        &check;
+                                        @endif</span>
                                 </div>
                             </div>
                         </div>
@@ -111,23 +131,34 @@
                         </div>
                     </h5>
                     <div class="container">
-                        <div class="row copyable" data-copyvalue="{{ $case->dateOfSymptomOnset->format("Y-m-d") }}">
+                        <div class="row copyable"
+                             data-copyvalue="{{ $case->dateOfSymptomOnset->format("Y-m-d") }}"
+                             data-case="{{$case->uuid}}"
+                             data-copyfield="dateofsymptomonset">
                             <div class="col col-4">Datum eerste ziektedag (EZD)</div>
                             <div class="col">
                                 {{ $case->dateOfSymptomOnset->format('d-m-Y (l)') }}
                                 <div class="float-right">
                                     <span class="row-action copy">Kopieer</span>
-                                    <span class="row-status"></span>
+                                    <span class="row-status">@if (in_array('dateofsymptomonset', $copiedFields))
+                                        &check;
+                                        @endif</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="row copyable" data-copyvalue="{{ $case->calculateContagiousPeriodStart()->format('Y-m-d') }}">
+                        <div class="row copyable"
+                             data-copyvalue="{{ $case->calculateContagiousPeriodStart()->format('Y-m-d') }}"
+                             data-case="{{$case->uuid}}"
+                             data-copyfield="contagiousperiodstart"
+                        >
                             <div class="col col-4">Datum start besmettelijke periode</div>
                             <div class="col">
                                 {{ $case->calculateContagiousPeriodStart()->format('d-m-Y (l)') }}
                                 <div class="float-right">
                                     <span class="row-action copy">Kopieer</span>
-                                    <span class="row-status"></span>
+                                    <span class="row-status">@if (in_array('contagiousperiodstart', $copiedFields))
+                                        &check;
+                                        @endif</span>
                                 </div>
                             </div>
                         </div>
@@ -135,27 +166,25 @@
                 </div>
             </div>
             <!-- end of section -->
-
             <!-- Section: Contactonderzoek -->
-           `<div class="card mt-4 mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        Contactonderzoek
-                        <div class="float-right">
-                            <button data-copyvalue="{{ $copydata['contacts'] }}" class="copy-card-values btn btn-outline-primary btn-sm">Kopieer deze gegevens</button>
-                        </div>
-                    </h5>
-                    <div class="container">
-                        @foreach ($taskcategories as $category => $tasks)
-                            <div class="row">
-                                <div class="col">
-                                    <h6 class="mb-2">{{ $groupTitles[$category]['title'] }}</h6>
-                                </div>
+            @foreach ($taskcategories as $category => $tasks)
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            {{ $groupTitles[$category]['title'] }}
+                            <div class="float-right">
+                                <button data-copyvalue="{{ $copydata['contacts'][$category] }}" class="copy-card-values btn btn-outline-primary btn-sm">Kopieer deze gegevens</button>
                             </div>
+                        </h5>
+                        <div class="container">
                             @foreach ($tasks as $task)
                                 <div class="case-task">
                                     @foreach ($task['data'] as $key => $value)
-                                        <div class="row copyable" data-copyvalue="{{ $value->copyValue ?? '-' }}">
+                                        <div class="row copyable"
+                                             data-copyvalue="{{ $value->copyValue ?? '-' }}"
+                                             data-case="{{$case->uuid}}"
+                                             data-task="{{ $task['uuid']->value }}"
+                                             data-copyfield="{{ $key }}">
                                             <div class="col-4">
                                                 {{ $fieldLabels[$key]['label'] ?? $key }}
                                                 @if ($fieldLabels[$key]['postfix'] ?? false)
@@ -169,13 +198,19 @@
                                                         <button class="btn btn-outline-secondary btn-sm py-0 new-data">Nieuwe gegevens</button>
                                                     @endif
                                                     <span class="row-action copy">Kopieer</span>
-                                                    <span class="row-status"></span>
+                                                    <span class="row-status">@if (in_array($key, $task['copiedFields']))
+                                                          &check;
+                                                        @endif</span>
                                                 </div>
 
                                             </div>
                                         </div>
                                     @endforeach
-                                    <div class="row copyable" data-copyvalue="{{ $task['context']->copyValue ?? '-' }}">
+                                    <div class="row copyable"
+                                         data-copyvalue="{{ $task['context']->copyValue ?? '-' }}"
+                                         data-case="{{$case->uuid}}"
+                                         data-task="{{ $task['uuid']->value }}"
+                                         data-copyfield="context">
                                         <div class="col-4">
                                             Toelichting
                                         </div>
@@ -183,11 +218,17 @@
                                             {{ $task['context']->displayValue ?? '-' }}
                                             <div class="float-right">
                                                 <span class="row-action copy">Kopieer</span>
-                                                <span class="row-status"></span>
+                                                <span class="row-status">@if (in_array('context', $task['copiedFields']))
+                                                    &check;
+                                                    @endif</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row copyable" data-copyvalue="{{ $task['dateoflastexposure']->copyValue ?? '-' }}">
+                                    <div class="row copyable"
+                                         data-copyvalue="{{ $task['dateoflastexposure']->copyValue ?? '-' }}"
+                                         data-case="{{$case->uuid}}"
+                                         data-task="{{ $task['uuid']->value }}"
+                                         data-copyfield="dateoflastexposure">
                                         <div class="col-4">
                                             Laatste contactmoment
                                         </div>
@@ -195,7 +236,9 @@
                                             {{ $task['dateoflastexposure']->displayValue ?? '-' }}
                                             <div class="float-right">
                                                 <span class="row-action copy">Kopieer</span>
-                                                <span class="row-status"></span>
+                                                <span class="row-status">@if (in_array('dateoflastexposure', $task['copiedFields']))
+                                                    &check;
+                                                        @endif</span>
                                             </div>
                                         </div>
                                     </div>
@@ -214,10 +257,15 @@
                                     </div>
                                 </div>
                             @endforeach
-                    <!-- End of table component -->
-                        @endforeach
+                        </div>
                     </div>
                 </div>
+            @endforeach
+            <div class="invisible">
+                <input type="text" size="10" id="remote_{{ $case->uuid }}"
+                       value="{{ $case->exportId }}"/>
+                <input type="checkbox" class="chk-case-upload-completed"
+                       id="upload_{{ $case->uuid }}"/>
             </div>
         </div>
     </div>
