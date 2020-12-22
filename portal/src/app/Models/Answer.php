@@ -9,6 +9,5 @@ abstract class Answer
     public string $questionUuid;
 
     abstract public function isCompleted();
-    abstract public function isContactable();
     abstract public function toFormValue();
 }
