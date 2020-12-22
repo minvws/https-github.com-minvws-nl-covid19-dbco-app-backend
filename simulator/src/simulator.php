@@ -155,6 +155,7 @@ $filledCase = tryBlock(
         $extraTask->taskContext = 'Feestje';
         $extraTask->category = '3';
         $extraTask->communication = 'staff';
+        $extraTask->dateOfLastExposure = date('Y-m-d', strtotime('-2 days'));
         $filledCase->tasks[] = $extraTask;
 
         foreach ($filledCase->tasks as $task) {
