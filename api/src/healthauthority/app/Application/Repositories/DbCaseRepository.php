@@ -321,11 +321,13 @@ class DbCaseRepository implements CaseRepository
         $stmt = $this->client->prepare("
             INSERT INTO task (
                 uuid, case_uuid, task_type, source, derived_label, task_context, 
-                category, communication, questionnaire_uuid, informed_by_index, created_at, updated_at
+                category, communication, date_of_last_exposure, questionnaire_uuid, informed_by_index, 
+                created_at, updated_at
             )
             VALUES (
                 :taskUuid, :caseUuid, :taskType, :source, :derivedLabel, :taskContext, 
-                :category, :communication, :questionnaireUuid, 0, NOW(), NOW()
+                :category, :communication, :dateOfLastExposure, :questionnaireUuid, 0, 
+                NOW(), NOW()
             )
         ");
 
@@ -338,6 +340,7 @@ class DbCaseRepository implements CaseRepository
             'taskContext' => $task->taskContext,
             'category' => $task->category,
             'communication' => $task->communication,
+            'dateOfLastExposure' => $task->dateOfLastExposure ? $task->dateOfLastExposure->format('Y-m-d') : null,
             'questionnaireUuid' => $task->questionnaireResult->questionnaireUuid
         ]);
     }
@@ -356,6 +359,7 @@ class DbCaseRepository implements CaseRepository
                 task_context = :taskContext,
                 category = :category,
                 communication = :communication,
+                date_of_last_exposure = :dateOfLastExposure,                
                 questionnaire_uuid = :questionnaireUuid,
                 updated_at = NOW()
             WHERE uuid = :taskUuid
@@ -366,6 +370,7 @@ class DbCaseRepository implements CaseRepository
             'taskContext' => $task->taskContext,
             'category' => $task->category,
             'communication' => $task->communication,
+            'dateOfLastExposure' => $task->dateOfLastExposure ? $task->dateOfLastExposure->format('Y-m-d') : null,
             'questionnaireUuid' => $task->questionnaireResult->questionnaireUuid,
             'taskUuid' => $task->uuid
         ]);
