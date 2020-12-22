@@ -180,7 +180,7 @@ class DummySeeder extends Seeder
                 'label' => 'Lois L.',
                 'task_context' => "It's complicated",
                 'category' => '1',
-                'date_of_last_exposure' => date('Y-m-d'),
+                'date_of_last_exposure' => null,
                 'communication' => 'index',
                 'informed_by_index' => 1,
                 'questionnaire_uuid' => $questionnaireUuid,
@@ -253,6 +253,16 @@ class DummySeeder extends Seeder
                 'cfd_cat_3_risk' => '0',
                 'created_at' => $now,
                 'updated_at' => $now
+            ], [
+                'uuid' => (string)Str::uuid(),
+                'task_uuid' => $taskUuidMartha,
+                'question_uuid' => $classificationQuestionUuid,
+                'cfd_cat_1_risk' => '1',
+                'cfd_cat_2a_risk' => '1',
+                'cfd_cat_2b_risk' => '1',
+                'cfd_cat_3_risk' => '0',
+                'created_at' => $now,
+                'updated_at' => $now
             ]]);
 
             DB::table('answer')->insert([[
@@ -291,7 +301,7 @@ class DummySeeder extends Seeder
                 'uuid' => (string)Str::uuid(),
                 'task_uuid' => $taskUuidLois,
                 'question_uuid' => $birthdateQuestionUuid,
-                'spv_value' => null,
+                'spv_value' => Date('1976-10-12'),
                 'created_at' => $now,
                 'updated_at' => $now
             ], [
@@ -319,7 +329,7 @@ class DummySeeder extends Seeder
                 'uuid' => (string)Str::uuid(),
                 'task_uuid' => $taskUuidMartha,
                 'question_uuid' => $relationshipQuestionUuid,
-                'spv_value' => 'Ouder',
+                'spv_value' => null,
                 'created_at' => $now,
                 'updated_at' => $now
             ], [
