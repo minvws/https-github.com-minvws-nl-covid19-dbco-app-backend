@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Answer;
 use App\Models\ClassificationDetailsAnswer;
 use App\Models\ContactDetailsAnswer;
+use App\Models\Question;
 use App\Models\Task;
 use App\Repositories\AnswerRepository;
 use App\Repositories\CaseUpdateNotificationRepository;
@@ -51,6 +52,8 @@ class CaseService
 
     private CaseUpdateNotificationRepository $caseExportRepository;
 
+    private QuestionnaireService $questionnaireService;
+
     /**
      * Constructor.
      *
@@ -66,7 +69,8 @@ class CaseService
                                 PairingRepository $pairingRepository,
                                 AnswerRepository $answerRepository,
                                 AuthenticationService $authService,
-                                CaseUpdateNotificationRepository $caseExportRepository)
+                                CaseUpdateNotificationRepository $caseExportRepository,
+    QuestionnaireService $questionnaireService)
     {
         $this->caseRepository = $caseRepository;
         $this->taskRepository = $taskRepository;
@@ -74,6 +78,7 @@ class CaseService
         $this->answerRepository = $answerRepository;
         $this->authService = $authService;
         $this->caseExportRepository = $caseExportRepository;
+        $this->questionnaireService = $questionnaireService;
     }
 
     public function createDraftCase(): CovidCase
@@ -227,10 +232,8 @@ class CaseService
             }
 
             // Check Task questionnaire answers for classification and contact details.
-            // Any missed question will mark the Task partially-complete.
             $hasClassification = false;
             $hasContactDetails = false;
-            $isComplete = true;
             $answers = $this->answerRepository->getAllAnswersByTask($task->uuid);
 
             foreach ($answers as $answer) {
@@ -242,8 +245,16 @@ class CaseService
                 } elseif ($answer instanceof ContactDetailsAnswer) {
                     $hasContactDetails = $answer->isContactable();
                 }
+            }
 
-                $isComplete = $isComplete && $answer->isCompleted();
+            // Any missed question will mark the Task partially-complete.
+            $isComplete = true;
+            $questionnaire = $this->questionnaireService->getQuestionnaire($task->questionnaireUuid);
+            foreach ($questionnaire->questions as $question) {
+                if (in_array($task->category, $question->relevantForCategories) && !$this->isQuestionAnsweredCompletely($question, $answers)) {
+                    $isComplete = false;
+                    break;
+                }
             }
 
             if ($isComplete && $hasClassification && $hasContactDetails) {
@@ -251,8 +262,21 @@ class CaseService
             } elseif ($hasClassification && $hasContactDetails) {
                 $task->progress = Task::TASK_DATA_CONTACTABLE;
             }
-
         }
+    }
+
+    private function isQuestionAnsweredCompletely(Question $question, Collection $answers): bool
+    {
+        foreach ($answers as $answer) {
+            /**
+             * @var Answer $answer
+             */
+            if ($question->uuid === $answer->questionUuid && $answer->isCompleted()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getCopyDataCase(CovidCase $case)
