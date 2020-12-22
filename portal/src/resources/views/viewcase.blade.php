@@ -81,7 +81,7 @@
                     <tbody>
                     @foreach ($tasks as $task)
                         <tr>
-                            <th scope="row">{{ $task->label }}</th>
+                            <th scope="row">{{ $task->derivedLabel ?? $task->label ?? 'Onbekend' }}</th>
                             <td>
                                 {{ $task->category }}
                             </td>
