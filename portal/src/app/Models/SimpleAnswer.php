@@ -11,11 +11,6 @@ class SimpleAnswer extends Answer
         return !empty($this->value);
     }
 
-    public function isContactable(): bool
-    {
-        return !empty($this->value);
-    }
-
     public function toFormValue()
     {
         return $this->value;
