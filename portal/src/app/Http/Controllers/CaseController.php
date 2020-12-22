@@ -109,7 +109,7 @@ class CaseController extends Controller
 
             return view('dumpcase', [
                 'groupTitles' => $groupTitles,
-                'fieldlabels' => $fieldLabels,
+                'fieldLabels' => $fieldLabels,
                 'user' => $user,
                 'case' => $case,
                 'copiedFields' => $caseExport['case']['copiedFields'],
