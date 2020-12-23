@@ -46,7 +46,7 @@ db:
   password: changeme
   useExistingSecret: false # if true, create a secret with `app.fullname-db` in the same namespace
 
-# Encryption
+# Encryption (simple keystore is moved to healthauthority-hsm)
 security:
   module:
     type: hsm
