@@ -237,9 +237,9 @@ class CaseService
             $answers = $this->answerRepository->getAllAnswersByTask($task->uuid);
 
             foreach ($answers as $answer) {
-                assert($answer instanceof Answer);
-
-                // Classification and ContactDetails answers
+                /**
+                 * @var Answer $answer
+                 */
                 if ($answer instanceof ClassificationDetailsAnswer) {
                     $hasClassification = $answer->isContactable();
                 } elseif ($answer instanceof ContactDetailsAnswer) {
@@ -256,7 +256,6 @@ class CaseService
                     break;
                 }
             }
-
             if ($isComplete && $hasClassification && $hasContactDetails) {
                 $task->progress = Task::TASK_DATA_COMPLETE;
             } elseif ($hasClassification && $hasContactDetails) {
