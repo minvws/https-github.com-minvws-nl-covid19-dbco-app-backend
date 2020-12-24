@@ -19,6 +19,18 @@ class SimpleAnswerTest extends TestCase
         $this->assertSame($isCompleted, $answer->isCompleted());
     }
 
+    /**
+     * @testdox Answer $value is returned correctly for use in forms
+     * @dataProvider answerValuesProvider
+     */
+    public function testAnswerToFormValue(?string $value): void
+    {
+        $answer = new SimpleAnswer;
+        $answer->value = $value;
+
+        $this->assertSame($value, $answer->toFormValue());
+    }
+
     public static function answerValuesProvider(): array
     {
         return [
