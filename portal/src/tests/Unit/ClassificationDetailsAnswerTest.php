@@ -40,7 +40,28 @@ class ClassificationDetailsAnswerTest extends TestCase
         $this->assertSame($isComplete, $answer->isCompleted());
     }
 
-    public function answerValuesProvider(): array
+    /**
+     * @testdox Answer $_dataName gives classification $formCategory for forms
+     * @dataProvider answerValuesForFormProvider
+     */
+    public function testAnswerValuesToForm(
+        bool $category1Risk,
+        bool $category2ARisk,
+        bool $category2BRisk,
+        bool $category3Risk,
+        ?string $formCategory
+    ): void
+    {
+        $answer = new ClassificationDetailsAnswer;
+        $answer->category1Risk = $category1Risk;
+        $answer->category2ARisk = $category2ARisk;
+        $answer->category2BRisk = $category2BRisk;
+        $answer->category3Risk = $category3Risk;
+
+        $this->assertSame($formCategory, $answer->toFormValue());
+    }
+
+    public static function answerValuesProvider(): array
     {
         return [
             'all risks' => [
@@ -66,6 +87,40 @@ class ClassificationDetailsAnswerTest extends TestCase
             'category 3' => [
                 false, false, false, self::CATEGORY_3,
                 self::CONTACTABLE, self::COMPLETE
+            ],
+        ];
+    }
+
+    public static function answerValuesForFormProvider(): array
+    {
+        return [
+            'category 1' => [
+                self::CATEGORY_1, false, false, false,
+                '1'
+            ],
+            'category 2a' => [
+                false, self::CATEGORY_2A, false, false,
+                '2a'
+            ],
+            'category 2b' => [
+                false, false, self::CATEGORY_2B, false,
+                '2b'
+            ],
+            'category 3' => [
+                false, false, false, self::CATEGORY_3,
+                '3'
+            ],
+            'category 1+2a+2b+3' => [
+                self::CATEGORY_1, self::CATEGORY_2A, self::CATEGORY_2B, self::CATEGORY_3,
+                '1'
+            ],
+            'category 2a+2b+3' => [
+                false , self::CATEGORY_2A, self::CATEGORY_2B, self::CATEGORY_3,
+                '2a'
+            ],
+            'category 2b+3' => [
+                false , false, self::CATEGORY_2B, self::CATEGORY_3,
+                '2b'
             ],
         ];
     }
