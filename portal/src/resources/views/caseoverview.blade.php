@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GGD BCO portaal - Cases</title>
-
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-    <script src="{{ mix('js/app.js') }}"></script>
-</head>
-<body>
+<x-layout>
+<x-slot name="title">
+    Case overzicht
+</x-slot>
 
 <div class="container-xl">
     @include('navbar', ['root' => true])
@@ -230,5 +222,4 @@
 </div>
 <!-- End of create case modal -->
 
-</body>
-</html>
+</x-layout>

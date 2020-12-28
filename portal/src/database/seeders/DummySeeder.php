@@ -157,6 +157,7 @@ class DummySeeder extends Seeder
             $taskUuidLois = (string)Str::uuid();
             $taskUuidMartha = (string)Str::uuid();
             $taskUuidZod = (string)Str::uuid();
+            $taskUuidAquaman = (string)Str::uuid();
 
             DB::table('task')->insert([[
                 'uuid' => $taskUuidLex,
@@ -164,6 +165,7 @@ class DummySeeder extends Seeder
                 'task_type' => 'contact',
                 'source' => 'portal',
                 'label' => 'Lex L.',
+                'derived_label' => null,
                 'task_context' => 'Arch enemy',
                 'category' => '2b',
                 'date_of_last_exposure' => date('Y-m-d'),
@@ -178,6 +180,7 @@ class DummySeeder extends Seeder
                 'task_type' => 'contact',
                 'source' => 'portal',
                 'label' => 'Lois L.',
+                'derived_label' => null,
                 'task_context' => "It's complicated",
                 'category' => '1',
                 'date_of_last_exposure' => null,
@@ -192,6 +195,7 @@ class DummySeeder extends Seeder
                 'task_type' => 'contact',
                 'source' => 'portal',
                 'label' => 'Martha K.',
+                'derived_label' => null,
                 'task_context' => "Mother",
                 'category' => '2a',
                 'date_of_last_exposure' => date('Y-m-d'),
@@ -206,6 +210,7 @@ class DummySeeder extends Seeder
                 'task_type' => 'contact',
                 'source' => 'portal',
                 'label' => 'General Zod',
+                'derived_label' => null,
                 'task_context' => "Nemesis. Has no contact details answer",
                 'category' => '3',
                 'date_of_last_exposure' => date('Y-m-d'),
@@ -214,7 +219,23 @@ class DummySeeder extends Seeder
                 'questionnaire_uuid' => $questionnaireUuid,
                 'created_at' => $now,
                 'updated_at' => $now
-            ]]);
+            ],[
+                'uuid' => $taskUuidAquaman,
+                'case_uuid' => $caseUuid,
+                'task_type' => 'contact',
+                'source' => 'app',
+                'label' => 'Aquaman',
+                'derived_label' => 'Arthur Joseph Curry',
+                'task_context' => "Swam in the same water",
+                'category' => '2a',
+                'date_of_last_exposure' => date('Y-m-d'),
+                'communication' => 'index',
+                'informed_by_index' => 1,
+                'questionnaire_uuid' => $questionnaireUuid,
+                'created_at' => $now,
+                'updated_at' => $now
+            ]
+            ]);
 
             $questions = DB::table('question')
                 ->where('questionnaire_uuid', '=', $questionnaireUuid)->get();
@@ -295,6 +316,16 @@ class DummySeeder extends Seeder
                 'ctd_phonenumber' => '555-123145667',
                 'created_at' => $now,
                 'updated_at' => $now
+            ],[
+                'uuid' => (string)Str::uuid(),
+                'task_uuid' => $taskUuidAquaman,
+                'question_uuid' => $contactQuestionUuid,
+                'ctd_firstname' => 'Arthur',
+                'ctd_lastname' => 'Joseph Curry',
+                'ctd_email' => 'water@everywhere.tst',
+                'ctd_phonenumber' => '555-123142667',
+                'created_at' => $now,
+                'updated_at' => $now
             ]]);
 
             DB::table('answer')->insert([[
@@ -353,6 +384,13 @@ class DummySeeder extends Seeder
                 'spv_value' => 'Nee',
                 'created_at' => $now,
                 'updated_at' => $now
+            ],[
+                'uuid' => (string)Str::uuid(),
+                'task_uuid' => $taskUuidAquaman,
+                'question_uuid' => $priorityQuestionUuid,
+                'spv_value' => 'Nee',
+                'created_at' => $now,
+                'updated_at' => $now
             ]]);
 
             $caseUuid = (string)Str::uuid();
@@ -387,7 +425,8 @@ class DummySeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now,
                 'export_id' => 'abcd1234',
-                'exported_at' => $now
+                'exported_at' => $now,
+                'copied_at' => $now,
             ], [
                 'uuid' => (string)Str::uuid(),
                 'case_uuid' => $caseUuid,
@@ -402,7 +441,8 @@ class DummySeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now,
                 'export_id' => null,
-                'exported_at' => null
+                'exported_at' => null,
+                'copied_at' => null,
             ]]);
 
             $caseUuid = (string)Str::uuid();
