@@ -9,7 +9,7 @@
         <div class="col ml-5 mr-5">
             <!-- Start of page title component -->
             <h2 class="mt-4  mb-4  font-weight-normal d-flex align-items-end">
-                <span class="font-weight-bold">Mijn Cases</span>
+                <span class="font-weight-bold">@if ($allCases != null) Cases @else Mijn Cases @endif</span>
 
                 <!-- End of page title component -->
 
@@ -22,7 +22,7 @@
             <!-- End of add button component -->
             </h2>
             <!-- Start of tabs component -->
-            <!-- tabs disabled until we support multiple tabs
+            @if ($allCases != null)
             <nav>
                 <div class="nav  nav-tabs" id="nav-tab" role="tablist">
                     <a class="nav-item  nav-link  active"
@@ -39,150 +39,26 @@
                        role="tab"
                        aria-controls="nav-all-cases"
                        aria-selected="false">Alle cases</a>
-
                 </div>
             </nav>
-               end disabled -->
+            @endif
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane  fade show  active" id="nav-own-cases" role="tabpanel" aria-labelledby="nav-own-cases-tab">
-                    @if (count($cases) == 0)
+                    @if (count($myCases) == 0)
                         <div class="bg-white text-center pt-5 pb-5">
                             Je hebt nog geen cases. Voeg deze toe door rechtsboven op de knop 'Nieuwe case' te drukken.
                         </div>
                     @else
                         <!-- Start of table component -->
-                        <table class="table  table-rounded  table-hover  table-ggd">
-                            <colgroup>
-                                <col class="w-20">
-                                <col class="w-20">
-                                <col class="w-20">
-                                <col class="w-20">
-                                <col class="w-20">
-                            </colgroup>
-                            <thead>
-                            <tr>
-                                <th scope="col">Naam</th>
-                                <th scope="col">Casenr.</th>
-                                <th scope="col">Eerste ziektedag</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Laatst bewerkt</th>
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($cases as $case)
-                                <tr role="button" class="custom-link clickable-row" data-href="{{ $case->editCommand }}">
-                                    <th scope="row">{{ Str::limit($case->name, 30, '...') }}</th>
-                                    <td>{{ Str::limit($case->caseId, 30, '...') }}</td>
-                                    <td>{{ $case->dateOfSymptomOnset != NULL ? $case->dateOfSymptomOnset->format('l j M') : '' }}</td>
-                                    <td>
-                                        <span class="icon text-center">
-                                            <img src="{{ asset("/images/status_".$case->caseStatus().".svg") }}">
-                                        </span>
-                                        <span>{{ \App\Models\CovidCase::statusLabel($case->caseStatus()) }}</span>
-                                    </td>
-                                    <td>{{ $case->updatedAt->diffForHumans() }}</td>
-                                </tr>
-                            @endforeach
-                        </table>
-                        <!-- End of table component -->
-                        {{ $cases->links() }}
+                        @include('casestable', ['cases' => $myCases])
                     @endif
                 </div>
 
                 <div class="tab-pane  fade" id="nav-all-cases" role="tabpanel" aria-labelledby="nav-all-cases-tab">
                     <!-- Start of table component -->
-                    <table class="table  table-rounded  table-has-header  table-hover  table-ggd">
-                        <colgroup>
-                            <col class="w-20">
-                            <col class="w-20">
-                            <col class="w-20">
-                            <col class="w-20">
-                            <col class="w-20">
-                        </colgroup>
-                        <thead>
-                        <tr>
-                            <th scope="col">Naam index</th>
-                            <th scope="col">Casenr.</th>
-                            <th scope="col">Bco-er</th>
-                            <th scope="col">Datum test</th>
-                            <th scope="col">Laatst bewerkt</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <tr>
-                            <th scope="row">Tobias van Geijn</th>
-                            <td>AMS/C20. 354921</td>
-                            <td>Mathijs Groense</td>
-                            <td>ma 5 okt</td>
-                            <td>7 uur geleden</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Emiel Janson</th>
-                            <td>7593067-BA</td>
-                            <td>Mathijs Groense</td>
-                            <td>Zo 4 okt</td>
-                            <td>11 minuten geleden</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Lia Bardoel</th>
-                            <td>7593067-BA</td>
-                            <td>Mathijs Groense</td>
-                            <td>ma 5 okt</td>
-                            <td>2 uur geleden</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Joris Leker</th>
-                            <td>7593067-BA</td>
-                            <td>Mathijs Groense</td>
-                            <td>Zo 4 okt</td>
-                            <td>51 minuten geleden</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Emiel Janson</th>
-                            <td>7593067-BA</td>
-                            <td>Mathijs Groense</td>
-                            <td>Zo 4 okt</td>
-                            <td>11 minuten geleden</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Lia Bardoel</th>
-                            <td>7593067-BA</td>
-                            <td>Mathijs Groense</td>
-                            <td>ma 5 okt</td>
-                            <td>2 uur geleden</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Joris Leker</th>
-                            <td>7593067-BA</td>
-                            <td>Mathijs Groense</td>
-                            <td>Zo 4 okt</td>
-                            <td>51 minuten geleden</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Emiel Janson</th>
-                            <td>7593067-BA</td>
-                            <td>Mathijs Groense</td>
-                            <td>Zo 4 okt</td>
-                            <td>11 minuten geleden</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Lia Bardoel</th>
-                            <td>7593067-BA</td>
-                            <td>Mathijs Groense</td>
-                            <td>ma 5 okt</td>
-                            <td>2 uur geleden</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Joris Leker</th>
-                            <td>7593067-BA</td>
-                            <td>Mathijs Groense</td>
-                            <td>Zo 4 okt</td>
-                            <td>51 minuten geleden</td>
-                        </tr>
-                    </table>
-                    <!-- End of table component -->
+                    @if ($allCases != null)
+                        @include('casestable', ['cases' => $allCases])
+                    @endif
                 </div>
             </div>
         <!-- End of tabs component -->

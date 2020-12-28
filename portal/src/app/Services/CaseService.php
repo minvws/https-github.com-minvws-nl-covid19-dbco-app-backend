@@ -87,10 +87,10 @@ class CaseService
     {
         $owner = $this->authService->getAuthenticatedUser();
         $assignedTo = null;
-        if (!$this->authService->hasPlannerRole()) {
-            // Auto assign to yourself if you aren't a planner
-            $assignedTo = $owner;
-        }
+
+        // Auto assign to yourself
+        $assignedTo = $owner;
+
         return $this->caseRepository->createCase($owner, CovidCase::STATUS_DRAFT, $assignedTo);
     }
 

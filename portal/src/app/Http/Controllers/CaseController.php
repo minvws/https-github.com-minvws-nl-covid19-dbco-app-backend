@@ -11,6 +11,7 @@ use App\Services\TaskService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Validation\Rule;
 use Jenssegers\Date\Date;
 
@@ -124,20 +125,26 @@ class CaseController extends Controller
 
     public function listCases()
     {
-        if ($this->authService->hasPlannerRole()) {
-            $cases = $this->caseService->organisationCases();
-        } else {
-            $cases = $this->caseService->myCases();
+        $myCases = $this->caseService->myCases();
+        $allCases = null;
+
+        $isPlanner = $this->authService->hasPlannerRole();
+
+        if ($isPlanner) {
+            $allCases = $this->caseService->organisationCases();
         }
-        // Enrich data with some view level helper data
-        foreach ($cases as $case) {
+        // Enrich my cases data with some view level helper data
+        foreach ($myCases as $case) {
             $case->editCommand = $case->status === CovidCase::STATUS_DRAFT
                 ? route('case-edit', [$case->uuid])
                 : route('case-view', [$case->uuid])
             ;
         }
 
-        return view('caseoverview', ['cases' => $cases]);
+        return view('caseoverview', [
+            'myCases' => $myCases,
+            'allCases' => $allCases,
+            'isPlanner' => $isPlanner]);
     }
 
     public function saveCase(Request $request)
