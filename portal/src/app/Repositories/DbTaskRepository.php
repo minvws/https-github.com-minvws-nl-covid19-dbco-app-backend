@@ -4,12 +4,28 @@ namespace App\Repositories;
 
 use App\Models\Eloquent\EloquentTask;
 use App\Models\Task;
+use App\Security\EncryptionHelper;
 use Illuminate\Support\Collection;
 use Jenssegers\Date\Date;
 use Monolog\DateTimeImmutable;
 
 class DbTaskRepository implements TaskRepository
 {
+    /**
+     * @var EncryptionHelper
+     */
+    private EncryptionHelper $encryptionHelper;
+
+    /**
+     * Constructor.
+     *
+     * @param EncryptionHelper $encryptionHelper
+     */
+    public function __construct(EncryptionHelper $encryptionHelper)
+    {
+        $this->encryptionHelper = $encryptionHelper;
+    }
+
     /**
      * Returns task list.
      *
@@ -69,6 +85,7 @@ class DbTaskRepository implements TaskRepository
         $dbTask->created_at = $task->createdAt;
         $dbTask->updated_at = $task->updatedAt;
         $dbTask->exported_at = $task->exportedAt !== null ? $task->exportedAt->toDateTimeImmutable() : null;
+        $dbTask->copied_at = $task->copiedAt !== null ? $task->copiedAt->toDateTimeImmutable() : null;
 
         $dbTask->save();
     }
@@ -112,7 +129,9 @@ class DbTaskRepository implements TaskRepository
         $task->dateOfLastExposure = $dbTask->date_of_last_exposure !== NULL ? new Date($dbTask->date_of_last_exposure) : null;
         $task->informedByIndex = $dbTask->informed_by_index === 1;
         $task->exportedAt = $dbTask->exported_at !== null ? new Date($dbTask->exported_at) : null;
+        $task->copiedAt = $dbTask->copied_at !== null ? new Date($dbTask->copied_at) : null;
         $task->label = $dbTask->label;
+        $task->derivedLabel = $this->encryptionHelper->unsealOptionalStoreValue($dbTask->derived_label);
         $task->nature = $dbTask->nature;
         $task->source = $dbTask->source;
         $task->taskContext = $dbTask->task_context;
@@ -121,7 +140,6 @@ class DbTaskRepository implements TaskRepository
         $task->exportId = $dbTask->export_id;
         $task->createdAt = $dbTask->created_at !== null ? new Date($dbTask->created_at) : null;
         $task->updatedAt = $dbTask->updated_at !== null ? new Date($dbTask->updated_at) : null;
-        $task->exportedAt = $dbTask->exported_at !== null ? new Date($dbTask->exported_at) : null;
 
         return $task;
     }

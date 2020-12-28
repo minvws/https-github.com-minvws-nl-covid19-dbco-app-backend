@@ -37,7 +37,9 @@ Route::middleware(['auth', 'rolecheck:user'])->group(function() {
 
     // Dump data for export to HPZone
     Route::get('/dumpcase/{uuid}', [CaseController::class, 'dumpCase'])->name('case-dump');
+    Route::post('/linkcasetoexport', [CaseController::class, 'linkCaseToExport']);
     Route::post('/linktasktoexport', [TaskController::class, 'linkTaskToExport']);
+    Route::post('/markascopied', [CaseController::class, 'markAsCopied']);
 
     // Trigger to export case to GGD private API
     Route::get('/notifycaseupdate/{uuid}', [CaseController::class, 'notifyCaseUpdate'])->name('notify-case-update');

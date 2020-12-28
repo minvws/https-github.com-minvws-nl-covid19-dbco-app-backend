@@ -18,7 +18,9 @@ class Task
 
     public string $source;
 
-    public string $label;
+    public ?string $label;
+
+    public ?string $derivedLabel;
 
     public ?string $category;
 
@@ -46,4 +48,5 @@ class Task
     public ?string $exportId = null;
 
     public ?Date $exportedAt = null;
+    public ?Date $copiedAt = null;
 }

@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GGD BCO portaal - Case detail</title>
-
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-    <script src="{{ mix('js/app.js') }}"></script>
-</head>
-<body>
+<x-layout>
+<x-slot name="title">
+    Case detail
+</x-slot>
 
 <div class="container-xl">
     @include ('navbar')
@@ -89,7 +81,7 @@
                     <tbody>
                     @foreach ($tasks as $task)
                         <tr>
-                            <th scope="row">{{ $task->label }}</th>
+                            <th scope="row">{{ $task->derivedLabel ?? $task->label ?? 'Onbekend' }}</th>
                             <td>
                                 {{ $task->category }}
                             </td>
@@ -161,5 +153,4 @@
 <!-- Bootstrap core JavaScript -->
 <!-- build:js -->
 <!-- endbuild -->
-</body>
-</html>
+</x-layout>

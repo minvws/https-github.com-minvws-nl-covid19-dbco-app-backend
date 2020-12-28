@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\CovidCase;
 use App\Models\Task;
 use App\Repositories\AnswerRepository;
 use App\Repositories\TaskRepository;
