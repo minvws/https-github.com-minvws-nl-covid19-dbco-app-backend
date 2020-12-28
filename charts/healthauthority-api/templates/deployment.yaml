@@ -39,8 +39,10 @@ spec:
               name: {{ template "app.fullname" . }}
           - secretRef:
               name: {{ template "app.fullname" . }}-db
+          {{- if eq .Values.security.module.type "hsm"}}
           - secretRef:
-              name: {{ template "app.fullname" . }}-encryption
+              name: {{ template "app.fullname" . }}-hsm
+          {{- end }}
           - secretRef:
               name: {{ template "app.fullname" . }}-private-api-jwt
           ports:
