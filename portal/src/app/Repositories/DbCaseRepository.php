@@ -65,7 +65,10 @@ class DbCaseRepository implements CaseRepository
      */
     public function getCasesByAssignedUser(BCOUser $user): LengthAwarePaginator
     {
-        $paginator = EloquentCase::where('assigned_uuid', $user->uuid)->orderBy('covidcase.updated_at', 'desc')->paginate(config('view.rowsPerPage'));
+        $paginator = EloquentCase::where('assigned_uuid', $user->uuid)
+            ->select('covidcase.*', 'bcouser.name as assigned_name')
+            ->join('bcouser', 'bcouser.uuid', '=', 'covidcase.assigned_uuid')
+            ->orderBy('covidcase.updated_at', 'desc')->paginate(config('view.rowsPerPage'));
 
         $cases = array();
 
@@ -82,8 +85,9 @@ class DbCaseRepository implements CaseRepository
     public function getCasesByOrganisation(BCOUser $user): LengthAwarePaginator
     {
         $paginator = EloquentCase::where('user_organisation.user_uuid', $user->uuid)
-                ->select('covidcase.*')
+                ->select('covidcase.*', 'bcouser.name as assigned_name')
                 ->join('user_organisation', 'user_organisation.organisation_uuid', '=', 'covidcase.organisation_uuid')
+                ->join('bcouser', 'bcouser.uuid', '=', 'covidcase.assigned_uuid')
                 ->orderBy('covidcase.updated_at', 'desc')->paginate(config('view.rowsPerPage'));
 
         $cases = array();
@@ -163,6 +167,7 @@ class DbCaseRepository implements CaseRepository
         $case->name = $dbCase->name;
         $case->owner = $dbCase->owner;
         $case->status = $dbCase->status;
+        $case->assignedUuid = $dbCase->assigned_uuid;
         $case->updatedAt = new Date($dbCase->updated_at);
         $case->createdAt = new Date($dbCase->created_at);
         $case->copiedAt = $dbCase->copied_at != null ? new Date($dbCase->copied_at) : null;
@@ -171,6 +176,12 @@ class DbCaseRepository implements CaseRepository
         $case->pairingExpiresAt = $dbCase->pairing_expires_at != null ? new Date($dbCase->pairing_expires_at) : null;
         $case->windowExpiresAt = $dbCase->window_expires_at != null ? new Date($dbCase->window_expires_at) : null;
         $case->indexSubmittedAt = $dbCase->index_submitted_at != null ? new Date($dbCase->index_submitted_at) : null;
+
+        if ($case->assignedUuid !== null) {
+            $case->assignedName = $dbCase->assigned_name;
+        }
+
         return $case;
     }
+
 }
