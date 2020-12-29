@@ -12,7 +12,10 @@ use Predis\Client as PredisClient;
  */
 class RedisSecurityCache implements SecurityCache
 {
-    private const REDIS_KEY_TEMPLATE = 'secretKey:%s';
+    private const NS_VALUE      = 'value';
+    private const NS_SECRET_KEY = 'secretKey';
+
+    private const REDIS_KEY_TEMPLATE = 'securityCache:%s:%s';
 
     /**
      * @var PredisClient
@@ -32,13 +35,51 @@ class RedisSecurityCache implements SecurityCache
     /**
      * Get Redis key name.
      *
+     * @param string $namespace
      * @param string $identifier
      *
      * @return string
      */
-    private function getRedisKey(string $identifier): string
+    private function getRedisKey(string $namespace, string $identifier): string
     {
-        return sprintf(self::REDIS_KEY_TEMPLATE, $identifier);
+        return sprintf(self::REDIS_KEY_TEMPLATE, $namespace, $identifier);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasValue(string $key): bool
+    {
+        return $this->client->exists($this->getRedisKey(self::NS_VALUE, $key)) === 1;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getValue(string $key): string
+    {
+        $value = $this->client->get($this->getRedisKey(self::NS_VALUE, $key));
+        if ($value !== null) {
+            return $value;
+        } else {
+            throw new CacheEntryNotFoundException('Value not found for key "' . $key . '"');
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setValue(string $key, string $value): void
+    {
+        $this->client->set($this->getRedisKey(self::NS_VALUE, $key), $value);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function deleteValue(string $key): bool
+    {
+        return $this->client->del($this->getRedisKey(self::NS_VALUE, $key)) === 1;
     }
 
     /**
@@ -46,42 +87,35 @@ class RedisSecurityCache implements SecurityCache
      */
     public function hasSecretKey(string $identifier): bool
     {
-        return $this->client->exists($this->getRedisKey($identifier)) === 1;
+        return $this->client->exists($this->getRedisKey(self::NS_SECRET_KEY, $identifier)) === 1;
     }
 
     /**
-     * Get secret key for the given identifier.
-     *
-     * @param string $identifier
-     *
-     * @return string|null
+     * @inheritdoc
      */
-    public function getSecretKey(string $identifier): ?string
+    public function getSecretKey(string $identifier): string
     {
-        $key = $this->client->get($this->getRedisKey($identifier));
-        return $key !== null ? base64_decode($key) : null;
+        $value = $this->client->get($this->getRedisKey(self::NS_SECRET_KEY, $identifier));
+        if ($value !== null) {
+            return base64_decode($value);
+        } else {
+            throw new CacheEntryNotFoundException('Secret key not found for identifier "' . $identifier . '"');
+        }
     }
 
     /**
-     * Store secret key with the given identifier.
-     *
-     * @param string $identifier
-     * @param string $secretKey
-     *
-     * @return void
+     * @inheritdoc
      */
     public function setSecretKey(string $identifier, string $secretKey): void
     {
-        $this->client->set($this->getRedisKey($identifier), base64_encode($secretKey));
+        $this->client->set($this->getRedisKey(self::NS_SECRET_KEY, $identifier), base64_encode($secretKey));
     }
 
     /**
-     * Delete secret key with the given identifier.
-     *
-     * @param string $identifier
+     * @inheritdoc
      */
-    public function deleteSecretKey(string $identifier): void
+    public function deleteSecretKey(string $identifier): bool
     {
-        $this->client->del($this->getRedisKey($identifier));
+        return $this->client->del($this->getRedisKey(self::NS_SECRET_KEY, $identifier)) === 1;
     }
 }

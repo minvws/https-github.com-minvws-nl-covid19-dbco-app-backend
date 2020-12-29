@@ -158,7 +158,8 @@ class EncryptionHelper
      */
     public function sealStoreValue(string $value): string
     {
-        return $this->sealStoreValueWithKey($value, SecurityModule::SK_STORE);
+        $secretKeyIdentifier = $this->securityCache->getValue(SecurityCache::SK_STORE_CURRENT_IDENTIFIER);
+        return $this->sealStoreValueWithKey($value, $secretKeyIdentifier);
     }
 
     /**
@@ -176,7 +177,8 @@ class EncryptionHelper
         $ciphertext = sodium_crypto_secretbox($value, $nonce, $key);
         return json_encode([
             'ciphertext' => base64_encode($ciphertext),
-            'nonce' => base64_encode($nonce)
+            'nonce' => base64_encode($nonce),
+            'key' => $secretKeyIdentifier
         ]);
     }
 
@@ -192,21 +194,8 @@ class EncryptionHelper
         $data = json_decode($sealedValue);
         $ciphertext = base64_decode($data->ciphertext);
         $nonce = base64_decode($data->nonce);
-        $key = $this->securityCache->getSecretKey(SecurityModule::SK_STORE);
+        $key = $data->key ?? SecurityModule::SK_STORE_LEGACY;
+        $key = $this->securityCache->getSecretKey($key);
         return sodium_crypto_secretbox_open($ciphertext, $nonce, $key);
-    }
-
-    /**
-     * Unseal value from the store using the current store key and seal
-     * with the registered new store key.
-     *
-     * @param string $sealedValue
-     *
-     * @return string Sealed value with the new store key.
-     */
-    public function resealStoreValue(string $sealedValue): string
-    {
-        $value = $this->unsealStoreValue($sealedValue);
-        return $this->sealStoreValueWithKey($value, SecurityModule::SK_STORE_NEW);
     }
 }

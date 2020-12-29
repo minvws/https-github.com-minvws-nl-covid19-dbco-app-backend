@@ -53,7 +53,7 @@ class CreateStoreSecretKeyCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $result = $this->securityService->createStoreSecretKey($input->getOption('force'));
+        $result = $this->securityService->manageStoreSecretKeys($input->getOption('force'));
         $output->writeln($result ? "Key successfully created!" : "ERROR: Key already exists!");
         return $result ? Command::SUCCESS : Command::FAILURE;
     }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DBCO\HealthAuthorityAPI\Application\Security;
 
+use Exception;
 use RuntimeException;
 
 /**
@@ -43,6 +44,19 @@ class HSMSecurityModule implements SecurityModule
         $seed = hex2bin($this->exec('createkeyaes', $identifier));
         $keypair = sodium_crypto_box_seed_keypair($seed);
         return sodium_crypto_box_secretkey($keypair);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function hasSecretKey(string $identifier): bool
+    {
+        try {
+            $this->exec('getkeyaes', $identifier);
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     /**
