@@ -26,6 +26,10 @@ jobs:
           token: ${{ secrets.CR_PAT }}
           path: nl-covid19-dbco-app-hsm-private
 
+      - name: Build the stack
+        working-directory: ./main
+        run: $DOCKER_COMPOSE -f docker-compose.setup.yml build
+
       - name: Setup HSM
         working-directory: ./main
         run: |
@@ -33,7 +37,7 @@ jobs:
           sleep 5
           $DOCKER_COMPOSE -f docker-compose.setup.yml run --rm hsm-setup >/dev/null 2>&1
 
-      - name: Build / start the stack
+      - name: Start the stack
         working-directory: ./main
         run: $DOCKER_COMPOSE up -d
 

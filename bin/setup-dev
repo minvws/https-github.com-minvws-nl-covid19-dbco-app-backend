@@ -5,7 +5,7 @@ DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
 . $BASE_PATH/.env
 
 echo "=====[ BUILD CONTAINERS ]======================="
-$DOCKER_COMPOSE build
+$DOCKER_COMPOSE -f docker-compose.setup.yml build
 
 echo
 echo "=====[ SETUP HSM ]======================="
