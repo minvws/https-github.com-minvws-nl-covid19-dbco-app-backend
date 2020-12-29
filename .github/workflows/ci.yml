@@ -10,7 +10,7 @@ env:
   PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
   HSM_SO_PIN: ${{ secrets.CI_HSM_SO_PIN }}
   HSM_USER_PIN: ${{ secrets.CI_HSM_USER_PIN }}
-  DOCKER_COMPOSE: docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml -f docker-compose.postgres.yml
+  DOCKER_COMPOSE: docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml -f docker-compose.mysql.yml
 
 jobs:
   build:
