@@ -17,7 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        path: main
+        with:
+          path: main
 
       - uses: actions/checkout@v2
         with:
