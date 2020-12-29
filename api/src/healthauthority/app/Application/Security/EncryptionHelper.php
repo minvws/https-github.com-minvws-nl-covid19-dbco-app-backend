@@ -194,8 +194,8 @@ class EncryptionHelper
         $data = json_decode($sealedValue);
         $ciphertext = base64_decode($data->ciphertext);
         $nonce = base64_decode($data->nonce);
-        $key = $data->key ?? SecurityModule::SK_STORE_LEGACY;
-        $key = $this->securityCache->getSecretKey($key);
+        $identifier = $data->key ?? SecurityModule::SK_STORE_LEGACY;
+        $key = $this->securityCache->getSecretKey($identifier);
         return sodium_crypto_secretbox_open($ciphertext, $nonce, $key);
     }
 }

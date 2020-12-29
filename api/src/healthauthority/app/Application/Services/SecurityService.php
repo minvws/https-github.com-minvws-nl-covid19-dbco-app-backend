@@ -95,7 +95,11 @@ class SecurityService
         $this->cacheKey(SecurityModule::SK_KEY_EXCHANGE);
 
         // TODO: delete
-        $this->cacheKey(SecurityModule::SK_STORE_LEGACY);
+        try {
+            $this->cacheKey(SecurityModule::SK_STORE_LEGACY);
+        } catch (Exception $e) {
+            // ignore, new environments don't have the legacy key
+        }
 
         $timeZone = new DateTimeZone($this->storeKeyTimeZone);
         $today = $this->dateTimeHelper->now($timeZone);
