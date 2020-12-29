@@ -55,7 +55,7 @@ class SimpleSecurityModule implements SecurityModule
     {
         if ($identifier === self::SK_KEY_EXCHANGE) {
             return $this->keyExchangeSecretKey;
-        } else if ($identifier === self::SK_STORE) {
+        } else if ($identifier === self::SK_STORE_LEGACY) {
             return $this->storeSecretKey;
         } else if ($identifier === self::SK_STORE_NEW) {
             return $this->storeSecretKey;
@@ -69,7 +69,7 @@ class SimpleSecurityModule implements SecurityModule
      */
     public function deleteSecretKey(string $identifier): void
     {
-        if ($identifier === self::SK_STORE) {
+        if ($identifier === self::SK_STORE_LEGACY) {
             // don't do anything, as we don't really replace the store secret key
         } else {
             throw new RuntimeException('Unsupported key identifier "' . $identifier . '"');
