@@ -8,25 +8,30 @@ use App\Services\AuthenticationService;
 use App\Services\CaseService;
 use App\Services\QuestionnaireService;
 use App\Services\TaskService;
+use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Validation\Rule;
 use Jenssegers\Date\Date;
 
 class CaseController extends Controller
 {
     private CaseService $caseService;
+    private UserService $userService;
     private TaskService $taskService;
     private QuestionnaireService $questionnaireService;
     private AuthenticationService $authService;
 
     public function __construct(CaseService $caseService,
+                                UserService $userService,
                                 TaskService $taskService,
                                 QuestionnaireService $questionnaireService,
                                 AuthenticationService $authService)
     {
         $this->caseService = $caseService;
+        $this->userService = $userService;
         $this->taskService = $taskService;
         $this->questionnaireService = $questionnaireService;
         $this->authService = $authService;
@@ -124,20 +129,30 @@ class CaseController extends Controller
 
     public function listCases()
     {
-        if ($this->authService->hasPlannerRole()) {
-            $cases = $this->caseService->organisationCases();
-        } else {
-            $cases = $this->caseService->myCases();
+        $myCases = $this->caseService->myCases();
+        $allCases = null;
+
+        $isPlanner = $this->authService->hasPlannerRole();
+        $assignableUsers = [];
+
+        if ($isPlanner) {
+            $allCases = $this->caseService->organisationCases();
+            $assignableUsers = $this->userService->organisationUsers();
         }
-        // Enrich data with some view level helper data
-        foreach ($cases as $case) {
+        // Enrich my cases data with some view level helper data
+        foreach ($myCases as $case) {
             $case->editCommand = $case->status === CovidCase::STATUS_DRAFT
                 ? route('case-edit', [$case->uuid])
                 : route('case-view', [$case->uuid])
             ;
         }
 
-        return view('caseoverview', ['cases' => $cases]);
+        return view('caseoverview', [
+            'myCases' => $myCases,
+            'allCases' => $allCases,
+            'isPlanner' => $isPlanner,
+            'assignableUsers' => $assignableUsers
+        ]);
     }
 
     public function saveCase(Request $request)
@@ -285,7 +300,7 @@ class CaseController extends Controller
         $case = $this->caseService->getCase($caseUuid);
 
         if ($case === null) {
-            return response()->json(['error' => "Task $taskUuid is invalid"], Response::HTTP_BAD_REQUEST);
+            return response()->json(['error' => "Case $caseUuid is invalid"], Response::HTTP_BAD_REQUEST);
         }
 
         if (!$this->caseService->canAccess($case)) {
@@ -295,5 +310,31 @@ class CaseController extends Controller
         $this->caseService->linkCaseToExport($case, $exportId);
 
         return response()->json(['success' => 'success'], Response::HTTP_OK);
+    }
+
+    public function assignCase(Request $request)
+    {
+        $caseUuid = $request->input('caseId');
+        $userUuid = $request->input('userId');
+
+        $case = $this->caseService->getCase($caseUuid);
+
+        if ($case === null) {
+            return response()->json(['error' => "Deze case bestaat niet (meer)"], Response::HTTP_BAD_REQUEST);
+        }
+
+        if (!$this->caseService->canAccess($case) && !$this->authService->hasPlannerRole()) {
+            return response()->json(['error' => 'Geen toegang tot de case'], Response::HTTP_FORBIDDEN);
+        }
+
+        if (!$this->authService->isInOrganisation($case->organisationUuid)) {
+            return response()->json(['error' => 'Je kunt alleen cases van je eigen organisatie toewijzen'], Response::HTTP_FORBIDDEN);
+        }
+
+        if ($this->caseService->assignCase($case, $userUuid)) {
+            return response()->json(['success' => 'success'], Response::HTTP_OK);
+        }
+
+        return response()->json(['error' => 'Onbekende fout'], Response::HTTP_BAD_REQUEST);
     }
 }

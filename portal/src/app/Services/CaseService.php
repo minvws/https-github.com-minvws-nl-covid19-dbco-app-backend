@@ -87,10 +87,10 @@ class CaseService
     {
         $owner = $this->authService->getAuthenticatedUser();
         $assignedTo = null;
-        if (!$this->authService->hasPlannerRole()) {
-            // Auto assign to yourself if you aren't a planner
-            $assignedTo = $owner;
-        }
+
+        // Auto assign to yourself
+        $assignedTo = $owner;
+
         return $this->caseRepository->createCase($owner, CovidCase::STATUS_DRAFT, $assignedTo);
     }
 
@@ -263,6 +263,13 @@ class CaseService
         $case->exportId = $exportId;
         $case->exportedAt = Date::now();
         $this->caseRepository->updateCase($case);
+    }
+
+    public function assignCase(CovidCase $case, string $assigneeUuid): bool
+    {
+        $case->assignedUuid = $assigneeUuid;
+        return $this->caseRepository->updateCase($case);
+
     }
 
 }

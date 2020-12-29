@@ -45,7 +45,7 @@ interface CaseRepository
      *
      * @param CovidCase $case Case entity
      */
-    public function updateCase(CovidCase $case);
+    public function updateCase(CovidCase $case): bool;
 
     /**
      * @param CovidCase $case

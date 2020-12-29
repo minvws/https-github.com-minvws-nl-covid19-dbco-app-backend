@@ -65,7 +65,10 @@ class DbCaseRepository implements CaseRepository
      */
     public function getCasesByAssignedUser(BCOUser $user): LengthAwarePaginator
     {
-        $paginator = EloquentCase::where('assigned_uuid', $user->uuid)->orderBy('covidcase.updated_at', 'desc')->paginate(config('view.rowsPerPage'));
+        $paginator = EloquentCase::where('assigned_uuid', $user->uuid)
+            ->select('covidcase.*', 'bcouser.name as assigned_name')
+            ->join('bcouser', 'bcouser.uuid', '=', 'covidcase.assigned_uuid')
+            ->orderBy('covidcase.updated_at', 'desc')->paginate(config('view.rowsPerPage'));
 
         $cases = array();
 
@@ -82,8 +85,9 @@ class DbCaseRepository implements CaseRepository
     public function getCasesByOrganisation(BCOUser $user): LengthAwarePaginator
     {
         $paginator = EloquentCase::where('user_organisation.user_uuid', $user->uuid)
-                ->select('covidcase.*')
+                ->select('covidcase.*', 'bcouser.name as assigned_name')
                 ->join('user_organisation', 'user_organisation.organisation_uuid', '=', 'covidcase.organisation_uuid')
+                ->join('bcouser', 'bcouser.uuid', '=', 'covidcase.assigned_uuid')
                 ->orderBy('covidcase.updated_at', 'desc')->paginate(config('view.rowsPerPage'));
 
         $cases = array();
@@ -124,20 +128,22 @@ class DbCaseRepository implements CaseRepository
      * Update case.
      *
      * @param CovidCase $case Case entity
+     * @return bool True if succesful
      */
-    public function updateCase(CovidCase $case)
+    public function updateCase(CovidCase $case): bool
     {
         // TODO fixme: this retrieves the object from the db, again; but eloquent won't let us easily instantiate
         // an object directly from a CovidCase.
         $dbCase = $this->getCaseFromDb($case->uuid);
         $dbCase->case_id = $case->caseId;
+        $dbCase->assigned_uuid = $case->assignedUuid;
         $dbCase->name = $case->name;
         $dbCase->status = $case->status;
         $dbCase->copied_at = $case->copiedAt != null ? $case->copiedAt->toDateTimeImmutable() : null;
         $dbCase->exported_at = $case->exportedAt != null ? $case->exportedAt->toDateTimeImmutable() : null;
         $dbCase->export_id = $case->exportId;
         $dbCase->date_of_symptom_onset = $case->dateOfSymptomOnset != null ? $case->dateOfSymptomOnset->toDateTimeImmutable() : null;
-        $dbCase->save();
+        return $dbCase->save();
     }
 
     /**
@@ -159,10 +165,12 @@ class DbCaseRepository implements CaseRepository
         $case = new CovidCase();
         $case->uuid = $dbCase->uuid;
         $case->caseId = $dbCase->case_id;
+        $case->organisationUuid = $dbCase->organisation_uuid;
         $case->dateOfSymptomOnset = $dbCase->date_of_symptom_onset != NULL ? new Date($dbCase->date_of_symptom_onset) : null;
         $case->name = $dbCase->name;
         $case->owner = $dbCase->owner;
         $case->status = $dbCase->status;
+        $case->assignedUuid = $dbCase->assigned_uuid;
         $case->updatedAt = new Date($dbCase->updated_at);
         $case->createdAt = new Date($dbCase->created_at);
         $case->copiedAt = $dbCase->copied_at != null ? new Date($dbCase->copied_at) : null;
@@ -171,6 +179,12 @@ class DbCaseRepository implements CaseRepository
         $case->pairingExpiresAt = $dbCase->pairing_expires_at != null ? new Date($dbCase->pairing_expires_at) : null;
         $case->windowExpiresAt = $dbCase->window_expires_at != null ? new Date($dbCase->window_expires_at) : null;
         $case->indexSubmittedAt = $dbCase->index_submitted_at != null ? new Date($dbCase->index_submitted_at) : null;
+
+        if ($case->assignedUuid !== null) {
+            $case->assignedName = $dbCase->assigned_name;
+        }
+
         return $case;
     }
+
 }
