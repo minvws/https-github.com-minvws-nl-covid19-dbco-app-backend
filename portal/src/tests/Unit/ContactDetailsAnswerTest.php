@@ -7,13 +7,11 @@ use Tests\TestCase;
 
 class ContactDetailsAnswerTest extends TestCase
 {
-    private const NOT_CONTACTABLE = false;
-    private const CONTACTABLE = true;
     private const INCOMPLETE = false;
     private const COMPLETE = true;
 
     /**
-     * @testdox Answer with $_dataName gives contactable=$isContactable complete=$isComplete
+     * @testdox Answer with $_dataName gives complete=$isComplete
      * @dataProvider answerValuesProvider
      */
     public function testAnswerProgress(
@@ -21,7 +19,6 @@ class ContactDetailsAnswerTest extends TestCase
         ?string $lastname,
         ?string $email,
         ?string $phonenumber,
-        bool $isContactable,
         bool $isComplete
     ): void
     {
@@ -31,7 +28,6 @@ class ContactDetailsAnswerTest extends TestCase
         $answer->email = $email;
         $answer->phonenumber = $phonenumber;
 
-        $this->assertSame($isContactable, $answer->isContactable());
         $this->assertSame($isComplete, $answer->isCompleted());
     }
 
@@ -59,35 +55,35 @@ class ContactDetailsAnswerTest extends TestCase
         return [
             'null values' => [
                 null, null, null, null,
-                self::NOT_CONTACTABLE, self::INCOMPLETE
+                self::INCOMPLETE
             ],
             'empty values' => [
                 '', '', '', '',
-                self::NOT_CONTACTABLE, self::INCOMPLETE
+                self::INCOMPLETE
             ],
             'name only' => [
                 'firstname', 'lastname', '', '',
-                self::NOT_CONTACTABLE, self::INCOMPLETE
+                self::INCOMPLETE
             ],
             'number only' => [
                 '', '', '', '+31234567890',
-                self::NOT_CONTACTABLE, self::INCOMPLETE
+                self::INCOMPLETE
             ],
             'firstname and number' => [
                 'firstname', '', '', '+31234567890',
-                self::CONTACTABLE, self::INCOMPLETE
+                self::INCOMPLETE
             ],
             'lastname and number' => [
                 '', 'lastname', '', '+31234567890',
-                self::CONTACTABLE, self::INCOMPLETE
+                self::INCOMPLETE
             ],
             'name and email' => [
                 'firstname', 'lastname', 'pl@ceholder', '',
-                self::NOT_CONTACTABLE, self::INCOMPLETE
+                self::INCOMPLETE
             ],
             'all fields' => [
                 'firstname', 'lastname', 'pl@ceholder', '+31234567890',
-                self::CONTACTABLE, self::COMPLETE
+                self::COMPLETE
             ]
         ];
     }

@@ -18,12 +18,6 @@ class ContactDetailsAnswer extends Answer
             !empty($this->phonenumber);
     }
 
-    public function isContactable(): bool
-    {
-        return
-            (!empty($this->firstname) || !empty($this->lastname)) && !empty($this->phonenumber);
-    }
-
     public function toFormValue()
     {
         return [
