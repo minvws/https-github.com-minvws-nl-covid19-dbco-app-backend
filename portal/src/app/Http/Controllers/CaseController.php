@@ -8,6 +8,7 @@ use App\Services\AuthenticationService;
 use App\Services\CaseService;
 use App\Services\QuestionnaireService;
 use App\Services\TaskService;
+use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -18,16 +19,19 @@ use Jenssegers\Date\Date;
 class CaseController extends Controller
 {
     private CaseService $caseService;
+    private UserService $userService;
     private TaskService $taskService;
     private QuestionnaireService $questionnaireService;
     private AuthenticationService $authService;
 
     public function __construct(CaseService $caseService,
+                                UserService $userService,
                                 TaskService $taskService,
                                 QuestionnaireService $questionnaireService,
                                 AuthenticationService $authService)
     {
         $this->caseService = $caseService;
+        $this->userService = $userService;
         $this->taskService = $taskService;
         $this->questionnaireService = $questionnaireService;
         $this->authService = $authService;
@@ -129,9 +133,11 @@ class CaseController extends Controller
         $allCases = null;
 
         $isPlanner = $this->authService->hasPlannerRole();
+        $assignableUsers = [];
 
         if ($isPlanner) {
             $allCases = $this->caseService->organisationCases();
+            $assignableUsers = $this->userService->organisationUsers();
         }
         // Enrich my cases data with some view level helper data
         foreach ($myCases as $case) {
@@ -144,7 +150,9 @@ class CaseController extends Controller
         return view('caseoverview', [
             'myCases' => $myCases,
             'allCases' => $allCases,
-            'isPlanner' => $isPlanner]);
+            'isPlanner' => $isPlanner,
+            'assignableUsers' => $assignableUsers
+        ]);
     }
 
     public function saveCase(Request $request)

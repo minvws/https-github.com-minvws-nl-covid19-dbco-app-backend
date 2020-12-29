@@ -21,6 +21,15 @@
                 </span>
             <!-- End of add button component -->
             </h2>
+            @if ($isPlanner)
+                <!-- preload of assignee dropdown so each row can re-use it -->
+                <select id="assignee-list" class="d-none">
+                    @foreach ($assignableUsers as $assignableUser)
+                        <option value="{{ $assignableUser->uuid }}">{{ $assignableUser->name }}</option>
+                    @endforeach
+                </select>
+                <!-- end preload -->
+            @endif
             <!-- Start of tabs component -->
             @if ($allCases != null)
             <nav>

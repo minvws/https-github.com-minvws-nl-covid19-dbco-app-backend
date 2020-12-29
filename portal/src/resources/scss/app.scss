@@ -33,6 +33,7 @@
 @import "../../node_modules/bootstrap/scss/print";
 @import "../../node_modules/bootstrap/scss/pagination";
 @import "../../node_modules/bootstrap/scss/alert";
+@import "../../node_modules/bootstrap/scss/dropdown";
 
 /**
  * Import overrides.
@@ -47,3 +48,4 @@
 @import "sidebar";
 @import "custombootstrap";
 @import "export";
+@import "autocomplete-dropdown";

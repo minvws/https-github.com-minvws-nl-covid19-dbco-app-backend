@@ -8,13 +8,14 @@ jQuery(document).ready(function ($) {
     ////////////////////////////////////////////////////
     require('./calendar');
     require('./rpa');
+    require('./autocomplete-dropdown');
 
     ////////////////////////////////////////////////////
     //  Make clickable rows in tables actually
     //  clickable
     ////////////////////////////////////////////////////
-    $(".clickable-row").click(function () {
-        window.location = $(this).data("href");
+    $(".clickable-cell").click(function () {
+        window.location = $(this).parent().data("href");
     });
 
     ////////////////////////////////////////////////////

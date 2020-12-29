@@ -45,6 +45,25 @@ class DbUserRepository implements UserRepository
 
     }
 
+    public function getUsersByOrganisation(BCOUser $user): array
+    {
+        $orgIds = [];
+        foreach($user->organisations as $organisation) {
+            $orgIds[] = $organisation->uuid;
+        }
+        $dbUsers = EloquentUser::whereIn('user_organisation.organisation_uuid', $orgIds)
+            ->select('bcouser.*')
+            ->join('user_organisation', 'user_organisation.user_uuid', '=', 'bcouser.uuid')
+            ->orderBy('bcouser.name', 'asc')->get();
+
+        $users = [];
+        foreach ($dbUsers as $dbUser) {
+            $users[] = $this->bcoUserFromEloquentUser($dbUser);
+        }
+
+        return $users;
+    }
+
     public function bcoUserFromEloquentUser(EloquentUser $dbUser): BCOUser
     {
         $user = new BCOUser();

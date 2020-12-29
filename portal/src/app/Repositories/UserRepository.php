@@ -24,4 +24,6 @@ interface UserRepository
                                            array $organisationUuids): EloquentUser;
 
     public function bcoUserFromEloquentUser(EloquentUser $user): BCOUser;
+
+    public function getUsersByOrganisation(BCOUser $user): array;
 }
