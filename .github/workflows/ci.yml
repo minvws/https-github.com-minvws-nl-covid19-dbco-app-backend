@@ -41,9 +41,10 @@ jobs:
       - name: Docker layer cache
         uses: satackey/action-docker-layer-caching@v0.0.11
         continue-on-error: true
-        key: docker-layer-cache-${{ github.workflow }}-{hash}
-        restore-keys: |
-          docker-layer-cache-${{ github.workflow }}-
+        with:
+          key: docker-layer-cache-${{ github.workflow }}-{hash}
+          restore-keys: |
+            docker-layer-cache-${{ github.workflow }}-
 
       - name: Build docker images
         working-directory: ./main
