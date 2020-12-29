@@ -8,6 +8,8 @@ env:
   HEALTHAUTHORITY_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
   PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
   PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
+  HSM_SO_PIN: ${{ secrets.CI_HSM_SO_PIN }}
+  HSM_USER_PIN: ${{ secrets.CI_HSM_USER_PIN }}
   DOCKER_COMPOSE: docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml -f docker-compose.postgres.yml
 
 jobs:
@@ -15,23 +17,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        path: main
 
       - uses: actions/checkout@v2
         with:
           repository: minvws/nl-covid19-dbco-app-hsm-private
           token: ${{ secrets.CR_PAT }}
-          path: ../nl-covid19-dbco-app-hsm-private
+          path: nl-covid19-dbco-app-hsm-private
 
       - name: Setup HSM
+        working-directory: ./main
         run: |
           $DOCKER_COMPOSE up -d hsm
           sleep 5
           $DOCKER_COMPOSE -f docker-compose.setup.yml run --rm hsm-setup >/dev/null 2>&1
 
       - name: Build / start the stack
+        working-directory: ./main
         run: $DOCKER_COMPOSE up -d
 
       - name: Setup database
+        working-directory: ./main
         run: |
           sleep 15
           $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
@@ -40,16 +46,21 @@ jobs:
           $DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
 
       - name: Worker - Run phpunit
+        working-directory: ./main
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit worker
 
       - name: Private API - Run phpunit
+        working-directory: ./main
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit private-api
 
       - name: Public API - Run phpunit
+        working-directory: ./main
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit public-api
 
       - name: Health Authority API - Run phpunit
+        working-directory: ./main
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority-api
 
       - name: Portal - Run phpunit
+        working-directory: ./main
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit portal
