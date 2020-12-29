@@ -73,7 +73,3 @@ jobs:
       - name: Health Authority API - Run phpunit
         working-directory: ./main
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority-api
-
-      - name: Portal - Run phpunit
-        working-directory: ./main
-        run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit portal
