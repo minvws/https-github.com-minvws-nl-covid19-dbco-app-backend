@@ -1,3 +1,8 @@
+.dropdown {
+    A.label {
+        color: $light-grey;
+    }
+}
 
 .dropdown-menu {
     max-height: 20rem;
@@ -6,5 +11,10 @@
     .empty {
         display: none;
     }
+
+    A.dropdown-item, SPAN.dropdown-item {
+        font-size: $font-size-sm;
+    }
+
 }
 
