@@ -4,6 +4,10 @@ DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
 
 . $BASE_PATH/.env
 
+echo "=====[ BUILD CONTAINERS ]======================="
+$DOCKER_COMPOSE build
+
+echo
 echo "=====[ SETUP HSM ]======================="
 $DOCKER_COMPOSE up -d hsm
 sleep 5

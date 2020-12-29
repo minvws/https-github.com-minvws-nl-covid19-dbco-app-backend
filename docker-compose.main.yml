@@ -161,6 +161,7 @@ services:
             - private
 
     hsm:
+        platform: linux/i386
         build:
             context: ../nl-covid19-dbco-app-hsm-private/hsm-simulator
             dockerfile: Dockerfile
