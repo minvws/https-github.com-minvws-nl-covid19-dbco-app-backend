@@ -2,7 +2,6 @@
 <x-slot name="title">
     Case overzicht
 </x-slot>
-
 <div class="container-xl">
     @include('navbar', ['root' => true])
     <div class="row">

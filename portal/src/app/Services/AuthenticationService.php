@@ -67,4 +67,15 @@ class AuthenticationService
         return "Naam (volledig): ".$user->name;
     }
 
+    public function isInOrganisation(string $requiredOrganisation): bool
+    {
+        $user = $this->getAuthenticatedUser();
+        foreach($user->organisations as $organisation) {
+            if ($requiredOrganisation == $organisation->uuid) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

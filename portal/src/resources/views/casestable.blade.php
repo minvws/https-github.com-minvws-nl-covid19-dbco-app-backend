@@ -32,14 +32,15 @@
             @if ($isPlanner)
                 <td>
                     <div class="assignee dropdown" data-case="{{ $case->uuid }}">
-                        <a type="link" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                        <a type="link" class="dropdown-toggle label" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
                             {{ $case->assignedName ?? '' }}
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown-users">
+                        <div class="dropdown-menu">
                             <form class="px-4 py-2" autocomplete="off">
                                 <input type="search" class="form-control search-user" placeholder="Zoeken.." autofocus="autofocus">
                             </form>
+                            <span class="empty dropdown-item disabled">Geen gebruikers gevonden</span>
                         </div>
                     </div>
                 </td>

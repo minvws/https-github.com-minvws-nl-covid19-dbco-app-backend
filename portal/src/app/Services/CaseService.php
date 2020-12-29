@@ -265,4 +265,11 @@ class CaseService
         $this->caseRepository->updateCase($case);
     }
 
+    public function assignCase(CovidCase $case, string $assigneeUuid): bool
+    {
+        $case->assignedUuid = $assigneeUuid;
+        return $this->caseRepository->updateCase($case);
+
+    }
+
 }
