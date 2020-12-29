@@ -28,11 +28,22 @@ jobs:
 
       - name: Pull docker images
         working-directory: ./main
-        run: $DOCKER_COMPOSE -f docker-compose.setup.yml pull
+        run: |
+          docker pull php:7.4-cli
+          docker pull php:7.4-apache
+          docker pull composer:latest
+          docker pull node:latest
+          docker pull i386/debian:stretch-slim
+          docker pull ubuntu:latest
+          docker pull ubuntu:18.04
+          $DOCKER_COMPOSE -f docker-compose.setup.yml pull
 
       - name: Docker layer cache
         uses: satackey/action-docker-layer-caching@v0.0.11
         continue-on-error: true
+        key: docker-layer-cache-${{ github.workflow }}-{hash}
+        restore-keys: |
+          docker-layer-cache-${{ github.workflow }}-
 
       - name: Build docker images
         working-directory: ./main
