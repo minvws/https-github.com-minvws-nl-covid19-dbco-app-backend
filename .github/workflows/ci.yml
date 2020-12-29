@@ -9,34 +9,47 @@ env:
   PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
   PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
   DOCKER_COMPOSE: docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml -f docker-compose.postgres.yml
-  HEALTHAUTHORITY_SECURITY_MODULE_SK_KEY_EXCHANGE: ${{ secrets.HEALTHAUTHORITY_SK_KEY_EXCHANGE }}
-  HEALTHAUTHORITY_SECURITY_MODULE_SK_STORE: ${{ secrets.HEALTHAUTHORITY_SK_STORE }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+
+      - uses: actions/checkout@v2
+        with:
+          repository: minvws/nl-covid19-dbco-app-hsm-private
+          token: ${{ secrets.CR_PAT }}
+          path: ../nl-covid19-dbco-app-hsm-private
+
+      - name: Setup HSM
+        run: |
+          $DOCKER_COMPOSE up -d hsm
+          sleep 5
+          $DOCKER_COMPOSE -f docker-compose.setup.yml run --rm hsm-setup >/dev/null 2>&1
 
       - name: Build / start the stack
         run: $DOCKER_COMPOSE up -d
 
       - name: Setup database
         run: |
-          sleep 1
-          $DOCKER_COMPOSE run --rm psql -c "CREATE USER portal PASSWORD '$PORTAL_DB_PASSWORD'"
-          $DOCKER_COMPOSE run --rm psql -c "CREATE USER healthauthority_api PASSWORD '$HEALTHAUTHORITY_API_DB_PASSWORD'"
-          $DOCKER_COMPOSE run --rm psql < install/postgres/permissions.sql
+          sleep 15
+          $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
+          $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
+          $DOCKER_COMPOSE run --rm mysqlclient < $BASE_PATH/install/mysql/permissions.sql
           $DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
 
       - name: Worker - Run phpunit
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit worker
 
-      - name: Private Api - Run phpunit
+      - name: Private API - Run phpunit
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit private-api
 
-      - name: Public Api - Run phpunit
+      - name: Public API - Run phpunit
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit public-api
 
-      - name: Health Authority Api - Run phpunit
+      - name: Health Authority API - Run phpunit
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority-api
+
+      - name: Portal - Run phpunit
+        run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit portal
