@@ -11,8 +11,7 @@ echo
 echo "=====[ SETUP HSM ]======================="
 $DOCKER_COMPOSE up -d hsm
 sleep 5
-$DOCKER_COMPOSE -f docker-compose.setup.yml run --rm hsm-setup >/dev/null 2>&1
-echo "Done"
+$DOCKER_COMPOSE -f docker-compose.setup.yml run --rm hsm-setup
 
 echo
 echo "=====[ SETUP OTHER CONTAINERS ]======================="

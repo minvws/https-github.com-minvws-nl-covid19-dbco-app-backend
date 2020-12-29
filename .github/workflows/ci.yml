@@ -35,7 +35,7 @@ jobs:
         run: |
           $DOCKER_COMPOSE up -d hsm
           sleep 5
-          $DOCKER_COMPOSE -f docker-compose.setup.yml run --rm hsm-setup >/dev/null 2>&1
+          $DOCKER_COMPOSE -f docker-compose.setup.yml run --rm hsm-setup
 
       - name: Start the stack
         working-directory: ./main
