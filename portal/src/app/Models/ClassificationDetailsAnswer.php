@@ -11,11 +11,6 @@ class ClassificationDetailsAnswer extends Answer
 
     public function isCompleted(): bool
     {
-        return $this->isContactable();
-    }
-
-    public function isContactable(): bool
-    {
         return
             $this->category1Risk ||
             $this->category2ARisk ||

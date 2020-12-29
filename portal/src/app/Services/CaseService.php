@@ -3,21 +3,17 @@
 namespace App\Services;
 
 use App\Models\Answer;
-use App\Models\ClassificationDetailsAnswer;
 use App\Models\ContactDetailsAnswer;
+use App\Models\CovidCase;
 use App\Models\Question;
 use App\Models\Task;
 use App\Repositories\AnswerRepository;
-use App\Repositories\CaseUpdateNotificationRepository;
 use App\Repositories\CaseRepository;
+use App\Repositories\CaseUpdateNotificationRepository;
 use App\Repositories\PairingRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\TaskRepository;
-use App\Models\CovidCase;
-use App\Models\Task;
-use DateTime;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Jenssegers\Date\Date;
 
 /**
@@ -238,62 +234,48 @@ class CaseService
         foreach ($case->tasks as &$task) {
             $task->progress = Task::TASK_DATA_INCOMPLETE;
 
-            if ($task->dateOfLastExposure === null) {
-                // No last exposure date: keep incomplete and move to next
+            if (empty($task->category) || empty($task->dateOfLastExposure)) {
+                // No classification or last exposure date: incomplete, move to next task
                 continue;
             }
 
             // Check Task questionnaire answers for classification and contact details.
-            $hasClassification = false;
             $hasContactDetails = false;
             $answers = $this->answerRepository->getAllAnswersByTask($task->uuid);
 
+            $answerIsCompleted = [];
             foreach ($answers as $answer) {
                 /**
                  * @var Answer $answer
                  */
-                if ($answer instanceof ClassificationDetailsAnswer) {
-                    $hasClassification = $answer->isContactable();
-                } elseif ($answer instanceof ContactDetailsAnswer) {
-                    $hasContactDetails = $answer->isContactable();
+                $answerIsCompleted[$answer->questionUuid] = $answer->isCompleted();
+
+                if ($answer instanceof ContactDetailsAnswer) {
+                    $hasContactDetails = (!empty($answer->firstname) || !empty($answer->lastname)) && !empty($answer->phonenumber);
                 }
             }
 
-            if (!$hasClassification || !$hasContactDetails) {
+            if (!$hasContactDetails) {
                 // No contact or classification data, skip the rest of the questionnaire
                 continue;
             }
+            $task->progress = Task::TASK_DATA_CONTACTABLE;
 
             // Any missed question will mark the Task partially-complete.
-            $isComplete = true;
             $questionnaire = $this->questionnaireService->getQuestionnaire($task->questionnaireUuid);
             foreach ($questionnaire->questions as $question) {
-                if (in_array($task->category, $question->relevantForCategories) && !$this->isQuestionAnsweredCompletely($question, $answers)) {
-                    $isComplete = false;
-                    break;
+                /**
+                 * @var Question $question
+                 */
+                if (in_array($task->category, $question->relevantForCategories) && $answerIsCompleted[$question->uuid] === false) {
+                    // One missed answer: move on to next task
+                    break 2;
                 }
             }
 
-            if ($isComplete) {
-                $task->progress = Task::TASK_DATA_COMPLETE;
-            } else {
-                $task->progress = Task::TASK_DATA_CONTACTABLE;
-            }
+            // No relevant questions were skipped or unanswered: questionnaire complete!
+            $task->progress = Task::TASK_DATA_COMPLETE;
         }
-    }
-
-    private function isQuestionAnsweredCompletely(Question $question, Collection $answers): bool
-    {
-        foreach ($answers as $answer) {
-            /**
-             * @var Answer $answer
-             */
-            if ($question->uuid === $answer->questionUuid && $answer->isCompleted()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public function getCopyDataCase(CovidCase $case)
