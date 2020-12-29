@@ -3,9 +3,13 @@ declare(strict_types=1);
 
 namespace DBCO\HealthAuthorityAPI\Tests\Application\Actions;
 
+use DBCO\HealthAuthorityAPI\Application\Security\SecurityCache;
+use DBCO\HealthAuthorityAPI\Application\Security\SecurityModule;
+use DBCO\HealthAuthorityAPI\Application\Services\SecurityService;
 use Exception;
 use DBCO\HealthAuthorityAPI\Tests\TestCase;
 use PDO;
+use Predis\Client as PredisClient;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -17,11 +21,16 @@ class ClientRegisterActionTest extends TestCase
 {
     /**
      * Set up.
+     *
+     * @throws Exception
      */
     protected function setUp(): void
     {
         parent::setUp();
         $this->getAppInstance()->getContainer()->get(PDO::class)->beginTransaction();
+        $this->getAppInstance()->getContainer()->get(PredisClient::class)->flushall();
+        $this->getAppInstance()->getContainer()->get(SecurityService::class)->createKeyExchangeSecretKey();
+        $this->getAppInstance()->getContainer()->get(SecurityService::class)->manageStoreSecretKeys(fn () => null);
     }
 
     /**
@@ -30,6 +39,7 @@ class ClientRegisterActionTest extends TestCase
     protected function tearDown(): void
     {
         $this->getAppInstance()->getContainer()->get(PDO::class)->rollBack();
+        $this->getAppInstance()->getContainer()->get(PredisClient::class)->flushall();
         parent::tearDown();
     }
 
@@ -50,9 +60,8 @@ class ClientRegisterActionTest extends TestCase
             VALUES ('{$caseUuid}', 'Test', '{$dateOfSymptomOnset}', '{$windowExpiresAt}', 'open')
         "); // NOTE: Oracle might need TO_DATE call (untested)
 
-        $encodedGeneralSecretKey = getenv('SECURITY_MODULE_SK_KEY_EXCHANGE');
-        $this->assertNotEmpty($encodedGeneralSecretKey);
-        $generalSecretKey = base64_decode($encodedGeneralSecretKey);
+        $generalSecretKey = $this->getAppInstance()->getContainer()->get(SecurityCache::class)->getSecretKey(SecurityModule::SK_KEY_EXCHANGE);
+        $this->assertNotEmpty($generalSecretKey);
         $generalPublicKey = sodium_crypto_box_publickey_from_secretkey($generalSecretKey);
 
         $clientKeyPair = sodium_crypto_kx_keypair();

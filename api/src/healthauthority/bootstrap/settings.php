@@ -55,11 +55,6 @@ return [
     ],
     'privateAPI.jwtSecret' => DI\env('PRIVATE_API_JWT_SECRET'),
 
-    'securityModule.type' => DI\env('SECURITY_MODULE_TYPE', 'hsm'),
     'securityModule.storeKey.timeZone' => 'Europe/Amsterdam',
     'securityModule.storeKey.maxDays' => 14, // max days to store earlier keys for unsealing
-
-    // only used by the simple security module
-    'securityModule.skKeyExchange' => DI\env('SECURITY_MODULE_SK_KEY_EXCHANGE'),
-    'securityModule.skStore' => DI\env('SECURITY_MODULE_SK_STORE'),
 ];

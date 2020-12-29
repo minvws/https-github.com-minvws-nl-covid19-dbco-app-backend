@@ -39,24 +39,9 @@ services:
     healthauthority-api:
         environment:
             APP_ENV: test
-            SECURITY_MODULE_TYPE: ${HEALTHAUTHORITY_SECURITY_MODULE_TYPE}
-            SECURITY_MODULE_SK_KEY_EXCHANGE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_KEY_EXCHANGE}
-            SECURITY_MODULE_SK_STORE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_STORE}
         volumes:
             - ./api/src/shared:/shared
             - ./api/src/healthauthority:/src
-            - ./api/assets/healthauthority/cs_pkcs11_R2.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
-
-    healthauthority-hsm:
-        environment:
-            APP_ENV: test
-            SECURITY_MODULE_TYPE: ${HEALTHAUTHORITY_SECURITY_MODULE_TYPE}
-            SECURITY_MODULE_SK_KEY_EXCHANGE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_KEY_EXCHANGE}
-            SECURITY_MODULE_SK_STORE: ${HEALTHAUTHORITY_SECURITY_MODULE_SK_STORE}
-        volumes:
-            - ./api/src/shared:/shared
-            - ./api/src/healthauthority:/src
-            - ./api/assets/healthauthority/cs_pkcs11_R2_keystore.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
 
     portal:
         environment:

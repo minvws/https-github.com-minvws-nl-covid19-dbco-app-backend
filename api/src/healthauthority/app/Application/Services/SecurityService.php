@@ -203,7 +203,7 @@ class SecurityService
      *
      * @throws Exception
      */
-    public function manageStoreSecretKeys(callable $mutationCallback, ?DateTimeInterface $previousCurrentDay): DateTimeInterface
+    public function manageStoreSecretKeys(callable $mutationCallback, ?DateTimeInterface $previousCurrentDay = null): DateTimeInterface
     {
         $timeZone = new DateTimeZone($this->storeKeyTimeZone);
         $today = $this->dateTimeHelper->now($timeZone);

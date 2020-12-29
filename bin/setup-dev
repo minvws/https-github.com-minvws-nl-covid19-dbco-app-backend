@@ -4,7 +4,14 @@ DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
 
 . $BASE_PATH/.env
 
-echo "=====[ SETUP CONTAINERS ]======================="
+echo "=====[ SETUP HSM ]======================="
+$DOCKER_COMPOSE up -d hsm
+sleep 5
+$DOCKER_COMPOSE -f docker-compose.setup.yml run --rm hsm-setup >/dev/null 2>&1
+echo "Done"
+
+echo
+echo "=====[ SETUP OTHER CONTAINERS ]======================="
 $DOCKER_COMPOSE up -d --remove-orphans
 
 if [ $DATABASE_TYPE = "mysql" ]; then
@@ -15,7 +22,7 @@ if [ $DATABASE_TYPE = "mysql" ]; then
     sleep 0.5
   done
 
-  sleep 5
+  sleep 10
 
   $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
   $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
@@ -34,26 +41,8 @@ if [ $DATABASE_TYPE = "postgres" ]; then
   $DOCKER_COMPOSE run --rm psql < $BASE_PATH/install/postgres/permissions.sql
 fi
 
-if [ $DATABASE_TYPE = "oracle" ]; then
-  echo
-  echo "=====[ SETUP ORACLE DATABASE ]========================="
-  echo "Waiting for Oracle to launch on ${ORACLE_PORT:-1521}..."
-  while ! echo "SELECT 1 FROM dual" | $DOCKER_COMPOSE run --rm sqlplus > /dev/null 2>&1; do
-    sleep 1
-  done
-
-  echo "CREATE USER healthauthority_api IDENTIFIED BY \"$HEALTHAUTHORITY_API_DB_PASSWORD\";" | $DOCKER_COMPOSE run --rm sqlplus
-  echo "CREATE USER portal IDENTIFIED BY \"$PORTAL_DB_PASSWORD\";" | $DOCKER_COMPOSE run --rm sqlplus
-  $DOCKER_COMPOSE run --rm sqlplus < $BASE_PATH/install/oracle/permissions.sql
-fi
-
 $BASE_PATH/bin/update-dev
 
 echo
-echo "=====[ SEED PORTAL ]====="
+echo "=====[ SEED DATABASE ]========================="
 $DOCKER_COMPOSE run --rm --entrypoint php portal artisan db:seed
-
-echo
-echo "=====[ FILL REDIS CACHE ]====="
-$DOCKER_COMPOSE run --rm worker /src/worker questionnaire:refresh-all
-$DOCKER_COMPOSE run --rm worker /src/worker task:refresh-general
