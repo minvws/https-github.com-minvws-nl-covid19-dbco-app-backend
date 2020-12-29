@@ -78,8 +78,8 @@ class CaseService
                                 AnswerRepository $answerRepository,
                                 AuthenticationService $authService,
                                 CaseUpdateNotificationRepository $caseExportRepository,
-    QuestionnaireService $questionnaireService,
-    StateRepository $stateRepository)
+                                QuestionnaireService $questionnaireService,
+                                StateRepository $stateRepository)
     {
         $this->caseRepository = $caseRepository;
         $this->taskRepository = $taskRepository;
@@ -229,7 +229,7 @@ class CaseService
      * Task completion progress is divided into three buckets to keep the UI simple:
      * - 'completed': all details are available, all questions answered
      * - 'contactable': we have enough basic data to contact the person
-     * - 'other': too much is still missing, provide the user UI warnings
+     * - 'incomplete': too much is still missing, provide the user UI warnings
      *
      * @param CovidCase $case
      */
@@ -259,6 +259,11 @@ class CaseService
                 }
             }
 
+            if (!$hasClassification || !$hasContactDetails) {
+                // No contact or classification data, skip the rest of the questionnaire
+                continue;
+            }
+
             // Any missed question will mark the Task partially-complete.
             $isComplete = true;
             $questionnaire = $this->questionnaireService->getQuestionnaire($task->questionnaireUuid);
@@ -268,9 +273,10 @@ class CaseService
                     break;
                 }
             }
-            if ($isComplete && $hasClassification && $hasContactDetails) {
+
+            if ($isComplete) {
                 $task->progress = Task::TASK_DATA_COMPLETE;
-            } elseif ($hasClassification && $hasContactDetails) {
+            } else {
                 $task->progress = Task::TASK_DATA_CONTACTABLE;
             }
         }
