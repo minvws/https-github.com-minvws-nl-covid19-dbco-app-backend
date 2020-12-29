@@ -14,7 +14,7 @@ if [ "$1" == "--reset" ]; then
 
   echo "=====[ RESET ]====="
   $DOCKER_COMPOSE down --remove-orphans -v
-  $DOCKER_COMPOSE build
+  $DOCKER_COMPOSE -f docker-compose.setup.yml build
   echo
 fi
 
