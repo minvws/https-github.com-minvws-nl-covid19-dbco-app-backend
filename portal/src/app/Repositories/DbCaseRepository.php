@@ -128,20 +128,22 @@ class DbCaseRepository implements CaseRepository
      * Update case.
      *
      * @param CovidCase $case Case entity
+     * @return bool True if succesful
      */
-    public function updateCase(CovidCase $case)
+    public function updateCase(CovidCase $case): bool
     {
         // TODO fixme: this retrieves the object from the db, again; but eloquent won't let us easily instantiate
         // an object directly from a CovidCase.
         $dbCase = $this->getCaseFromDb($case->uuid);
         $dbCase->case_id = $case->caseId;
+        $dbCase->assigned_uuid = $case->assignedUuid;
         $dbCase->name = $case->name;
         $dbCase->status = $case->status;
         $dbCase->copied_at = $case->copiedAt != null ? $case->copiedAt->toDateTimeImmutable() : null;
         $dbCase->exported_at = $case->exportedAt != null ? $case->exportedAt->toDateTimeImmutable() : null;
         $dbCase->export_id = $case->exportId;
         $dbCase->date_of_symptom_onset = $case->dateOfSymptomOnset != null ? $case->dateOfSymptomOnset->toDateTimeImmutable() : null;
-        $dbCase->save();
+        return $dbCase->save();
     }
 
     /**
@@ -163,6 +165,7 @@ class DbCaseRepository implements CaseRepository
         $case = new CovidCase();
         $case->uuid = $dbCase->uuid;
         $case->caseId = $dbCase->case_id;
+        $case->organisationUuid = $dbCase->organisation_uuid;
         $case->dateOfSymptomOnset = $dbCase->date_of_symptom_onset != NULL ? new Date($dbCase->date_of_symptom_onset) : null;
         $case->name = $dbCase->name;
         $case->owner = $dbCase->owner;

@@ -8,7 +8,7 @@ jQuery(document).ready(function ($) {
     ////////////////////////////////////////////////////
     require('./calendar');
     require('./rpa');
-    require('./autocomplete-dropdown');
+    require('./assignee-dropdown');
 
     ////////////////////////////////////////////////////
     //  Make clickable rows in tables actually

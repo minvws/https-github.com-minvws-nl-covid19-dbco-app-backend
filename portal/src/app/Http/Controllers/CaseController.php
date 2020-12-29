@@ -300,7 +300,7 @@ class CaseController extends Controller
         $case = $this->caseService->getCase($caseUuid);
 
         if ($case === null) {
-            return response()->json(['error' => "Task $taskUuid is invalid"], Response::HTTP_BAD_REQUEST);
+            return response()->json(['error' => "Case $caseUuid is invalid"], Response::HTTP_BAD_REQUEST);
         }
 
         if (!$this->caseService->canAccess($case)) {
@@ -310,5 +310,31 @@ class CaseController extends Controller
         $this->caseService->linkCaseToExport($case, $exportId);
 
         return response()->json(['success' => 'success'], Response::HTTP_OK);
+    }
+
+    public function assignCase(Request $request)
+    {
+        $caseUuid = $request->input('caseId');
+        $userUuid = $request->input('userId');
+
+        $case = $this->caseService->getCase($caseUuid);
+
+        if ($case === null) {
+            return response()->json(['error' => "Deze case bestaat niet (meer)"], Response::HTTP_BAD_REQUEST);
+        }
+
+        if (!$this->caseService->canAccess($case) && !$this->authService->hasPlannerRole()) {
+            return response()->json(['error' => 'Geen toegang tot de case'], Response::HTTP_FORBIDDEN);
+        }
+
+        if (!$this->authService->isInOrganisation($case->organisationUuid)) {
+            return response()->json(['error' => 'Je kunt alleen cases van je eigen organisatie toewijzen'], Response::HTTP_FORBIDDEN);
+        }
+
+        if ($this->caseService->assignCase($case, $userUuid)) {
+            return response()->json(['success' => 'success'], Response::HTTP_OK);
+        }
+
+        return response()->json(['error' => 'Onbekende fout'], Response::HTTP_BAD_REQUEST);
     }
 }
