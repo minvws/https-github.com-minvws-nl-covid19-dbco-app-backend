@@ -18,19 +18,31 @@
     </thead>
     <tbody>
     @foreach($cases as $case)
-        <tr role="button" class="custom-link clickable-row" data-href="{{ $case->editCommand ?? '' }}">
-            <th scope="row">{{ Str::limit($case->name, 30, '...') }}</th>
-            <td>{{ Str::limit($case->caseId, 30, '...') }}</td>
-            <td>{{ $case->dateOfSymptomOnset != NULL ? $case->dateOfSymptomOnset->format('l j M') : '' }}</td>
-            <td>
+        <tr role="button" class="custom-link" data-href="{{ $case->editCommand ?? '#' }}">
+            <th class="clickable-cell" scope="row">{{ Str::limit($case->name, 30, '...') }}</th>
+            <td class="clickable-cell">{{ Str::limit($case->caseId, 30, '...') }}</td>
+            <td class="clickable-cell">{{ $case->dateOfSymptomOnset != NULL ? $case->dateOfSymptomOnset->format('l j M') : '' }}</td>
+            <td class="clickable-cell">
                                         <span class="icon text-center">
                                             <img src="{{ asset("/images/status_".$case->caseStatus().".svg") }}">
                                         </span>
                 <span>{{ \App\Models\CovidCase::statusLabel($case->caseStatus()) }}</span>
             </td>
-            <td>{{ $case->updatedAt->diffForHumans() }}</td>
+            <td class="clickable-cell">{{ $case->updatedAt->diffForHumans() }}</td>
             @if ($isPlanner)
-                <td>{{ $case->assignedName ?? '' }}</td>
+                <td>
+                    <div class="assignee dropdown" data-case="{{ $case->uuid }}">
+                        <a type="link" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                            {{ $case->assignedName ?? '' }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown-users">
+                            <form class="px-4 py-2" autocomplete="off">
+                                <input type="search" class="form-control search-user" placeholder="Zoeken.." autofocus="autofocus">
+                            </form>
+                        </div>
+                    </div>
+                </td>
             @endif
         </tr>
     @endforeach
