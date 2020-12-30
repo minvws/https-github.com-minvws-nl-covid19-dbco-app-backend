@@ -40,6 +40,7 @@ Route::middleware(['auth', 'rolecheck:user'])->group(function() {
     Route::post('/linkcasetoexport', [CaseController::class, 'linkCaseToExport']);
     Route::post('/linktasktoexport', [TaskController::class, 'linkTaskToExport']);
     Route::post('/markascopied', [CaseController::class, 'markAsCopied']);
+    Route::post('/assigncase', [CaseController::class, 'assignCase']);
 
     // Trigger to export case to GGD private API
     Route::get('/notifycaseupdate/{uuid}', [CaseController::class, 'notifyCaseUpdate'])->name('notify-case-update');
