@@ -21,9 +21,13 @@
                     @if ($case->isEditable())
                         <a class="btn btn-outline-primary" role="button" href="{{ route('case-edit', [$case->uuid]) }}">Case wijzigen</a>
                     @endif
-                    <a class="btn btn-outline-primary" role="button" href="{{ route('notify-case-update', ['uuid' => $case->uuid]) }}">Klaarzetten voor index</a>
+                    @if (in_array($case->caseStatus(), [\App\Models\CovidCase::STATUS_PAIRED,
+                                                        \App\Models\CovidCase::STATUS_DELIVERED,
+                                                        \App\Models\CovidCase::STATUS_PENDING_EXPORT,
+                                                        \App\Models\CovidCase::STATUS_PROCESSED]))
+                        <a class="btn btn-outline-primary" role="button" href="{{ route('notify-case-update', ['uuid' => $case->uuid]) }}">Klaarzetten voor index</a>
+                    @endif
                     <a class="btn btn-primary" role="button" href="{{ route('case-dump', [$case->uuid]) }}">Zet in HPZone</a>
-
                 </span>
             </h2>
             <!-- flash message -->
