@@ -8,9 +8,11 @@ PROJECT_NAME=dbco-test-${DATABASE_TYPE}
 DOCKER_COMPOSE="docker-compose --project-directory=$BASE_PATH -p $PROJECT_NAME --env-file .env.test -f docker-compose.main.yml -f docker-compose.test.yml -f docker-compose.${DATABASE_TYPE}.yml"
 
 CONTAINER=$1
+PHPUNIT_ARGS="${@:2}"
 
 if [ "$1" == "--reset" ]; then
   CONTAINER=$2
+  PHPUNIT_ARGS="${@:3}"
 
   echo "=====[ RESET ]====="
   $DOCKER_COMPOSE down --remove-orphans -v
@@ -23,7 +25,6 @@ if [ "$1" == "--setup" ] || [ "$1" == "--reset" ]; then
   $DOCKER_COMPOSE up -d hsm
   sleep 5
   $DOCKER_COMPOSE -f docker-compose.setup.yml run --rm hsm-setup
-  echo "Done"
 fi
 
 echo "=====[ START CONTAINERS ]====="
@@ -36,8 +37,6 @@ if [ $DATABASE_TYPE = "mysql" ]; then
   while ! echo "SELECT 1" | $DOCKER_COMPOSE run --rm mysqlclient > /dev/null 2>&1; do
     sleep 0.5
   done
-
-  sleep 10
 fi
 
 if [ $DATABASE_TYPE = "postgres" ]; then
@@ -49,8 +48,16 @@ if [ $DATABASE_TYPE = "postgres" ]; then
   done
 fi
 
-if [ "$1" == "--setup" ] || [ "$1" == "--reset" ]; then
+if [ "$1" == "--keep-alive" ]; then
   CONTAINER=$2
+  PHPUNIT_ARGS="${@:3}"
+fi
+
+if [ "$1" == "--setup" ] || [ "$1" == "--reset" ]; then
+  sleep 10
+
+  CONTAINER=$2
+  PHPUNIT_ARGS="${@:3}"
 
   if [ $DATABASE_TYPE = "mysql" ]; then
     echo
@@ -73,44 +80,40 @@ if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "healthauthority-api" ] || [ "$CONTA
   echo
   echo "=====[ RUN MIGRATIONS ]====="
   $DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
-  echo
 fi
 
 if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "worker" ]; then
   echo
   echo "=====[ RUN TESTS FOR WORKER ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit worker
-  echo
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit worker "$PHPUNIT_ARGS"
 fi
 
 if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "private-api" ]; then
   echo
   echo "=====[ RUN TESTS FOR PRIVATE API ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit private-api
-  echo
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit private-api $PHPUNIT_ARGS
 fi
 
 if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "public-api" ]; then
   echo
   echo "=====[ RUN TESTS FOR PUBLIC API ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit public-api
-  echo
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit public-api $PHPUNIT_ARGS
 fi
 
 if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "healthauthority-api" ]; then
   echo
   echo "=====[ RUN TESTS FOR HEALTHAUTHORITY API ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority-api
-  echo
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority-api $PHPUNIT_ARGS
 fi
 
 if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "portal" ]; then
   echo
   echo "=====[ RUN TESTS FOR PORTAL ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit portal
-  echo
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit portal $PHPUNIT_ARGS
 fi
 
-echo
-echo "=====[ STOP CONTAINERS ]====="
-$DOCKER_COMPOSE stop
+if [ "$1" != "--keep-alive" ]; then
+  echo
+  echo "=====[ STOP CONTAINERS ]====="
+  $DOCKER_COMPOSE stop
+fi

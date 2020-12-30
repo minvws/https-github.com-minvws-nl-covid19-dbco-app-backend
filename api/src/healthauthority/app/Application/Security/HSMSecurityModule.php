@@ -84,4 +84,17 @@ class HSMSecurityModule implements SecurityModule
     {
         return hex2bin($this->exec('getrandombytes', $length));
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function listSecretKeys(): array
+    {
+        try {
+            $keys = @json_decode($this->exec('listkeysaes'));
+            return is_array($keys) ? $keys : [];
+        } catch (Exception $e) {
+            return [];
+        }
+    }
 }

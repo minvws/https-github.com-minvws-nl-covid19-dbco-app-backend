@@ -50,6 +50,13 @@ interface SecurityModule
     public function deleteSecretKey(string $identifier): void;
 
     /**
+     * Lists all secret keys.
+     *
+     * @return string[] List of key identifiers.
+     */
+    public function listSecretKeys(): array;
+
+    /**
      * Get random bytes.
      *
      * @param int $length
