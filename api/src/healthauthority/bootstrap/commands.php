@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 use DBCO\HealthAuthorityAPI\Application\Commands\CreateKeyExchangeSecretKeyCommand;
-use DBCO\HealthAuthorityAPI\Application\Commands\CreateStoreSecretKeyCommand;
+use DBCO\HealthAuthorityAPI\Application\Commands\CreateStoreSecretKeysCommand;
 use DBCO\HealthAuthorityAPI\Application\Commands\GetKeyExchangePublicKeyCommand;
 use DBCO\HealthAuthorityAPI\Application\Commands\ManageKeysCommand;
 use DBCO\Shared\Application\ConsoleApplication;
@@ -12,7 +12,7 @@ use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 
 return function (ConsoleApplication $app, ContainerInterface $container) {
     $commands = [
-        CreateStoreSecretKeyCommand::class,
+        CreateStoreSecretKeysCommand::class,
         CreateKeyExchangeSecretKeyCommand::class,
         GetKeyExchangePublicKeyCommand::class,
         CacheKeysCommand::class,

@@ -2,6 +2,7 @@
 namespace DBCO\HealthAuthorityAPI\Application\Commands;
 
 use Closure;
+use DateTimeImmutable;
 use DateTimeInterface;
 use DBCO\HealthAuthorityAPI\Application\Services\SecurityService;
 use Exception;
@@ -98,7 +99,7 @@ class ManageKeysCommand extends Command
     {
         try {
             return $this->securityService->manageStoreSecretKeys(
-                function (DateTimeInterface $day, string $mutation, ?Exception $exception = null) use ($output) {
+                function (DateTimeImmutable $day, string $mutation, ?Exception $exception = null) use ($output) {
                     $output->writeln(
                         sprintf(
                             'Manage store key for day %s... [%s]',
