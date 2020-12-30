@@ -22,7 +22,8 @@ class CovidCase
     public string $uuid;
 
     public string $owner;
-    public ?string $assignedUuid;
+    public ?string $assignedUuid = null;
+    public ?string $assignedName = null;
     public string $organisationUuid;
 
     public string $status;

@@ -106,7 +106,6 @@ $(".copyable.row").click(function() {
     copyToClipboard(value);
     var copyField = $(this).data('copyfield');
     if (copyField) {
-        console.log('marking copy in session');
         markAsCopied($(this).data('case'), $(this).data('task'), copyField);
     }
     var statusLabel = $(this).find('.row-status').first();
