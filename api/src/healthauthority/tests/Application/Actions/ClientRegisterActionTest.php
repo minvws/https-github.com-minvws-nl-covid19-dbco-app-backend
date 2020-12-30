@@ -58,10 +58,9 @@ class ClientRegisterActionTest extends TestCase
         $pdo->query("
             INSERT INTO covidcase (uuid, owner, date_of_symptom_onset, window_expires_at, status)
             VALUES ('{$caseUuid}', 'Test', '{$dateOfSymptomOnset}', '{$windowExpiresAt}', 'open')
-        "); // NOTE: Oracle might need TO_DATE call (untested)
+        ");
 
         $generalSecretKey = $this->getAppInstance()->getContainer()->get(SecurityCache::class)->getSecretKey(SecurityModule::SK_KEY_EXCHANGE);
-        $this->assertNotEmpty($generalSecretKey);
         $generalPublicKey = sodium_crypto_box_publickey_from_secretkey($generalSecretKey);
 
         $clientKeyPair = sodium_crypto_kx_keypair();
