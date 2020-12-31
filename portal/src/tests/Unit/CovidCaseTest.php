@@ -14,6 +14,7 @@ use App\Repositories\DbAnswerRepository;
 use App\Repositories\DbCaseRepository;
 use App\Repositories\DbTaskRepository;
 use App\Repositories\PairingRepository;
+use App\Repositories\StateRepository;
 use App\Services\AuthenticationService;
 use App\Services\CaseService;
 use App\Services\QuestionnaireService;
@@ -97,7 +98,8 @@ class CovidCaseTest extends TestCase
             $answerRepository,
             $this->app->make(AuthenticationService::class),
             $this->app->make(CaseUpdateNotificationRepository::class),
-            $questionnaireService
+            $questionnaireService,
+            $this->app->make(StateRepository::class)
         );
 
         $progressedCase = $caseService->getCase($case->uuid, true);
@@ -143,7 +145,7 @@ class CovidCaseTest extends TestCase
         ];
 
         // The last exposure date is part of the Task, not the questionnaire.
-        // Task without a last exposure date
+        // Case and Task with classification, but without a last exposure date
         $caseWithoutExposureDate = new CovidCase;
         $caseWithoutExposureDate->uuid = Uuid::uuid4();
 
@@ -165,21 +167,21 @@ class CovidCaseTest extends TestCase
             Task::TASK_DATA_INCOMPLETE
         ];
 
-        // Task with a last exposure date
-        $caseWithExposureDate = new CovidCase;
-        $caseWithExposureDate->uuid = Uuid::uuid4();
+        // Case and Task with classification and last exposure date
+        $caseWithClassificationExposureDate = new CovidCase;
+        $caseWithClassificationExposureDate->uuid = Uuid::uuid4();
 
         $taskWithExposureDate = new Task;
         $taskWithExposureDate->uuid = Uuid::uuid4();
         $taskWithExposureDate->taskType = "contact";
         $taskWithExposureDate->category = "1";
-        $taskWithExposureDate->caseUuid = $caseWithExposureDate->uuid;
+        $taskWithExposureDate->caseUuid = $caseWithClassificationExposureDate->uuid;
         $taskWithExposureDate->dateOfLastExposure = new Date();
         $taskWithExposureDate->questionnaireUuid = $questionnaire->uuid;
-        $caseWithExposureDate->tasks = [$taskWithExposureDate];
+        $caseWithClassificationExposureDate->tasks = [$taskWithExposureDate];
 
-        yield "exposure date, incomplete questionnaire" => [
-            $caseWithExposureDate,
+        yield "exposure date, no questionnaire answers" => [
+            $caseWithClassificationExposureDate,
             $questionnaire,
             [
                 // no answers provided by Task
@@ -195,7 +197,7 @@ class CovidCaseTest extends TestCase
         $classificationAnswer->category1Risk = true;
 
         yield "exposure date, questionnaire missing contact details" => [
-            $caseWithExposureDate,
+            $caseWithClassificationExposureDate,
             $questionnaire,
             [
                 $classificationAnswer
@@ -212,8 +214,16 @@ class CovidCaseTest extends TestCase
         $contactDetailsAnswer->phonenumber = "123456789";
         $contactDetailsAnswer->email = "pl@ceholder";
 
-        yield "exposure date, questionnaire missing classification" => [
-            $caseWithExposureDate,
+        // Case and Task without classification, but with last exposure date
+        $caseWithoutClassification = new CovidCase;
+        $caseWithoutClassification->uuid = Uuid::uuid4();
+
+        $taskWithoutClassification = clone $taskWithExposureDate;
+        $taskWithoutClassification->category = null;
+        $caseWithoutClassification->tasks = [$taskWithoutClassification];
+
+        yield "no classification, with exposure date and one answer" => [
+            $caseWithoutClassification,
             $questionnaire,
             [
                 $contactDetailsAnswer
@@ -222,11 +232,17 @@ class CovidCaseTest extends TestCase
         ];
 
         // No exposure date but classication and contact details: not contactable
-        yield "no exposure date, basic questionnaire done" => [
-            $caseWithoutExposureDate,
+        $caseWithoutClassification = new CovidCase;
+        $caseWithoutClassification->uuid = Uuid::uuid4();
+
+        $taskWithoutClassification = clone $taskWithExposureDate;
+        $taskWithoutClassification->category = null;
+        $caseWithoutClassification->tasks = [$taskWithoutClassification];
+
+        yield "no classification, with exposure date and basic questionnaire" => [
+            $caseWithoutClassification,
             $questionnaire,
             [
-                $classificationAnswer,
                 $contactDetailsAnswer
             ],
             Task::TASK_DATA_INCOMPLETE
@@ -234,21 +250,19 @@ class CovidCaseTest extends TestCase
 
         // Exposure date, classication and contact details make a Task contactable
         // No more unanswered questions -> progress is complete
-        yield "exposure date, basic questionnaire done" => [
-            $caseWithExposureDate,
+        yield "classification, exposure date, basic questionnaire" => [
+            $caseWithClassificationExposureDate,
             $questionnaire,
             [
-                $classificationAnswer,
                 $contactDetailsAnswer
             ],
             Task::TASK_DATA_CONTACTABLE
         ];
 
-        yield "exposure date, questionnaire missing one answer" => [
-            $caseWithExposureDate,
+        yield "classification, exposure date, questionnaire missing an answer" => [
+            $caseWithClassificationExposureDate,
             $questionnaire,
             [
-                $classificationAnswer,
                 $contactDetailsAnswer,
             ],
             Task::TASK_DATA_CONTACTABLE
@@ -262,7 +276,7 @@ class CovidCaseTest extends TestCase
         $blankAnswer->value = '';
 
         yield "exposure date, questionnaire has one blank answer" => [
-            $caseWithExposureDate,
+            $caseWithClassificationExposureDate,
             $questionnaire,
             [
                 $classificationAnswer,
@@ -280,7 +294,7 @@ class CovidCaseTest extends TestCase
         $birthdayAnswer->value = new Date();
 
         yield "exposure date, questionnaire complete" => [
-            $caseWithExposureDate,
+            $caseWithClassificationExposureDate,
             $questionnaire,
             [
                 $classificationAnswer,
