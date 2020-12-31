@@ -267,7 +267,8 @@ class CaseService
                 /**
                  * @var Question $question
                  */
-                if (in_array($task->category, $question->relevantForCategories) && $answerIsCompleted[$question->uuid] === false) {
+                if (in_array($task->category, $question->relevantForCategories) &&
+                    (!isset($answerIsCompleted[$question->uuid]) || $answerIsCompleted[$question->uuid] === false)) {
                     // One missed answer: move on to next task
                     break 2;
                 }
