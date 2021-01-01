@@ -76,8 +76,8 @@
                         <th scope="col">Naam <i class="icon  icon--eye"></i></th>
                         <th scope="col">Categorie <i class="icon  icon--eye"></i></th>
                         <th scope="col">Toelichting <i class="icon  icon--eye"></i></th>
+                        <th scope="col">Geïnformeerd</th>
                         <th scope="col">Gegevens</th>
-                        <th scope="col">Geinformeerd</th>
                         <th scope="col"></th>
                     </tr>
                     </thead>
@@ -93,17 +93,19 @@
                                 {{ $task->taskContext }}
                             </td>
                             <td class="text-center">
-                                @if ($task->submittedByUser())
-                                    <img src="{{ asset('images/progress-'.$task->progress.'.svg') }}">
+                                @if ($task->informedByIndex)
+                                    <img src="{{ asset('images/done.svg') }}">
                                 @else
-                                    <img src="{{ asset('images/progress-warn.svg') }}">
+                                    Nog niet
                                 @endif
                             </td>
                             <td class="text-center">
-                                @if ($task->informedByIndex)
-                                    <img src="{{ asset('images/done.svg') }}">
-                                @elseif ($task->communication == 'index')
-                                    Nog niet
+                                @if ($task->progress === \App\Models\Task::TASK_DATA_COMPLETE)
+                                    <img src="{{ asset('images/check-100.svg') }}">
+                                @elseif ($task->progress === \App\Models\Task::TASK_DATA_CONTACTABLE)
+                                        <img src="{{ asset('images/check-50.svg') }}">
+                                @else
+                                    <img src="{{ asset('images/check-warn.svg') }}">
                                 @endif
                             </td>
                             <td class="text-center">
