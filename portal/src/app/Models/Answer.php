@@ -8,6 +8,6 @@ abstract class Answer
     public string $taskUuid;
     public string $questionUuid;
 
-    abstract public function progressContribution();
+    abstract public function isCompleted();
     abstract public function toFormValue();
 }
