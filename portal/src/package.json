@@ -11,6 +11,7 @@
     },
     "dependencies": {
         "bootstrap": "^4.5.2",
+        "bootstrap-vue": "^2.21.2",
         "jquery": "^3.5.1",
         "litepicker": "^1.5.7",
         "popper.js": "^1.16.1"
@@ -24,8 +25,9 @@
         "lodash": "^4.17.19",
         "popper.js": "^1.12",
         "resolve-url-loader": "^3.1.0",
-        "sass": "^1.15.2",
+        "sass": "^1.20.1",
         "sass-loader": "^8.0.0",
-        "vue-template-compiler": "^2.6.12"
+        "vue": "^2.5.17",
+        "vue-template-compiler": "^2.6.10"
     }
 }

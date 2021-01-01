@@ -36,6 +36,11 @@
 @import "../../node_modules/bootstrap/scss/dropdown";
 
 /**
+ * Bootstrap Vue assets
+ */
+@import 'node_modules/bootstrap-vue/src/index.scss';
+
+/**
  * Import overrides.
  */
 @import "calendar";

@@ -2,7 +2,7 @@
 <x-slot name="title">
     Case overzicht
 </x-slot>
-<div class="container-xl">
+<div id="app" class="container-xl">
     @include('navbar', ['root' => true])
     <div class="row">
         <div class="col ml-5 mr-5">

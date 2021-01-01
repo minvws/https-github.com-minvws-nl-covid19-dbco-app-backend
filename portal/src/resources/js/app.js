@@ -1,108 +1,37 @@
+/**
+ * First we will load all of this project's JavaScript dependencies which
+ * includes Vue and other libraries. It is a great starting point when
+ * building robust, powerful web applications using Vue and Laravel.
+ */
+
 require('./bootstrap');
+require('./legacy');
 
+import BootstrapVue from 'bootstrap-vue';
 
-jQuery(document).ready(function ($) {
+window.Vue = require('vue');
 
-    ////////////////////////////////////////////////////
-    //  Initialize additional javascript helpers.
-    ////////////////////////////////////////////////////
-    require('./calendar');
-    require('./rpa');
-    require('./assignee-dropdown');
+Vue.use(BootstrapVue);
 
-    ////////////////////////////////////////////////////
-    //  Make clickable rows in tables actually
-    //  clickable
-    ////////////////////////////////////////////////////
-    $(".clickable-cell").click(function () {
-        window.location = $(this).parent().data("href");
-    });
+/**
+ * The following block of code may be used to automatically register your
+ * Vue components. It will recursively scan this directory for the Vue
+ * components and automatically register them with their "basename".
+ *
+ * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
+ */
 
-    ////////////////////////////////////////////////////
-    // Prevent enter from submitting the form. Instead, let enter go to the next field / row
-    ////////////////////////////////////////////////////
-    $('input.form-control').keydown(function (e) {
-        if (e.which === 13) {
-            var self = $(this), form = self.parents('form:eq(0)'), focusable, next;
-            var parent = self.parent();
-            if (parent.is('td')) {
-                // input inside a table, move to beginning of next row.
-                var nextRow = parent.closest('tr').next('tr');
-                if (nextRow) {
-                    nextRow.find('td input:text').first('input').focus();
-                }
-            } else {
-                // input inside form, move to next field.
-                focusable = form.find('input').filter(':visible');
-                next = focusable.eq(focusable.index(this) + 1);
-                if (next.length) {
-                    next.focus();
-                }
-            }
-            return false;
-        }
-    });
+// const files = require.context('./', true, /\.vue$/i)
+// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-    ////////////////////////////////////////////////////
-    // Auto cloning rows upon entry
-    ////////////////////////////////////////////////////
-    function cloneRow(el)
-    {
-        if (!el.val()) {
-            var tr = el.closest('tr');
-            var clone = tr.clone(true);
-            clone.insertAfter(tr).find('.auto-row-clone').one("focus", function () {
-                cloneRow($(this));
-            });
+Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
-            clone.find('.form-control').each(function (i, input) {
-                // Bump input field names
-                input.name = input.name.replace(/\d+/, function (n) {
-                    return ++n
-                });
-                input.value = '';
-            });
+/**
+ * Next, we will create a fresh Vue application instance and attach it to
+ * the page. Then, you may begin adding components to this application
+ * or customize the JavaScript scaffolding to fit your unique needs.
+ */
 
-            // Also, the current TR now gets its 'delete' button unhidden.
-            tr.find('.btn-delete').removeClass('invisible');
-        }
-    }
-
-    // Make auto row clone fields actually clone a row (upon the first keypress in the input field)
-    $(".auto-row-clone").one("focus", function() {
-        cloneRow($(this));
-    });
-
-    ////////////////////////////////////////////////////
-    // Delete button in tables
-    ////////////////////////////////////////////////////
-    $(".btn-delete").click(function() {
-       $(this).closest('tr').remove();
-    });
-
-    ////////////////////////////////////////////////////
-    // Sidebar appearance
-    ////////////////////////////////////////////////////
-    $('.sidebar-open').on('click', function () {
-        console.log('sidebar appears!');
-        let contactUuid = $(this).data('uuid');
-
-        $.ajax({
-            type: "GET",
-            url: '/task/' + contactUuid + '/questionnaire',
-            data: null,
-            success: function( data ) {
-                $('.sidebar-content').html(data);
-                $('.sidebar').collapse('show');
-            }
-        });
-
-
-
-
-
-
-
-    })
-
+const app = new Vue({
+    el: '#app',
 });
