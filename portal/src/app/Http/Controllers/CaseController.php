@@ -132,30 +132,10 @@ class CaseController extends Controller
 
     public function listCases()
     {
-        $myCases = $this->caseService->myCases();
-        $allCases = null;
-
         $isPlanner = $this->authService->hasPlannerRole();
-        $assignableUsers = [];
-
-        if ($isPlanner) {
-            $allCases = $this->caseService->organisationCases();
-            $assignableUsers = $this->userService->organisationUsers();
-        }
-
-        // Enrich my cases data with some view level helper data
-        foreach ($myCases as $case) {
-            $case->editCommand = $case->status === CovidCase::STATUS_DRAFT
-                ? route('case-edit', [$case->uuid])
-                : route('case-view', [$case->uuid])
-            ;
-        }
 
         return view('caseoverview', [
-            'myCases' => $myCases,
-            'allCases' => $allCases,
-            'isPlanner' => $isPlanner,
-            'assignableUsers' => $assignableUsers
+            'isPlanner' => $isPlanner
         ]);
     }
 
@@ -315,29 +295,4 @@ class CaseController extends Controller
         return response()->json(['success' => 'success'], Response::HTTP_OK);
     }
 
-    public function assignCase(Request $request)
-    {
-        $caseUuid = $request->input('caseId');
-        $userUuid = $request->input('userId');
-
-        $case = $this->caseService->getCase($caseUuid);
-
-        if ($case === null) {
-            return response()->json(['error' => "Deze case bestaat niet (meer)"], Response::HTTP_BAD_REQUEST);
-        }
-
-        if (!$this->caseService->canAccess($case) && !$this->authService->hasPlannerRole()) {
-            return response()->json(['error' => 'Geen toegang tot de case'], Response::HTTP_FORBIDDEN);
-        }
-
-        if (!$this->authService->isInOrganisation($case->organisationUuid)) {
-            return response()->json(['error' => 'Je kunt alleen cases van je eigen organisatie toewijzen'], Response::HTTP_FORBIDDEN);
-        }
-
-        if ($this->caseService->assignCase($case, $userUuid)) {
-            return response()->json(['success' => 'success'], Response::HTTP_OK);
-        }
-
-        return response()->json(['error' => 'Onbekende fout'], Response::HTTP_BAD_REQUEST);
-    }
 }

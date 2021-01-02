@@ -8,7 +8,7 @@
         <div class="col ml-5 mr-5">
             <!-- Start of page title component -->
             <h2 class="mt-4  mb-4  font-weight-normal d-flex align-items-end">
-                <span class="font-weight-bold">@if ($allCases != null) Cases @else Mijn Cases @endif</span>
+                <span class="font-weight-bold">@if ($isPlanner) Cases @else Mijn Cases @endif</span>
 
                 <!-- End of page title component -->
 
@@ -20,17 +20,8 @@
                 </span>
             <!-- End of add button component -->
             </h2>
-            @if ($isPlanner)
-                <!-- preload of assignee dropdown so each row can re-use it -->
-                <select id="assignee-list" class="d-none">
-                    @foreach ($assignableUsers as $assignableUser)
-                        <option value="{{ $assignableUser->uuid }}">{{ $assignableUser->name }}</option>
-                    @endforeach
-                </select>
-                <!-- end preload -->
-            @endif
             <!-- Start of tabs component -->
-            @if ($allCases != null)
+            @if ($isPlanner)
             <nav>
                 <div class="nav  nav-tabs" id="nav-tab" role="tablist">
                     <a class="nav-item  nav-link  active"
@@ -52,22 +43,15 @@
             @endif
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane  fade show  active" id="nav-own-cases" role="tabpanel" aria-labelledby="nav-own-cases-tab">
-                    @if (count($myCases) == 0)
-                        <div class="bg-white text-center pt-5 pb-5">
-                            Je hebt nog geen cases. Voeg deze toe door rechtsboven op de knop 'Nieuwe case' te drukken.
-                        </div>
-                    @else
+                      <!-- Start of table component -->
+                    <covid-case-table-component :is-planner="{{ $isPlanner ? "true" : "false" }}" filter="mine"></covid-case-table-component>
+                </div>
+                @if ($isPlanner)
+                    <div class="tab-pane  fade" id="nav-all-cases" role="tabpanel" aria-labelledby="nav-all-cases-tab">
                         <!-- Start of table component -->
-                        @include('casestable', ['cases' => $myCases])
-                    @endif
-                </div>
-
-                <div class="tab-pane  fade" id="nav-all-cases" role="tabpanel" aria-labelledby="nav-all-cases-tab">
-                    <!-- Start of table component -->
-                    @if ($allCases != null)
-                        @include('casestable', ['cases' => $allCases])
-                    @endif
-                </div>
+                        <covid-case-table-component :is-planner="{{ $isPlanner ? "true" : "false" }}" filter="all"></covid-case-table-component>
+                    </div>
+                @endif
             </div>
         <!-- End of tabs component -->
         </div>
@@ -107,3 +91,4 @@
 <!-- End of create case modal -->
 
 </x-layout>
+

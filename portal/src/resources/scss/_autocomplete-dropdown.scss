@@ -1,20 +1,16 @@
 .dropdown {
-    A.label {
-        color: $light-grey;
-    }
-}
 
-.dropdown-menu {
-    max-height: 20rem;
-    overflow-y: auto;
-
-    .empty {
-        display: none;
-    }
-
-    A.dropdown-item, SPAN.dropdown-item {
+    .btn.dropdown-toggle {
         font-size: $font-size-sm;
     }
 
+    .btn-link {
+        color: $light-grey;
+    }
+
+    .dropdown-item {
+        font-size: $font-size-sm;
+    }
 }
+
 

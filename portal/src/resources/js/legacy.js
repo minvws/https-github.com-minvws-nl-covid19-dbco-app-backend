@@ -8,15 +8,6 @@ jQuery(document).ready(function ($) {
     ////////////////////////////////////////////////////
     require('./calendar');
     require('./rpa');
-    require('./assignee-dropdown');
-
-    ////////////////////////////////////////////////////
-    //  Make clickable rows in tables actually
-    //  clickable
-    ////////////////////////////////////////////////////
-    $(".clickable-cell").click(function () {
-        window.location = $(this).parent().data("href");
-    });
 
     ////////////////////////////////////////////////////
     // Prevent enter from submitting the form. Instead, let enter go to the next field / row
