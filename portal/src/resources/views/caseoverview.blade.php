@@ -15,44 +15,30 @@
                 <!-- Start of add button component -->
                 <span class="ml-auto">
                     <a href="{{ route('case-new') }}" class="btn  btn-primary  ml-auto">
-                        Nieuwe case
+                        &#65291; Nieuwe case
                     </a>
                 </span>
             <!-- End of add button component -->
             </h2>
             <!-- Start of tabs component -->
             @if ($isPlanner)
-            <nav>
-                <div class="nav  nav-tabs" id="nav-tab" role="tablist">
-                    <a class="nav-item  nav-link  active"
-                       id="nav-own-cases-tab"
-                       data-toggle="tab"
-                       href="#nav-own-cases"
-                       role="tab"
-                       aria-controls="nav-own-cases"
-                       aria-selected="true">Mijn cases</a>
-                    <a class="nav-item nav-link"
-                       id="nav-all-cases-tab"
-                       data-toggle="tab"
-                       href="#nav-all-cases"
-                       role="tab"
-                       aria-controls="nav-all-cases"
-                       aria-selected="false">Alle cases</a>
-                </div>
-            </nav>
-            @endif
-            <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane  fade show  active" id="nav-own-cases" role="tabpanel" aria-labelledby="nav-own-cases-tab">
-                      <!-- Start of table component -->
-                    <covid-case-table-component :is-planner="{{ $isPlanner ? "true" : "false" }}" filter="mine"></covid-case-table-component>
-                </div>
-                @if ($isPlanner)
-                    <div class="tab-pane  fade" id="nav-all-cases" role="tabpanel" aria-labelledby="nav-all-cases-tab">
-                        <!-- Start of table component -->
+            <div>
+                <b-tabs lazy>
+                    <b-tab title="Mijn actieve cases" active>
+                        <covid-case-table-component :is-planner="{{ $isPlanner ? "true" : "false" }}" filter="mine"></covid-case-table-component>
+                    </b-tab>
+                    <b-tab title="Actieve cases">
                         <covid-case-table-component :is-planner="{{ $isPlanner ? "true" : "false" }}" filter="all"></covid-case-table-component>
-                    </div>
-                @endif
+                    </b-tab>
+                    <b-tab title="Afgeronde cases">
+                        <covid-case-table-component :is-planner="{{ $isPlanner ? "true" : "false" }}" filter="done"></covid-case-table-component>
+                    </b-tab>
+                    <template #tabs-end>
+                        <li class="nav-item nav-link ml-auto">Toon cases van iedereen</li>
+                    </template>
+                </b-tabs>
             </div>
+            @endif
         <!-- End of tabs component -->
         </div>
     </div>
