@@ -8,10 +8,12 @@ require('./bootstrap');
 require('./legacy');
 
 import BootstrapVue from 'bootstrap-vue';
+import SvgVue from 'svg-vue';
 
 window.Vue = require('vue');
 
 Vue.use(BootstrapVue);
+Vue.use(SvgVue);
 
 /**
  * The following block of code may be used to automatically register your

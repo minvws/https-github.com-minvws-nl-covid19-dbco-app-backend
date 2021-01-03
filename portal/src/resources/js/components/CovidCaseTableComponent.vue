@@ -48,7 +48,10 @@
         </div>
         <div class="mb-3">
             <infinite-loading @infinite="infiniteHandler" spinner="spiral">
-                <div slot="spinner"><span class="infinite-loader">Meer cases laden</span></div>
+                <div slot="spinner">
+                    <svg-vue icon="spinner" class="spinner" />
+                    <span class="infinite-loader">Meer cases laden</span>
+                </div>
                 <div slot="no-more"></div>
                 <div slot="no-results"></div>
             </infinite-loading>
@@ -97,7 +100,10 @@ export default {
                     this.page += 1
                     console.log(response.data.cases.data);
                     this.cases.push(...response.data.cases.data)
-                    $state.loaded()
+                    setTimeout(function () {
+                        $state.loaded()
+                    }, 2000);
+
                 } else {
                     $state.complete()
                 }
@@ -121,4 +127,10 @@ export default {
 </script>
 
 <style scoped>
+.spinner {
+    width: 14px;
+    height: 14px;
+    margin-right: 5px;
+    color: red;
+}
 </style>

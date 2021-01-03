@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+require('laravel-mix-svg-vue');
 
 /*
  |--------------------------------------------------------------------------
@@ -16,4 +17,5 @@ mix
     .js(['resources/js/app.js'], 'js')
     .sass('resources/scss/app.scss', 'public/css')
     .sourceMaps()
+    .svgVue()
     .version();

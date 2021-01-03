@@ -13,6 +13,7 @@
         "bootstrap": "^4.5.2",
         "bootstrap-vue": "^2.21.2",
         "jquery": "^3.5.1",
+        "laravel-mix-svg-vue": "^0.3.0",
         "litepicker": "^1.5.7",
         "popper.js": "^1.16.1"
     },
