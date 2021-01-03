@@ -21,15 +21,16 @@
             <!-- End of add button component -->
             </h2>
             <!-- Start of tabs component -->
-            @if ($isPlanner)
             <div>
                 <b-tabs lazy no-key-nav>
                     <b-tab title="Mijn actieve cases" active>
                         <covid-case-table-component :is-planner="{{ $isPlanner ? "true" : "false" }}" filter="mine"></covid-case-table-component>
                     </b-tab>
-                    <b-tab title="Actieve cases">
-                        <covid-case-table-component :is-planner="{{ $isPlanner ? "true" : "false" }}" filter="all"></covid-case-table-component>
-                    </b-tab>
+                    @if ($isPlanner)
+                        <b-tab title="Actieve cases">
+                            <covid-case-table-component :is-planner="{{ $isPlanner ? "true" : "false" }}" filter="all"></covid-case-table-component>
+                        </b-tab>
+                    @endif
                     <b-tab title="Afgeronde cases">
                         <covid-case-table-component :is-planner="{{ $isPlanner ? "true" : "false" }}" filter="done"></covid-case-table-component>
                     </b-tab>
@@ -38,7 +39,6 @@
                     </template>
                 </b-tabs>
             </div>
-            @endif
         <!-- End of tabs component -->
         </div>
     </div>

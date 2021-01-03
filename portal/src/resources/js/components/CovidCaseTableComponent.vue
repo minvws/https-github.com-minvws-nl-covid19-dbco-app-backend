@@ -80,9 +80,11 @@ export default {
         }
     },
     created() {
-        axios.get('./api/users/assignable').then(response => {
-            this.assignableUsers = response.data.users
-        })
+        if (this.isPlanner) {
+            axios.get('./api/users/assignable').then(response => {
+                this.assignableUsers = response.data.users
+            })
+        }
     },
     methods: {
         infiniteHandler($state) {
