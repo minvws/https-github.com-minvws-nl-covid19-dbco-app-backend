@@ -32,6 +32,7 @@ $DOCKER_COMPOSE run --rm --entrypoint composer portal install
 $DOCKER_COMPOSE run --rm --entrypoint npm portal install
 $DOCKER_COMPOSE run --rm --entrypoint npm portal run dev
 $DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
+$DOCKER_COMPOSE run --rm --entrypoint php portal artisan db:seed --class QuestionnaireSeeder
 
 echo
 echo "=====[ UPDATE SIMULATOR ]====="

@@ -2,6 +2,8 @@
 namespace DBCO\HealthAuthorityAPI\Application\Commands;
 
 use Closure;
+use DateTimeImmutable;
+use DateTimeInterface;
 use DBCO\HealthAuthorityAPI\Application\Services\SecurityService;
 use Exception;
 use Symfony\Component\Console\Command\Command;
@@ -12,7 +14,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Continuous process that has the following responsibilities:
  * - Make sure all necessary keys exist in the HSM.
  * - Make sure all necessary keys exist in the cache.
- * - Rotate keys (TODO!)
  *
  * @package DBCO\HealthAuthorityAPI\Application\Commands
  */
@@ -87,14 +88,35 @@ class ManageKeysCommand extends Command
     }
 
     /**
-     * Create or load data store secret key.
+     * Manage store secret keys.
      *
-     * @return string
+     * @param OutputInterface        $output
+     * @param DateTimeInterface|null $previousCurrentDay
+     *
+     * @return DateTimeInterface Current day.
      */
-    private function createOrLoadStoreSecretKey(): string
+    private function manageStoreSecretKeys(OutputInterface $output, ?DateTimeInterface $previousCurrentDay = null): DateTimeInterface
     {
-        $result = $this->securityService->createStoreSecretKey();
-        return $result ? 'CREATED' : 'LOADED';
+        try {
+            return $this->securityService->manageStoreSecretKeys(
+                function (DateTimeImmutable $day, string $mutation, ?Exception $exception = null) use ($output) {
+                    $output->writeln(
+                        sprintf(
+                            'Manage store key for day %s... [%s]',
+                            $day->format('Y-m-d'),
+                            strtoupper($mutation)
+                        )
+                    );
+
+                    if ($exception !== null) {
+                        $output->writeln('ERROR: ' . $exception->getMessage());
+                    }
+                },
+                $previousCurrentDay
+            );
+        } catch (Exception $e) {
+            $output->writeln('ERROR: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -112,9 +134,10 @@ class ManageKeysCommand extends Command
             $output->writeln('Public key exchange key: ' . base64_encode($this->securityService->getKeyExchangePublicKey()));
         }
 
-        $this->invoke('Create/load data store key', $output, fn () => $this->createOrLoadStoreSecretKey());
+        $currentDay = $this->manageStoreSecretKeys($output);
 
         while (true) {
+            $currentDay = $this->manageStoreSecretKeys($output, $currentDay);
             $this->invoke('Cache keys in memory', $output, fn () => $this->securityService->cacheKeys());
             sleep(60);
         }
