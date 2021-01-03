@@ -1,27 +1,27 @@
 <template>
-    <div v-if="cases.length">
-        <table class="table  table-rounded  table-hover  table-ggd">
-            <colgroup>
-                <col class="w-20">
-                <col class="w-20">
-                <col class="w-20">
-                <col class="w-20">
-                <col class="w-20">
-                <col class="w-20" v-if="isPlanner">
-            </colgroup>
-            <thead>
-            <tr>
-                <th scope="col">Naam</th>
-                <th scope="col">Casenr.</th>
-                <th scope="col">Eerste ziektedag</th>
-                <th scope="col">Status</th>
-                <th scope="col">Laatst bewerkt</th>
-                <th scope="col" v-if="isPlanner">Toegewezen aan</th>
-            </tr>
-            </thead>
-            <tbody>
-                <template v-for="covidcase in cases">
-                    <tr role="button" class="custom-link" @click="navigate(covidcase.editCommand)">
+    <div>
+        <div v-if="cases.length" >
+            <table class="table  table-rounded  table-hover  table-ggd">
+                <colgroup>
+                    <col class="w-20">
+                    <col class="w-20">
+                    <col class="w-20">
+                    <col class="w-20">
+                    <col class="w-20">
+                    <col class="w-20" v-if="isPlanner">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th scope="col">Naam</th>
+                    <th scope="col">Casenr.</th>
+                    <th scope="col">Eerste ziektedag</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Laatst bewerkt</th>
+                    <th scope="col" v-if="isPlanner">Toegewezen aan</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(covidcase, $index) in cases" :key="$index" role="button" class="custom-link" @click="navigate(covidcase.editCommand)">
                         <th scope="row">{{ covidcase.nameShort }}</th>
                         <td>{{ covidcase.caseIdShort }}</td>
                         <td>{{ covidcase.dateOfSymptomOnsetFormatted }}</td>
@@ -40,24 +40,33 @@
                                 value-attribute="uuid" />
                         </td>
                     </tr>
-                </template>
-            </tbody>
-        </table>
-    <!-- End of table component -->
-    [[ $cases->links() ]] Infinite scroll be here..
-    </div>
-    <div v-else-if="loaded" class="bg-white text-center pt-5 pb-5">
-        Je hebt nog geen cases. Voeg deze toe door rechtsboven op de knop 'Nieuwe case' te drukken.
+                </tbody>
+            </table>
+        </div>
+        <div v-else-if="loaded" class="bg-white text-center pt-5 pb-5">
+            Je hebt nog geen cases. Voeg deze toe door rechtsboven op de knop 'Nieuwe case' te drukken.
+        </div>
+        <div class="mb-3">
+            <infinite-loading @infinite="infiniteHandler" spinner="spiral">
+                <div slot="spinner"><span class="infinite-loader">Meer cases laden</span></div>
+                <div slot="no-more"></div>
+                <div slot="no-results"></div>
+            </infinite-loading>
+        </div>
     </div>
 </template>
 
 <script>
 
 import DbcoFilterableSelect from "./DbcoFilterableSelect";
+import InfiniteLoading from "vue-infinite-loading";
 
 export default {
     name: "CovidCaseTableComponent",
-    components: {DbcoFilterableSelect},
+    components: {
+        DbcoFilterableSelect,
+        InfiniteLoading
+    },
     props: {
         isPlanner: Boolean,
         filter: String
@@ -65,21 +74,36 @@ export default {
     data() {
         return {
             cases: [],
+            page: 1,
             assignableUsers: [],
             loaded: false
         }
     },
     created() {
-        axios.get('./api/cases/' + this.filter).then(response => {
-            this.cases = response.data.cases.data
-            this.loaded = true
-        })
-
         axios.get('./api/users/assignable').then(response => {
             this.assignableUsers = response.data.users
         })
     },
     methods: {
+        infiniteHandler($state) {
+            console.log('Infinite handling')
+            axios.get('./api/cases/' + this.filter, {
+                params: {
+                    page: this.page,
+                }
+            }).then( response => {
+                if (response.data.cases.data.length) {
+                    this.page += 1
+                    console.log(response.data.cases.data);
+                    this.cases.push(...response.data.cases.data)
+                    $state.loaded()
+                } else {
+                    $state.complete()
+                }
+                this.loaded = true
+            })
+
+        },
         navigate(url) {
             window.location = url
         },
@@ -96,5 +120,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

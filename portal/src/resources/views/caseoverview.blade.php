@@ -23,7 +23,7 @@
             <!-- Start of tabs component -->
             @if ($isPlanner)
             <div>
-                <b-tabs lazy>
+                <b-tabs lazy no-key-nav>
                     <b-tab title="Mijn actieve cases" active>
                         <covid-case-table-component :is-planner="{{ $isPlanner ? "true" : "false" }}" filter="mine"></covid-case-table-component>
                     </b-tab>
