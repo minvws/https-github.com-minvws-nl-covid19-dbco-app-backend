@@ -4,7 +4,6 @@ declare(strict_types=1);
 use DBCO\HealthAuthorityAPI\Application\Security\ProxySecurityCache;
 use DBCO\HealthAuthorityAPI\Application\Security\RedisSecurityCache;
 use DBCO\HealthAuthorityAPI\Application\Security\SecurityCache;
-use DBCO\HealthAuthorityAPI\Application\Security\SimpleSecurityModule;
 use DBCO\HealthAuthorityAPI\Application\Security\HSMSecurityModule;
 use DBCO\HealthAuthorityAPI\Application\Security\SecurityModule;
 use DBCO\Shared\Application\Managers\DbTransactionManager;
@@ -84,18 +83,7 @@ return function (ContainerBuilder $containerBuilder) {
             SecurityCache::class => function (ContainerInterface $c) {
                 return new ProxySecurityCache(new RedisSecurityCache($c->get(PredisClient::class)));
             },
-            SecurityModule::class => function (ContainerInterface $c) {
-                $type = $c->get('securityModule.type');
-
-                if ($type === 'simple') {
-                    return new SimpleSecurityModule(
-                        base64_decode($c->get('securityModule.skKeyExchange')),
-                        base64_decode($c->get('securityModule.skStore'))
-                    );
-                } else {
-                    return new HSMSecurityModule();
-                }
-            },
+            SecurityModule::class => autowire(HSMSecurityModule::class),
             'privateAPIGuzzleClient' =>
                 autowire(GuzzleHttp\Client::class)
                     ->constructor(get('privateAPI.client'))

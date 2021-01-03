@@ -3,40 +3,85 @@ name: CI
 on: [pull_request]
 
 env:
-  POSTGRES_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
+  MYSQL_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
   PRIVATE_API_JWT_SECRET: ${{ secrets.CI_SERVICE_PASSWORD }}
   HEALTHAUTHORITY_API_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
   PORTAL_DB_PASSWORD: ${{ secrets.CI_SERVICE_PASSWORD }}
   PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
-  DOCKER_COMPOSE: docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml -f docker-compose.postgres.yml
-  HEALTHAUTHORITY_SECURITY_MODULE_SK_KEY_EXCHANGE: ${{ secrets.HEALTHAUTHORITY_SK_KEY_EXCHANGE }}
-  HEALTHAUTHORITY_SECURITY_MODULE_SK_STORE: ${{ secrets.HEALTHAUTHORITY_SK_STORE }}
+  HSM_SO_PIN: ${{ secrets.CI_HSM_SO_PIN }}
+  HSM_USER_PIN: ${{ secrets.CI_HSM_USER_PIN }}
+  DOCKER_COMPOSE: docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml -f docker-compose.mysql.yml
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+        with:
+          path: main
 
-      - name: Build / start the stack
+      - uses: actions/checkout@v2
+        with:
+          repository: minvws/nl-covid19-dbco-app-hsm-private
+          token: ${{ secrets.CR_PAT }}
+          path: nl-covid19-dbco-app-hsm-private
+
+      - name: Pull docker images
+        working-directory: ./main
+        run: |
+          docker pull php:7.4-cli
+          docker pull php:7.4-apache
+          docker pull composer:latest
+          docker pull node:latest
+          docker pull i386/debian:stretch-slim
+          docker pull ubuntu:latest
+          docker pull ubuntu:18.04
+          $DOCKER_COMPOSE -f docker-compose.setup.yml pull
+
+      - name: Docker layer cache
+        uses: satackey/action-docker-layer-caching@v0.0.11
+        continue-on-error: true
+        with:
+          key: docker-layer-cache-${{ github.workflow }}-{hash}
+          restore-keys: |
+            docker-layer-cache-${{ github.workflow }}-
+
+      - name: Build docker images
+        working-directory: ./main
+        run: $DOCKER_COMPOSE -f docker-compose.setup.yml build
+
+      - name: Setup HSM
+        working-directory: ./main
+        run: |
+          $DOCKER_COMPOSE up -d hsm
+          sleep 5
+          $DOCKER_COMPOSE -f docker-compose.setup.yml run --rm hsm-setup
+
+      - name: Start the stack
+        working-directory: ./main
         run: $DOCKER_COMPOSE up -d
 
       - name: Setup database
+        working-directory: ./main
         run: |
-          sleep 1
-          $DOCKER_COMPOSE run --rm psql -c "CREATE USER portal PASSWORD '$PORTAL_DB_PASSWORD'"
-          $DOCKER_COMPOSE run --rm psql -c "CREATE USER healthauthority_api PASSWORD '$HEALTHAUTHORITY_API_DB_PASSWORD'"
-          $DOCKER_COMPOSE run --rm psql < install/postgres/permissions.sql
+          sleep 15
+          $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
+          $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
+          $DOCKER_COMPOSE run --rm mysqlclient < install/mysql/permissions.sql
           $DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
 
       - name: Worker - Run phpunit
+        working-directory: ./main
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit worker
 
-      - name: Private Api - Run phpunit
+      - name: Private API - Run phpunit
+        working-directory: ./main
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit private-api
 
-      - name: Public Api - Run phpunit
+      - name: Public API - Run phpunit
+        working-directory: ./main
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit public-api
 
-      - name: Health Authority Api - Run phpunit
+      - name: Health Authority API - Run phpunit
+        working-directory: ./main
         run: $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority-api
