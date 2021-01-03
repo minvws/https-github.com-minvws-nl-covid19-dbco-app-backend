@@ -57,15 +57,8 @@ class ApiCaseController extends ApiController
                 ? route('case-edit', [$case->uuid])
                 : route('case-view', [$case->uuid]);
 
-            $case->nameShort = Str::limit($case->name, 30, '...');
-            $case->caseIdShort = Str::limit($case->caseId, 30, '...');
-
-            $case->dateOfSymptomOnsetFormatted = $case->dateOfSymptomOnset != NULL ? $case->dateOfSymptomOnset->format('l j M') : '';
-
             $case->statusIcon = asset("/images/status_".$case->caseStatus().".svg");
             $case->statusLabel = CovidCase::statusLabel($case->caseStatus());
-
-            $case->updatedAtFormatted = $case->updatedAt->diffForHumans();
         }
     }
 

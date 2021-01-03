@@ -35,3 +35,5 @@ Vue.component('covid-case-table-component', require('./components/CovidCaseTable
 const app = new Vue({
     el: '#app',
 });
+
+require('./vue-filters');

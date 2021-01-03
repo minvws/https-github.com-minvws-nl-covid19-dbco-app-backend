@@ -22,16 +22,16 @@
                 </thead>
                 <tbody>
                     <tr v-for="(covidcase, $index) in cases" :key="$index" role="button" class="custom-link" @click="navigate(covidcase.editCommand)">
-                        <th scope="row">{{ covidcase.nameShort }}</th>
-                        <td>{{ covidcase.caseIdShort }}</td>
-                        <td>{{ covidcase.dateOfSymptomOnsetFormatted }}</td>
+                        <th scope="row">{{ covidcase.name|truncate(30) }}</th>
+                        <td>{{ covidcase.caseId|truncate(30) }}</td>
+                        <td>{{ covidcase.dateOfSymptomOnset|dateFormatLong }}</td>
                         <td>
                             <span class="icon text-center">
                                 <img :src="covidcase.statusIcon">
                             </span>
                             <span>{{ covidcase.statusLabel }}</span>
                         </td>
-                        <td>{{ covidcase.updatedAtFormatted }}</td>
+                        <td>{{ covidcase.updatedAt|dateFormatDeltaTime }}</td>
                         <td v-if="isPlanner" v-on:click.stop="">
                             <dbco-filterable-select @input="assign(covidcase.uuid, covidcase.assignedUuid)"
                                 v-model="covidcase.assignedUuid"
@@ -86,7 +86,6 @@ export default {
     },
     methods: {
         infiniteHandler($state) {
-            console.log('Infinite handling')
             axios.get('./api/cases/' + this.filter, {
                 params: {
                     page: this.page,
