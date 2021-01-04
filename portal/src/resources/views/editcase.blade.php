@@ -190,6 +190,7 @@
                         @endif
                     />
                 </div>
+                <!-- End of form submit -->
 
                 <p></p>
             </div>

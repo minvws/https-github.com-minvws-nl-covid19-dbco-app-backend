@@ -11,7 +11,7 @@
         <main class="col ml-5 mr-5">
             <!-- Start of page title component -->
             <h2 class="mt-4  mb-4  font-weight-normal d-flex align-items-end">
-                <span class="font-weight-bold">{{ $case->name }}</span>
+                <span class="font-weight-bold">{{ $case->name }}/span>
                 <span class="ml-auto">
                     @if ($case->caseStatus() == \App\Models\CovidCase::STATUS_TIMEOUT)
                         <a class="btn btn-outline-primary" role="button" href="{{ route('case-pair', [$case->uuid]) }}">Nieuwe koppelcode</a>

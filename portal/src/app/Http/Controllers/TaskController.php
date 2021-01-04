@@ -48,27 +48,50 @@ class TaskController extends Controller
     public function viewTaskQuestionnaire($taskUuid)
     {
         $task = $this->taskService->getTask($taskUuid);
-        if ($this->taskService->canAccess($task)) {
-            $questionnaireUuid = $task->questionnaireUuid;
-            if ($task->questionnaireUuid === null) {
-                // Not yet filled by user, get the latest questionnaire.
-                $questionnaire = $this->questionnaireService->getLatestQuestionnaire($task->taskType);
-            } else {
-                $questionnaire = $this->questionnaireService->getQuestionnaire($questionnaireUuid);
-            }
-
-            $answers = $this->taskService->getAllAnswersByTask($taskUuid);
-            $answersByQuestionUuid = [];
-            foreach ($answers as $answer) {
-                $answersByQuestionUuid[$answer->questionUuid] = $answer->toFormValue();
-            }
-
-            return view('taskquestionnaire', [
-                'task' => (array)$task,
-                'questions' => $questionnaire->questions,
-                'answers' => $answersByQuestionUuid
-            ]);
+        if (!$this->taskService->canAccess($task)) {
+            return "access denied";
         }
-        return "access denied";
+
+        $questionnaireUuid = $task->questionnaireUuid;
+        if ($task->questionnaireUuid === null) {
+            // Not yet filled by user, get the latest questionnaire.
+            $questionnaire = $this->questionnaireService->getLatestQuestionnaire($task->taskType);
+            $answers = $this->taskService->getAllAnswersByTask($taskUuid);
+        } else {
+            $questionnaire = $this->questionnaireService->getQuestionnaire($questionnaireUuid);
+            $answers = [];
+        }
+
+        $answersByQuestionUuid = [];
+        foreach ($answers as $answer) {
+            $answersByQuestionUuid[$answer->questionUuid] = $answer->toFormValue();
+        }
+
+        return view('taskquestionnaire', [
+            'task' => (array)$task,
+            'questions' => $questionnaire->questions,
+            'answers' => $answersByQuestionUuid
+        ]);
+    }
+
+    public function saveTaskQuestionnaire(Request $request): Response
+    {
+        $validatedData = $request->validate([
+            'taskUuid' => 'required|uuid'
+            ]);
+
+        $taskUuid = $request->input('taskUuid');
+        $task = $this->taskService->getTask($taskUuid);
+        if ($task === null || !$this->taskService->canAccess($task)) {
+            return response('access denied', 403);
+        }
+
+        // Validate questionnaire answers
+
+        // Persist questionnaire answers
+
+        // Close Task for further editing by index
+
+         return redirect()->route('case-view', [$task->caseUuid]);
     }
 }

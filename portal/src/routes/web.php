@@ -45,7 +45,8 @@ Route::middleware(['auth', 'rolecheck:user'])->group(function() {
     // Trigger to export case to GGD private API
     Route::get('/notifycaseupdate/{uuid}', [CaseController::class, 'notifyCaseUpdate'])->name('notify-case-update');
 
-    Route::get('/task/{uuid}/questionnaire', [TaskController::class, 'viewTaskQuestionnaire']);
+    Route::get('/task/{uuid}/questionnaire', [TaskController::class, 'viewTaskQuestionnaire'])->name('task-questionnaire-view');
+    Route::post('/task/{uuid}/questionnaire', [TaskController::class, 'saveTaskQuestionnaire'])->name('task-questionnaire-save');
 });
 
 // All pages that are behind auth only
