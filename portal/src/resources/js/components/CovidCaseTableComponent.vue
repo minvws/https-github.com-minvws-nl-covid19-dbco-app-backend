@@ -100,9 +100,9 @@ export default {
                     this.page += 1
                     console.log(response.data.cases.data);
                     this.cases.push(...response.data.cases.data)
-                    setTimeout(function () {
+                  //  setTimeout(function () { // enable this to show the spinner for longer to debug the spinner
                         $state.loaded()
-                    }, 2000);
+                   // }, 2000);
 
                 } else {
                     $state.complete()
