@@ -72,7 +72,10 @@ class CaseController extends Controller
                 $taskgroups[$task->communication][] = $task;
             }
 
-            return view('viewcase', ['case' => $case, 'taskgroups' => $taskgroups]);
+            return view('viewcase', [
+                'case' => $case,
+                'taskgroups' => $taskgroups
+            ]);
         } else {
             return redirect()->route('cases-list');
         }
@@ -139,6 +142,7 @@ class CaseController extends Controller
             $allCases = $this->caseService->organisationCases();
             $assignableUsers = $this->userService->organisationUsers();
         }
+
         // Enrich my cases data with some view level helper data
         foreach ($myCases as $case) {
             $case->editCommand = $case->status === CovidCase::STATUS_DRAFT
@@ -206,7 +210,6 @@ class CaseController extends Controller
             // For existing cases, go to the case's detail page
             return redirect()->route('case-view', [$caseUuid]);
         }
-
     }
 
     /**

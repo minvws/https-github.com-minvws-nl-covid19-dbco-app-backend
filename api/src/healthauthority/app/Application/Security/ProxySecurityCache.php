@@ -18,7 +18,12 @@ class ProxySecurityCache implements SecurityCache
     /**
      * @var array
      */
-    private array $entries = [];
+    private array $values = [];
+
+    /**
+     * @var array
+     */
+    private array $secretKeys = [];
 
     /**
      * Constructor.
@@ -31,52 +36,91 @@ class ProxySecurityCache implements SecurityCache
     }
 
     /**
+     * @inheritDoc
+     */
+    public function hasValue(string $key): bool
+    {
+        try {
+            $this->getvalue($key);
+            return true;
+        } catch (CacheEntryNotFoundException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getValue(string $key): string
+    {
+        if (!array_key_exists($key, $this->values)) {
+            $this->values[$key] = $this->cache->getValue($key);
+        }
+
+        return $this->values[$key];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setValue(string $key, string $value): void
+    {
+        $this->cache->setValue($key, $value);
+        $this->values[$key] = $value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function deleteValue(string $key): bool
+    {
+        $result = $this->cache->deleteValue($key);
+        unset($this->values[$key]);
+        return $result;
+    }
+
+    /**
      * @inheritdoc
      */
     public function hasSecretKey(string $identifier): bool
     {
-        return $this->getSecretKey($identifier) !== null;
+        try {
+            $this->getSecretKey($identifier);
+            return true;
+        } catch (CacheEntryNotFoundException $e) {
+            return false;
+        }
     }
 
     /**
-     * Get secret key for the given identifier.
-     *
-     * @param string $identifier
-     *
-     * @return string|null
+     * @inheritdoc
      */
-    public function getSecretKey(string $identifier): ?string
+    public function getSecretKey(string $identifier): string
     {
-        if (!array_key_exists($identifier, $this->entries)) {
-            $this->entries[$identifier] = $this->cache->getSecretKey($identifier);
+        if (!array_key_exists($identifier, $this->secretKeys)) {
+            $this->secretKeys[$identifier] = $this->cache->getSecretKey($identifier);
         }
 
-        return $this->entries[$identifier];
+        return $this->secretKeys[$identifier];
     }
 
     /**
-     * Store secret key with the given identifier.
-     *
-     * @param string $identifier
-     * @param string $secretKey
-     *
-     * @return void
+     * @inheritdoc
      */
     public function setSecretKey(string $identifier, string $secretKey): void
     {
         $this->cache->setSecretKey($identifier, $secretKey);
-        $this->entries[$identifier] = $secretKey;
+        $this->secretKeys[$identifier] = $secretKey;
     }
 
     /**
-     * Delete secret key with the given identifier.
-     *
-     * @param string $identifier
+     * @inheritdoc
      */
-    public function deleteSecretKey(string $identifier): void
+    public function deleteSecretKey(string $identifier): bool
     {
-        $this->cache->deleteSecretKey($identifier);
-        unset($this->entries[$identifier]);
+        $result = $this->cache->deleteSecretKey($identifier);
+        unset($this->secretKeys[$identifier]);
+        return $result;
     }
 
     /**
@@ -84,6 +128,7 @@ class ProxySecurityCache implements SecurityCache
      */
     public function reset(): void
     {
-        $this->entries = [];
+        $this->values = [];
+        $this->secretKeys = [];
     }
 }

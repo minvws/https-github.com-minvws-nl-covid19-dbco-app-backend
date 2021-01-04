@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DBCO\HealthAuthorityAPI\Application\Security;
 
+use Exception;
 use RuntimeException;
 
 /**
@@ -48,6 +49,19 @@ class HSMSecurityModule implements SecurityModule
     /**
      * @inheritdoc
      */
+    public function hasSecretKey(string $identifier): bool
+    {
+        try {
+            $this->exec('getkeyaes', $identifier);
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getSecretKey(string $identifier): string
     {
         $seed = hex2bin($this->exec('getkeyaes', $identifier));
@@ -69,5 +83,18 @@ class HSMSecurityModule implements SecurityModule
     public function randomBytes(int $length): string
     {
         return hex2bin($this->exec('getrandombytes', $length));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function listSecretKeys(): array
+    {
+        try {
+            $keys = @json_decode($this->exec('listkeysaes'));
+            return is_array($keys) ? $keys : [];
+        } catch (Exception $e) {
+            return [];
+        }
     }
 }

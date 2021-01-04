@@ -46,6 +46,9 @@ class CovidCase
     public ?Date $exportedAt = null;
     public ?Date $copiedAt = null;
 
+    /**
+     * @var Task[]
+     */
     public array $tasks = array();
 
     public function caseStatus(): string

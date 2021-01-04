@@ -5,8 +5,6 @@ DATABASE_TYPE=`source $BASE_PATH/.env && echo $DATABASE_TYPE`
 PROJECT_NAME=dbco-dev-${DATABASE_TYPE}
 
 echo "=====[ REMOVE CONTAINERS AND VOLUMES ]======================="
-$DOCKER_COMPOSE stop
-$DOCKER_COMPOSE rm --force
-docker volume rm ${PROJECT_NAME}_${DATABASE_TYPE}-data
+$DOCKER_COMPOSE down --remove-orphans -v
 echo ""
 $BASE_PATH/bin/setup-dev
