@@ -23,7 +23,7 @@ class DbCaseRepository implements CaseRepository
     {
         $case = null;
         $dbCase = $this->getCaseFromDb($caseUuid);
-        if ($dbCase != null) {
+        if ($dbCase !== null) {
             $case = $this->caseFromEloquentModel($dbCase);
             $this->verifyExportables($case);
         }

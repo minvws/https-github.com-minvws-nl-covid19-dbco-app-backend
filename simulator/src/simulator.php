@@ -55,7 +55,7 @@ if (isset($_ENV['HEALTHAUTHORITY_PK_KEY_EXCHANGE'])) {
         'Extract health authority public key from secret key in Redis',
         function () {
             $redisClient = new PredisClient(['host' => $_ENV['REDIS_HOST'], 'port' => $_ENV['REDIS_PORT'] ?? 6379]);
-            $secretKey = base64_decode($redisClient->get('secretKey:key_exchange'));
+            $secretKey = base64_decode($redisClient->get('securityCache:secretKey:key_exchange'));
             if ($secretKey !== null) {
                 return sodium_crypto_box_publickey_from_secretkey($secretKey);
             } else {

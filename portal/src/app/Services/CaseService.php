@@ -3,17 +3,17 @@
 namespace App\Services;
 
 use App\Models\Answer;
+use App\Models\ContactDetailsAnswer;
+use App\Models\CovidCase;
+use App\Models\Question;
+use App\Models\Task;
 use App\Repositories\AnswerRepository;
-use App\Repositories\CaseUpdateNotificationRepository;
 use App\Repositories\CaseRepository;
+use App\Repositories\CaseUpdateNotificationRepository;
 use App\Repositories\PairingRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\TaskRepository;
-use App\Models\CovidCase;
-use App\Models\Task;
-use DateTime;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Jenssegers\Date\Date;
 
 /**
@@ -50,6 +50,8 @@ class CaseService
 
     private CaseUpdateNotificationRepository $caseExportRepository;
 
+    private QuestionnaireService $questionnaireService;
+
     /**
      * @var StateRepository
      */
@@ -72,14 +74,16 @@ class CaseService
                                 AnswerRepository $answerRepository,
                                 AuthenticationService $authService,
                                 CaseUpdateNotificationRepository $caseExportRepository,
+                                QuestionnaireService $questionnaireService,
                                 StateRepository $stateRepository)
     {
         $this->caseRepository = $caseRepository;
         $this->taskRepository = $taskRepository;
         $this->pairingRepository = $pairingRepository;
-        $this->answerRepository =$answerRepository;
+        $this->answerRepository = $answerRepository;
         $this->authService = $authService;
         $this->caseExportRepository = $caseExportRepository;
+        $this->questionnaireService = $questionnaireService;
         $this->stateRepository = $stateRepository;
     }
 
@@ -124,13 +128,17 @@ class CaseService
     public function getCase($caseUuid, $includeProgress = false): ?CovidCase
     {
         $case = $this->caseRepository->getCase($caseUuid);
-        if ($case) {
-            $case->tasks = $this->taskRepository->getTasks($caseUuid)->all();
 
-            if ($includeProgress) {
-                $this->applyProgress($caseUuid, $case->tasks);
-            }
+        if ($case === null) {
+            return null;
         }
+
+        $case->tasks = $this->taskRepository->getTasks($caseUuid)->all();
+
+        if ($includeProgress) {
+            $this->applyProgress($case);
+        }
+
         return $case;
     }
 
@@ -199,7 +207,7 @@ class CaseService
                 $taskFormValues['category'] ?? '3',
                 $taskFormValues['communication'] ?? 'staff',
                 isset($taskFormValues['dateOfLastExposure']) ? Date::parse($taskFormValues['dateOfLastExposure']) : null,
-                );
+            );
             return $newTask->uuid;
         }
     }
@@ -213,34 +221,74 @@ class CaseService
         $this->taskRepository->deleteRemovedTasks($caseUuid, $keep);
     }
 
-    private function applyProgress($caseUuid, &$tasks)
+    /**
+     * Task completion progress is divided into three buckets to keep the UI simple:
+     * - 'completed': all details are available, all questions answered
+     * - 'contactable': we have enough basic data to contact the person
+     * - 'incomplete': too much is still missing, provide the user UI warnings
+     *
+     * @param CovidCase $case
+     */
+    private function applyProgress(CovidCase $case): void
     {
-        $tasksByTaskUuid = [];
-        foreach ($tasks as $task) {
-            $task->progress += ($task->dateOfLastExposure != null ? 25 : 0);
-            $tasksByTaskUuid[$task->uuid] = $task;
-        }
+        foreach ($case->tasks as &$task) {
+            $task->progress = Task::TASK_DATA_INCOMPLETE;
 
-        $answers = $this->answerRepository->getAllAnswersByCase($caseUuid);
-        foreach ($answers as $answer) {
-            // Todo: this assumes a task's questionnaire has one ClassificationDetails object
-            // and one ContactDetails object. This may not always be the case.
-            $tasksByTaskUuid[$answer->taskUuid]->progress += $answer->progressContribution();
-        }
+            if (empty($task->category) || empty($task->dateOfLastExposure)) {
+                // No classification or last exposure date: incomplete, move to next task
+                continue;
+            }
 
-        $tasks = array_values($tasksByTaskUuid);
+            // Check Task questionnaire answers for classification and contact details.
+            $hasContactDetails = false;
+            $answers = $this->answerRepository->getAllAnswersByTask($task->uuid);
+
+            $answerIsCompleted = [];
+            foreach ($answers as $answer) {
+                /**
+                 * @var Answer $answer
+                 */
+                $answerIsCompleted[$answer->questionUuid] = $answer->isCompleted();
+
+                if ($answer instanceof ContactDetailsAnswer) {
+                    $hasContactDetails = (!empty($answer->firstname) || !empty($answer->lastname)) && !empty($answer->phonenumber);
+                }
+            }
+
+            if (!$hasContactDetails) {
+                // No contact or classification data, skip the rest of the questionnaire
+                continue;
+            }
+            $task->progress = Task::TASK_DATA_CONTACTABLE;
+
+            // Any missed question will mark the Task partially-complete.
+            $questionnaire = $this->questionnaireService->getQuestionnaire($task->questionnaireUuid);
+            foreach ($questionnaire->questions as $question) {
+                /**
+                 * @var Question $question
+                 */
+                if (in_array($task->category, $question->relevantForCategories) &&
+                    (!isset($answerIsCompleted[$question->uuid]) || $answerIsCompleted[$question->uuid] === false)) {
+                    // One missed answer: move on to next task
+                    break 2;
+                }
+            }
+
+            // No relevant questions were skipped or unanswered: questionnaire complete!
+            $task->progress = Task::TASK_DATA_COMPLETE;
+        }
     }
 
     public function getCopyDataCase(CovidCase $case)
     {
-        return "Naam: ".$case->name."\n"
-            ."Case ID: ".$case->caseId;
+        return "Naam: " . $case->name . "\n"
+            . "Case ID: " . $case->caseId;
     }
 
     public function getCopyDataIndex(CovidCase $case)
     {
-        return "Datum eerste ziektedag (EZD): ".$case->dateOfSymptomOnset->format('d-m-Y').
-            "\nDatum start besmettelijke periode: ".$case->calculateContagiousPeriodStart()->format('d-m-Y');
+        return "Datum eerste ziektedag (EZD): " . $case->dateOfSymptomOnset->format('d-m-Y') .
+            "\nDatum start besmettelijke periode: " . $case->calculateContagiousPeriodStart()->format('d-m-Y');
     }
 
     public function markAsCopied(CovidCase $case, ?Task $task, string $fieldName): void

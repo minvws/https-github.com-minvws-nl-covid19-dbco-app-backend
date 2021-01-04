@@ -6,6 +6,10 @@ use Jenssegers\Date\Date;
 
 class Task
 {
+    public const TASK_DATA_INCOMPLETE = 'incomplete';
+    public const TASK_DATA_CONTACTABLE = 'contactable';
+    public const TASK_DATA_COMPLETE = 'complete';
+
     public string $uuid;
 
     public string $caseUuid;
@@ -39,20 +43,10 @@ class Task
     // Filled upon submit, indicates which questionnaire the user filled
     public ?string $questionnaireUuid;
 
-    public int $progress = 0;
+    public string $progress = self::TASK_DATA_INCOMPLETE;
 
     public ?string $exportId = null;
 
     public ?Date $exportedAt = null;
     public ?Date $copiedAt = null;
-
-    /**
-     * @return bool true if the task has submitted answers by the user.
-     */
-    public function submittedByUser(): bool
-    {
-        // If the user filled out a questionnaire, we know he submitted this task because the questionnaireUuid
-        // is no longer empty
-        return $this->questionnaireUuid != null;
-    }
 }

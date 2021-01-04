@@ -4,11 +4,11 @@ namespace App\Models;
 
 class SimpleAnswer extends Answer
 {
-    public string $value;
+    public ?string $value;
 
-    public function progressContribution()
+    public function isCompleted(): bool
     {
-        return 0;
+        return !empty($this->value);
     }
 
     public function toFormValue()

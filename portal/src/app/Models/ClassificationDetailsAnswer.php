@@ -9,12 +9,16 @@ class ClassificationDetailsAnswer extends Answer
     public bool $category2BRisk = false;
     public bool $category3Risk = false;
 
-    public function progressContribution()
+    public function isCompleted(): bool
     {
-        return 0;
+        return
+            $this->category1Risk ||
+            $this->category2ARisk ||
+            $this->category2BRisk ||
+            $this->category3Risk;
     }
 
-    public function toFormValue()
+    public function toFormValue(): ?string
     {
         // Beslisboom ggd
         if ($this->category1Risk) {
@@ -29,6 +33,7 @@ class ClassificationDetailsAnswer extends Answer
         if ($this->category3Risk) {
             return "3";
         }
+
         return null;
     }
 }

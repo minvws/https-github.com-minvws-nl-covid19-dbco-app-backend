@@ -21,9 +21,13 @@
                     @if ($case->isEditable())
                         <a class="btn btn-outline-primary" role="button" href="{{ route('case-edit', [$case->uuid]) }}">Case wijzigen</a>
                     @endif
-                    <a class="btn btn-outline-primary" role="button" href="{{ route('notify-case-update', ['uuid' => $case->uuid]) }}">Klaarzetten voor index</a>
+                    @if (in_array($case->caseStatus(), [\App\Models\CovidCase::STATUS_PAIRED,
+                                                        \App\Models\CovidCase::STATUS_DELIVERED,
+                                                        \App\Models\CovidCase::STATUS_PENDING_EXPORT,
+                                                        \App\Models\CovidCase::STATUS_PROCESSED]))
+                        <a class="btn btn-outline-primary" role="button" href="{{ route('notify-case-update', ['uuid' => $case->uuid]) }}">Klaarzetten voor index</a>
+                    @endif
                     <a class="btn btn-primary" role="button" href="{{ route('case-dump', [$case->uuid]) }}">Zet in HPZone</a>
-
                 </span>
             </h2>
             <!-- flash message -->
@@ -72,8 +76,8 @@
                         <th scope="col">Naam <i class="icon  icon--eye"></i></th>
                         <th scope="col">Categorie <i class="icon  icon--eye"></i></th>
                         <th scope="col">Toelichting <i class="icon  icon--eye"></i></th>
+                        <th scope="col">Geïnformeerd</th>
                         <th scope="col">Gegevens</th>
-                        <th scope="col">Geinformeerd</th>
                         <th scope="col"></th>
                     </tr>
                     </thead>
@@ -89,17 +93,19 @@
                                 {{ $task->taskContext }}
                             </td>
                             <td class="text-center">
-                                @if ($task->submittedByUser())
-                                    <img src="{{ asset('images/progress-'.$task->progress.'.svg') }}">
+                                @if ($task->informedByIndex)
+                                    <img src="{{ asset('images/done.svg') }}">
                                 @else
-                                    <img src="{{ asset('images/progress-warn.svg') }}">
+                                    Nog niet
                                 @endif
                             </td>
                             <td class="text-center">
-                                @if ($task->informedByIndex)
-                                    <img src="{{ asset('images/done.svg') }}">
-                                @elseif ($task->communication == 'index')
-                                    Nog niet
+                                @if ($task->progress === \App\Models\Task::TASK_DATA_COMPLETE)
+                                    <img src="{{ asset('images/check-100.svg') }}">
+                                @elseif ($task->progress === \App\Models\Task::TASK_DATA_CONTACTABLE)
+                                        <img src="{{ asset('images/check-50.svg') }}">
+                                @else
+                                    <img src="{{ asset('images/check-warn.svg') }}">
                                 @endif
                             </td>
                             <td class="text-center">
