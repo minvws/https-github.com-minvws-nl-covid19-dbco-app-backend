@@ -30,6 +30,10 @@
 @endforeach
 
 <!-- Form submit -->
+    <div class="alert alert-warning mb-3 mt-3">
+        Let op: als je wijzigingen opslaat, toont het portaal niet meer de nieuwe gegevens die de index in de app invult.
+    </div>
+
     <div class="btn-group mb-3 mt-3">
         <input type="submit" class="btn btn-primary" value="Opslaan" />
     </div>
