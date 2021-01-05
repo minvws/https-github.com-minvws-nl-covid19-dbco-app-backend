@@ -6,7 +6,9 @@ use App\Models\Answer;
 use App\Models\ClassificationDetailsAnswer;
 use App\Models\ContactDetailsAnswer;
 use App\Models\Eloquent\EloquentAnswer;
+use App\Models\IndecipherableAnswer;
 use App\Models\SimpleAnswer;
+use App\Security\CacheEntryNotFoundException;
 use App\Security\EncryptionHelper;
 use Illuminate\Support\Collection;
 
@@ -64,24 +66,29 @@ class DbAnswerRepository implements AnswerRepository
     public function answerFromEloquentModel(EloquentAnswer $dbAnswer): Answer
     {
         $answer = null;
-        switch($dbAnswer->question_type) {
-            case 'contactdetails':
-                $answer = new ContactDetailsAnswer();
-                $answer->firstname = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->ctd_firstname);
-                $answer->lastname = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->ctd_lastname);
-                $answer->email = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->ctd_email);
-                $answer->phonenumber = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->ctd_phonenumber);
-                break;
-            case 'classificationdetails':
-                $answer = new ClassificationDetailsAnswer();
-                $answer->category1Risk = ($dbAnswer->cfd_cat_1_risk == 1);
-                $answer->category2ARisk = ($dbAnswer->cfd_cat_2a_risk == 1);
-                $answer->category2BRisk = ($dbAnswer->cfd_cat_2b_risk == 1);
-                $answer->category3Risk = ($dbAnswer->cfd_cat_3_risk == 1);
-                break;
-            default:
-                $answer = new SimpleAnswer();
-                $answer->value = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->spv_value) ?? '';
+
+        try {
+            switch ($dbAnswer->question_type) {
+                case 'contactdetails':
+                    $answer = new ContactDetailsAnswer();
+                    $answer->firstname = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->ctd_firstname);
+                    $answer->lastname = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->ctd_lastname);
+                    $answer->email = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->ctd_email);
+                    $answer->phonenumber = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->ctd_phonenumber);
+                    break;
+                case 'classificationdetails':
+                    $answer = new ClassificationDetailsAnswer();
+                    $answer->category1Risk = ($dbAnswer->cfd_cat_1_risk == 1);
+                    $answer->category2ARisk = ($dbAnswer->cfd_cat_2a_risk == 1);
+                    $answer->category2BRisk = ($dbAnswer->cfd_cat_2b_risk == 1);
+                    $answer->category3Risk = ($dbAnswer->cfd_cat_3_risk == 1);
+                    break;
+                default:
+                    $answer = new SimpleAnswer();
+                    $answer->value = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->spv_value) ?? '';
+            }
+        } catch (CacheEntryNotFoundException $e) {
+            $answer = new IndecipherableAnswer();
         }
 
         $answer->uuid = $dbAnswer->uuid;
