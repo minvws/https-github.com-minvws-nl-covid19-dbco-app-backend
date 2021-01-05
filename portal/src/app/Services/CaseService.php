@@ -163,7 +163,7 @@ class CaseService
     public function canAccess(CovidCase $case): bool
     {
         $user = $this->authService->getAuthenticatedUser();
-        return $user->uuid == $case->owner;
+        return $user->uuid == ($case->assignedUuid ?? $case->owner);
     }
 
     public function updateCase(CovidCase $case)
