@@ -5,6 +5,7 @@ use DBCO\HealthAuthorityAPI\Application\Commands\CreateKeyExchangeSecretKeyComma
 use DBCO\HealthAuthorityAPI\Application\Commands\CreateStoreSecretKeysCommand;
 use DBCO\HealthAuthorityAPI\Application\Commands\GetKeyExchangePublicKeyCommand;
 use DBCO\HealthAuthorityAPI\Application\Commands\ManageKeysCommand;
+use DBCO\HealthAuthorityAPI\Application\Commands\RandomBytesTestCommand;
 use DBCO\Shared\Application\ConsoleApplication;
 use DBCO\HealthAuthorityAPI\Application\Commands\CacheKeysCommand;
 use Psr\Container\ContainerInterface;
@@ -16,7 +17,8 @@ return function (ConsoleApplication $app, ContainerInterface $container) {
         CreateKeyExchangeSecretKeyCommand::class,
         GetKeyExchangePublicKeyCommand::class,
         CacheKeysCommand::class,
-        ManageKeysCommand::class
+        ManageKeysCommand::class,
+        RandomBytesTestCommand::class
     ];
 
     $commandMap = [];

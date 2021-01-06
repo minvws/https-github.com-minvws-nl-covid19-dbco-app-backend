@@ -13,7 +13,7 @@ return [
 
     'logger.name' => 'api',
     'logger.path' => 'php://stdout',
-    'logger.level' => $debug ? Logger::DEBUG : Logger::ERROR,
+    'logger.level' => $debug ? Logger::DEBUG : Logger::INFO,
 
     'redis.connection' => [
         'host' => DI\env('REDIS_HOST'),
