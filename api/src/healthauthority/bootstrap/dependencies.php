@@ -83,7 +83,9 @@ return function (ContainerBuilder $containerBuilder) {
             SecurityCache::class => function (ContainerInterface $c) {
                 return new ProxySecurityCache(new RedisSecurityCache($c->get(PredisClient::class)));
             },
-            SecurityModule::class => autowire(HSMSecurityModule::class),
+            SecurityModule::class =>
+                autowire(HSMSecurityModule::class)
+                    ->constructorParameter('usePhpRandomBytesForNonce', get('securityModule.nonce.usePhpRandomBytes')),
             'privateAPIGuzzleClient' =>
                 autowire(GuzzleHttp\Client::class)
                     ->constructor(get('privateAPI.client'))

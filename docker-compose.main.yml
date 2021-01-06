@@ -122,6 +122,7 @@ services:
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
             SECURITY_MODULE_USER_PIN: ${HSM_USER_PIN}
             SECURITY_MODULE_SLOT_LABEL: "CryptoServer PKCS11 Token"
+            SECURITY_MODULE_NONCE_USE_PHP_RANDOM_BYTES: 1
         volumes:
             - ./api/assets/healthauthority/cs_pkcs11_R2.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
         networks:

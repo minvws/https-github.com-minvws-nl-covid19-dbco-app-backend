@@ -13,7 +13,7 @@ return [
 
     'logger.name' => 'api',
     'logger.path' => 'php://stdout',
-    'logger.level' => $debug ? Logger::DEBUG : Logger::ERROR,
+    'logger.level' => $debug ? Logger::DEBUG : Logger::INFO,
 
     'pairingCode.allowedChars' => '1234567890',
     'pairingCode.length' => 12,
