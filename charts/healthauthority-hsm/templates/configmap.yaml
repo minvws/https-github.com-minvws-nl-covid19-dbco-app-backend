@@ -12,3 +12,4 @@ data:
   REDIS_SENTINEL_SERVICE: {{ .Values.redis.sentinel.service }}
   {{- end }}
   SECURITY_MODULE_TYPE: {{ .Values.security.module.type }}
+  SECURITY_MODULE_NONCE_USE_PHP_RANDOM_BYTES: {{ .Values.security.module.nonce_use_php_random_bytes }}

@@ -49,13 +49,14 @@ db:
 # Encryption (simple keystore is moved to healthauthority-hsm)
 security:
   module:
+    nonce_use_php_random_bytes: 0
     type: hsm
     hsm:
       useExistingSecret: false
       slot:
-        label: slot1
+        label: CryptoServer PKCS11 Token
       user:
-        pin: changeme
+        pin: 1234
       pkcs11: |
         [Global]
         Logging = 0
@@ -70,7 +71,7 @@ security:
         FallbackInterval = 0
 
         [CryptoServer]
-        Device = { hsm }
+        Device = 3001@hsm-simulator
 
         CommandTimeout = 300000
         ConnectionTimeout = 60000
