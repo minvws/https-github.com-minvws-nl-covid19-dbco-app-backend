@@ -120,35 +120,14 @@ services:
             REDIS_PORT: 6379
             PRIVATE_API_BASE_URI: http://private-api:8080/v1/
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
-        networks:
-            - healthauthority
-            - private
-
-    healthauthority-hsm:
-        build:
-            context: ./api
-            dockerfile: Dockerfile-healthauthority
-        command: /src/console security:manage-keys
-        environment:
-            DEBUG: ${DEBUG:-0}
-            DB_TYPE: ${DATABASE_TYPE}
-            DB_HOST: ${DATABASE_TYPE}
-            DB_DATABASE: portal
-            DB_USERNAME: ${HEALTHAUTHORITY_API_DB_USERNAME}
-            DB_PASSWORD: ${HEALTHAUTHORITY_API_DB_PASSWORD}
-            DB_TNS: ${HEALTHAUTHORITY_API_DB_TNS:-oracle/XEPDB1}
-            REDIS_HOST: redis-haa
-            REDIS_PORT: 6379
-            PRIVATE_API_BASE_URI: http://private-api:8080/v1/
-            PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
-        networks:
-            - healthauthority
-            - private
+            SECURITY_MODULE_USER_PIN: ${HSM_USER_PIN}
+            SECURITY_MODULE_SLOT_LABEL: "CryptoServer PKCS11 Token"
+            SECURITY_MODULE_NONCE_USE_PHP_RANDOM_BYTES: 1
         volumes:
-            - hsm-data:/hsm
-        depends_on:
-            - redis-haa
-            - private-api
+            - ./api/assets/healthauthority/cs_pkcs11_R2.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
+        networks:
+            - healthauthority
+            - private
 
     portal:
         build:
@@ -181,6 +160,14 @@ services:
         networks:
             - healthauthority
             - private
+
+    hsm:
+        platform: linux/i386
+        build:
+            context: ../nl-covid19-dbco-app-hsm-private/hsm-simulator
+            dockerfile: Dockerfile
+        networks:
+            - healthauthority
 
 networks:
     public:
