@@ -131,7 +131,7 @@ class EncryptionHelper
      */
     public function sealMessageForClient(string $message, string $transferKey): SealedData
     {
-        $nonce = $this->securityModule->randomBytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
+        $nonce = $this->securityModule->nonce(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
         $ciphertext = sodium_crypto_secretbox($message, $nonce, $transferKey);
         return new SealedData($ciphertext, $nonce);
     }
@@ -172,7 +172,7 @@ class EncryptionHelper
      */
     private function sealStoreValueWithKey(string $value, string $secretKeyIdentifier): string
     {
-        $nonce = $this->securityModule->randomBytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
+        $nonce = $this->securityModule->nonce(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
         $key = $this->securityCache->getSecretKey($secretKeyIdentifier);
         $ciphertext = sodium_crypto_secretbox($value, $nonce, $key);
         return json_encode([
