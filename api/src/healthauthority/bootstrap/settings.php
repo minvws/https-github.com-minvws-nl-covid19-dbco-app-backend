@@ -5,6 +5,7 @@ use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 
 $debug = filter_var(getenv('DEBUG'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false;
+$securityModuleNonceUsePhpRandomBytes = filter_var(getenv('SECURITY_MODULE_NONCE_USE_PHP_RANDOM_BYTES'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false;
 
 return [
     'errorHandler.displayErrorDetails' => $debug,
@@ -13,7 +14,7 @@ return [
 
     'logger.name' => 'api',
     'logger.path' => 'php://stdout',
-    'logger.level' => $debug ? Logger::DEBUG : Logger::ERROR,
+    'logger.level' => $debug ? Logger::DEBUG : Logger::INFO,
 
     'db' => [
         'type' => DI\env('DB_TYPE'),
@@ -55,6 +56,7 @@ return [
     ],
     'privateAPI.jwtSecret' => DI\env('PRIVATE_API_JWT_SECRET'),
 
+    'securityModule.nonce.usePhpRandomBytes' => $securityModuleNonceUsePhpRandomBytes,
     'securityModule.storeKey.timeZone' => 'Europe/Amsterdam',
     'securityModule.storeKey.maxDays' => 14, // max days to store earlier keys for unsealing
 ];

@@ -48,7 +48,7 @@ class EncryptionHelper
      */
     private function sealStoreValueWithKey(string $value, string $secretKeyIdentifier): string
     {
-        $nonce = $this->securityModule->randomBytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
+        $nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
         $key = $this->securityCache->getSecretKey($secretKeyIdentifier);
         $ciphertext = sodium_crypto_secretbox($value, $nonce, $key);
         return json_encode([

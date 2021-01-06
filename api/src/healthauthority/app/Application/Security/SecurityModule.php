@@ -64,4 +64,13 @@ interface SecurityModule
      * @return string
      */
     public function randomBytes(int $length): string;
+
+    /**
+     * Generate nonce.
+     *
+     * @param int $length
+     *
+     * @return string
+     */
+    public function nonce(int $length): string;
 }
