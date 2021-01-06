@@ -27,7 +27,7 @@ security:
       slot:
         label: CryptoServer PKCS11 Token
       user:
-        pin: 1234
+        pin: "1234"
       pkcs11: |
         [Global]
         Logging = 0
