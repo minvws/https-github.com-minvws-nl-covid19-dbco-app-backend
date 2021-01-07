@@ -27,7 +27,6 @@ export default {
                 inlineMode: true,
                 element: null, // filled in later
                 onSelect: (value) => {
-                    console.log('selecting ', value)
                     if (this.mounted) {
                         const month = value.getMonth() + 1;
                         const day = value.getDate()
@@ -35,7 +34,6 @@ export default {
                             + (month < 10 ? '0' : '') + month + '-'
                             + (day < 10 ? '0' : '') + day
                             + 'T00:00:00.000000Z'
-                        console.log('emitting input')
                         this.$emit('input', dateStr) // this sets the value on the model after selection
                         }
                 },
@@ -81,8 +79,6 @@ export default {
     watch: {
         value: {
             handler: function(value, oldValue) {
-                console.log('value', value)
-                console.log('oldValue', oldValue)
                 if (value != null && value !== oldValue) {
                     const date = new Date(value);
                     this.pickerOptions.minDate = Math.min(date, this.pickerOptions.minDate)
@@ -98,7 +94,6 @@ export default {
                         // really manually selected something.
                         // This quirk is necessary because the onSelect doesn't distinguish between
                         // user-set new values or model-set initial values.
-                        console.log('emitting select')
                         this.$emit('select')
                     }
                 }
