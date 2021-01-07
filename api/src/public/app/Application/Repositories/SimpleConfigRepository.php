@@ -36,7 +36,7 @@ class SimpleConfigRepository implements ConfigRepository
             'enableContactCalling' => true,
             'enablePerspectiveSharing' => false,
             'enablePerspectiveCopy' => true,
-            'enableZelfBcoFlow' => true
+            'enableSelfBCO' => true
         ];
 
         return $config;
