@@ -125,7 +125,7 @@ class CaseService
      * @param false $includeProgress If true, loads the progress of the case (significantly slower)
      * @return CovidCase|null
      */
-    public function getCase($caseUuid, $includeProgress = false): ?CovidCase
+    public function getCase($caseUuid, $includeTasks = true, $includeProgress = false): ?CovidCase
     {
         $case = $this->caseRepository->getCase($caseUuid);
 
@@ -133,10 +133,12 @@ class CaseService
             return null;
         }
 
-        $case->tasks = $this->taskRepository->getTasks($caseUuid)->all();
+        if ($includeTasks) {
+            $case->tasks = $this->taskRepository->getTasks($caseUuid)->all();
 
-        if ($includeProgress) {
-            $this->applyProgress($case);
+            if ($includeProgress) {
+                $this->applyProgress($case);
+            }
         }
 
         return $case;

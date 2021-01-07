@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\CovidCase;
+use App\Models\Task;
 use App\Services\AuthenticationService;
 use App\Services\CaseService;
 use App\Services\QuestionnaireService;
@@ -31,6 +32,21 @@ class ApiCaseController extends ApiController
         $this->authService = $authService;
     }
 
+    public function getCase($caseUuid)
+    {
+        $case = $this->caseService->getCase($caseUuid);
+
+        if ($case === null) {
+            return response()->json(['error' => "Deze case bestaat niet (meer)"], Response::HTTP_BAD_REQUEST);
+        }
+
+        if (!$this->caseService->canAccess($case) && !$this->authService->hasPlannerRole()) {
+            return response()->json(['error' => 'Geen toegang tot de case'], Response::HTTP_FORBIDDEN);
+        }
+
+        return response()->json(['case' => $case]);
+    }
+
     public function myCases()
     {
         $myCases = $this->caseService->myCases();
@@ -53,9 +69,7 @@ class ApiCaseController extends ApiController
     {
         // Enrich my cases data with some view level helper data
         foreach ($cases as $case) {
-            $case->editCommand = $case->status === CovidCase::STATUS_DRAFT
-                ? route('case-edit', [$case->uuid])
-                : route('case-view', [$case->uuid]);
+            $case->editCommand = route('case-edit', [$case->uuid]);
 
             $case->statusIcon = asset("/images/status_".$case->caseStatus().".svg");
             $case->statusLabel = CovidCase::statusLabel($case->caseStatus());
@@ -87,4 +101,26 @@ class ApiCaseController extends ApiController
 
         return response()->json(['error' => 'Onbekende fout'], Response::HTTP_BAD_REQUEST);
     }
+/*
+    private function normalizer(CovidCase $case)
+    {
+        $tasks = $case->tasks;
+        $indexedTasks = [];
+        foreach ($tasks as $task) {
+            $indexedTasks[$task->uuid] = $task;
+        }
+        $case->tasks = array_keys($indexedTasks);
+
+        return [
+            'result' => $case->uuid,
+            'entities' => [
+                'cases' => [
+                    $case->uuid => $case,
+                ],
+                'tasks' => [
+                    $indexedTasks
+                ]
+            ]
+        ];
+    }*/
 }

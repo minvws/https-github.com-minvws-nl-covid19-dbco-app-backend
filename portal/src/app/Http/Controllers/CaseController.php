@@ -63,7 +63,7 @@ class CaseController extends Controller
 
     public function viewCase($caseUuid)
     {
-        $case = $this->caseService->getCase($caseUuid, true);
+        $case = $this->caseService->getCase($caseUuid, true, true);
 
         if ($case !== null && $this->caseService->canAccess($case)) {
 
