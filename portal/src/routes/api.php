@@ -21,6 +21,7 @@ Route::name('api-')->group(function() {
     // All pages that are behind auth and require user role
     Route::middleware(['auth', 'rolecheck:user'])->group(function () {
         Route::get('/cases/mine', [ApiCaseController::class, 'myCases'])->name('cases-mine');
+        Route::get('/case/{caseId}', [ApiCaseController::class, 'getCase'])->name('get-case');
     });
 
     // All pages that are behind auth and require planner role

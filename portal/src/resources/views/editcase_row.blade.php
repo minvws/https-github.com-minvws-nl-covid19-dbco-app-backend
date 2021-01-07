@@ -29,7 +29,7 @@
                 <?php
                 $date = Date::parse("-$i days")->format("Y-m-d");
                 $label = Date::parse("-$i days")->format('j M l');
-                $selected = (!isset($task['dateOfLastExposure']) || $date != $task['dateOfLastExposure']) ?: 'selected="selected"'
+                $selected = (!isset($task['dateOfLastExposure']) || $date != $task['dateOfLastExposure']) ? '' : 'selected="selected"'
                 ?>
                 <option value="{{ $date }}" {{ $selected }}>{{ $label }}</option>
             @endfor
@@ -40,8 +40,8 @@
         <label class='sr-only' for="informeren1">Wie informeert</label>
         <select class="form-control" id="informeren1" name="tasks[{{ $row }}][communication]">
             <option disabled selected>Selecteer</option>
-            <option value="staff" {{ (!isset($task['communication']) || $task['communication'] != 'staff') ?: 'selected="selected"' }}>GGD</option>
-            <option value="index" {{ (!isset($task['communication']) || $task['communication'] != 'index') ?: 'selected="selected"' }}>Index</option>
+            <option value="staff" {{ (!isset($task['communication']) || $task['communication'] != 'staff') ? '' : 'selected="selected"' }}>GGD</option>
+            <option value="index" {{ (!isset($task['communication']) || $task['communication'] != 'index') ? '' : 'selected="selected"' }}>Index</option>
         </select>
     </td>
     <td class="text-center">

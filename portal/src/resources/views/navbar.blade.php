@@ -1,38 +1,25 @@
 <!-- Start of navbar component -->
-<div class="row">
-    <nav class="navbar  navbar-expand-lg  navbar-light  bg-white  w-100">
-        @if (!($root ?? false))
-        <a href="{{ $returnPath ?? '/' }}" class="btn  btn-light  rounded-pill">
-            <i class="icon  icon--arrow-left  icon--m0"></i>
-        </a>
-        @endif
+<div>
+<b-navbar type="dark" fixed="top" variant="dark">
+    <b-navbar-brand href="#"><</b-navbar-brand>
 
-        <button class="navbar-toggler  ml-auto  bg-white"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarToggler"
-                aria-controls="navbarToggler"
-                aria-expanded="false" aria-label="Navigatie tonen">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse  navbar-collapse" id="navbarToggler">
-            <ul class="navbar-nav  ml-auto  mt-2  mt-lg-0">
-                @if (App::environment() != 'production')
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Omgeving: {{ ucfirst(App::environment()) }}</a>
-                </li>
-                @endif
-                <li class="nav-item">
-                    <a class="nav-link" href="#">eLearning</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Helpdesk</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('user-profile')}}">{{ $userName }}</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+    <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav class="ml-auto">
+            @if (App::environment() != 'production')
+                <b-nav-item>Omgeving: {{ ucfirst(App::environment()) }}</b-nav-item>
+            @endif
+            <b-nav-item href="#">eLearning</b-nav-item>
+            <b-nav-item href="#">Helpdesk</b-nav-item>
+            <b-nav-item href="{{ route('user-profile')}}">{{ $userName }}</b-nav-item>
+        </b-navbar-nav>
+    </b-collapse>
+</b-navbar>
 </div>
+<div class="mt-5">
+    &nbsp;
+    <!-- spacer to clear sticky topbar -->
+</div>
+
 <!-- End of navbar component -->

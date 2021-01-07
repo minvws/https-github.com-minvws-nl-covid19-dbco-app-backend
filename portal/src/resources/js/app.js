@@ -27,6 +27,7 @@ Vue.use(SvgVue);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('covid-case-table-component', require('./components/CovidCaseTableComponent').default);
+Vue.component('covid-case-edit-component', require('./components/CovidCaseEditComponent').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
