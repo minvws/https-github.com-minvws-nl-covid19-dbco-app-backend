@@ -27,15 +27,17 @@ export default {
                 inlineMode: true,
                 element: null, // filled in later
                 onSelect: (value) => {
-                    //            if (this.mounted) { // ignore the initial select event that we set ourselves
-                    const month = value.getMonth() + 1;
-                    const day = value.getDate()
-                    const dateStr = value.getFullYear() + '-'
-                        + (month < 10 ? '0' : '') + month + '-'
-                        + (day < 10 ? '0' : '') + day
-                        + 'T00:00:00.000000Z'
-                    this.$emit('input', dateStr)
-                    //              }
+                    console.log('selecting ', value)
+                    if (this.mounted) {
+                        const month = value.getMonth() + 1;
+                        const day = value.getDate()
+                        const dateStr = value.getFullYear() + '-'
+                            + (month < 10 ? '0' : '') + month + '-'
+                            + (day < 10 ? '0' : '') + day
+                            + 'T00:00:00.000000Z'
+                        console.log('emitting input')
+                        this.$emit('input', dateStr) // this sets the value on the model after selection
+                        }
                 },
                 onRender: (element) => {
                     const selectedElement = $(element).find('.is-start-date.is-end-date');
@@ -79,12 +81,26 @@ export default {
     watch: {
         value: {
             handler: function(value, oldValue) {
-                if (value !== oldValue) {
+                console.log('value', value)
+                console.log('oldValue', oldValue)
+                if (value != null && value !== oldValue) {
                     const date = new Date(value);
                     this.pickerOptions.minDate = Math.min(date, this.pickerOptions.minDate)
                     this.pickerInstance.setOptions(this.pickerOptions)
                     this.pickerInstance.setDate(date)
                     this.pickerInstance.gotoDate(date)
+                    if (oldValue != '') {
+                        // This is slightly iffy. Upon initial load of the page and
+                        // setting the value to its stored date, oldValue is an empty string.
+                        // In that case, we don't want to emit a select yet, because it wasn't
+                        // A user initiated one.
+                        // If however oldValue is anything but '' (even null), then the user has
+                        // really manually selected something.
+                        // This quirk is necessary because the onSelect doesn't distinguish between
+                        // user-set new values or model-set initial values.
+                        console.log('emitting select')
+                        this.$emit('select')
+                    }
                 }
             }
         }
@@ -99,7 +115,7 @@ export default {
         // Late binding to the element (not yet available when it was first initialized)
         this.pickerOptions.element = document.getElementById(this.id)
         this.pickerInstance = this.datePickerFactory(this.id, this.pickerOptions, true)
-
+        this.mounted = true
     },
     methods: {
         datePickerFactory(id, pickerOptions, inline = false) {

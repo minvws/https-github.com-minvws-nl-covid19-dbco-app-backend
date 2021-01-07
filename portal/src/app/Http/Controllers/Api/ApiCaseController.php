@@ -12,6 +12,7 @@ use App\Services\TaskService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
+use Jenssegers\Date\Date;
 
 
 class ApiCaseController extends ApiController
@@ -101,26 +102,45 @@ class ApiCaseController extends ApiController
 
         return response()->json(['error' => 'Onbekende fout'], Response::HTTP_BAD_REQUEST);
     }
-/*
-    private function normalizer(CovidCase $case)
-    {
-        $tasks = $case->tasks;
-        $indexedTasks = [];
-        foreach ($tasks as $task) {
-            $indexedTasks[$task->uuid] = $task;
-        }
-        $case->tasks = array_keys($indexedTasks);
 
-        return [
-            'result' => $case->uuid,
-            'entities' => [
-                'cases' => [
-                    $case->uuid => $case,
-                ],
-                'tasks' => [
-                    $indexedTasks
-                ]
-            ]
-        ];
-    }*/
+    public function postCase(Request $request)
+    {
+        $caseData = $request->input('case');
+        $caseUuid = $caseData['uuid'];
+
+        $validatedData = $request->validate([
+            'case.name' => 'required|max:255',
+            'case.caseId' => 'max:255'
+        ]);
+
+        if ($caseUuid == '') {
+            // New case!
+            $case = new CovidCase();
+        } else {
+            // Existing case
+            $case = $this->caseService->getCase($caseUuid);
+
+            if ($case === null) {
+                return response()->json(['error' => "Deze case bestaat niet (meer)"], Response::HTTP_BAD_REQUEST);
+            }
+
+            if (!$this->caseService->canAccess($case) && !$this->authService->hasPlannerRole()) {
+                return response()->json(['error' => 'Geen toegang tot de case'], Response::HTTP_FORBIDDEN);
+            }
+        }
+
+        $case->name = $validatedData['case']['name'];
+        $case->caseId = $validatedData['case']['caseId'];
+        $case->dateOfSymptomOnset = isset($caseData['dateOfSymptomOnset']) ? Date::parse($caseData['dateOfSymptomOnset']) : null;
+
+        if ($caseUuid == '') {
+            $result = $this->caseService->createCase($case);
+        } else {
+            $result = $this->caseService->updateCase($case);
+        }
+        if ($result) {
+            return response()->json(['case' => $case]);
+        }
+        return response()->json(['error' => 'Onbekende fout bij opslag'], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
 }

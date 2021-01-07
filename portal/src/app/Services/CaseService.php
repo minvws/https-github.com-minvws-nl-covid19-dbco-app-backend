@@ -90,7 +90,6 @@ class CaseService
     public function createDraftCase(): CovidCase
     {
         $owner = $this->authService->getAuthenticatedUser();
-        $assignedTo = null;
 
         // Auto assign to yourself
         $assignedTo = $owner;
@@ -168,9 +167,19 @@ class CaseService
         return $user->uuid == ($case->assignedUuid ?? $case->owner);
     }
 
-    public function updateCase(CovidCase $case)
+    public function updateCase(CovidCase $case): bool
     {
-        $this->caseRepository->updateCase($case);
+        return $this->caseRepository->updateCase($case);
+    }
+
+    public function createCase(CovidCase $case): CovidCase
+    {
+        $owner = $this->authService->getAuthenticatedUser();
+
+        // Auto assign to yourself
+        $case->assignedUuid = $owner->uuid;
+
+        return $this->caseRepository->createCase($owner, $case);
     }
 
     public function notifyCaseUpdate(CovidCase $case): bool
