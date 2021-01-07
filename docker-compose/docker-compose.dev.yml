@@ -1,14 +1,22 @@
 version: '3.7'
 
+volumes:
+    hsm-data:
+        driver: local
+
 services:
+    mysql:
+        ports:
+            - ${MYSQL_PORT:-3306}:3306
+
     private-api:
         environment:
             APP_ENV: development
         ports:
             - ${PRIVATE_API_PORT:-8081}:8080
         volumes:
-            - ./api/src/shared:/shared
-            - ./api/src/private:/src
+            - ./services/shared/library:/shared/library
+            - ./services/private-api/src:/src
 
     public-api:
         environment:
@@ -16,36 +24,22 @@ services:
         ports:
             - ${PUBLIC_API_PORT:-8082}:8080
         volumes:
-            - ./api/src/shared:/shared
-            - ./api/src/public:/src
-
-    worker:
-        build: worker
-        environment:
-            APP_ENV: development
-        volumes:
-            - ./worker/src:/src
-
-    bridge:
-        build: bridge
-        environment:
-            APP_ENV: development
-        volumes:
-            - ./bridge/src:/src
+            - ./services/shared/library:/shared/library
+            - ./services/public-api/src:/src
 
     bridge-clients:
-        build: bridge
+        build: ./services/bridge
         environment:
             APP_ENV: development
         volumes:
-            - ./bridge/src:/src
+            - ./services/bridge/src:/src
 
     bridge-caseresults:
-        build: bridge
+        build: ./services/bridge
         environment:
             APP_ENV: development
         volumes:
-            - ./bridge/src:/src
+            - ./services/bridge/src:/src
 
     healthauthority-api:
         environment:
@@ -53,8 +47,8 @@ services:
         ports:
             - ${HEALTHAUTHORITY_API_PORT:-8083}:8080
         volumes:
-            - ./api/src/shared:/shared
-            - ./api/src/healthauthority:/src
+            - ./services/shared/library:/shared/library
+            - ./services/healthauthority-api/src:/src
 
     portal:
         build:
@@ -65,34 +59,18 @@ services:
         ports:
             - ${PORTAL_PORT:-8084}:8080
         volumes:
-            - ./portal/src:/src
-
-    simulator:
-        build: simulator
-        environment:
-            APP_ENV: development
-            DEBUG: ${DEBUG:-0}
-            PUBLIC_API_BASE_URI: http://public-api:8080/v1/
-            REDIS_HOST: redis-haa
-            REDIS_PORT: 6379
-        depends_on:
-            - public-api
-        volumes:
-            - ./simulator/src:/src
-        networks:
-            - public
-            - healthauthority
+            - ./services/portal/src:/src
 
     healthauthority-hsm:
         build:
-            context: ./api
-            dockerfile: Dockerfile-healthauthority
+            context: ./services
+            dockerfile: healthauthority-api/Dockerfile
         command: /src/console security:manage-keys
         environment:
             APP_ENV: development
             DEBUG: ${DEBUG:-0}
-            DB_TYPE: ${DATABASE_TYPE}
-            DB_HOST: ${DATABASE_TYPE}
+            DB_TYPE: mysql
+            DB_HOST: mysql
             DB_DATABASE: portal
             DB_USERNAME: ${HEALTHAUTHORITY_API_DB_USERNAME}
             DB_PASSWORD: ${HEALTHAUTHORITY_API_DB_PASSWORD}
@@ -108,9 +86,9 @@ services:
             - private
         volumes:
             - hsm-data:/hsm
-            - ./api/assets/healthauthority/cs_pkcs11_R2_keystore.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
-            - ./api/src/shared:/shared
-            - ./api/src/healthauthority:/src
+            - ./services/healthauthority-api/assets/cs_pkcs11_R2_keystore.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
+            - ./services/healthauthority-api/src:/src
+            - ./services/shared/library:/shared/library
         depends_on:
             - redis-haa
             - private-api

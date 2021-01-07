@@ -6,25 +6,15 @@ services:
         environment:
             APP_ENV: test
         volumes:
-            - ./api/src/shared:/shared
-            - ./api/src/private:/src
+            - ./services/shared/library:/shared/library
+            - ./services/private-api/src:/src
 
     public-api:
         environment:
             APP_ENV: test
         volumes:
-            - ./api/src/shared:/shared
-            - ./api/src/public:/src
-
-    worker:
-        environment:
-            APP_ENV: test
-        command: bash -c "echo DISABLED"
-
-    bridge:
-        environment:
-            APP_ENV: test
-        command: bash -c "echo DISABLED"
+            - ./services/shared/library:/shared/library
+            - ./services/public-api/src:/src
 
     bridge-clients:
         environment:
@@ -40,11 +30,11 @@ services:
         environment:
             APP_ENV: test
         volumes:
-            - ./api/src/shared:/shared
-            - ./api/src/healthauthority:/src
+            - ./services/shared/library:/shared/library
+            - ./services/healthauthority-api/src:/src
 
     portal:
         environment:
             APP_ENV: test
         volumes:
-            - ./portal/src:/src
+            - ./services/portal/src:/src

@@ -1,8 +1,6 @@
 #!/bin/bash
 BASE_PATH=$(dirname $0)/..
 DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
-DATABASE_TYPE=`source $BASE_PATH/.env && echo $DATABASE_TYPE`
-PROJECT_NAME=dbco-dev-${DATABASE_TYPE}
 
 echo "=====[ REMOVE CONTAINERS AND VOLUMES ]======================="
 $DOCKER_COMPOSE down --remove-orphans -v
