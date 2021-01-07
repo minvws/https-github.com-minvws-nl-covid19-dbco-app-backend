@@ -1,5 +1,6 @@
 #!/bin/bash
 BASE_PATH=$(dirname $0)/..
-DATABASE_TYPE=`source $BASE_PATH/.env && echo $DATABASE_TYPE`
-PROJECT_NAME=dbco-dev-${DATABASE_TYPE}
-docker-compose --project-directory=$BASE_PATH -p $PROJECT_NAME -f docker-compose.main.yml -f docker-compose.dev.yml -f docker-compose.${DATABASE_TYPE}.yml -f docker-compose.dev.${DATABASE_TYPE}.yml "$@"
+docker-compose --project-directory=$BASE_PATH \
+               -f docker-compose/docker-compose.main.yml \
+               -f docker-compose/docker-compose.dev.yml \
+               "$@"

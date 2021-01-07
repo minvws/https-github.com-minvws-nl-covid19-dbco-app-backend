@@ -5,44 +5,30 @@ DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
 . $BASE_PATH/.env
 
 echo "=====[ BUILD CONTAINERS ]======================="
-$DOCKER_COMPOSE -f docker-compose.setup.yml build
+$DOCKER_COMPOSE -f docker-compose/docker-compose.setup.yml -f docker-compose/docker-compose.tools.yml build
 
 echo
 echo "=====[ SETUP HSM ]======================="
 $DOCKER_COMPOSE up -d hsm
 sleep 5
-$DOCKER_COMPOSE -f docker-compose.setup.yml run --rm hsm-setup
+$DOCKER_COMPOSE -f docker-compose/docker-compose.setup.yml run --rm hsm-setup
 
 echo
 echo "=====[ SETUP OTHER CONTAINERS ]======================="
 $DOCKER_COMPOSE up -d --remove-orphans
 
-if [ $DATABASE_TYPE = "mysql" ]; then
-  echo
-  echo "=====[ SETUP MYSQL DATABASE ]========================="
-  echo "Waiting for MySQL to launch on ${MYSQL_PORT:-3306}..."
-  while ! nc -z localhost ${MYSQL_PORT:-3306}; do
-    sleep 0.5
-  done
+echo
+echo "=====[ SETUP MYSQL DATABASE ]========================="
+echo "Waiting for MySQL to launch on ${MYSQL_PORT:-3306}..."
+while ! nc -z localhost ${MYSQL_PORT:-3306}; do
+  sleep 0.5
+done
 
-  sleep 10
+sleep 10
 
-  $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
-  $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
-  $DOCKER_COMPOSE run --rm mysqlclient < $BASE_PATH/install/mysql/permissions.sql
-fi
-
-if [ $DATABASE_TYPE = "postgres" ]; then
-  echo
-  echo "=====[ SETUP POSTGRES DATABASE ]========================="
-  echo "Waiting for PostgreSQL to launch on ${POSTGRES_PORT:-5432}..."
-  while ! nc -z localhost ${POSTGRES_PORT:-5432}; do
-    sleep 0.5
-  done
-  $DOCKER_COMPOSE run --rm psql -c "CREATE USER portal PASSWORD '$PORTAL_DB_PASSWORD'"
-  $DOCKER_COMPOSE run --rm psql -c "CREATE USER healthauthority_api PASSWORD '$HEALTHAUTHORITY_API_DB_PASSWORD'"
-  $DOCKER_COMPOSE run --rm psql < $BASE_PATH/install/postgres/permissions.sql
-fi
+$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
+$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
+$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml run --rm mysqlclient < $BASE_PATH/services/mysql/permissions.sql
 
 $BASE_PATH/bin/update-dev
 

@@ -1,7 +1,7 @@
 version: '3.7'
 
 volumes:
-    hsm-data:
+    mysql-data:
         driver: local
 
 services:
@@ -15,10 +15,20 @@ services:
         networks:
             - healthauthority
 
+    mysql:
+        image: mysql
+        volumes:
+            - mysql-data:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: portal
+            MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+        networks:
+            - healthauthority
+
     private-api:
         build:
-            context: ./api
-            dockerfile: Dockerfile-private
+            context: ./services
+            dockerfile: private-api/Dockerfile
         environment:
             DEBUG: ${DEBUG:-0}
             REDIS_HOST: redis
@@ -34,8 +44,8 @@ services:
 
     public-api:
         build:
-            context: ./api
-            dockerfile: Dockerfile-public
+            context: ./services
+            dockerfile: public-api/Dockerfile
         environment:
             DEBUG: ${DEBUG:-0}
             REDIS_HOST: redis
@@ -46,22 +56,8 @@ services:
             - public
             - sluice
 
-    bridge:
-        build: bridge
-        environment:
-            DEBUG: ${DEBUG:-0}
-            REDIS_HOST: redis
-            REDIS_PORT: 6379
-            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority-api:8080/v1/
-        depends_on:
-            - redis
-            - healthauthority-api
-        networks:
-            - sluice
-            - healthauthority
-
     bridge-clients:
-        build: bridge
+        build: ./services/bridge
         command: /src/bridge process:clients
         environment:
             DEBUG: ${DEBUG:-0}
@@ -76,7 +72,7 @@ services:
             - healthauthority
 
     bridge-caseresults:
-        build: bridge
+        build: ./services/bridge
         command: /src/bridge process:caseresults
         environment:
             DEBUG: ${DEBUG:-0}
@@ -90,28 +86,14 @@ services:
             - sluice
             - healthauthority
 
-    worker:
-        build: worker
-        environment:
-            DEBUG: ${DEBUG:-0}
-            REDIS_HOST: redis
-            REDIS_PORT: 6379
-            HEALTHAUTHORITY_API_BASE_URI: http://healthauthority-api:8080/v1/
-        depends_on:
-            - redis
-            - healthauthority-api
-        networks:
-            - sluice
-            - healthauthority
-              
     healthauthority-api:
         build:
-            context: ./api
-            dockerfile: Dockerfile-healthauthority
+            context: ./services
+            dockerfile: healthauthority-api/Dockerfile
         environment:
             DEBUG: ${DEBUG:-0}
-            DB_TYPE: ${DATABASE_TYPE}
-            DB_HOST: ${DATABASE_TYPE}
+            DB_TYPE: mysql
+            DB_HOST: mysql
             DB_DATABASE: portal
             DB_USERNAME: ${HEALTHAUTHORITY_API_DB_USERNAME}
             DB_PASSWORD: ${HEALTHAUTHORITY_API_DB_PASSWORD}
@@ -123,22 +105,25 @@ services:
             SECURITY_MODULE_USER_PIN: ${HSM_USER_PIN}
             SECURITY_MODULE_SLOT_LABEL: "CryptoServer PKCS11 Token"
             SECURITY_MODULE_NONCE_USE_PHP_RANDOM_BYTES: 1
+        depends_on:
+            - mysql
+            - redis-haa
         volumes:
-            - ./api/assets/healthauthority/cs_pkcs11_R2.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
+            - ./services/healthauthority-api/assets/cs_pkcs11_R2.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
         networks:
             - healthauthority
             - private
 
     portal:
         build:
-            context: ./portal
-            dockerfile: Dockerfile
+            context: ./services
+            dockerfile: portal/Dockerfile
         environment:
             APP_URL: ${PORTAL_APP_URL}
             APP_KEY: ${PORTAL_APP_KEY}
             APP_DEBUG: ${DEBUG:-0}
-            DB_CONNECTION: ${DATABASE_TYPE}
-            DB_HOST: ${DATABASE_TYPE}
+            DB_CONNECTION: mysql
+            DB_HOST: mysql
             DB_DATABASE: portal
             DB_USERNAME: ${PORTAL_DB_USERNAME}
             DB_PASSWORD: ${PORTAL_DB_PASSWORD}
@@ -157,6 +142,8 @@ services:
             HEALTHAUTHORITY_API_BASE_URI: http://healthauthority-api:8080/v1/
         depends_on:
             - healthauthority-api
+            - mysql
+            - redis-haa
         networks:
             - healthauthority
             - private
