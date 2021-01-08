@@ -70,7 +70,7 @@ jobs:
           sleep 15
           $DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
           $DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
-          $DOCKER_COMPOSE_TOOLS run --rm mysqlclient < install/mysql/permissions.sql
+          $DOCKER_COMPOSE_TOOLS run --rm mysqlclient < services/mysql/permissions.sql
           $DOCKER_COMPOSE_TOOLS run --rm --entrypoint php portal artisan migrate
 
       - name: Worker - Run phpunit
