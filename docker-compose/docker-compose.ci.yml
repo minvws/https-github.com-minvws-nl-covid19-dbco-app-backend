@@ -10,11 +10,6 @@ services:
         environment:
             APP_ENV: test
 
-    worker:
-        environment:
-            APP_ENV: test
-        command: bash -c "echo DISABLED"
-
     healthauthority-api:
         environment:
             APP_ENV: test
@@ -22,11 +17,6 @@ services:
     portal:
         environment:
             APP_ENV: test
-            
-    bridge:
-        environment:
-            APP_ENV: test
-        command: bash -c "echo DISABLED"
 
     bridge-clients:
         environment:
