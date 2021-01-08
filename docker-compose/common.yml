@@ -1,9 +1,5 @@
 version: '3.7'
 
-volumes:
-    mysql-data:
-        driver: local
-
 services:
     redis:
         image: redis
@@ -27,70 +23,73 @@ services:
 
     private-api:
         build:
-            context: ./services
+            context: ../services
             dockerfile: private-api/Dockerfile
         environment:
+            APP_ENV: ${APP_ENV:-development}
             DEBUG: ${DEBUG:-0}
             REDIS_HOST: redis
             REDIS_PORT: 6379
             JWT_ENABLED: ${PRIVATE_API_JWT_ENABLED:-true}
             JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
             JWT_SECURE: ${PRIVATE_API_JWT_SECURE}
-        depends_on:
-            - redis
         networks:
             - private
             - sluice
 
     public-api:
         build:
-            context: ./services
+            context: ../services
             dockerfile: public-api/Dockerfile
         environment:
+            APP_ENV: ${APP_ENV:-development}
             DEBUG: ${DEBUG:-0}
             REDIS_HOST: redis
             REDIS_PORT: 6379
-        depends_on:
-            - redis
         networks:
             - public
             - sluice
 
-    bridge-clients:
-        build: ./services/bridge
-        command: /src/bridge process:clients
+    bridge:
+        build: ../services/bridge
         environment:
+            APP_ENV: ${APP_ENV:-development}
             DEBUG: ${DEBUG:-0}
             REDIS_HOST: redis
             REDIS_PORT: 6379
             HEALTHAUTHORITY_API_BASE_URI: http://healthauthority-api:8080/v1/
-        depends_on:
-            - redis
-            - healthauthority-api
         networks:
             - sluice
             - healthauthority
 
+    bridge-clients:
+        extends:
+            service: bridge
+        command: /src/bridge bridge:clients
+
     bridge-caseresults:
-        build: ./services/bridge
-        command: /src/bridge process:caseresults
+        extends:
+            service: bridge
+        command: /src/bridge bridge:caseresults
+
+    worker:
+        build: ../services/worker
         environment:
+            APP_ENV: ${APP_ENV:-development}
             DEBUG: ${DEBUG:-0}
             REDIS_HOST: redis
             REDIS_PORT: 6379
             HEALTHAUTHORITY_API_BASE_URI: http://healthauthority-api:8080/v1/
-        depends_on:
-            - redis
-            - healthauthority-api
         networks:
             - sluice
             - healthauthority
 
     healthauthority-api:
         build:
-            context: ./services
+            context: ../services
             dockerfile: healthauthority-api/Dockerfile
         environment:
+            APP_ENV: ${APP_ENV:-development}
             DEBUG: ${DEBUG:-0}
             DB_TYPE: mysql
             DB_HOST: mysql
@@ -105,20 +104,26 @@ services:
             SECURITY_MODULE_USER_PIN: ${HSM_USER_PIN}
             SECURITY_MODULE_SLOT_LABEL: "CryptoServer PKCS11 Token"
             SECURITY_MODULE_NONCE_USE_PHP_RANDOM_BYTES: 1
-        depends_on:
-            - mysql
-            - redis-haa
         volumes:
-            - ./services/healthauthority-api/assets/cs_pkcs11_R2.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
+            - ../services/healthauthority-api/assets/cs_pkcs11_R2.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
         networks:
             - healthauthority
             - private
 
+    healthauthority-hsm:
+        extends:
+            service: healthauthority-api
+        command: /src/console security:manage-keys
+        volumes:
+            - hsm-data:/hsm
+            - ../services/healthauthority-api/assets/cs_pkcs11_R2_keystore.cfg:/etc/utimaco/cs_pkcs11_R2.cfg
+
     portal:
         build:
-            context: ./services
+            context: ../services
             dockerfile: portal/Dockerfile
         environment:
+            APP_ENV: ${APP_ENV:-development}
             APP_URL: ${PORTAL_APP_URL}
             APP_KEY: ${PORTAL_APP_KEY}
             APP_DEBUG: ${DEBUG:-0}
@@ -127,7 +132,6 @@ services:
             DB_DATABASE: portal
             DB_USERNAME: ${PORTAL_DB_USERNAME}
             DB_PASSWORD: ${PORTAL_DB_PASSWORD}
-            DB_TNS: ${PORTAL_DB_TNS:-oracle/XEPDB1}
             REDIS_HOST: redis-haa
             REDIS_PORT: 6379
             TIH_CLIENT_ID: ${PORTAL_TIH_CLIENT_ID}
@@ -140,10 +144,6 @@ services:
             PRIVATE_API_BASE_URI: http://private-api:8080/v1/
             PRIVATE_API_JWT_SECRET: ${PRIVATE_API_JWT_SECRET}
             HEALTHAUTHORITY_API_BASE_URI: http://healthauthority-api:8080/v1/
-        depends_on:
-            - healthauthority-api
-            - mysql
-            - redis-haa
         networks:
             - healthauthority
             - private
@@ -151,13 +151,7 @@ services:
     hsm:
         platform: linux/i386
         build:
-            context: ../nl-covid19-dbco-app-hsm-private/hsm-simulator
+            context: ../../nl-covid19-dbco-app-hsm-private/hsm-simulator
             dockerfile: Dockerfile
         networks:
             - healthauthority
-
-networks:
-    public:
-    sluice:
-    private:
-    healthauthority:

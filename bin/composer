@@ -1,4 +1,4 @@
 #!/bin/bash
 DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
 args=( "${@:2}" )
-$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.dev.yml run --rm --entrypoint=composer $1 "${args[@]}"
+$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml run --rm --entrypoint=composer $1 "${args[@]}"

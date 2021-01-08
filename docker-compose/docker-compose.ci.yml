@@ -1,29 +1,73 @@
 version: '3.7'
 
-# ci overrides
+volumes:
+    mysql-data:
+        driver: local
+
+networks:
+    public:
+    sluice:
+    private:
+    healthauthority:
+
 services:
+    redis:
+        extends:
+            file: docker-compose/common.yml
+            service: redis
+
+    redis-haa:
+        extends:
+            file: docker-compose/common.yml
+            service: redis-haa
+
+    mysql:
+        extends:
+            file: docker-compose/common.yml
+            service: mysql
+
     private-api:
-        environment:
-            APP_ENV: test
+        extends:
+            file: docker-compose/common.yml
+            service: private-api
+        depends_on:
+            - redis
 
     public-api:
-        environment:
-            APP_ENV: test
+        extends:
+            file: docker-compose/common.yml
+            service: public-api
+        depends_on:
+            - redis
 
     healthauthority-api:
-        environment:
-            APP_ENV: test
+        extends:
+            file: docker-compose/common.yml
+            service: healthauthority-api
+        depends_on:
+            - mysql
+            - redis-haa
 
     portal:
-        environment:
-            APP_ENV: test
+        extends:
+            file: docker-compose/common.yml
+            service: portal
+        depends_on:
+            - healthauthority-api
+            - mysql
+            - redis-haa
 
-    bridge-clients:
-        environment:
-            APP_ENV: test
-        command: bash -c "echo DISABLED"
+    hsm:
+        extends:
+            file: docker-compose/common.yml
+            service: hsm
 
-    bridge-caseresults:
-        environment:
-            APP_ENV: test
-        command: bash -c "echo DISABLED" 
+    worker:
+        extends:
+            file: docker-compose/common.yml
+            service: worker
+
+    mysqlclient:
+        extends:
+            file: docker-compose/tools.yml
+            service: mysqlclient
