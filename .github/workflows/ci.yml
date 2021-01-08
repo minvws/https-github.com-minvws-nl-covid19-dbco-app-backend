@@ -10,10 +10,10 @@ env:
   PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
   HSM_SO_PIN: ${{ secrets.CI_HSM_SO_PIN }}
   HSM_USER_PIN: ${{ secrets.CI_HSM_USER_PIN }}
-  DOCKER_COMPOSE: docker-compose --env-file ./.env.ci -p test -f docker-compose/docker-compose.main.yml -f docker-compose/docker-compose.ci.yml
-  DOCKER_COMPOSE_TOOLS: docker-compose --env-file ./.env.ci -p test -f docker-compose/docker-compose.main.yml -f docker-compose/docker-compose.ci.yml -f docker-compose/docker-compose.tools.yml
-  DOCKER_COMPOSE_SETUP: docker-compose --env-file ./.env.ci -p test -f docker-compose/docker-compose.main.yml -f docker-compose/docker-compose.ci.yml -f docker-compose/docker-compose.setup.yml
-  DOCKER_COMPOSE_SETUP_AND_TOOLS: docker-compose --env-file ./.env.ci -p test -f docker-compose/docker-compose.main.yml -f docker-compose/docker-compose.ci.yml -f docker-compose/docker-compose.setup.yml -f docker-compose/docker-compose.tools.yml
+  DOCKER_COMPOSE: docker-compose --env-file ./.env.ci --project-directory=./ -p test -f docker-compose/docker-compose.main.yml -f docker-compose/docker-compose.ci.yml
+  DOCKER_COMPOSE_TOOLS: docker-compose --env-file ./.env.ci --project-directory=./ -p test -f docker-compose/docker-compose.main.yml -f docker-compose/docker-compose.ci.yml -f docker-compose/docker-compose.tools.yml
+  DOCKER_COMPOSE_SETUP: docker-compose --env-file ./.env.ci --project-directory=./ -p test -f docker-compose/docker-compose.main.yml -f docker-compose/docker-compose.ci.yml -f docker-compose/docker-compose.setup.yml
+  DOCKER_COMPOSE_SETUP_AND_TOOLS: docker-compose --env-file ./.env.ci --project-directory=./ -p test -f docker-compose/docker-compose.main.yml -f docker-compose/docker-compose.ci.yml -f docker-compose/docker-compose.setup.yml -f docker-compose/docker-compose.tools.yml
 
 jobs:
   build:
