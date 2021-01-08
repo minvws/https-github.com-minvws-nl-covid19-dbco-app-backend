@@ -5,7 +5,7 @@
 
 <div id="app" class="bg-white">
     @include ('navbar')
-    <div class="container questionform">
+    <div class="container-xl bg-white questionform">
         <covid-case-edit-component @if ($case ?? '') case-uuid="{{ $case->uuid }}" @endif></covid-case-edit-component>
     </div>
 </div>

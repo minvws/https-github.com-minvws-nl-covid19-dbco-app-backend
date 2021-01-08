@@ -40,6 +40,10 @@
  */
 @import 'node_modules/bootstrap-vue/src/index.scss';
 
+BODY, .form-control {
+    font-size: 0.9rem;
+}
+
 /**
  * Import overrides.
  */

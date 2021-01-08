@@ -1,12 +1,12 @@
 <template>
     <div>
-        <h3 class="mt-3 mb-3"><span v-if="covidCase.name.length">{{ covidCase.name }}</span><span v-else>&lt;Nieuwe case&gt;</span></h3>
-        <b-tabs>
-            <b-tab title="Medische gegevens" class="bg-light">
+        <h3 class="ml-4 mt-3 mb-3"><strong><span v-if="this.caseUuid || covidCase.name.length">{{ covidCase.name }}</span><span v-else>&lt;Nieuwe case&gt;</span></strong></h3>
+        <b-tabs class="">
+            <b-tab title="Medische gegevens">
                 <medical-data-component v-model="covidCase" @persist="persist()" />
             </b-tab>
             <b-tab title="Contactonderzoek" :disabled="covidCase.name.length == 0">
-               <!-- <contact-tracing-component v-model="covidCase" /> -->
+                <contact-tracing-component v-model="covidCase" />
             </b-tab>
             <b-tab title="Afronden & status" v-model="covidCase" lazy>
              <!--   <case-summary-component/> -->
