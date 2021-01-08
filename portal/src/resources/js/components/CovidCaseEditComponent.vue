@@ -29,7 +29,7 @@ export default {
     data() {
         return {
             covidCase: {
-                "uuid": '',
+                "uuid": null,
                 "name": '',
                 "caseId": '',
                 "dateOfSymptomOnset": '',
@@ -51,6 +51,7 @@ export default {
     },
     methods: {
         persist() {
+            const isNew = (this.covidCase.uuid == null);
             if (this.covidCase.name) {
                 console.log('Persisting...', this.covidCase)
                 axios.post('/api/case', {
@@ -58,8 +59,11 @@ export default {
                 }).then(response => {
                     // Only update the uuid after creation, to avoid needless propagations
                     console.log('this', this)
-                    this.covidCase.uuid = response.data.case.uuid
-                    history.pushState({}, '', '/editcase/' + response.data.case.uuid)
+                    if (isNew) {
+                        console.log('Pushing history')
+                        this.covidCase.uuid = response.data.case.uuid
+                        history.replaceState({}, '', '/editcase/' + response.data.case.uuid)
+                    }
                 }).catch(function (error) {
                     alert('Er ging iets fout bij het opslaan van de case')
                     console.log('Error!', error)
