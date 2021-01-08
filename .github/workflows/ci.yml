@@ -51,7 +51,7 @@ jobs:
 
       - name: Build docker images
         working-directory: ./main
-        run: $DOCKER_COMPOSE_SETUP build
+        run: $DOCKER_COMPOSE_SETUP_AND_TOOLS build
 
       - name: Setup HSM
         working-directory: ./main
