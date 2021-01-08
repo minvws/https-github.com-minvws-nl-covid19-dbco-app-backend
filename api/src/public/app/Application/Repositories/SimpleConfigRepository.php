@@ -35,7 +35,8 @@ class SimpleConfigRepository implements ConfigRepository
         $config->featureFlags = [
             'enableContactCalling' => true,
             'enablePerspectiveSharing' => false,
-            'enablePerspectiveCopy' => true
+            'enablePerspectiveCopy' => true,
+            'enableSelfBCO' => true
         ];
 
         return $config;
