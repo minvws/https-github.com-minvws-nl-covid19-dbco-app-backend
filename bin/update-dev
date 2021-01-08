@@ -1,7 +1,7 @@
 #!/bin/bash
 BASE_PATH=$(dirname $0)/..
 DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
-DOCKER_COMPOSE_TOOLS="$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml"
+DOCKER_COMPOSE_TOOLS="$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.dev.yml"
 
 $DOCKER_COMPOSE up -d --remove-orphans
 

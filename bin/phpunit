@@ -4,7 +4,11 @@ BASE_PATH=$(dirname $0)/..
 . $BASE_PATH/.env.test
 
 PROJECT_NAME=dbco-test
+
 DOCKER_COMPOSE="docker-compose --project-directory=$BASE_PATH -p $PROJECT_NAME --env-file .env.test -f docker-compose/docker-compose.main.yml -f docker-compose/docker-compose.test.yml"
+DOCKER_COMPOSE_TOOLS="$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.test.yml"
+DOCKER_COMPOSE_SETUP="$DOCKER_COMPOSE -f docker-compose/docker-compose.setup.yml"
+DOCKER_COMPOSE_SETUP_AND_TOOLS="$DOCKER_COMPOSE_SETUP -f docker-compose/docker-compose.tools.dev.yml"
 
 CONTAINER=$1
 PHPUNIT_ARGS="${@:2}"
@@ -15,7 +19,7 @@ if [ "$1" == "--reset" ]; then
 
   echo "=====[ RESET ]====="
   $DOCKER_COMPOSE down --remove-orphans -v
-  $DOCKER_COMPOSE -f docker-compose/docker-compose.setup.yml build
+  $DOCKER_COMPOSE_SETUP_AND_TOOLS build
   echo
 fi
 
@@ -23,7 +27,7 @@ if [ "$1" == "--setup" ] || [ "$1" == "--reset" ]; then
   echo "=====[ SETUP HSM ]======================="
   $DOCKER_COMPOSE up -d hsm
   sleep 5
-  $DOCKER_COMPOSE -f docker-compose/docker-compose.setup.yml run --rm hsm-setup
+  $DOCKER_COMPOSE_SETUP run --rm hsm-setup
 fi
 
 echo "=====[ START CONTAINERS ]====="
@@ -32,7 +36,7 @@ $DOCKER_COMPOSE up -d
 echo
 echo "=====[ START MYSQL DATABASE ]========================="
 echo "Waiting for MYSQL to launch on ${MYSQL_PORT:-3306}..."
-while ! echo "SELECT 1" | $DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml run --rm mysqlclient > /dev/null 2>&1; do
+while ! echo "SELECT 1" | $DOCKER_COMPOSE_TOOLS run --rm mysqlclient > /dev/null 2>&1; do
   sleep 0.5
 done
 
@@ -49,9 +53,9 @@ if [ "$1" == "--setup" ] || [ "$1" == "--reset" ]; then
 
   echo
   echo "=====[ SETUP MYSQL DATABASE ]========================="
-  $DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
-  $DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
-  $DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml run --rm mysqlclient < $BASE_PATH/services/mysql/permissions.sql
+  $DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
+  $DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
+  $DOCKER_COMPOSE_TOOLS run --rm mysqlclient < $BASE_PATH/services/mysql/permissions.sql
 fi
 
 if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "healthauthority-api" ] || [ "$CONTAINER" == "portal" ]; then
@@ -63,7 +67,7 @@ fi
 if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "worker" ]; then
   echo
   echo "=====[ RUN TESTS FOR WORKER ]====="
-  $DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml run --rm --entrypoint=/src/vendor/bin/phpunit worker "$PHPUNIT_ARGS"
+  $DOCKER_COMPOSE_TOOLS run --rm --entrypoint=/src/vendor/bin/phpunit worker "$PHPUNIT_ARGS"
 fi
 
 if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "private-api" ]; then
