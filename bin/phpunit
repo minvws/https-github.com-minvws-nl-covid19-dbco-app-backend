@@ -8,7 +8,7 @@ PROJECT_NAME=dbco-test
 DOCKER_COMPOSE="docker-compose --project-directory=$BASE_PATH -p $PROJECT_NAME --env-file .env.test -f docker-compose/docker-compose.main.yml -f docker-compose/docker-compose.test.yml"
 DOCKER_COMPOSE_TOOLS="$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.test.yml"
 DOCKER_COMPOSE_SETUP="$DOCKER_COMPOSE -f docker-compose/docker-compose.setup.yml"
-DOCKER_COMPOSE_SETUP_AND_TOOLS="$DOCKER_COMPOSE_SETUP -f docker-compose/docker-compose.tools.dev.yml"
+DOCKER_COMPOSE_SETUP_AND_TOOLS="$DOCKER_COMPOSE_SETUP -f docker-compose/docker-compose.tools.test.yml"
 
 CONTAINER=$1
 PHPUNIT_ARGS="${@:2}"
@@ -26,7 +26,7 @@ fi
 if [ "$1" == "--setup" ] || [ "$1" == "--reset" ]; then
   echo "=====[ SETUP HSM ]======================="
   $DOCKER_COMPOSE up -d hsm
-  sleep 5
+  sleep 20
   $DOCKER_COMPOSE_SETUP run --rm hsm-setup
 fi
 
