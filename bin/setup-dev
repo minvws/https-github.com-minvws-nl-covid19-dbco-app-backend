@@ -1,17 +1,20 @@
 #!/bin/bash
 BASE_PATH=$(dirname $0)/..
-DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
+DOCKER_COMPOSE="$(dirname $0)/docker-compose-dev"
+DOCKER_COMPOSE_TOOLS="$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.dev.yml"
+DOCKER_COMPOSE_SETUP="$DOCKER_COMPOSE -f docker-compose/docker-compose.setup.yml"
+DOCKER_COMPOSE_SETUP_AND_TOOLS="$DOCKER_COMPOSE_SETUP -f docker-compose/docker-compose.tools.dev.yml"
 
 . $BASE_PATH/.env
 
 echo "=====[ BUILD CONTAINERS ]======================="
-$DOCKER_COMPOSE -f docker-compose/docker-compose.setup.yml -f docker-compose/docker-compose.tools.yml build
+DOCKER_COMPOSE_SETUP_AND_TOOLS build
 
 echo
 echo "=====[ SETUP HSM ]======================="
 $DOCKER_COMPOSE up -d hsm
 sleep 5
-$DOCKER_COMPOSE -f docker-compose/docker-compose.setup.yml run --rm hsm-setup
+$DOCKER_COMPOSE_SETUP run --rm hsm-setup
 
 echo
 echo "=====[ SETUP OTHER CONTAINERS ]======================="
@@ -26,9 +29,9 @@ done
 
 sleep 10
 
-$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
-$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
-$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml run --rm mysqlclient < $BASE_PATH/services/mysql/permissions.sql
+DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
+DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
+DOCKER_COMPOSE_TOOLS run --rm mysqlclient < $BASE_PATH/services/mysql/permissions.sql
 
 $BASE_PATH/bin/update-dev
 
