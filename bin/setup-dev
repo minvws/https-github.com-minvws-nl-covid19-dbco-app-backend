@@ -1,14 +1,14 @@
 #!/bin/bash
 BASE_PATH=$(dirname $0)/..
 DOCKER_COMPOSE="$(dirname $0)/docker-compose-dev"
-DOCKER_COMPOSE_TOOLS="$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.dev.yml"
+DOCKER_COMPOSE_TOOLS="$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml"
 DOCKER_COMPOSE_SETUP="$DOCKER_COMPOSE -f docker-compose/docker-compose.setup.yml"
-DOCKER_COMPOSE_SETUP_AND_TOOLS="$DOCKER_COMPOSE_SETUP -f docker-compose/docker-compose.tools.dev.yml"
+DOCKER_COMPOSE_SETUP_AND_TOOLS="$DOCKER_COMPOSE_SETUP -f docker-compose/docker-compose.tools.yml"
 
 . $BASE_PATH/.env
 
 echo "=====[ BUILD CONTAINERS ]======================="
-DOCKER_COMPOSE_SETUP_AND_TOOLS build
+$DOCKER_COMPOSE_SETUP_AND_TOOLS build
 
 echo
 echo "=====[ SETUP HSM ]======================="
@@ -22,16 +22,14 @@ $DOCKER_COMPOSE up -d --remove-orphans
 
 echo
 echo "=====[ SETUP MYSQL DATABASE ]========================="
-echo "Waiting for MySQL to launch on ${MYSQL_PORT:-3306}..."
-while ! nc -z localhost ${MYSQL_PORT:-3306}; do
+echo "Waiting for MYSQL to launch..."
+while ! echo "SELECT 1" | $DOCKER_COMPOSE_TOOLS run --rm mysqlclient > /dev/null 2>&1; do
   sleep 0.5
 done
 
-sleep 10
-
-DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
-DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
-DOCKER_COMPOSE_TOOLS run --rm mysqlclient < $BASE_PATH/services/mysql/permissions.sql
+$DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
+$DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
+$DOCKER_COMPOSE_TOOLS run --rm mysqlclient < $BASE_PATH/services/mysql/permissions.sql
 
 $BASE_PATH/bin/update-dev
 

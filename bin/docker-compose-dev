@@ -1,6 +1,3 @@
 #!/bin/bash
 BASE_PATH=$(dirname $0)/..
-docker-compose --project-directory=$BASE_PATH \
-               -f docker-compose/docker-compose.main.yml \
-               -f docker-compose/docker-compose.dev.yml \
-               "$@"
+docker-compose --project-directory=$BASE_PATH -f docker-compose.yml "$@"
