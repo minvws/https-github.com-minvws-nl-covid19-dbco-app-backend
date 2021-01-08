@@ -45,9 +45,9 @@ jobs:
         uses: satackey/action-docker-layer-caching@v0.0.11
         continue-on-error: true
         with:
-          key: docker-${{ github.workflow }}-{hash}
+          key: docker-lc-${{ github.workflow }}-{hash}
           restore-keys: |
-            docker-${{ github.workflow }}-
+            docker-lc-${{ github.workflow }}-
 
       - name: Build docker images
         working-directory: ./main
