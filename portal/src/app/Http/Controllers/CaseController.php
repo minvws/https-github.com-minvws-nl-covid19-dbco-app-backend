@@ -39,10 +39,7 @@ class CaseController extends Controller
 
     public function newCase()
     {
-        // Because we want to show the new case immediately, we create a draft case.
-        $case = $this->caseService->createDraftCase();
-
-        return redirect()->route('case-edit', [$case->uuid]);
+        return view('editcase');
     }
 
     public function editCase($caseUuid)
@@ -52,7 +49,6 @@ class CaseController extends Controller
         if ($case !== null && $this->caseService->canAccess($case)) {
             $case->tasks[] = new Task(); // one empty placeholder
             return view('editcase', [
-                'action' => $case->status === CovidCase::STATUS_DRAFT ? 'new' : 'edit',
                 'case' => $case,
                 'tasks' => $case->tasks
             ]);

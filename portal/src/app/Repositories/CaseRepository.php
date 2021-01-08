@@ -38,7 +38,7 @@ interface CaseRepository
      *
      * @return CovidCase
      */
-    public function createCase(DBCOUser $owner, CovidCase $case): bool;
+    public function createCase(BCOUser $owner, CovidCase $case): CovidCase;
 
     /**
      * Update case.

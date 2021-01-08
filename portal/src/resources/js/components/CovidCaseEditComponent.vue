@@ -57,7 +57,9 @@ export default {
                     case: this.covidCase
                 }).then(response => {
                     // Only update the uuid after creation, to avoid needless propagations
+                    console.log('this', this)
                     this.covidCase.uuid = response.data.case.uuid
+                    history.pushState({}, '', '/editcase/' + response.data.case.uuid)
                 }).catch(function (error) {
                     alert('Er ging iets fout bij het opslaan van de case')
                     console.log('Error!', error)

@@ -87,16 +87,6 @@ class CaseService
         $this->stateRepository = $stateRepository;
     }
 
-    public function createDraftCase(): CovidCase
-    {
-        $owner = $this->authService->getAuthenticatedUser();
-
-        // Auto assign to yourself
-        $assignedTo = $owner;
-
-        return $this->caseRepository->createCase($owner, CovidCase::STATUS_DRAFT, $assignedTo);
-    }
-
     /**
      * Create pairing code for the given case.
      *
@@ -178,6 +168,7 @@ class CaseService
 
         // Auto assign to yourself
         $case->assignedUuid = $owner->uuid;
+        $case->status = CovidCase::STATUS_DRAFT;
 
         return $this->caseRepository->createCase($owner, $case);
     }

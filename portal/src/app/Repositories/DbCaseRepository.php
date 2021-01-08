@@ -108,7 +108,7 @@ class DbCaseRepository implements CaseRepository
      *
      * @return CovidCase
      */
-    public function createCase(DBCOUser $owner, CovidCase $case): bool
+    public function createCase(BCOUser $owner, CovidCase $case): CovidCase
     {
         $dbCase = new EloquentCase();
 
@@ -119,12 +119,11 @@ class DbCaseRepository implements CaseRepository
         $dbCase->case_id = $case->caseId;
         $dbCase->date_of_symptom_onset = $case->dateOfSymptomOnset != null ? $case->dateOfSymptomOnset->toDateTimeImmutable() : null;
 
-        if ($assignedTo != null) {
-            $dbCase->assigned_uuid = $assignedTo->uuid;
-        }
+        $dbCase->assigned_uuid = $case->assignedUuid;
 
-        $dbCase->save();
-        return $this->caseFromEloquentModel($dbCase);
+        if ($dbCase->save()) {
+            return $this->caseFromEloquentModel($dbCase);
+        }
     }
 
     /**

@@ -134,7 +134,11 @@ class ApiCaseController extends ApiController
         $case->dateOfSymptomOnset = isset($caseData['dateOfSymptomOnset']) ? Date::parse($caseData['dateOfSymptomOnset']) : null;
 
         if ($caseUuid == '') {
-            $result = $this->caseService->createCase($case);
+            $result = false;
+            $case = $this->caseService->createCase($case);
+            if ($case) {
+                $result = true;
+            }
         } else {
             $result = $this->caseService->updateCase($case);
         }
