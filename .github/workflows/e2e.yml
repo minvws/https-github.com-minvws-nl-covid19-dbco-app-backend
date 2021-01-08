@@ -35,7 +35,7 @@ jobs:
           docker build -t test/public-api:latest -f services/public-api/Dockerfile services/
           docker build -t test/private-api:latest -f services/private-api/Dockerfile services/
           docker build -t test/healthauthority-api:latest -f services/healthauthority-api/Dockerfile services/
-          docker build -t test/portal:latest -f services/portal/Dockerfile services/portal/
+          docker build -t test/portal:latest -f services/portal/Dockerfile services/
           docker build -t test/bridge:latest -f services/bridge/Dockerfile services/bridge/
           kind load docker-image test/public-api:latest
           kind load docker-image test/private-api:latest
