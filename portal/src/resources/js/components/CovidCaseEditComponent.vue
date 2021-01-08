@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3 class="mt-3 mb-3">{{ covidCase.name }}</h3>
+        <h3 class="mt-3 mb-3"><span v-if="covidCase.name.length">{{ covidCase.name }}</span><span v-else>&lt;Nieuwe case&gt;</span></h3>
         <b-tabs>
             <b-tab title="Medische gegevens" class="bg-light">
                 <medical-data-component v-model="covidCase" @persist="persist()" />
