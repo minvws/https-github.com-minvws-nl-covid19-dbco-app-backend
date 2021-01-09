@@ -29,6 +29,11 @@ class TaskService
         return $this->taskRepository->getTask($taskUuid);
     }
 
+    public function getTasks(string $caseUuid)
+    {
+        return $this->taskRepository->getTasks($caseUuid);
+    }
+
     public function canAccess(Task $task)
     {
         $case = $this->caseService->getCase($task->caseUuid);

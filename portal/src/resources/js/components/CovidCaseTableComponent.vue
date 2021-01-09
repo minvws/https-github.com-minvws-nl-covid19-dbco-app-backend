@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="cases.length" >
+        <div v-if="cases.length" class="mt-5">
             <table class="table  table-rounded  table-hover  table-ggd">
                 <colgroup>
                     <col class="w-20">

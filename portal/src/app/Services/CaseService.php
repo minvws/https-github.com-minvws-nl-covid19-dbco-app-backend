@@ -223,64 +223,6 @@ class CaseService
         $this->taskRepository->deleteRemovedTasks($caseUuid, $keep);
     }
 
-    /**
-     * Task completion progress is divided into three buckets to keep the UI simple:
-     * - 'completed': all details are available, all questions answered
-     * - 'contactable': we have enough basic data to contact the person
-     * - 'incomplete': too much is still missing, provide the user UI warnings
-     *
-     * @param CovidCase $case
-     */
-    private function applyProgress(CovidCase $case): void
-    {
-        foreach ($case->tasks as &$task) {
-            $task->progress = Task::TASK_DATA_INCOMPLETE;
-
-            if (empty($task->category) || empty($task->dateOfLastExposure)) {
-                // No classification or last exposure date: incomplete, move to next task
-                continue;
-            }
-
-            // Check Task questionnaire answers for classification and contact details.
-            $hasContactDetails = false;
-            $answers = $this->answerRepository->getAllAnswersByTask($task->uuid);
-
-            $answerIsCompleted = [];
-            foreach ($answers as $answer) {
-                /**
-                 * @var Answer $answer
-                 */
-                $answerIsCompleted[$answer->questionUuid] = $answer->isCompleted();
-
-                if ($answer instanceof ContactDetailsAnswer) {
-                    $hasContactDetails = (!empty($answer->firstname) || !empty($answer->lastname)) && !empty($answer->phonenumber);
-                }
-            }
-
-            if (!$hasContactDetails) {
-                // No contact or classification data, skip the rest of the questionnaire
-                continue;
-            }
-            $task->progress = Task::TASK_DATA_CONTACTABLE;
-
-            // Any missed question will mark the Task partially-complete.
-            $questionnaire = $this->questionnaireService->getQuestionnaire($task->questionnaireUuid);
-            foreach ($questionnaire->questions as $question) {
-                /**
-                 * @var Question $question
-                 */
-                if (in_array($task->category, $question->relevantForCategories) &&
-                    (!isset($answerIsCompleted[$question->uuid]) || $answerIsCompleted[$question->uuid] === false)) {
-                    // One missed answer: move on to next task
-                    break 2;
-                }
-            }
-
-            // No relevant questions were skipped or unanswered: questionnaire complete!
-            $task->progress = Task::TASK_DATA_COMPLETE;
-        }
-    }
-
     public function getCopyDataCase(CovidCase $case)
     {
         return "Naam: " . $case->name . "\n"

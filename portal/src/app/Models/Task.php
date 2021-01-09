@@ -43,7 +43,7 @@ class Task
     // Filled upon submit, indicates which questionnaire the user filled
     public ?string $questionnaireUuid;
 
-    public string $progress = self::TASK_DATA_INCOMPLETE;
+    public ?string $progress = null;
 
     public ?string $exportId = null;
 

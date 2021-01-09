@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiCaseController;
 use App\Http\Controllers\Api\ApiUserController;
+use App\Http\Controllers\Api\ApiTaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,8 +22,10 @@ Route::name('api-')->group(function() {
     // All pages that are behind auth and require user role
     Route::middleware(['auth', 'rolecheck:user'])->group(function () {
         Route::get('/cases/mine', [ApiCaseController::class, 'myCases'])->name('cases-mine');
-        Route::get('/case/{caseId}', [ApiCaseController::class, 'getCase'])->name('get-case');
+        Route::get('/case/{caseUuid}', [ApiCaseController::class, 'getCase'])->name('get-case');
         Route::post('/case', [ApiCaseController::class, 'postCase'])->name('post-case');
+
+        Route::get('/cases/{caseUuid}/tasks', [ApiTaskController::class, 'getCaseTasks'])->name('case-tasks');
     });
 
     // All pages that are behind auth and require planner role

@@ -28,8 +28,7 @@
                         button-variant="outline-primary"
                         name="radio-btn-symptoms"
                         buttons
-                    ></b-form-radio-group>
-
+                    />
                 </div>
                 <!-- End of app and pairing question -->
 

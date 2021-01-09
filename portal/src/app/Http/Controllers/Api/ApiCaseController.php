@@ -35,7 +35,7 @@ class ApiCaseController extends ApiController
 
     public function getCase($caseUuid)
     {
-        $case = $this->caseService->getCase($caseUuid);
+        $case = $this->caseService->getCase($caseUuid, false);
 
         if ($case === null) {
             return response()->json(['error' => "Deze case bestaat niet (meer)"], Response::HTTP_BAD_REQUEST);
