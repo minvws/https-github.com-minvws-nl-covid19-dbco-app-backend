@@ -1,39 +1,21 @@
 <template>
-    <div>
+    <dbco-form-wrap title="Contactonderzoek">
     <!-- Start of table title component -->
-    <div class="align-items-end  mb-3 mt-5">
-        <h3 class="mb-0"><div class="question-nr">{{ $questionNr++ }}</div> Ga je nu samen met de index de contacten in kaart brengen?</h3>
-        <p class="mt-2 mb-0  ml-auto">Ook zonder dat jij contacten klaarzet voor de index, kan de index alvast beginnen met het verzamelen van contacten en hun gegevens.</p>
-    </div>
-    <!-- End of table title component -->
-    <p>
-    <div class="btn-group-toggle" data-toggle="buttons">
-        <label class="btn btn-outline-primary active">
-            <input name="addtasksnow" type="radio" autocomplete="off" value="ja" onClick="$('#taskTable').show();"
-                   @if (old('addtasksnow') === 'ja') checked @endif
-            /> Ja
-        </label>
-        <label class="btn btn-outline-primary active">
-            <input name="addtasksnow" type="radio" autocomplete="off" value="nee" onClick="$('#taskTable').hide();"
-                   @if (old('addtasksnow') === 'nee') checked @endif
-            /> Nee
-        </label>
-    </div>
-    </p>
-
-    @error('tasks.*')
-    <div class="alert alert-danger">
-        Vul de ontbrekende gegevens in:
-        <ul>
-            @if ($errors->get("tasks.*.category"))
-            <li>vul voor elk contact de <strong>categorie</strong> in</li>
-            @endif
-            @if ($errors->get("tasks.*.dateOfLastExposure"))
-            <li>vul voor elk contact de <strong>datum laatste contact</strong> in</li>
-            @endif
-        </ul>
-    </div>
-    @enderror
+        <b-card class="w-100">
+            <b-card-body>
+                <h3>Contacten toevoegen</h3>
+            </b-card-body>
+        </b-card>
+        <b-card class="w-100 mt-3">
+            <b-card-body>
+                <h3>Index gaat zelf contacten aanvullen</h3>
+            </b-card-body>
+        </b-card>
+        <b-card class="w-100 mt-3">
+            <b-card-body>
+                <h3>Contexten toevoegen</h3>
+            </b-card-body>
+        </b-card>
 
     <!-- Start of table component -->
     <table id="taskTable" class="table  table-rounded  table-bordered  table-has-header  table-has-footer  table-form  table-ggd" @if (old('addtasksnow') === 'nee') style="display:none" @endif>
@@ -116,12 +98,14 @@
     </div>
     <!-- End of app and pairing question -->
 
-    </div>
+    </dbco-form-wrap>
 </template>
 
 <script>
+import DbcoFormWrap from "./DbcoFormWrap";
 export default {
     name: "ContactTracingComponent",
+    components: {DbcoFormWrap},
     props: {
         value: {
             type: Object,
