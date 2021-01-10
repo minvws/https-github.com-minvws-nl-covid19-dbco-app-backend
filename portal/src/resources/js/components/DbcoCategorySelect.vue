@@ -2,6 +2,7 @@
     <b-dropdown variant="link" text="small" class="dbco-select">
         <template #button-content>
             {{ currentOption }}
+            <span v-show="!currentOption">Kies</span>
         </template>
         <b-dropdown-item v-for="(option, index) in options" :key="index" @click="select(option)">
             <strong>{{ option.title }}</strong>
@@ -11,7 +12,7 @@
         <b-dropdown-form>
             <b-form-group label="" label-for="dropdown-form-add-on" @submit.stop.prevent>
                 <b-form-text>Optioneel: wat is er tijdens het contact gebeurd</b-form-text>
-                <b-form-input placeholder="Beschrijf situatie" />
+                <b-form-textarea rows="2" placeholder="Beschrijf situatie" />
             </b-form-group>
         </b-dropdown-form>
         <slot></slot>

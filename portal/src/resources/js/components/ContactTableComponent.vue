@@ -35,7 +35,7 @@
                     <dbco-category-select v-model="task.category" />
                 </b-td>
                 <b-td>
-                    Datepicker
+                    <dbco-datepicker v-model="task.dateOfLastExposure" :id="'date_' + (task.uuid ? task.uuid : 'ph')" variant="dropdown" />
                 </b-td>
                 <b-td>
                     <b-form-radio-group
@@ -59,9 +59,10 @@
 
 <script>
 import DbcoCategorySelect from "./DbcoCategorySelect";
+import DbcoDatepicker from "./DbcoDatepicker";
 export default {
     name: "ContactTableComponent",
-    components: {DbcoCategorySelect},
+    components: {DbcoDatepicker, DbcoCategorySelect},
     props: {
         caseUuid: {
             type: String,

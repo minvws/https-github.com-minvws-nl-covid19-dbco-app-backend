@@ -1,5 +1,13 @@
 <template>
-    <div :id="id"></div>
+    <div v-if="variant == 'inline'" :id="id"></div>
+    <div v-else-if="variant == 'dropdown'">
+        <b-dropdown variant="link" text="small" class="dbco-date-select" :id="id">
+            <template #button-content>
+                {{ value }}
+                <span v-show="!value">Kies datum</span>
+            </template>
+        </b-dropdown>
+    </div>
 </template>
 
 <script>
@@ -9,7 +17,15 @@ export default {
     name: "DbcoDatepicker",
     props: {
         id: String,
-        value: String
+        value: String,
+        variant: {
+            type: String,
+            default: 'inline',
+            validator: function (value) {
+                return ['inline', 'dropdown'].indexOf(value) !== -1
+            }
+
+        }
     },
     data() {
         return {
@@ -24,7 +40,7 @@ export default {
                 numberOfMonths: 2,
                 autoRefresh: true,
                 numberOfColumns: 2,
-                inlineMode: true,
+                inlineMode: (this.variant=='inline'),
                 element: null, // filled in later
                 onSelect: (value) => {
                     if (this.mounted) {
@@ -108,17 +124,17 @@ export default {
          */
         window.disableLitepickerStyles = true
         // Late binding to the element (not yet available when it was first initialized)
-        this.pickerOptions.element = document.getElementById(this.id)
-        this.pickerInstance = this.datePickerFactory(this.id, this.pickerOptions, true)
+        let id = this.id;
+        if (this.variant == 'dropdown') {
+            // must now bind to the scoped id
+            id = id + '__BV_toggle_';
+        }
+        this.pickerOptions.element = document.getElementById(id)
+        this.pickerInstance = this.datePickerFactory(this.pickerOptions, true)
         this.mounted = true
     },
     methods: {
-        datePickerFactory(id, pickerOptions, inline = false) {
-            const element = document.getElementById(id);
-
-            if (element === null) {
-                return null;
-            }
+        datePickerFactory(pickerOptions, inline = false) {
 
             let minDate = new Date();
             minDate.setDate(minDate.getDate() - 28);
