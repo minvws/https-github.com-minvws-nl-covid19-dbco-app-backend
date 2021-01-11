@@ -131,7 +131,9 @@ class ApiCaseController extends ApiController
 
         $case->name = $validatedData['case']['name'];
         $case->caseId = $validatedData['case']['caseId'];
+        $case->symptomatic = $caseData['symptomatic'];
         $case->dateOfSymptomOnset = isset($caseData['dateOfSymptomOnset']) ? Date::parse($caseData['dateOfSymptomOnset']) : null;
+        $case->dateOfTest = isset($caseData['dateOfTest']) ? Date::parse($caseData['dateOfTest']) : null;
 
         if ($caseUuid == '') {
             $result = false;

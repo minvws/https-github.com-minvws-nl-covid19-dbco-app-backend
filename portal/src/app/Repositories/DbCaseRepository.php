@@ -118,6 +118,7 @@ class DbCaseRepository implements CaseRepository
         $dbCase->name = $case->name;
         $dbCase->case_id = $case->caseId;
         $dbCase->date_of_symptom_onset = $case->dateOfSymptomOnset != null ? $case->dateOfSymptomOnset->toDateTimeImmutable() : null;
+        $dbCase->symptomatic = $case->symptomatic !== null ? ($case->symptomatic ? 1 : 0) : null;
 
         $dbCase->assigned_uuid = $case->assignedUuid;
 
@@ -145,6 +146,8 @@ class DbCaseRepository implements CaseRepository
         $dbCase->exported_at = $case->exportedAt != null ? $case->exportedAt->toDateTimeImmutable() : null;
         $dbCase->export_id = $case->exportId;
         $dbCase->date_of_symptom_onset = $case->dateOfSymptomOnset != null ? $case->dateOfSymptomOnset->toDateTimeImmutable() : null;
+        $dbCase->date_of_test = $case->dateOfTest != null ? $case->dateOfTest->toDateTimeImmutable() : null;
+        $dbCase->symptomatic = $case->symptomatic !== null ? ($case->symptomatic ? 1 : 0) : null;
         return $dbCase->save();
     }
 
@@ -168,7 +171,9 @@ class DbCaseRepository implements CaseRepository
         $case->uuid = $dbCase->uuid;
         $case->caseId = $dbCase->case_id;
         $case->organisationUuid = $dbCase->organisation_uuid;
-        $case->dateOfSymptomOnset = $dbCase->date_of_symptom_onset != NULL ? new Date($dbCase->date_of_symptom_onset) : null;
+        $case->dateOfSymptomOnset = $dbCase->date_of_symptom_onset !== NULL ? new Date($dbCase->date_of_symptom_onset) : null;
+        $case->dateOfTest = $dbCase->date_of_test !== NULL ? new Date($dbCase->date_of_test) : null;
+        $case->symptomatic = $dbCase->symptomatic !== NULL ? ($dbCase->symptomatic == 1): null;
         $case->name = $dbCase->name;
         $case->owner = $dbCase->owner;
         $case->status = $dbCase->status;
@@ -178,9 +183,9 @@ class DbCaseRepository implements CaseRepository
         $case->copiedAt = $dbCase->copied_at != null ? new Date($dbCase->copied_at) : null;
         $case->exportedAt = $dbCase->exported_at != null ? new Date($dbCase->exported_at) : null;
         $case->exportId = $dbCase->export_id;
-        $case->pairingExpiresAt = $dbCase->pairing_expires_at != null ? new Date($dbCase->pairing_expires_at) : null;
-        $case->windowExpiresAt = $dbCase->window_expires_at != null ? new Date($dbCase->window_expires_at) : null;
-        $case->indexSubmittedAt = $dbCase->index_submitted_at != null ? new Date($dbCase->index_submitted_at) : null;
+        $case->pairingExpiresAt = $dbCase->pairing_expires_at !== null ? new Date($dbCase->pairing_expires_at) : null;
+        $case->windowExpiresAt = $dbCase->window_expires_at !== null ? new Date($dbCase->window_expires_at) : null;
+        $case->indexSubmittedAt = $dbCase->index_submitted_at !== null ? new Date($dbCase->index_submitted_at) : null;
 
         if ($case->assignedUuid !== null) {
             $case->assignedName = $dbCase->assigned_name;

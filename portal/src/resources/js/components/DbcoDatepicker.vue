@@ -18,6 +18,16 @@ export default {
     props: {
         id: String,
         value: String,
+        /* The symptom date can be passed as a property. If set, the contagious and source
+           periods will be rendered accordingly. If set to 'self', the component knows that
+           the date you are trying to set is the symptom date, and will move everything accordingly.
+           If omitted, the picker acts as a simple date picker without symptom period knowledge.d
+         */
+        symptomDate: String,
+        symptomatic: {
+            type: Boolean,
+            default: false
+        },
         variant: {
             type: String,
             default: 'inline',
@@ -31,6 +41,7 @@ export default {
         return {
             pickerInstance: null,
             mounted: false,
+            shouldEmit: true,
             pickerOptions: {
                 lang: 'nl',
                 moveByOneMonth: true,
@@ -43,15 +54,21 @@ export default {
                 inlineMode: (this.variant=='inline'),
                 element: null, // filled in later
                 onSelect: (value) => {
+                    console.log('litepicker onselect')
                     if (this.mounted) {
+                        console.log('on mounted select')
                         const month = value.getMonth() + 1;
                         const day = value.getDate()
                         const dateStr = value.getFullYear() + '-'
                             + (month < 10 ? '0' : '') + month + '-'
                             + (day < 10 ? '0' : '') + day
                             + 'T00:00:00.000000Z'
-                        this.$emit('input', dateStr) // this sets the value on the model after selection
+                        if (this.shouldEmit) {
+                            console.log("emitting result from date picking")
+                            this.$emit('input', dateStr) // this sets the value on the model after selection
+                            this.$emit('select') // let the parent know
                         }
+                    }
                 },
                 onRender: (element) => {
                     const selectedElement = $(element).find('.is-start-date.is-end-date');
@@ -66,7 +83,7 @@ export default {
                     if (selectedElement.length) {
                         let stamp = selectedElement.attr('data-time');
                         let stepSize = 1000 * 60 * 60 * 24;
-                        let startStamp = stamp - 2 * stepSize;
+                        let startStamp = stamp - this.infectiousnessLeadDays() * stepSize;
 
                         let endEl = $(element).find('.is-today');
                         let endStamp = null;
@@ -95,24 +112,25 @@ export default {
     watch: {
         value: {
             handler: function(value, oldValue) {
+                console.log('watch check', value)
+                console.log('watch check old', oldValue)
                 if (value != null && value !== oldValue) {
-                    const date = new Date(value);
-                    this.pickerOptions.minDate = Math.min(date, this.pickerOptions.minDate)
-                    this.pickerInstance.setOptions(this.pickerOptions)
-                    this.pickerInstance.setDate(date)
-                    this.pickerInstance.gotoDate(date)
-                    if (oldValue != '') {
-                        // This is slightly iffy. Upon initial load of the page and
-                        // setting the value to its stored date, oldValue is an empty string.
-                        // In that case, we don't want to emit a select yet, because it wasn't
-                        // A user initiated one.
-                        // If however oldValue is anything but '' (even null), then the user has
-                        // really manually selected something.
-                        // This quirk is necessary because the onSelect doesn't distinguish between
-                        // user-set new values or model-set initial values.
-                        this.$emit('select')
-                    }
+                    console.log('watch setting picker')
+
+                    // Guard changing the picker: it will trigger its own onSelect event, and
+                    // we don't wat to get into an event loop. So if WE are triggering the
+                    // change, we use the 'selecting' flag to stop a re-emit.
+                    this.shouldEmit = false
+                    this.setDateOnPicker(value)
+                    this.shouldEmit = true
                 }
+
+            }
+        },
+        symptomatic: {
+            handler: function(value, oldValue) {
+                // Force calendar render if the value changes, since our styles depend on it
+                this.pickerInstance.render()
             }
         }
     },
@@ -130,19 +148,37 @@ export default {
             id = id + '__BV_toggle_';
         }
         this.pickerOptions.element = document.getElementById(id)
-        this.pickerInstance = this.datePickerFactory(this.pickerOptions, true)
+        this.pickerInstance = this.datePickerFactory(this.pickerOptions)
+        console.log('mount setting picker')
+        this.setDateOnPicker(this.value)
+
         this.mounted = true
+
+
     },
     methods: {
-        datePickerFactory(pickerOptions, inline = false) {
-
-            let minDate = new Date();
-            minDate.setDate(minDate.getDate() - 28);
+        datePickerFactory(pickerOptions) {
             const instance = new Litepicker(pickerOptions);
-
             const date = new Date();
             instance.gotoDate(date.setMonth(date.getMonth() - 1));
             return instance;
+        },
+        setDateOnPicker(value) {
+            const date = new Date(value);
+            this.pickerOptions.minDate = Math.min(date, this.pickerOptions.minDate)
+            this.pickerInstance.setOptions(this.pickerOptions)
+            console.log('setDateOnPicker: setting date on picker instance', date)
+            this.pickerInstance.setDate(date)
+            this.pickerInstance.gotoDate(date)
+        },
+        infectiousnessLeadDays() {
+            console.log('is symptomatic? ', this.symptomatic)
+            if (this.symptomatic == true) {
+                console.log('returning 2')
+                return 2;
+            }
+            console.log('returning 0')
+            return 0;
         }
     }
 }

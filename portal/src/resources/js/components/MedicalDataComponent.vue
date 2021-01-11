@@ -21,9 +21,10 @@
                 <div class="align-items-end  mb-3 mt-5">
                     <h3 class="mb-0"><div class="question-nr">3</div> Heeft de index klachten?</h3>
                     <b-form-radio-group
+                        @change="$emit('persist')"
                         class="mt-3"
                         id="hassymptoms"
-                        v-model="hasSymptoms"
+                        v-model="value.symptomatic"
                         :options="symptomOptions"
                         button-variant="outline-primary"
                         name="radio-btn-symptoms"
@@ -34,12 +35,17 @@
 
                 <!-- Start of question title component -->
                 <div class="align-items-end  mb-3 mt-5">
-                    <h3 class="mb-0"><div class="question-nr">4</div> Wat is de eerste ziektedag van de index?</h3>
-                    <p class="mt-2 mb-0  ml-auto">De besmettelijke periode is twee dagen voor de eerste ziektedag tot en met vandaag.</p>
+                    <h3 class="mb-0"><div class="question-nr">4</div> Wat is de {{ value.symptomatic ? 'eerste ziektedag' : 'testdag' }} van de index?</h3>
+                    <p class="mt-2 mb-0  ml-auto">De {{ value.symptomatic }} besmettelijke periode is {{ value.symptomatic ? 'twee dagen voor de eerste ziektedag' : 'vanaf de testdatum' }} tot en met vandaag.</p>
                 </div>
                 <!-- End of question title component -->
                 <div>
-                    <dbco-datepicker @select="$emit('persist')" v-model="value.dateOfSymptomOnset" id="dateOfSymptomOnset" />
+                    <dbco-datepicker
+                        @select="$emit('persist')"
+                        v-model="value.dateOfSymptomOnset"
+                        :symptomatic="value.symptomatic"
+                        :symptom-date="value.dateOfSymptomOnset"
+                        id="dateOfSymptomOnset" />
                 </div>
            </b-card-body>
        </b-card>
@@ -62,7 +68,6 @@ export default {
     },
     data() {
         return {
-            hasSymptoms: true,
             symptomOptions: [
                 { text: 'Ja', value: true },
                 { text: 'Nee', value: false }

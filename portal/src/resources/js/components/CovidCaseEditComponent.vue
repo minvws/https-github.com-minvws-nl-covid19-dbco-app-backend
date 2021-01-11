@@ -6,7 +6,7 @@
                 <medical-data-component v-model="covidCase" @persist="persist()" />
             </b-tab>
             <b-tab title="Contactonderzoek" :disabled="covidCase.name.length == 0">
-                <contact-tracing-component v-model="covidCase" />
+                contact-tracing-component v-model="covidCase" /
             </b-tab>
             <b-tab title="Afronden & status" v-model="covidCase" lazy>
              <!--   <case-summary-component/> -->
@@ -29,11 +29,13 @@ export default {
     data() {
         return {
             covidCase: {
-                "uuid": null,
-                "name": '',
-                "caseId": '',
-                "dateOfSymptomOnset": '',
-                "tasks": []
+                uuid: null,
+                name: '',
+                caseId: '',
+                dateOfSymptomOnset: '',
+                dateOfTest: '',
+                symptomatic: true,
+                tasks: []
             },
             loaded: false
         }
@@ -60,7 +62,6 @@ export default {
                     // Only update the uuid after creation, to avoid needless propagations
                     console.log('this', this)
                     if (isNew) {
-                        console.log('Pushing history')
                         this.covidCase.uuid = response.data.case.uuid
                         history.replaceState({}, '', '/editcase/' + response.data.case.uuid)
                     }

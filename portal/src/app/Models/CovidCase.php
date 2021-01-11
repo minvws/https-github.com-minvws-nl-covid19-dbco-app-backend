@@ -33,6 +33,8 @@ class CovidCase
     public ?string $caseId;
 
     public ?Date $dateOfSymptomOnset;
+    public ?Date $dateOfTest;
+    public ?bool $symptomatic;
 
     public bool $hasExportables;
 
