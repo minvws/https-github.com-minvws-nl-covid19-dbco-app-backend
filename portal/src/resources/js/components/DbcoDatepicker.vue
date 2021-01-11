@@ -3,7 +3,7 @@
     <div v-else-if="variant == 'dropdown'">
         <b-dropdown variant="link" text="small" class="dbco-date-select" :id="id">
             <template #button-content>
-                {{ value }}
+                {{ value | dateFormatLong }}
                 <span v-show="!value">Kies datum</span>
             </template>
         </b-dropdown>
@@ -54,9 +54,7 @@ export default {
                 inlineMode: (this.variant=='inline'),
                 element: null, // filled in later
                 onSelect: (value) => {
-                    console.log('litepicker onselect')
                     if (this.mounted) {
-                        console.log('on mounted select')
                         const month = value.getMonth() + 1;
                         const day = value.getDate()
                         const dateStr = value.getFullYear() + '-'
@@ -64,7 +62,6 @@ export default {
                             + (day < 10 ? '0' : '') + day
                             + 'T00:00:00.000000Z'
                         if (this.shouldEmit) {
-                            console.log("emitting result from date picking")
                             this.$emit('input', dateStr) // this sets the value on the model after selection
                             this.$emit('select') // let the parent know
                         }
@@ -112,10 +109,7 @@ export default {
     watch: {
         value: {
             handler: function(value, oldValue) {
-                console.log('watch check', value)
-                console.log('watch check old', oldValue)
                 if (value != null && value !== oldValue) {
-                    console.log('watch setting picker')
 
                     // Guard changing the picker: it will trigger its own onSelect event, and
                     // we don't wat to get into an event loop. So if WE are triggering the
@@ -149,7 +143,6 @@ export default {
         }
         this.pickerOptions.element = document.getElementById(id)
         this.pickerInstance = this.datePickerFactory(this.pickerOptions)
-        console.log('mount setting picker')
         this.setDateOnPicker(this.value)
 
         this.mounted = true
@@ -167,17 +160,13 @@ export default {
             const date = new Date(value);
             this.pickerOptions.minDate = Math.min(date, this.pickerOptions.minDate)
             this.pickerInstance.setOptions(this.pickerOptions)
-            console.log('setDateOnPicker: setting date on picker instance', date)
             this.pickerInstance.setDate(date)
             this.pickerInstance.gotoDate(date)
         },
         infectiousnessLeadDays() {
-            console.log('is symptomatic? ', this.symptomatic)
             if (this.symptomatic == true) {
-                console.log('returning 2')
                 return 2;
             }
-            console.log('returning 0')
             return 0;
         }
     }
