@@ -1,6 +1,0 @@
-version: '3.7'
-
-services:
-    oracle:
-        ports:
-            - ${ORACLE_PORT:-1521}:1521
