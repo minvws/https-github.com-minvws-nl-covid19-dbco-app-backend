@@ -146,7 +146,11 @@
             </div>
 
             <div class="sidebar-content">
-
+                @isset($editableTask)
+                    @php($task = $editableTask)
+                    @include('taskquestionnaire')
+                    <script>$('.sidebar').collapse('show');</script>
+                @endisset
             </div>
         </div>
         <!-- End of sidebar content -->

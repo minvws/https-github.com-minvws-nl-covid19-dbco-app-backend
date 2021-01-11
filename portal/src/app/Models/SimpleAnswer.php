@@ -15,4 +15,18 @@ class SimpleAnswer extends Answer
     {
         return $this->value;
     }
+
+    public function fromFormValue(?string $value): self
+    {
+        $answer = new self;
+        $this->value = $value;
+        return $answer;
+    }
+
+    public static function getValidationRules(): array
+    {
+        return [
+            'value' => 'nullable|string'
+        ];
+    }
 }

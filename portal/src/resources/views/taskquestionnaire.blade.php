@@ -1,11 +1,11 @@
 <div class="row">
     <div class="col">
-        <h3> {{ $task['label'] }} </h3>
+        <h3> {{ $task->label }} </h3>
     </div>
 </div>
 
 <form method="post"
-      action="{{ route('task-questionnaire-save', [$task['uuid']]) }}">
+      action="{{ route('task-questionnaire-save', [$task->uuid]) }}">
     @csrf
 
     <div class="row mt-3">
@@ -18,13 +18,13 @@
                class="form-control"
                id="lastcontactdate"
                name="lastcontactdate"
-               value="{{ isset($task['dateOfLastExposure']) ? $task['dateOfLastExposure']->format('Y-m-d') : ''}}"
+               value="{{ isset($task->dateOfLastExposure) ? $task->dateOfLastExposure->format('Y-m-d') : ''}}"
                placeholder="" />
     </div>
 </div>
 
 @foreach($questions as $question)
-    @if (in_array($task['category'], $question->relevantForCategories))
+    @if (in_array($task->category, $question->relevantForCategories))
         @include("taskquestion_".$question->questionType)
     @endif
 @endforeach

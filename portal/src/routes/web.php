@@ -31,6 +31,9 @@ Route::middleware(['auth', 'rolecheck:user'])->group(function() {
 
     // Editing open cases
     Route::get('/case/{uuid}', [CaseController::class, 'viewCase'])->name('case-view');
+    Route::get('/task/{taskUuid}/questionnaire', [TaskController::class, 'viewTaskQuestionnaire'])->name('task-questionnaire-view');
+    Route::post('/task/{taskUuid}/questionnaire', [TaskController::class, 'saveTaskQuestionnaire'])->name('task-questionnaire-save');
+    Route::get('/task/{uuid}', [TaskController::class, 'viewTask'])->name('case-task-view');
 
     // Create a pairing code
     Route::get('/paircase/{caseUuid}', [CaseController::class, 'pairCase'])->name('case-pair');
@@ -44,9 +47,6 @@ Route::middleware(['auth', 'rolecheck:user'])->group(function() {
 
     // Trigger to export case to GGD private API
     Route::get('/notifycaseupdate/{uuid}', [CaseController::class, 'notifyCaseUpdate'])->name('notify-case-update');
-
-    Route::get('/task/{uuid}/questionnaire', [TaskController::class, 'viewTaskQuestionnaire'])->name('task-questionnaire-view');
-    Route::post('/task/{uuid}/questionnaire', [TaskController::class, 'saveTaskQuestionnaire'])->name('task-questionnaire-save');
 });
 
 // All pages that are behind auth only

@@ -1,7 +1,7 @@
 <div class="row mt-3">
     <div class="col">
         <label for="category"><strong>Wat voor soort contact is dit?</strong></label>
-        <select class="form-control" id="category" name="category">
+        <select class="form-control" id="category" name="{{$question->uuid}}[value]">
             <option disabled selected>Selecteer</option>
             <?php $options = [
                 '1' => '1 - Huisgenoot',
