@@ -2,7 +2,7 @@
 FROM composer as backend
 WORKDIR /src
 
-COPY src/composer.json src/composer.lock /src/
+COPY portal/src/composer.json portal/src/composer.lock /src/
 RUN composer install \
     --ignore-platform-reqs \
     --no-ansi \
@@ -11,17 +11,17 @@ RUN composer install \
     --no-interaction \
     --no-scripts
 
-COPY src/ /src/
+COPY portal/src/ /src/
 RUN composer dump-autoload --optimize --classmap-authoritative
 
 # Build frontend assets
 FROM node as frontend
 WORKDIR /src
 
-COPY src/package.json src/package-lock.json src/webpack.mix.js /src/
+COPY portal/src/package.json portal/src/package-lock.json portal/src/webpack.mix.js /src/
 RUN npm install
 
-COPY src/resources /src/resources
+COPY portal/src/resources /src/resources
 RUN cd /src && npm run production
 
 # Build main image
@@ -43,15 +43,15 @@ RUN a2enmod rewrite && \
     a2enmod rewrite deflate
 
 # Copy assets and sources
-COPY assets/default.conf /etc/apache2/sites-available/000-default.conf
-COPY assets/entrypoint.sh /entrypoint.sh
+COPY portal/assets/default.conf /etc/apache2/sites-available/000-default.conf
+COPY portal/assets/entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
-COPY assets/portal.ini /usr/local/etc/php/conf.d/portal.ini
-COPY assets/security.conf /etc/apache2/conf-available/security.conf
-COPY assets/apache2.conf /etc/apache2/apache2.conf
-COPY assets/ports.conf /etc/apache2/ports.conf
-COPY assets/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
-COPY assets/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_default.conf
+COPY portal/assets/portal.ini /usr/local/etc/php/conf.d/portal.ini
+COPY portal/assets/security.conf /etc/apache2/conf-available/security.conf
+COPY portal/assets/apache2.conf /etc/apache2/apache2.conf
+COPY portal/assets/ports.conf /etc/apache2/ports.conf
+COPY portal/assets/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
+COPY portal/assets/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_default.conf
 
 WORKDIR /src
 COPY --from=backend /src /src
