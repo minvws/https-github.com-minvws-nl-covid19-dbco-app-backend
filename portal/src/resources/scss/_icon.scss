@@ -1,26 +1,42 @@
 .icon {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  background-size: contain;
-  background-repeat: no-repeat;
-  margin: 0 6px -0.125em 6px;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 6px -0.125em 6px;
 
-  &--m0 {
+    &--m0 {
     margin-left: 0;
     margin-right: 0;
-  }
+    }
 
-  &--arrow-left {
+    &--arrow-left {
     background-image: url('../img/arrow-left.svg');
-  }
+    }
 
-  &--eye {
+    &--eye {
     background-image: url('../img/icon-eye.svg');
-  }
+    }
 
-  &--delete {
+    &--delete {
     background-image: url('../img/icon-delete.svg');
-  }
+    }
+
+    &--helpdesk {
+        background-image: url('../img/icon-helpdesk.svg');
+    }
+
+    &--feedback {
+        background-image: url('../img/icon-feedback.svg');
+    }
+
+    &--support {
+        background-image: url('../img/icon-support.svg');
+    }
+
+    &--breadcrumb-back {
+        background-image: url('../img/icon-breadcrumb-back.svg');
+    }
 
 }
