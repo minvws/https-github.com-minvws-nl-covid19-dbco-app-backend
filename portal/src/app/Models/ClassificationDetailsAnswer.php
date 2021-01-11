@@ -36,4 +36,33 @@ class ClassificationDetailsAnswer extends Answer
 
         return null;
     }
+
+    public static function fromFormValue(string $value): self
+    {
+        $answer = new self;
+
+        switch ($value) {
+            case '1':
+                $answer->category1Risk = true;
+                break;
+            case '2a':
+                $answer->category2ARisk = true;
+                break;
+            case '2b':
+                $answer->category2BRisk = true;
+                break;
+            case '3':
+                $answer->category3Risk = true;
+                break;
+        }
+
+        return $answer;
+    }
+
+    public static function getValidationRules(): array
+    {
+        return [
+            'value' => 'in:1,2a,2b,3'
+        ];
+    }
 }

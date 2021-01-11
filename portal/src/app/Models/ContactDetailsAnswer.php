@@ -9,6 +9,16 @@ class ContactDetailsAnswer extends Answer
     public ?string $email;
     public ?string $phonenumber;
 
+    public static function getValidationRules()
+    {
+        return [
+            'firstName' => 'string',
+            'lastName' => 'string',
+            'phoneNumber' => 'string',
+            'email' => 'email'
+        ];
+    }
+
     public function isCompleted(): bool
     {
         return

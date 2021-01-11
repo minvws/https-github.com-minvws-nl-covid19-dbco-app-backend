@@ -96,13 +96,5 @@ jQuery(document).ready(function ($) {
                 $('.sidebar').collapse('show');
             }
         });
-
-
-
-
-
-
-
     })
-
 });
