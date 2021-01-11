@@ -108,6 +108,7 @@ class SecurityService
         while ($day->format('Ymd') <= $today->format('Ymd')) {
             $identifier = sprintf(SecurityModule::SK_STORE_TEMPLATE, $day->format('Ymd'));
             $this->cacheKey($identifier);
+            $day = $day->add(new DateInterval('P1D'));
         }
 
         $todayIdentifier = sprintf(SecurityModule::SK_STORE_TEMPLATE, $today->format('Ymd'));
