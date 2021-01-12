@@ -16,11 +16,9 @@ class SimpleAnswer extends Answer
         return $this->value;
     }
 
-    public function fromFormValue(?string $value): self
+    public function fromFormValue(array $formData): self
     {
-        $answer = new self;
-        $this->value = $value;
-        return $answer;
+        $this->value = $formData['value'] ?? null;
     }
 
     public static function getValidationRules(): array
@@ -28,5 +26,12 @@ class SimpleAnswer extends Answer
         return [
             'value' => 'nullable|string'
         ];
+    }
+
+    public static function createFromFormValue(?string $value): self
+    {
+        $answer = new self;
+        $answer->fromFormValue($value);
+        return $answer;
     }
 }

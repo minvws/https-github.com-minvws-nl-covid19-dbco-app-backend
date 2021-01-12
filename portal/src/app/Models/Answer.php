@@ -10,4 +10,5 @@ abstract class Answer
 
     abstract public function isCompleted();
     abstract public function toFormValue();
+    abstract public function fromFormValue(array $formData);
 }

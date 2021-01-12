@@ -37,25 +37,34 @@ class ClassificationDetailsAnswer extends Answer
         return null;
     }
 
-    public static function fromFormValue(string $value): self
+    public function fromFormValue(array $formData)
     {
-        $answer = new self;
+        // Clear old classification
+        $this->category1Risk = false;
+        $this->category2ARisk = false;
+        $this->category2BRisk = false;
+        $this->category3Risk = false;
 
-        switch ($value) {
+        switch ($formData['value']) {
             case '1':
-                $answer->category1Risk = true;
+                $this->category1Risk = true;
                 break;
             case '2a':
-                $answer->category2ARisk = true;
+                $this->category2ARisk = true;
                 break;
             case '2b':
-                $answer->category2BRisk = true;
+                $this->category2BRisk = true;
                 break;
             case '3':
-                $answer->category3Risk = true;
+                $this->category3Risk = true;
                 break;
         }
+    }
 
+    public static function createFromFormValue(string $value): self
+    {
+        $answer = new self;
+        $answer->fromFormValue($value);
         return $answer;
     }
 

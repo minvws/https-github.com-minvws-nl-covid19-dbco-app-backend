@@ -37,4 +37,12 @@ class ContactDetailsAnswer extends Answer
             'phonenumber' => $this->phonenumber
         ];
     }
+
+    public function fromFormValue(array $formData)
+    {
+        $this->firstname = $formData['firstname'] ?? null;
+        $this->lastname = $formData['lastname'] ?? null;
+        $this->email = $formData['email'] ?? null;
+        $this->phonenumber = $formData['phonenumber'] ?? null;
+    }
 }
