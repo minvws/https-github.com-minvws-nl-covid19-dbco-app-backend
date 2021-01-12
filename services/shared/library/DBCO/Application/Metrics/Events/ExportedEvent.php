@@ -1,5 +1,5 @@
 <?php
-namespace DBCO\Shared\Application\Models\Metrics;
+namespace DBCO\Shared\Application\Metrics\Events;
 
 /**
  * Exported event.

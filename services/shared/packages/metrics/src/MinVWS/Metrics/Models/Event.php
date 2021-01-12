@@ -44,15 +44,15 @@ class Event
     /**
      * Constructor.
      *
-     * @param string            $id
+     * @param string            $uuid
      * @param string            $type
      * @param array             $data
      * @param array             $exportData
      * @param DateTimeInterface $createdAt
      */
-    public function __construct(string $id, string $type, array $data, array $exportData, DateTimeInterface $createdAt)
+    public function __construct(string $uuid, string $type, array $data, array $exportData, DateTimeInterface $createdAt)
     {
-        $this->uuid = $id;
+        $this->uuid = $uuid;
         $this->type = $type;
         $this->data = $data;
         $this->exportData = $exportData;

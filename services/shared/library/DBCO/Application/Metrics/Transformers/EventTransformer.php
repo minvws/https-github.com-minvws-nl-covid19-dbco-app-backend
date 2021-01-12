@@ -1,6 +1,7 @@
 <?php
 namespace DBCO\Shared\Application\Metrics\Transformers;
 
+use DateTime;
 use MinVWS\Metrics\Models\Event;
 use MinVWS\Metrics\Transformers\EventTransformer as EventTransformerInterface;
 use PDO;
@@ -36,13 +37,13 @@ class EventTransformer implements EventTransformerInterface
                c.date_of_symptom_onset,
                o.external_id AS organisation_external_id
             FROM covidcase c 
-            JOIN organisation ON (o.uuid = c.origanisation_uuid)
+            JOIN organisation o ON (o.uuid = c.organisation_uuid)
             WHERE c.uuid = :caseUuid
         ");
 
         $stmt->execute(['caseUuid' => $event->data['caseUuid']]);
 
-        $row = $this->client->fetchObject();
+        $row = $stmt->fetchObject();
         if (!$row) {
             return []; // TODO: throw error?
         }
@@ -51,7 +52,7 @@ class EventTransformer implements EventTransformerInterface
             'id' => $event->uuid,
             'event' => $event->type,
             'date' => $event->createdAt->format('Y-m-d'),
-            'ts_delta' => $event->createdAt->diff(new DateTime($row->created_at)),
+            'ts_delta' => $event->createdAt->getTimestamp() - (new DateTime($row->created_at))->getTimestamp(),
             'actor' => $event->data['actor'],
             'pseudo_id' => hash('sha256', $event->data['caseUuid']),
             'vrregioncode' => $row->organisation_external_id
@@ -72,7 +73,7 @@ class EventTransformer implements EventTransformerInterface
 
             $stmt->execute(['taskUuid' => $event->data['taskUuid']]);
 
-            $taskRow = $this->client->fetchObject();
+            $taskRow = $stmt->fetchObject();
             if (!$taskRow) {
                 return []; // TODO: throw error?
             }

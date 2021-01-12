@@ -34,12 +34,13 @@ class DbStorageRepository implements StorageRepository
     public function createEvent(Event $event): void
     {
         $stmt = $this->client->prepare("
-            INSERT INTO event (uuid, data, export_data, created_at)
-            VALUES (:uuid, :status, :data, :exportData, :createdAt)
+            INSERT INTO event (uuid, type, data, export_data, created_at)
+            VALUES (:uuid, :type, :data, :exportData, :createdAt)
         ");
 
         $stmt->execute([
             'uuid' => $event->uuid,
+            'type' => $event->type,
             'data' => json_encode($event->data),
             'exportData' => json_encode($event->exportData),
             'createdAt' => $event->createdAt->format(DateTime::ATOM)
@@ -82,6 +83,7 @@ class DbStorageRepository implements StorageRepository
             SELECT uuid, type, data, export_data, created_at
             FROM event 
             WHERE export_uuid = :exportUuid
+            ORDER BY created_at
         ");
 
         $stmt->execute([
@@ -92,8 +94,8 @@ class DbStorageRepository implements StorageRepository
             $event = new Event(
                 $row->uuid,
                 $row->type,
-                json_decode($row->data, false),
-                json_decode($row->export_data, false),
+                json_decode($row->data, true),
+                json_decode($row->export_data, true),
                 new DateTimeImmutable($row->created_at)
             );
 
