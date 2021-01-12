@@ -74,10 +74,10 @@ class DbAnswerRepository implements AnswerRepository
                 break;
             case 'classificationdetails':
                 $answer = new ClassificationDetailsAnswer();
-                $answer->category1Risk = ($dbAnswer->cfd_cat_1_risk == 1);
-                $answer->category2ARisk = ($dbAnswer->cfd_cat_2a_risk == 1);
-                $answer->category2BRisk = ($dbAnswer->cfd_cat_2b_risk == 1);
-                $answer->category3Risk = ($dbAnswer->cfd_cat_3_risk == 1);
+                $answer->category1Risk = ($dbAnswer->cfd_cat_1_risk === 1);
+                $answer->category2ARisk = ($dbAnswer->cfd_cat_2a_risk === 1);
+                $answer->category2BRisk = ($dbAnswer->cfd_cat_2b_risk === 1);
+                $answer->category3Risk = ($dbAnswer->cfd_cat_3_risk === 1);
                 break;
             default:
                 $answer = new SimpleAnswer();
@@ -90,4 +90,28 @@ class DbAnswerRepository implements AnswerRepository
 
         return $answer;
     }
+
+    public function updateAnswer(Answer $answer): void
+    {
+        // TODO fixme: this retrieves the object from the db, again; but eloquent won't let us easily instantiate
+        // an object directly from an Answer
+        $dbAnswer = EloquentAnswer::where('uuid', $answerUuid)->get()->first();
+
+        if ($answer instanceof SimpleAnswer) {
+            $dbAnswer->value = $this->encryptionHelper->sealStoreValue($answer->value);
+        } elseif ($answer instanceof ContactDetailsAnswer) {
+            $dbAnswer->ctd_firstname = $this->encryptionHelper->sealStoreValue($answer->firstname);
+            $dbAnswer->ctd_lastname = $this->encryptionHelper->sealStoreValue($answer->lastname);
+            $dbAnswer->ctd_email = $this->encryptionHelper->sealStoreValue($answer->email);
+            $dbAnswer->ctd_phonenumber = $this->encryptionHelper->sealStoreValue($answer->phonenumber);
+        } elseif ($answer instanceof ClassificationDetailsAnswer) {
+            $dbAnswer->category1Risk = $answer->category1Risk ? 1 : 0;
+            $dbAnswer->category2ARisk = $answer->category2ARisk ? 1 : 0;
+            $dbAnswer->category2BRisk = $answer->category2BRisk ? 1 : 0;
+            $dbAnswer->category3Risk = $answer->category3Risk ? 1 : 0;
+        }
+
+        $dbAnswer->save();
+    }
 }
+

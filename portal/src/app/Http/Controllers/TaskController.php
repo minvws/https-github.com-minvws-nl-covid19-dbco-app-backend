@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Models\ClassificationDetailsAnswer;
 use App\Models\ContactDetailsAnswer;
 use App\Models\Question;
 use App\Models\SimpleAnswer;
+use App\Models\Task;
+use App\Repositories\TaskRepository;
 use App\Services\QuestionnaireService;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
@@ -15,12 +18,15 @@ use Symfony\Component\HttpFoundation\Response;
 class TaskController extends Controller
 {
     private TaskService $taskService;
+    private TaskRepository $taskRepository;
     private QuestionnaireService $questionnaireService;
 
     public function __construct(TaskService $taskService,
+                                TaskRepository $taskRepository,
                                 QuestionnaireService $questionnaireService)
     {
         $this->taskService = $taskService;
+        $this->taskRepository = $taskRepository;
         $this->questionnaireService = $questionnaireService;
     }
 
@@ -59,7 +65,7 @@ class TaskController extends Controller
         return view('taskquestionnaire', [
             'task' => $task,
             'questions' => $questionnaire->questions,
-            'answers' => $answers
+            'answers' => array_map(fn(Answer $answer) => $answer->toFormValue(), $answers)
         ]);
     }
 
@@ -77,7 +83,7 @@ class TaskController extends Controller
         list($questionnaire, $answers) = $this->taskService->getTaskQuestionnaireAndAnswers($task);
 
         $rules = [];
-        foreach($questionnaire->questions as $question) {
+        foreach ($questionnaire->questions as $question) {
             /**
              * @var Question $question
              */
@@ -90,26 +96,43 @@ class TaskController extends Controller
 
         // Pull in the form data for the subset of questions and validate
         $validator = Validator::make($request->all(), $rules);
-        error_log(var_export([
-            "form" => $request->all(),
-            "rules" => $rules,
-            "data" => $validator->validated(),
-            "errors" => $validator->errors()
-        ], true));
+//        error_log(var_export([
+//            "form" => $request->all(),
+//            "rules" => $rules,
+//            "data" => $validator->validated(),
+//            "errors" => $validator->errors()
+//        ], true));
 
         if (!$validator->fails()) {
-            // Update Task
+            $this->updateTaskAnswers($answers, $validator->validated());
 
-            // Close Task for further editing by index
+            // Close Task for further editing by Index
+            $task->status = Task::TASK_STATUS_CLOSED;
+            $this->taskRepository->updateTask($task);
         }
 
         // Return the rendered sidebar
         return view('taskquestionnaire', [
             'task' => $task,
             'questions' => $questionnaire->questions,
-            'answers' => $answers,
+            'answers' => array_map(fn(Answer $answer) => $answer->toFormValue(), $answers),
             'errors' => $validator->errors()
         ]);
+    }
+
+    private function updateTaskAnswers(array $answers, array $formData): void
+    {
+        var_export($formData);
+        var_export($answers);
+
+        foreach ($answers as $answer) {
+            /**
+             * @var Answer $answer
+             */
+            if (isset($formData[$answer->questionUuid])) {
+                $answer->fromFormValue($formData[$answer->questionUuid]);
+            }
+        }
     }
 
     private function getQuestionFormValidationRules(Question $question): array

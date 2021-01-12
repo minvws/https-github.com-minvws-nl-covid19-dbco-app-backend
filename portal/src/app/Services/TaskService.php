@@ -76,7 +76,7 @@ class TaskService
 
         $answersByQuestionUuid = [];
         foreach ($answers as $answer) {
-            $answersByQuestionUuid[$answer->questionUuid] = $answer->toFormValue();
+            $answersByQuestionUuid[$answer->questionUuid] = $answer;
         }
 
         return [
