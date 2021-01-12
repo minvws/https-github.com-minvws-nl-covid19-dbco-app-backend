@@ -6,13 +6,10 @@ use App\Models\ClassificationDetailsAnswer;
 use App\Models\ContactDetailsAnswer;
 use App\Models\Question;
 use App\Models\SimpleAnswer;
-use App\Repositories\StateRepository;
-use App\Services\CaseService;
 use App\Services\QuestionnaireService;
 use App\Services\TaskService;
-use DBCO\HealthAuthorityAPI\Application\Models\ClassificationDetailsQuestion;
 use Illuminate\Http\Request;
-use App\Models\Task;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class TaskController extends Controller
@@ -50,34 +47,6 @@ class TaskController extends Controller
         return response()->json(['success' => 'success'], Response::HTTP_OK);
     }
 
-    public function viewTask($taskUuid)
-    {
-        error_log("*** viewTask $taskUuid");
-        // Validation and access control
-        // @todo move to Request to improve legibility
-        $task = $this->taskService->getTask($taskUuid);
-        if ($task === null || !$this->taskService->canAccess($task)) {
-            return redirect()->route('cases-list');
-        }
-
-        // Render Case view with editable Task sidebar
-        $case = $this->taskService->getCaseByTask($task);
-        $taskgroups = array();
-        foreach ($case->tasks as $task) {
-            $taskgroups[$task->communication][] = $task;
-        }
-
-        list($questionnaire, $answers) = $this->taskService->getTaskQuestionnaireAndAnswers($task);
-
-        return view('viewcase', [
-            'case' => $case,
-            'taskgroups' => $taskgroups,
-            'editableTask' => $task,
-            'questions' => $questionnaire->questions,
-            'answers' => $answers
-        ]);
-    }
-
     public function viewTaskQuestionnaire(string $taskUuid)
     {
         $task = $this->taskService->getTask($taskUuid);
@@ -94,7 +63,7 @@ class TaskController extends Controller
         ]);
     }
 
-    public function saveTaskQuestionnaire(Request $request): Response
+    public function saveTaskQuestionnaire(Request $request)
     {
         // Retrieve the Task
         $taskUuid = $request->route('taskUuid');
@@ -120,15 +89,27 @@ class TaskController extends Controller
         }
 
         // Pull in the form data for the subset of questions and validate
-        $data = $request->validate($rules);
+        $validator = Validator::make($request->all(), $rules);
         error_log(var_export([
             "form" => $request->all(),
             "rules" => $rules,
-            "data" => $data
+            "data" => $validator->validated(),
+            "errors" => $validator->errors()
         ], true));
 
-        // Close Task for further editing by index
-        return redirect()->route('case-task-view', [$task->uuid]);
+        if (!$validator->fails()) {
+            // Update Task
+
+            // Close Task for further editing by index
+        }
+
+        // Return the rendered sidebar
+        return view('taskquestionnaire', [
+            'task' => $task,
+            'questions' => $questionnaire->questions,
+            'answers' => $answers,
+            'errors' => $validator->errors()
+        ]);
     }
 
     private function getQuestionFormValidationRules(Question $question): array

@@ -33,7 +33,6 @@ Route::middleware(['auth', 'rolecheck:user'])->group(function() {
     Route::get('/case/{uuid}', [CaseController::class, 'viewCase'])->name('case-view');
     Route::get('/task/{taskUuid}/questionnaire', [TaskController::class, 'viewTaskQuestionnaire'])->name('task-questionnaire-view');
     Route::post('/task/{taskUuid}/questionnaire', [TaskController::class, 'saveTaskQuestionnaire'])->name('task-questionnaire-save');
-    Route::get('/task/{uuid}', [TaskController::class, 'viewTask'])->name('case-task-view');
 
     // Create a pairing code
     Route::get('/paircase/{caseUuid}', [CaseController::class, 'pairCase'])->name('case-pair');
