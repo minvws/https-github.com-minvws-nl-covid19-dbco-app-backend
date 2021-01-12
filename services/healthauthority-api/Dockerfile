@@ -25,22 +25,22 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
     composer self-update
 
 # Copy assets and sources
-COPY assets/shared/default.conf /etc/apache2/sites-available/000-default.conf
-COPY assets/shared/entrypoint.sh /entrypoint.sh
+COPY shared/assets/api/default.conf /etc/apache2/sites-available/000-default.conf
+COPY shared/assets/api/entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
-COPY assets/shared/api.ini /usr/local/etc/php/conf.d/api.ini
-COPY assets/shared/security.conf /etc/apache2/conf-available/security.conf
-COPY assets/shared/apache2.conf /etc/apache2/apache2.conf
-COPY assets/shared/ports.conf /etc/apache2/ports.conf
-COPY assets/shared/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
-COPY assets/shared/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_default.conf
+COPY shared/assets/api/api.ini /usr/local/etc/php/conf.d/api.ini
+COPY shared/assets/api/security.conf /etc/apache2/conf-available/security.conf
+COPY shared/assets/api/apache2.conf /etc/apache2/apache2.conf
+COPY shared/assets/api/ports.conf /etc/apache2/ports.conf
+COPY shared/assets/api/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
+COPY shared/assets/api/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_default.conf
 
-COPY assets/healthauthority/cs_pkcs11_R2.cfg /etc/utimaco/cs_pkcs11_R2.cfg
-COPY assets/healthauthority/libcs_pkcs11_R2.so /usr/lib/utimaco/libcs_pkcs11_R2.so
+COPY healthauthority-api/assets/cs_pkcs11_R2.cfg /etc/utimaco/cs_pkcs11_R2.cfg
+COPY healthauthority-api/assets/libcs_pkcs11_R2.so /usr/lib/utimaco/libcs_pkcs11_R2.so
 ENV PKCS_MODULE=/usr/lib/utimaco/libcs_pkcs11_R2.so
 
-COPY src/shared /shared
-COPY src/healthauthority /src
+COPY shared/library /shared/library
+COPY healthauthority-api/src /src
 
 RUN cd /src && composer install && \
     pip3 install python-pkcs11 && \
