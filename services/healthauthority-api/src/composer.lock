@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "489cdc5f75b6bdd133a00905dcdad4d4",
+    "content-hash": "c03de73be8df70b7b454934934a5f1dd",
     "packages": [
         {
             "name": "brick/math",
@@ -391,6 +391,31 @@
                 "source": "https://github.com/guzzle/psr7/tree/1.7.0"
             },
             "time": "2020-09-30T07:37:11+00:00"
+        },
+        {
+            "name": "minvws/metrics",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "/shared/packages/metrics",
+                "reference": "e4fc6a9b0796c8dd4fbed074aaceefd9152c3d27"
+            },
+            "require": {
+                "ext-pdo": "*",
+                "php": "^7.4",
+                "ramsey/uuid": "^4.0",
+                "symfony/console": "^5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MinVWS\\Metrics\\": "src/MinVWS/Metrics/"
+                }
+            },
+            "description": "A small package for registering and exporting metrics",
+            "transport-options": {
+                "relative": false
+            }
         },
         {
             "name": "monolog/monolog",
@@ -3992,7 +4017,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "minvws/metrics": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

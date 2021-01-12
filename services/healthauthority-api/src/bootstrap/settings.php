@@ -59,4 +59,18 @@ return [
     'securityModule.nonce.usePhpRandomBytes' => $securityModuleNonceUsePhpRandomBytes,
     'securityModule.storeKey.timeZone' => 'Europe/Amsterdam',
     'securityModule.storeKey.maxDays' => 14, // max days to store earlier keys for unsealing
+
+    'metrics.exportBasePath' => '/tmp/',
+    'metrics.exportFilenameTemplate' =>  getenv('APP_ENV') . '_[timestamp].csv',
+    'metrics.exportFilenameTimestampFormat' => 'YmdHis',
+    'metrics.exportFields' => [
+        'id', 'event', 'date', 'ts_delta', 'actor', 'pseudo_id', 'vrregioncode',
+        'date_of_symptom_onset', 'contact_pseudo_id', 'category', 'pct_complete',
+        'fields', 'hpzone_id'
+    ],
+    'metrics.exportLabels' => [
+        'id', 'event', 'date', 'ts_delta', 'actor', 'pseudo_id', 'vrregioncode',
+        'date_of_symptom_onset', 'contact_pseudo_id', 'category', 'pct_complete',
+        'fields', 'hpzone_id'
+    ]
 ];
