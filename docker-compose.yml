@@ -1,0 +1,134 @@
+version: '3.7'
+
+volumes:
+    mysql-data:
+        driver: local
+    hsm-data:
+        driver: local
+
+networks:
+    public:
+    sluice:
+    private:
+    healthauthority:
+
+services:
+    redis:
+        extends:
+            file: docker-compose/common.yml
+            service: redis
+
+    redis-haa:
+        extends:
+            file: docker-compose/common.yml
+            service: redis-haa
+
+    mysql:
+        extends:
+            file: docker-compose/common.yml
+            service: mysql
+        ports:
+            - ${MYSQL_PORT:-3306}:3306
+
+    private-api:
+        extends:
+            file: docker-compose/common.yml
+            service: private-api
+        depends_on:
+            - redis
+        environment:
+            APP_ENV: development
+        ports:
+            - ${PRIVATE_API_PORT:-8081}:8080
+        volumes:
+            - ./services/shared/library:/shared/library
+            - ./services/private-api/src:/src
+
+    public-api:
+        extends:
+            file: docker-compose/common.yml
+            service: public-api
+        depends_on:
+            - redis
+        environment:
+            APP_ENV: development
+        ports:
+            - ${PUBLIC_API_PORT:-8082}:8080
+        volumes:
+            - ./services/shared/library:/shared/library
+            - ./services/public-api/src:/src
+
+    bridge-clients:
+        extends:
+            file: docker-compose/common.yml
+            service: bridge-clients
+        depends_on:
+            - redis
+            - healthauthority-api
+        environment:
+            APP_ENV: development
+        volumes:
+            - ./services/bridge/src:/src
+
+    bridge-caseresults:
+        extends:
+            file: docker-compose/common.yml
+            service: bridge-caseresults
+        depends_on:
+            - redis
+            - healthauthority-api
+        environment:
+            APP_ENV: development
+        volumes:
+            - ./services/bridge/src:/src
+
+    healthauthority-api:
+        extends:
+            file: docker-compose/common.yml
+            service: healthauthority-api
+        depends_on:
+            - mysql
+            - redis-haa
+        environment:
+            APP_ENV: development
+        ports:
+            - ${HEALTHAUTHORITY_API_PORT:-8083}:8080
+        volumes:
+            - ./services/shared/library:/shared/library
+            - ./services/healthauthority-api/src:/src
+
+    healthauthority-hsm:
+        extends:
+            file: docker-compose/common.yml
+            service: healthauthority-hsm
+        depends_on:
+            - mysql
+            - redis-haa
+        environment:
+            APP_ENV: development
+        volumes:
+            - ./services/shared/library:/shared/library
+            - ./services/healthauthority-api/src:/src
+
+    portal:
+        extends:
+            file: docker-compose/common.yml
+            service: portal
+        depends_on:
+            - healthauthority-api
+            - mysql
+            - redis-haa
+        build:
+            args:
+                - INSTALL_DEV_TOOLS=1
+        environment:
+            APP_ENV: development
+        ports:
+            - ${PORTAL_PORT:-8084}:8080
+        volumes:
+            - ./services/portal/src:/src
+
+    hsm:
+        extends:
+            file: docker-compose/common.yml
+            service: hsm

@@ -20,18 +20,18 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
     composer self-update
 
 # Copy assets and sources
-COPY assets/shared/default.conf /etc/apache2/sites-available/000-default.conf
-COPY assets/shared/entrypoint.sh /entrypoint.sh
+COPY shared/assets/api/default.conf /etc/apache2/sites-available/000-default.conf
+COPY shared/assets/api/entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
-COPY assets/shared/api.ini /usr/local/etc/php/conf.d/api.ini
-COPY assets/shared/security.conf /etc/apache2/conf-available/security.conf
-COPY assets/shared/apache2.conf /etc/apache2/apache2.conf
-COPY assets/shared/ports.conf /etc/apache2/ports.conf
-COPY assets/shared/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
-COPY assets/shared/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_default.conf
+COPY shared/assets/api/api.ini /usr/local/etc/php/conf.d/api.ini
+COPY shared/assets/api/security.conf /etc/apache2/conf-available/security.conf
+COPY shared/assets/api/apache2.conf /etc/apache2/apache2.conf
+COPY shared/assets/api/ports.conf /etc/apache2/ports.conf
+COPY shared/assets/api/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
+COPY shared/assets/api/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_default.conf
 
-COPY src/shared /shared
-COPY src/public /src
+COPY shared/library /shared/library
+COPY public-api/src /src
 
 RUN cd /src && composer install && \
     usermod -u 1000 www-data

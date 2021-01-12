@@ -10,7 +10,8 @@ env:
   PORTAL_APP_KEY: ${{ secrets.CI_SERVICE_PASSWORD }}
   HSM_SO_PIN: ${{ secrets.CI_HSM_SO_PIN }}
   HSM_USER_PIN: ${{ secrets.CI_HSM_USER_PIN }}
-  DOCKER_COMPOSE: docker-compose --env-file ./.env.ci -p test -f docker-compose.main.yml -f docker-compose.ci.yml -f docker-compose.mysql.yml
+  DOCKER_COMPOSE: docker-compose --env-file ./.env.ci --project-directory=./ -p test -f docker-compose/docker-compose.ci.yml
+  DOCKER_COMPOSE_SETUP: docker-compose --env-file ./.env.ci --project-directory=./ -p test -f docker-compose/docker-compose.ci.yml -f docker-compose/docker-compose.setup.yml
 
 jobs:
   build:
@@ -36,28 +37,28 @@ jobs:
           docker pull i386/debian:stretch-slim
           docker pull ubuntu:latest
           docker pull ubuntu:18.04
-          $DOCKER_COMPOSE -f docker-compose.setup.yml pull
+          $DOCKER_COMPOSE_SETUP pull
 
       - name: Docker layer cache
         uses: satackey/action-docker-layer-caching@v0.0.11
         continue-on-error: true
         with:
-          key: docker-layer-cache-${{ github.workflow }}-{hash}
+          key: docker-lc-${{ github.workflow }}-{hash}
           restore-keys: |
-            docker-layer-cache-${{ github.workflow }}-
+            docker-lc-${{ github.workflow }}-
 
       - name: Build docker images
         working-directory: ./main
-        run: $DOCKER_COMPOSE -f docker-compose.setup.yml build
+        run: $DOCKER_COMPOSE_SETUP build
 
       - name: Setup HSM
         working-directory: ./main
         run: |
           $DOCKER_COMPOSE up -d hsm
           sleep 5
-          $DOCKER_COMPOSE -f docker-compose.setup.yml run --rm hsm-setup
+          $DOCKER_COMPOSE_SETUP run --rm hsm-setup
 
-      - name: Start the stack
+      - name: Start the main stack
         working-directory: ./main
         run: $DOCKER_COMPOSE up -d
 
@@ -67,7 +68,7 @@ jobs:
           sleep 15
           $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
           $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
-          $DOCKER_COMPOSE run --rm mysqlclient < install/mysql/permissions.sql
+          $DOCKER_COMPOSE run --rm mysqlclient < services/mysql/permissions.sql
           $DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
 
       - name: Worker - Run phpunit
