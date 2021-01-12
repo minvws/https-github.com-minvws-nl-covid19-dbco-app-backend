@@ -8,6 +8,7 @@ use DBCO\HealthAuthorityAPI\Application\Commands\ManageKeysCommand;
 use DBCO\HealthAuthorityAPI\Application\Commands\RandomBytesTestCommand;
 use DBCO\Shared\Application\ConsoleApplication;
 use DBCO\HealthAuthorityAPI\Application\Commands\CacheKeysCommand;
+use MinVWS\Metrics\Commands\ExportMetricsCommand;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 
@@ -18,7 +19,8 @@ return function (ConsoleApplication $app, ContainerInterface $container) {
         GetKeyExchangePublicKeyCommand::class,
         CacheKeysCommand::class,
         ManageKeysCommand::class,
-        RandomBytesTestCommand::class
+        RandomBytesTestCommand::class,
+        ExportMetricsCommand::class
     ];
 
     $commandMap = [];
