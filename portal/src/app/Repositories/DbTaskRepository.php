@@ -86,6 +86,7 @@ class DbTaskRepository implements TaskRepository
         $dbTask->updated_at = $task->updatedAt;
         $dbTask->exported_at = $task->exportedAt !== null ? $task->exportedAt->toDateTimeImmutable() : null;
         $dbTask->copied_at = $task->copiedAt !== null ? $task->copiedAt->toDateTimeImmutable() : null;
+        $dbTask->status = $task->status;
 
         $dbTask->save();
     }
@@ -140,6 +141,7 @@ class DbTaskRepository implements TaskRepository
         $task->exportId = $dbTask->export_id;
         $task->createdAt = $dbTask->created_at !== null ? new Date($dbTask->created_at) : null;
         $task->updatedAt = $dbTask->updated_at !== null ? new Date($dbTask->updated_at) : null;
+        $task->status = $dbTask->status;
 
         return $task;
     }
