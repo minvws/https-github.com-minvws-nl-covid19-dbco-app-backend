@@ -96,5 +96,23 @@ jQuery(document).ready(function ($) {
                 $('.sidebar').collapse('show');
             }
         });
-    })
+    });
+
+    ////////////////////////////////////////////////////
+    // Sidebar Task editing
+    ////////////////////////////////////////////////////
+    $('#sidebar-task-edit').submit(function (event) {
+        alert('this is the jquery submit()');
+        event.preventDefault();
+        let taskUuid = $(this).data('taskUuid');
+
+        $.ajax({
+            type: "POST",
+            url: '/task/' + taskUuid + '/questionnaire',
+            data: null, // @todo collect all fields and values
+            success: function( data ) {
+                $('.sidebar-content').html(data);
+            }
+        });
+    });
 });
