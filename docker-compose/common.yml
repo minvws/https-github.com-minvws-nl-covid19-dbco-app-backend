@@ -65,12 +65,12 @@ services:
     bridge-clients:
         extends:
             service: bridge
-        command: /src/bridge bridge:clients
+        command: /src/bridge process:clients
 
     bridge-caseresults:
         extends:
             service: bridge
-        command: /src/bridge bridge:caseresults
+        command: /src/bridge process:caseresults
 
     worker:
         build: ../services/worker
