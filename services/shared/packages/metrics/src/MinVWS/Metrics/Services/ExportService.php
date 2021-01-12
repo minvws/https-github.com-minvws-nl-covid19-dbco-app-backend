@@ -2,7 +2,7 @@
 namespace MinVWS\Metrics\Services;
 
 use DateTimeImmutable;
-use MinVWS\Metrics\Events\Event;
+use MinVWS\Metrics\Models\Event;
 use MinVWS\Metrics\Models\Export;
 use MinVWS\Metrics\Repositories\ExportRepository;
 use MinVWS\Metrics\Repositories\StorageRepository;
