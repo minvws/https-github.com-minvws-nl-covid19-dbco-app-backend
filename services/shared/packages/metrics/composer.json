@@ -1,0 +1,15 @@
+{
+    "name": "minvws/metrics",
+    "description": "A small package for registering and exporting metrics",
+    "require": {
+        "php": "^7.4",
+        "ext-pdo": "*",
+        "symfony/console": "^5.2",
+        "ramsey/uuid": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "MinVWS\\Metrics\\": "src/MinVWS/Metrics/"
+        }
+    }
+}
