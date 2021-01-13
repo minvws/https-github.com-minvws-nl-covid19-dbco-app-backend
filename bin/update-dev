@@ -1,18 +1,9 @@
 #!/bin/bash
 BASE_PATH=$(dirname $0)/..
 DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
-
-. $BASE_PATH/.env
+DOCKER_COMPOSE_TOOLS="$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml"
 
 $DOCKER_COMPOSE up -d --remove-orphans
-
-echo
-echo "=====[ UPDATE WORKER ]====="
-$DOCKER_COMPOSE run --rm --entrypoint composer worker install
-
-echo
-echo "=====[ UPDATE BRIDGE ]====="
-$DOCKER_COMPOSE run --rm --entrypoint composer bridge install
 
 echo
 echo "=====[ UPDATE PRIVATE API ]====="
@@ -35,10 +26,18 @@ $DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
 $DOCKER_COMPOSE run --rm --entrypoint php portal artisan db:seed --class QuestionnaireSeeder
 
 echo
+echo "=====[ UPDATE WORKER ]====="
+$DOCKER_COMPOSE_TOOLS run --rm --entrypoint composer worker install
+
+echo
+echo "=====[ UPDATE BRIDGE ]====="
+$DOCKER_COMPOSE_TOOLS run --rm --entrypoint composer bridge install
+
+echo
 echo "=====[ UPDATE SIMULATOR ]====="
-$DOCKER_COMPOSE run --rm --entrypoint composer simulator install
+$DOCKER_COMPOSE_TOOLS run --rm --entrypoint composer simulator install
 
 echo
 echo "=====[ UPDATE QUESTIONNAIRE/TASK CACHE ]====="
-$DOCKER_COMPOSE run --rm worker /src/worker questionnaire:refresh-all
-$DOCKER_COMPOSE run --rm worker /src/worker task:refresh-general
+$DOCKER_COMPOSE_TOOLS run --rm worker /src/worker questionnaire:refresh-all
+$DOCKER_COMPOSE_TOOLS run --rm worker /src/worker task:refresh-general
