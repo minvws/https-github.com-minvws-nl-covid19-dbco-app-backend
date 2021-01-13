@@ -1,5 +1,5 @@
 function submitTaskSidebar(event) {
-    alert('sidebar submit');
+    alert('debug: sidebar submit');
     event.preventDefault();
     return;
 }

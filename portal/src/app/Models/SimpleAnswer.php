@@ -16,7 +16,7 @@ class SimpleAnswer extends Answer
         return $this->value;
     }
 
-    public function fromFormValue(array $formData): self
+    public function fromFormValue(array $formData)
     {
         $this->value = $formData['value'] ?? null;
     }

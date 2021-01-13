@@ -9,6 +9,7 @@ use App\Models\Eloquent\EloquentAnswer;
 use App\Models\SimpleAnswer;
 use App\Security\EncryptionHelper;
 use Illuminate\Support\Collection;
+use Jenssegers\Date\Date;
 
 class DbAnswerRepository implements AnswerRepository
 {
@@ -95,23 +96,35 @@ class DbAnswerRepository implements AnswerRepository
     {
         // TODO fixme: this retrieves the object from the db, again; but eloquent won't let us easily instantiate
         // an object directly from an Answer
-        $dbAnswer = EloquentAnswer::where('uuid', $answerUuid)->get()->first();
+        $dbAnswer = EloquentAnswer::where('uuid', $answer->uuid)->get()->first();
 
         if ($answer instanceof SimpleAnswer) {
-            $dbAnswer->value = $this->encryptionHelper->sealStoreValue($answer->value);
+            $dbAnswer->spv_value = $this->seal($answer->value);
         } elseif ($answer instanceof ContactDetailsAnswer) {
-            $dbAnswer->ctd_firstname = $this->encryptionHelper->sealStoreValue($answer->firstname);
-            $dbAnswer->ctd_lastname = $this->encryptionHelper->sealStoreValue($answer->lastname);
-            $dbAnswer->ctd_email = $this->encryptionHelper->sealStoreValue($answer->email);
-            $dbAnswer->ctd_phonenumber = $this->encryptionHelper->sealStoreValue($answer->phonenumber);
+            $dbAnswer->ctd_firstname = $this->seal($answer->firstname);
+            $dbAnswer->ctd_lastname = $this->seal($answer->lastname);
+            $dbAnswer->ctd_email = $this->seal($answer->email);
+            $dbAnswer->ctd_phonenumber = $this->seal($answer->phonenumber);
         } elseif ($answer instanceof ClassificationDetailsAnswer) {
-            $dbAnswer->category1Risk = $answer->category1Risk ? 1 : 0;
-            $dbAnswer->category2ARisk = $answer->category2ARisk ? 1 : 0;
-            $dbAnswer->category2BRisk = $answer->category2BRisk ? 1 : 0;
-            $dbAnswer->category3Risk = $answer->category3Risk ? 1 : 0;
+            $dbAnswer->cfd_cat_1_risk = $answer->category1Risk ? 1 : 0;
+            $dbAnswer->cfd_cat_2a_risk = $answer->category2ARisk ? 1 : 0;
+            $dbAnswer->cfd_cat_2b_risk = $answer->category2BRisk ? 1 : 0;
+            $dbAnswer->cfd_cat_3_risk = $answer->category3Risk ? 1 : 0;
         }
 
+        $dbAnswer->updated_at = Date::now();
         $dbAnswer->save();
+    }
+
+    // @todo copied from another DbRepo, refactor into EncryptionHelper(?)
+    private function seal(?string $value): ?string
+    {
+        if ($value === null) {
+            return null;
+        } else {
+//            return $this->encryptionHelper->sealStoreValue($value);
+            return $value;
+        }
     }
 }
 
