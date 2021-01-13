@@ -7,7 +7,7 @@
     @include ('navbar')
     <!-- Start of sidebar component -->
     <div class="row  flex-nowrap  wrapper">
-    
+
         <!-- Sidebar content -->
         <div class="col-4 pl-0  pr-0  collapse  sidebar  bg-white">
             <div class="d-flex justify-content-between  border-top  border-bottom  pl-4 pr-4  pt-2  pb-2 align-items-center">

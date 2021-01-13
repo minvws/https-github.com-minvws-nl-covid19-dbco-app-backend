@@ -5,10 +5,10 @@
             <b-tab title="Medische gegevens">
                 <medical-data-component v-model="covidCase" @persist="persist()" />
             </b-tab>
-            <b-tab title="Contactonderzoek" :disabled="covidCase.name.length == 0">
+            <b-tab title="Contactonderzoek" :disabled="!covidCase.uuid">
                 <contact-tracing-component v-model="covidCase" />
             </b-tab>
-            <b-tab title="Afronden & status" v-model="covidCase" lazy>
+            <b-tab title="Afronden & status" :disabled="!covidCase.uuid" lazy>
                 <case-summary-component :covid-case="covidCase "/>
             </b-tab>
         </b-tabs>

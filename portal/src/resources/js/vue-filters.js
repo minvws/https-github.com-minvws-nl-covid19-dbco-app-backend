@@ -9,13 +9,13 @@ Vue.filter('truncate', function (value, limit) {
 })
 
 const dayNames = [
-    'Zondag',
-    'Maandag',
-    'Dinsdag',
-    'Woensdag',
-    'Donderdag',
-    'Vrijdag',
-    'Zaterdag'
+    'zondag',
+    'maandag',
+    'dinsdag',
+    'woensdag',
+    'donderdag',
+    'vrijdag',
+    'zaterdag'
 ]
 
 const monthNamesShort = [
@@ -33,11 +33,11 @@ const monthNamesShort = [
     'dec.'
 ]
 
-// woensdag 23 dec.
+// 23 dec. woensdag
 Vue.filter('dateFormatLong', function (value) {
     if (value != null && value.length) {
         const date = new Date(value)
-        return dayNames[date.getDay()] + ' ' + date.getDate() + ' ' + monthNamesShort[date.getMonth()]
+        return date.getDate() + ' ' + monthNamesShort[date.getMonth()] + ' ' + dayNames[date.getDay()]
     }
     return ''
 })
@@ -60,5 +60,25 @@ Vue.filter('dateFormatDeltaTime', function (value) {
         }
         return dateString + date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
     }
-    return '';
+    return ''
+})
+
+// 1 - Huisgenoten
+Vue.filter('categoryFormatFull', function (category) {
+
+    if (category == null) {
+        return ''
+    }
+
+    const categories = {
+        '1': '1 - Huisgenoot',
+        '2a': '2A - Nauw contact',
+        '2b': '2B - Nauw contact',
+        '3': '3 - Overig contact'
+    }
+
+    if (categories[category.toLowerCase()]) {
+        return categories[category.toLowerCase()];
+    }
+    return category
 })

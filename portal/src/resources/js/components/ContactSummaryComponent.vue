@@ -27,13 +27,13 @@
                 </b-td>
                 <b-td>
                     <strong>{{ task.dateOfLastExposure | dateFormatLong }}</strong>
-                    <br/>{{ task.category }}
+                    <br/>{{ task.category | categoryFormatFull }}
                 </b-td>
                 <b-td class="text-center">
                     <img v-if="task.informedByIndex" src="/images/done.svg">
                     <span v-else>Nog niet</span>
                 </b-td>
-                <b-td class="text-center">
+                <b-td class="text-center pt-3 pb-3">
                     <img v-if="task.progress=='complete'" src="/images/check-100.svg">
                     <img v-else-if="task.progress=='contactable'" src="/images/check-50.svg">
                     <img v-else src="/images/check-warn.svg">
