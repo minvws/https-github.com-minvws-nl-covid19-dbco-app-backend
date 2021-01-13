@@ -79,7 +79,7 @@
                     color: $black;
                 }
 
-                &.is-start-date, &.is-end-date, &.is-in-range {
+                &.is-start-date, &.is-end-date, &.is-in-range, &.is-in-src-range {
                     color: $white !important;
                     box-shadow: none;
                     background: transparent;
@@ -89,7 +89,7 @@
 
                 &.is-start-date, &.is-end-date{
                     &:after {
-                        background: $red;
+                        background: $bco-purple;
                         content: '';
                         width: 36px;
                         height: 36px;
@@ -99,6 +99,12 @@
                         transform: translate(-50%, -50%);
                         top: 50%;
                         z-index: -1;
+                    }
+                }
+
+                &.red-picker {
+                    &:after {
+                        background: $bco-red;
                     }
                 }
 
@@ -123,24 +129,37 @@
                     }
                 }
 
-                &.is-start-range {
+                &.is-start-range, &.is-start-src-range {
                     &:before {
                         border-top-left-radius: 50%;
                         border-bottom-left-radius: 50%;
                     }
                 }
 
-                &.is-end-range {
+                &.is-end-range, &.is-end-src-range {
                     &:before {
                         border-top-right-radius: 50%;
                         border-bottom-right-radius: 50%;
                     }
                 }
 
-                &.is-start-date, &.is-end-date, &.is-in-range {
+                &.is-in-range {
                     &:before {
                         content: '';
-                        background-color: rgba($red, 0.2);
+                        background-color: rgba($bco-red, 0.1);
+                        position: absolute;
+                        z-index: -1;
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                        bottom: 0;
+                    }
+                }
+
+                &.is-in-src-range {
+                    &:before {
+                        content: '';
+                        background-color: rgba($bco-purple, 0.1);
                         position: absolute;
                         z-index: -1;
                         left: 0;

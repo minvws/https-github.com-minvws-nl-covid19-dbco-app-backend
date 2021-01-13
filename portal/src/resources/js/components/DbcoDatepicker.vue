@@ -4,7 +4,8 @@
         <b-dropdown variant="link" text="small" class="dbco-date-select" :id="id">
             <template #button-content>
                 {{ value | dateFormatLong }}
-                <span v-show="!value">Kies datum</span>
+                <!-- next item must be a template and not an html element, to keep the label actually open the datepicker -->
+                <template v-if="!value">Kies datum</template>
             </template>
         </b-dropdown>
     </div>
@@ -19,12 +20,18 @@ export default {
         id: String,
         value: String,
         /* The symptom date can be passed as a property. If set, the contagious and source
-           periods will be rendered accordingly. If set to 'self', the component knows that
-           the date you are trying to set is the symptom date, and will move everything accordingly.
-           If omitted, the picker acts as a simple date picker without symptom period knowledge.d
+           periods will be rendered accordingly.
          */
         symptomDate: String,
         symptomatic: {
+            type: Boolean,
+            default: false
+        },
+        displaySourcePeriod: {
+            type: Boolean,
+            default: false
+        },
+        redPicker: {
             type: Boolean,
             default: false
         },
@@ -69,33 +76,58 @@ export default {
                 },
                 onRender: (element) => {
                     const selectedElement = $(element).find('.is-start-date.is-end-date');
+                    if (this.redPicker) {
+                        selectedElement.addClass('red-picker');
+                    }
                     let dayItems = $(element).find('.day-item');
 
                     /** Remove default selection classes because we will add them later on. */
                     dayItems.each(() => {
                         $(this).removeClass('is-in-range').removeClass('.is-start-range').removeClass('.is-end-range');
+                        $(this).removeClass('is-in-src-range').removeClass('.is-start-src-range').removeClass('.is-end-src-range');
                     });
 
                     /*  Mark contamination period when date is selected. */
-                    if (selectedElement.length) {
-                        let stamp = selectedElement.attr('data-time');
+                    if (this.symptomDate) {
+                        const displaySourcePeriod = this.displaySourcePeriod
+                        let stamp = new Date(this.symptomDate).getTime()
                         let stepSize = 1000 * 60 * 60 * 24;
-                        let startStamp = stamp - this.infectiousnessLeadDays() * stepSize;
+                        let startStampInf = stamp - this.infectiousnessLeadDays() * stepSize;
+                        let startStampSrc = startStampInf - 7 * stepSize;
+                        let endStampSrc = startStampInf - 1 * stepSize; // ends day before infectious
 
-                        let endEl = $(element).find('.is-today');
-                        let endStamp = null;
-                        if (endEl) {
-                            endEl.addClass('is-end-range is-in-range');
-                            endStamp = endEl.attr('data-time');
+                        let todayEl = $(element).find('.is-today');
+                        let endStampInf = null;
+                        if (todayEl) {
+                            todayEl.addClass('is-end-range is-in-range');
+                            endStampInf = todayEl.attr('data-time');
                         }
                         let first = true;
+                        let srcCnt = 0;
+
+                        // note: stamp is midnight local time, so it jumps a day unless we
+                        // force it to midnight utc by factoring the timezoneoffset
+                        let offset = 0 - (new Date().getTimezoneOffset())
                         dayItems.each(function () {
-                            let stamp = $(this).attr('data-time');
-                            if (stamp >= startStamp && stamp <= endStamp) {
+                            let stamp = parseInt($(this).attr('data-time'))
+                            stamp += (offset * 60 * 1000)
+
+                            if (stamp >= startStampInf && stamp <= endStampInf) {
                                 $(this).addClass('is-in-range');
                                 if (first) {
                                     $(this).addClass('is-start-range');
                                     first = false;
+                                }
+                            }
+
+                            if (displaySourcePeriod && stamp >= startStampSrc && stamp <= endStampSrc) {
+                                $(this).addClass('is-in-src-range');
+                                if (srcCnt == 0) {
+                                    $(this).addClass('is-start-src-range');
+                                }
+                                srcCnt++;
+                                if (srcCnt == 7) {
+                                    $(this).addClass('is-end-src-range');
                                 }
                             }
                         });
@@ -157,11 +189,15 @@ export default {
             return instance;
         },
         setDateOnPicker(value) {
-            const date = new Date(value);
-            this.pickerOptions.minDate = Math.min(date, this.pickerOptions.minDate)
-            this.pickerInstance.setOptions(this.pickerOptions)
-            this.pickerInstance.setDate(date)
-            this.pickerInstance.gotoDate(date)
+            if (value) {
+                const date = new Date(value);
+                this.pickerOptions.minDate = Math.min(date, this.pickerOptions.minDate)
+                this.pickerInstance.setOptions(this.pickerOptions)
+                this.pickerInstance.setDate(date)
+                this.pickerInstance.gotoDate(date)
+            } else {
+                // Don't do anything
+            }
         },
         infectiousnessLeadDays() {
             if (this.symptomatic == true) {

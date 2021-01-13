@@ -36,13 +36,14 @@
                 <!-- Start of question title component -->
                 <div class="align-items-end  mb-3 mt-5">
                     <h3 class="mb-0"><div class="question-nr">4</div> Wat is de {{ value.symptomatic ? 'eerste ziektedag' : 'testdag' }} van de index?</h3>
-                    <p class="mt-2 mb-0  ml-auto">De {{ value.symptomatic }} besmettelijke periode is {{ value.symptomatic ? 'twee dagen voor de eerste ziektedag' : 'vanaf de testdatum' }} tot en met vandaag.</p>
+                    <p class="mt-2 mb-0  ml-auto">De besmettelijke periode is {{ value.symptomatic ? 'twee dagen voor de eerste ziektedag' : 'vanaf de testdatum' }} tot en met vandaag.</p>
                 </div>
                 <!-- End of question title component -->
                 <div>
                     <dbco-datepicker
                         @select="$emit('persist')"
                         v-model="value.dateOfSymptomOnset"
+                        red-picker
                         :symptomatic="value.symptomatic"
                         :symptom-date="value.dateOfSymptomOnset"
                         id="dateOfSymptomOnset" />
