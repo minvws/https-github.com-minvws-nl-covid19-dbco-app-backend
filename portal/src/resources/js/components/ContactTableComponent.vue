@@ -92,18 +92,27 @@ export default {
     mounted() {
         console.log('case', this.covidCase)
         if (this.covidCase && this.covidCase.uuid) {
-            axios.get('/api/cases/' + this.covidCase.uuid +'/tasks').then(response => {
-                this.tasks = response.data.tasks
-
-                this.tasks.push({}) // Always add a placeholder for new records
-
-                this.loaded = true
-            })
+           this.loadContacts(this.covidCase.uuid)
         } else {
             // waiting for case
         }
     },
+    watch: {
+        'covidCase.uuid': function (newVal, oldVal) {
+            // Case has changed, reload the contacts that belong to that case.
+            if (newVal != oldVal) {
+                this.loadContacts(newVal)
+            }
+        }
+    },
     methods: {
+        loadContacts(caseUuid) {
+            axios.get('/api/cases/' + caseUuid +'/tasks').then(response => {
+                this.tasks = response.data.tasks
+                this.tasks.push({}) // Always add a placeholder for new records
+                this.loaded = true
+            })
+        },
         persist(task) {
             console.log("persisting.. ", task)
 
