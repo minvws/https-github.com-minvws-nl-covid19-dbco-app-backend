@@ -8,6 +8,7 @@ use App\Models\ContactDetailsAnswer;
 use App\Models\Question;
 use App\Models\SimpleAnswer;
 use App\Models\Task;
+use App\Repositories\AnswerRepository;
 use App\Repositories\TaskRepository;
 use App\Services\QuestionnaireService;
 use App\Services\TaskService;
@@ -20,14 +21,18 @@ class TaskController extends Controller
     private TaskService $taskService;
     private TaskRepository $taskRepository;
     private QuestionnaireService $questionnaireService;
+    private AnswerRepository $answerRepository;
 
-    public function __construct(TaskService $taskService,
-                                TaskRepository $taskRepository,
-                                QuestionnaireService $questionnaireService)
+    public function __construct(
+        TaskService $taskService,
+        TaskRepository $taskRepository,
+        QuestionnaireService $questionnaireService,
+        AnswerRepository $answerRepository)
     {
         $this->taskService = $taskService;
         $this->taskRepository = $taskRepository;
         $this->questionnaireService = $questionnaireService;
+        $this->answerRepository = $answerRepository;
     }
 
     public function linkTaskToExport(Request $request)
@@ -122,15 +127,13 @@ class TaskController extends Controller
 
     private function updateTaskAnswers(array $answers, array $formData): void
     {
-        var_export($formData);
-        var_export($answers);
-
         foreach ($answers as $answer) {
             /**
              * @var Answer $answer
              */
             if (isset($formData[$answer->questionUuid])) {
                 $answer->fromFormValue($formData[$answer->questionUuid]);
+                $this->answerRepository->updateAnswer($answer);
             }
         }
     }

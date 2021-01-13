@@ -4,9 +4,11 @@
     </div>
 </div>
 
-<form id="sidebar-task-edit"
-      action="javascript:alert('this is the form action');"
-      data-taskuuid="{{ $task->uuid }}"
+<form
+    method="post"
+    id="sidebar-task-edit"
+    action="{{ route('task-questionnaire-save', [$task->uuid]) }}"
+    data-taskuuid="{{ $task->uuid }}"
 >
     @csrf
 
@@ -37,16 +39,8 @@
     </div>
 
     <div class="btn-group mb-3 mt-3">
-        <input id="sidebar-submit" type="submit" class="btn btn-primary" value="Opslaan" />
+        <input id="sidebar-submit" type="submit" class="btn btn-primary" value="Opslaan" onclick="javascript:submitTaskSidebar()"/>
     </div>
     <!-- End of form submit-->
 
 </form>
-
-<script type="text/javascript">
-    $('#sidebar-submit').click(function(event) {
-        alert('boo');
-        event.preventDefault();
-        submitTaskSidebar(event);
-    });
-</script>
