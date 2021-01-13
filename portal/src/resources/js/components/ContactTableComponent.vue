@@ -19,7 +19,7 @@
             </b-tr>
         </b-thead>
         <b-tbody>
-            <b-tr v-for="(task, $index) in tasks" :key="$index">
+            <b-tr v-for="(task, $index) in tasks" :key="task.uuid">
                 <b-td>
                     <span v-if="task.derivedLabel">
                         {{ task.derivedLabel }}
@@ -162,7 +162,7 @@ export default {
         isValid(taskUuid, fieldName) {
             // Todo fixme, doesn't yet fully work, see todo earlier above
             if (this.validationErrors[taskUuid] && this.validationErrors[taskUuid].includes('task.' + fieldName)) {
-                return false
+              //  return false
             }
             return null // don't show green 'valid' indicator, but simply nothing
         }
