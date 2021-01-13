@@ -5,7 +5,8 @@
         "php": "^7.4",
         "ext-pdo": "*",
         "symfony/console": "^5.2",
-        "ramsey/uuid": "^4.0"
+        "ramsey/uuid": "^4.0",
+        "phpseclib/phpseclib": "~3.0"
     },
     "autoload": {
         "psr-4": {

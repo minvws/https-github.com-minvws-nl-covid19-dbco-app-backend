@@ -17,8 +17,8 @@ return function (ContainerBuilder $containerBuilder) {
             ->constructorParameter('storeKeyTimeZone', get('securityModule.storeKey.timeZone'))
             ->constructorParameter('storeKeyMaxDays', get('securityModule.storeKey.maxDays')),
         ExportService::class => autowire(ExportService::class)
-            ->constructorParameter('exportBasePath', get('metrics.exportBasePath'))
-            ->constructorParameter('exportFilenameTemplate', get('metrics.exportFilenameTemplate'))
-            ->constructorParameter('exportFilenameTimestampFormat', get('metrics.exportFilenameTimestampFormat'))
+            ->constructorParameter('exportBasePath', get('metrics.export.basePath'))
+            ->constructorParameter('exportFilenameTemplate', get('metrics.export.filenameTemplate'))
+            ->constructorParameter('exportFilenameTimestampFormat', get('metrics.export.filenameTimestampFormat'))
     ]);
 };

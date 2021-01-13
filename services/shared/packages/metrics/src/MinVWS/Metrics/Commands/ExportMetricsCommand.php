@@ -61,7 +61,7 @@ class ExportMetricsCommand extends Command
         $output->writeln(sprintf('Export UUID:     %s', $export->uuid));
         $output->writeln(sprintf('Export filename: %s', $export->filename));
 
-        if ($input->hasOption('upload')) {
+        if ($input->getOption('upload')) {
             $output->write('Uploading metrics...');
             $this->exportService->upload($export);
             $output->writeln(' [OK]');
