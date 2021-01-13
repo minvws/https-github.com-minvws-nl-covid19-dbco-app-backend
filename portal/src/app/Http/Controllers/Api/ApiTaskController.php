@@ -30,9 +30,11 @@ class ApiTaskController extends ApiController
         $this->questionnaireService = $questionnaireService;
     }
 
-    public function getCaseTasks($caseUuid)
+    public function getCaseTasks($caseUuid, Request $request)
     {
         $case = $this->caseService->getCase($caseUuid, false);
+
+        $includeProgress = $request->input('includeProgress', false);
 
         if ($case === null) {
             return response()->json(['error' => "Deze case bestaat niet (meer)"], Response::HTTP_BAD_REQUEST);
@@ -43,6 +45,10 @@ class ApiTaskController extends ApiController
         }
 
         $tasks = $this->taskService->getTasks($caseUuid);
+
+        if ($includeProgress) {
+            $this->applyProgress($tasks);
+        }
 
         return response()->json(['tasks' => $tasks]);
     }
@@ -58,50 +64,7 @@ class ApiTaskController extends ApiController
     private function applyProgress(array $tasks): void
     {
         foreach ($tasks as &$task) {
-            $task->progress = Task::TASK_DATA_INCOMPLETE;
-
-            if (empty($task->category) || empty($task->dateOfLastExposure)) {
-                // No classification or last exposure date: incomplete, move to next task
-                continue;
-            }
-
-            // Check Task questionnaire answers for classification and contact details.
-            $hasContactDetails = false;
-            $answers = $this->answerRepository->getAllAnswersByTask($task->uuid);
-
-            $answerIsCompleted = [];
-            foreach ($answers as $answer) {
-                /**
-                 * @var Answer $answer
-                 */
-                $answerIsCompleted[$answer->questionUuid] = $answer->isCompleted();
-
-                if ($answer instanceof ContactDetailsAnswer) {
-                    $hasContactDetails = (!empty($answer->firstname) || !empty($answer->lastname)) && !empty($answer->phonenumber);
-                }
-            }
-
-            if (!$hasContactDetails) {
-                // No contact or classification data, skip the rest of the questionnaire
-                continue;
-            }
-            $task->progress = Task::TASK_DATA_CONTACTABLE;
-
-            // Any missed question will mark the Task partially-complete.
-            $questionnaire = $this->questionnaireService->getQuestionnaire($task->questionnaireUuid);
-            foreach ($questionnaire->questions as $question) {
-                /**
-                 * @var Question $question
-                 */
-                if (in_array($task->category, $question->relevantForCategories) &&
-                    (!isset($answerIsCompleted[$question->uuid]) || $answerIsCompleted[$question->uuid] === false)) {
-                    // One missed answer: move on to next task
-                    break 2;
-                }
-            }
-
-            // No relevant questions were skipped or unanswered: questionnaire complete!
-            $task->progress = Task::TASK_DATA_COMPLETE;
+            $this->taskService->applyProgress($task);
         }
     }
 

@@ -9,7 +9,7 @@
                 <contact-tracing-component v-model="covidCase" />
             </b-tab>
             <b-tab title="Afronden & status" v-model="covidCase" lazy>
-             <!--   <case-summary-component/> -->
+                <case-summary-component :covid-case="covidCase "/>
             </b-tab>
         </b-tabs>
     </div>
