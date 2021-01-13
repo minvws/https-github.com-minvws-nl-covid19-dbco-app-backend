@@ -134,7 +134,6 @@ export default {
                 }).catch( error => {
                     if (error.response && error.response.status == 422) {
                         this.validationErrors[task.uuid] = Object.keys(error.response.data.errors)
-                        this.$v.touch()
                     } else {
                         alert('Er ging iets mis bij het opslaan van de nieuwe contactpersoon')
                         console.log('Error!', error)
