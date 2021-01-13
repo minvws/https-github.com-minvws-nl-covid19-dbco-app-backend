@@ -155,3 +155,9 @@ services:
             dockerfile: Dockerfile
         networks:
             - healthauthority
+
+    sftp:
+        image: atmoz/sftp
+        command: sftp:sftp:1001
+        networks:
+            - healthauthority

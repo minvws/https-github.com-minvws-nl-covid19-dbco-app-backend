@@ -227,7 +227,7 @@ class CaseService
             throw new SealedBoxException();
         }
 
-        $this->eventService->registerEvent(new SubmittedEvent(PairedEvent::ACTOR_INDEX, $client->caseUuid));
+        $this->eventService->registerEvent(new SubmittedEvent(SubmittedEvent::ACTOR_INDEX, $client->caseUuid));
 
         $decoder = new JSONDecoder();
 

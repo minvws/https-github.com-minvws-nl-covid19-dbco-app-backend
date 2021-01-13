@@ -36,8 +36,15 @@ return function (ContainerBuilder $containerBuilder) {
         StorageRepository::class => autowire(DbStorageRepository::class),
         ExportRepository::class =>
             autowire(CsvExportRepository::class)
-                ->constructorParameter('fields', get('metrics.exportFields'))
-                ->constructorParameter('labels', get('metrics.exportLabels')),
-        UploadRepository::class => autowire(SftpUploadRepository::class)
+                ->constructorParameter('fields', get('metrics.export.fields'))
+                ->constructorParameter('labels', get('metrics.export.labels')),
+        UploadRepository::class =>
+            autowire(SftpUploadRepository::class)
+                ->constructorParameter('hostname', get('metrics.sftp.hostname'))
+                ->constructorParameter('username', get('metrics.sftp.username'))
+                ->constructorParameter('privateKey', get('metrics.sftp.privateKey'))
+                ->constructorParameter('passphrase', get('metrics.sftp.passphrase'))
+                ->constructorParameter('uploadPath', get('metrics.sftp.uploadPath'))
+
     ]);
 };
