@@ -1,7 +1,7 @@
 <!-- Start of navbar component -->
 <div>
 <b-navbar toggleable="lg" type="dark" fixed="top" class="navbar-custom">
-    <b-navbar-brand href="#"><i class="icon icon--breadcrumb-back"></i>Mijn cases</b-navbar-brand>
+    <b-navbar-brand href="/"><i class="icon icon--breadcrumb-back"></i>Mijn cases</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
