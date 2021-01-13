@@ -90,7 +90,8 @@ export default {
         }
     },
     mounted() {
-        if (this.covidCase) {
+        console.log('case', this.covidCase)
+        if (this.covidCase && this.covidCase.uuid) {
             axios.get('/api/cases/' + this.covidCase.uuid +'/tasks').then(response => {
                 this.tasks = response.data.tasks
 
@@ -98,6 +99,8 @@ export default {
 
                 this.loaded = true
             })
+        } else {
+            // waiting for case
         }
     },
     methods: {
