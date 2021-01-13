@@ -68,12 +68,11 @@ class TaskService
         if ($task->questionnaireUuid === null) {
             // Not yet filled by user, get the latest questionnaire.
             $questionnaire = $this->questionnaireService->getLatestQuestionnaire($task->taskType);
-            $answers = [];
         } else {
             $questionnaire = $this->questionnaireService->getQuestionnaire($questionnaireUuid);
-            $answers = $this->getAllAnswersByTask($task);
         }
 
+        $answers = $this->getAllAnswersByTask($task);
         $answersByQuestionUuid = [];
         foreach ($answers as $answer) {
             $answersByQuestionUuid[$answer->questionUuid] = $answer;

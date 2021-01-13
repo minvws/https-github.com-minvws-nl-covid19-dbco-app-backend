@@ -12,10 +12,10 @@ class ContactDetailsAnswer extends Answer
     public static function getValidationRules()
     {
         return [
-            'firstName' => 'string',
-            'lastName' => 'string',
-            'phoneNumber' => 'string',
-            'email' => 'email'
+            'firstName' => 'nullable|string',
+            'lastName' => 'nullable|string',
+            'phoneNumber' => 'nullable|string',
+            'email' => 'nullable|email'
         ];
     }
 

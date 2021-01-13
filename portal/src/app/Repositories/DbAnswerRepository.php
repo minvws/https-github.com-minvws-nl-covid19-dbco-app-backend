@@ -10,6 +10,7 @@ use App\Models\SimpleAnswer;
 use App\Security\EncryptionHelper;
 use Illuminate\Support\Collection;
 use Jenssegers\Date\Date;
+use Ramsey\Uuid\Uuid;
 
 class DbAnswerRepository implements AnswerRepository
 {
@@ -92,11 +93,32 @@ class DbAnswerRepository implements AnswerRepository
         return $answer;
     }
 
+    public function createAnswer(Answer $answer): void
+    {
+        $dbAnswer = new EloquentAnswer;
+        $dbAnswer = $this->updateFromEntity($dbAnswer, $answer);
+
+        $dbAnswer->created_at = Date::now();
+        $dbAnswer->updated_at = $dbAnswer->created_at;
+        $dbAnswer->save();
+    }
+
     public function updateAnswer(Answer $answer): void
     {
         // TODO fixme: this retrieves the object from the db, again; but eloquent won't let us easily instantiate
         // an object directly from an Answer
         $dbAnswer = EloquentAnswer::where('uuid', $answer->uuid)->get()->first();
+
+        $dbAnswer = $this->updateFromEntity($dbAnswer, $answer);
+        $dbAnswer->updated_at = Date::now();
+        $dbAnswer->save();
+    }
+
+    private function updateFromEntity(EloquentAnswer $dbAnswer, Answer $answer): EloquentAnswer
+    {
+        $dbAnswer->uuid = $answer->uuid ?? Uuid::uuid4();
+        $dbAnswer->task_uuid = $answer->taskUuid;
+        $dbAnswer->question_uuid = $answer->questionUuid;
 
         if ($answer instanceof SimpleAnswer) {
             $dbAnswer->spv_value = $this->seal($answer->value);
@@ -112,8 +134,7 @@ class DbAnswerRepository implements AnswerRepository
             $dbAnswer->cfd_cat_3_risk = $answer->category3Risk ? 1 : 0;
         }
 
-        $dbAnswer->updated_at = Date::now();
-        $dbAnswer->save();
+        return $dbAnswer;
     }
 
     // @todo copied from another DbRepo, refactor into EncryptionHelper(?)

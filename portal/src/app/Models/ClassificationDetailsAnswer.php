@@ -71,7 +71,7 @@ class ClassificationDetailsAnswer extends Answer
     public static function getValidationRules(): array
     {
         return [
-            'value' => 'in:1,2a,2b,3'
+            'value' => 'nullable|in:1,2a,2b,3'
         ];
     }
 }

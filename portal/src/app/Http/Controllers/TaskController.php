@@ -6,6 +6,7 @@ use App\Models\Answer;
 use App\Models\ClassificationDetailsAnswer;
 use App\Models\ContactDetailsAnswer;
 use App\Models\Question;
+use App\Models\Questionnaire;
 use App\Models\SimpleAnswer;
 use App\Models\Task;
 use App\Repositories\AnswerRepository;
@@ -84,9 +85,15 @@ class TaskController extends Controller
             return response('access denied', 403);
         }
 
-        // Gather Task's relevant questions and existing answers
+        // Gather Task's relevant questionnaire and existing answers
         list($questionnaire, $answers) = $this->taskService->getTaskQuestionnaireAndAnswers($task);
 
+        if ($task->questionnaireUuid === null) {
+            $task->questionnaireUuid = $questionnaire->uuid;
+            $this->taskRepository->updateTask($task);
+        }
+
+        $relevantQuestions = [];
         $rules = [];
         foreach ($questionnaire->questions as $question) {
             /**
@@ -96,24 +103,20 @@ class TaskController extends Controller
                 continue;
             }
 
+            $relevantQuestions[] = $question;
             $rules = array_merge($rules, $this->getQuestionFormValidationRules($question));
         }
 
         // Pull in the form data for the subset of questions and validate
         $validator = Validator::make($request->all(), $rules);
-//        error_log(var_export([
-//            "form" => $request->all(),
-//            "rules" => $rules,
-//            "data" => $validator->validated(),
-//            "errors" => $validator->errors()
-//        ], true));
-
         if (!$validator->fails()) {
-            $this->updateTaskAnswers($answers, $validator->validated());
+            $this->updateTaskAnswers($task, $relevantQuestions, $answers, $validator->validated());
 
             // Close Task for further editing by Index
             $task->status = Task::TASK_STATUS_CLOSED;
             $this->taskRepository->updateTask($task);
+        } else {
+            print_r($validator->errors());
         }
 
         // Return the rendered sidebar
@@ -125,19 +128,42 @@ class TaskController extends Controller
         ]);
     }
 
-    private function updateTaskAnswers(array $answers, array $formData): void
+    /**
+     * @param Task $task
+     * @param Question[] $questions
+     * @param Answer[] $answers
+     * @param array $formData
+     */
+    private function updateTaskAnswers(Task $task, array $questions, array $answers, array $formData): void
     {
-        foreach ($answers as $answer) {
-            /**
-             * @var Answer $answer
-             */
-            if (isset($formData[$answer->questionUuid])) {
-                $answer->fromFormValue($formData[$answer->questionUuid]);
+        print_r($answers);
+
+        foreach ($questions as $question) {
+           if (!isset($formData[$question->uuid])) {
+               // No answer in returned form: ignore, do not create empty Answer
+               continue;
+           }
+
+           if (isset($answers[$question->uuid])) {
+                // Update existing answer
+                $answer = $answers[$question->uuid];
+                $answer->fromFormValue($formData[$question->uuid]);
                 $this->answerRepository->updateAnswer($answer);
-            }
+
+               error_log("update: question={$question->uuid} answer={$answers[$question->uuid]->uuid} with " . var_export($formData[$question->uuid], true));
+           } else {
+               // Create new Answer
+               $answer = $this->createNewAnswerForQuestion($question, $formData[$question->uuid]);
+               $answer->taskUuid = $task->uuid;
+               $answer->questionUuid = $question->uuid;
+               $this->answerRepository->createAnswer($answer);
+
+               error_log("insert: question={$question->uuid}  with " . var_export($answer, true));
+           }
         }
     }
 
+    // @todo centralize Question/Answer helpers
     private function getQuestionFormValidationRules(Question $question): array
     {
         // Default no validation rule: field will be ignored
@@ -167,5 +193,31 @@ class TaskController extends Controller
         }
 
         return $formRules;
+    }
+
+    // @todo centralize Question/Answer helpers
+    private function createNewAnswerForQuestion(Question $question, array $formData = []): Answer
+    {
+        switch ($question->questionType) {
+            case 'classificationdetails':
+                $answer = new ClassificationDetailsAnswer;
+                break;
+            case 'contactdetails':
+                $answer = new ContactDetailsAnswer();
+                break;
+            case 'date':
+                $answer = new SimpleAnswer();
+                break;
+            case 'multiplechoice':
+                break;
+            default:
+                error_log("no Answer class for {$question->questionType}");
+        }
+
+        if (!empty($formData)) {
+            $answer->fromFormValue($formData);
+        }
+
+        return $answer;
     }
 }
