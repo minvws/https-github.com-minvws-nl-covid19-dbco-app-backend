@@ -71,7 +71,7 @@ class DbTaskRepository implements TaskRepository
      *
      * @param Task $task Task to update
      */
-    public function updateTask(Task $task)
+    public function updateTask(Task $task): bool
     {
         // TODO fixme: this retrieves the object from the db, again; but eloquent won't let us easily instantiate
         // an object directly from a Task.
@@ -87,7 +87,7 @@ class DbTaskRepository implements TaskRepository
         $dbTask->exported_at = $task->exportedAt !== null ? $task->exportedAt->toDateTimeImmutable() : null;
         $dbTask->copied_at = $task->copiedAt !== null ? $task->copiedAt->toDateTimeImmutable() : null;
 
-        $dbTask->save();
+        return $dbTask->save();
     }
 
     /**
@@ -144,9 +144,13 @@ class DbTaskRepository implements TaskRepository
         return $task;
     }
 
-    public function deleteRemovedTasks(string $caseUuid, array $keep)
+    /**
+     * @param Task $task
+     * @return bool
+     */
+    public function deleteTask(Task $task): bool
     {
-        EloquentTask::where('case_uuid', $caseUuid)->whereNotIn('uuid', $keep)->delete();
+        return EloquentTask::where('uuid', $task->uuid)->delete();
     }
 
 }

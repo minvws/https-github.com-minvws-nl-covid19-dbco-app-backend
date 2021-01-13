@@ -24,17 +24,17 @@ class TaskService
         $this->caseService = $caseService;
     }
 
-    public function getTask(string $taskUuid)
+    public function getTask(string $taskUuid): Task
     {
         return $this->taskRepository->getTask($taskUuid);
     }
 
-    public function getTasks(string $caseUuid)
+    public function getTasks(string $caseUuid): array
     {
-        return $this->taskRepository->getTasks($caseUuid);
+        return $this->taskRepository->getTasks($caseUuid)->all();
     }
 
-    public function canAccess(Task $task)
+    public function canAccess(Task $task): bool
     {
         $case = $this->caseService->getCase($task->caseUuid);
         return $this->caseService->canAccess($case);
@@ -50,5 +50,20 @@ class TaskService
     public function getAllAnswersByTask(string $taskUuid): Collection
     {
         return $this->answerRepository->getAllAnswersByTask($taskUuid);
+    }
+
+    public function createTask(string $caseUuid, string $label, ?string $context, string $category, string $communication, ?Date $dateOfLastExposure): Task
+    {
+        return $this->taskRepository->createTask($caseUuid, $label, $context, $category, $communication, $dateOfLastExposure);
+    }
+
+    public function updateTask(Task $task): bool
+    {
+        return $this->taskRepository->updateTask($task);
+    }
+
+    public function deleteTask(Task $task): bool
+    {
+        return $this->taskRepository->deleteTask($task);
     }
 }

@@ -185,36 +185,6 @@ class CaseService
     }
 
     /**
-     * @param $caseUuid
-     * @param $taskFormValues
-     * @return String The uuid of the newly credted record (or the updated one)
-     */
-    public function createOrUpdateTask($caseUuid, $taskFormValues): String
-    {
-        if (isset($taskFormValues['uuid'])) {
-            $task = $this->taskRepository->getTask($taskFormValues['uuid']);
-            if (isset($taskFormValues['label'])) {
-                $task->label = $taskFormValues['label'];
-            }
-            $task->taskContext = $taskFormValues['taskContext'];
-            $task->category = $taskFormValues['category'];
-            $task->dateOfLastExposure = isset($taskFormValues['dateOfLastExposure']) ? Date::parse($taskFormValues['dateOfLastExposure']) : null;
-            $task->communication = $taskFormValues['communication'] ?? 'staff';
-            $this->taskRepository->updateTask($task);
-            return $task->uuid;
-        } else {
-            $newTask = $this->taskRepository->createTask($caseUuid,
-                $taskFormValues['label'],
-                $taskFormValues['taskContext'],
-                $taskFormValues['category'] ?? '3',
-                $taskFormValues['communication'] ?? 'staff',
-                isset($taskFormValues['dateOfLastExposure']) ? Date::parse($taskFormValues['dateOfLastExposure']) : null,
-            );
-            return $newTask->uuid;
-        }
-    }
-
-    /**
      * @param string $caseUuid case to clean up
      * @param array $keep array of task uuids to keep
      */

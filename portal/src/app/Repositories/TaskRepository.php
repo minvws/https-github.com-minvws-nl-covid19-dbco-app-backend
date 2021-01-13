@@ -31,7 +31,7 @@ interface TaskRepository
      *
      * @param Task $task The updated task
      */
-    public function updateTask(Task $task);
+    public function updateTask(Task $task): bool;
 
     /**
      * Create a new task
@@ -41,8 +41,8 @@ interface TaskRepository
     public function createTask(string $caseUuid, string $label, ?string $context, string $category, string $communication, ?Date $dateOfLastExposure): Task;
 
     /**
-     * @param string $caseUuid Case to clean up
-     * @param array $keep Task uuids to keep
+     * @param Task $task
+     * @return boolean
      */
-    public function deleteRemovedTasks(string $caseUuid, array $keep);
+    public function deleteTask(Task $task): bool;
 }

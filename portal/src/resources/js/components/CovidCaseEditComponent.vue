@@ -6,7 +6,7 @@
                 <medical-data-component v-model="covidCase" @persist="persist()" />
             </b-tab>
             <b-tab title="Contactonderzoek" :disabled="covidCase.name.length == 0">
-                contact-tracing-component v-model="covidCase" /
+                <contact-tracing-component v-model="covidCase" />
             </b-tab>
             <b-tab title="Afronden & status" v-model="covidCase" lazy>
              <!--   <case-summary-component/> -->

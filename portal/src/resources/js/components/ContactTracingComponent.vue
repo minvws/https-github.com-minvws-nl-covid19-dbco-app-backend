@@ -4,7 +4,7 @@
         <b-card class="w-100">
             <b-card-body>
                 <h3>Contacten toevoegen</h3>
-                <contact-table-component :case-uuid="value.uuid" />
+                <contact-table-component :covid-case="value" />
             </b-card-body>
         </b-card>
         <b-card class="w-100 mt-3">

@@ -25,20 +25,29 @@
                         {{ task.derivedLabel }}
                     </span>
                     <span v-else>
-                        <b-form-input maxlength="255" placeholder="Voeg contact toe" v-model="task.label" />
+                        <b-form-input @change="persist(task)" maxlength="255" placeholder="Voeg contact toe" v-model="task.label" :state="isValid(task.uuid, 'label')" />
                     </span>
                 </b-td>
                 <b-td>
-                    <b-form-input maxlength="255" placeholder="Bijv. collega of trainer" v-model="task.taskContext" />
+                    <b-form-input @change="persist(task)" maxlength="255" placeholder="Bijv. collega of trainer" v-model="task.taskContext" :state="isValid(task.uuid, 'taskContext')" />
                 </b-td>
                 <b-td>
-                    <dbco-category-select v-model="task.category" />
+                    <dbco-category-select @input="persist(task)" v-model="task.category" :state="isValid(task.uuid,  'category')" />
                 </b-td>
                 <b-td>
-                    <dbco-datepicker v-model="task.dateOfLastExposure" :id="'date_' + (task.uuid ? task.uuid : 'ph')" variant="dropdown" />
+                    <dbco-datepicker
+                        @select="persist(task)"
+                        v-model="task.dateOfLastExposure"
+                        :symptomatic="covidCase.symptomatic"
+                        :symptom-date="covidCase.dateOfSymptomOnset"
+                        :id="'date_' + (task.uuid ? task.uuid : 'ph')"
+                        variant="dropdown"
+                        :state="isValid(task.uuid, 'dateOfLastExposure')"
+                        display-source-period />
                 </b-td>
                 <b-td>
                     <b-form-radio-group
+                        @change="persist(task)"
                         v-model="task.communication"
                         :options="communicationOptions"
                         button-variant="outline-primary"
@@ -48,7 +57,7 @@
                     />
                 </b-td>
                 <b-td class="text-center">
-                    <b-button variant="link" @click="" v-if="task.uuid"><i class="icon  icon--delete  icon--m0"></i></b-button>
+                    <b-button variant="link" @click="deleteTask(task)" v-if="task.uuid"><i class="icon  icon--delete  icon--m0"></i></b-button>
                 </b-td>
             </b-tr>
 
@@ -64,8 +73,8 @@ export default {
     name: "ContactTableComponent",
     components: {DbcoDatepicker, DbcoCategorySelect},
     props: {
-        caseUuid: {
-            type: String,
+        covidCase: {
+            type: Object,
             required: true
         }
     },
@@ -73,6 +82,7 @@ export default {
         return {
             tasks: [],
             loaded: false,
+            validationErrors: [],
             communicationOptions: [
                 { 'text': 'GGD', 'value': 'staff' },
                 { 'text': 'Index', 'value': 'index' }
@@ -80,8 +90,8 @@ export default {
         }
     },
     mounted() {
-        if (this.caseUuid) {
-            axios.get('/api/cases/' + this.caseUuid +'/tasks').then(response => {
+        if (this.covidCase) {
+            axios.get('/api/cases/' + this.covidCase.uuid +'/tasks').then(response => {
                 this.tasks = response.data.tasks
 
                 this.tasks.push({}) // Always add a placeholder for new records
@@ -90,6 +100,62 @@ export default {
             })
         }
     },
+    methods: {
+        persist(task) {
+            console.log("persisting.. ", task)
+
+            if (task.uuid) {
+                // Update
+                axios.post('/api/tasks/' + task.uuid, {
+                    task
+                }).then(response => {
+                    this.validationErrors[task.uuid] = []
+                }).catch(error => {
+                    console.log('error', error)
+                    if (error.response.status == 422) {
+                        // Todo/fixme: this validation doesn't work yet, it renders the
+                        // status too late (upon re-render) (we should refresh/touch something to
+                        // immediately render the errors)
+                        this.validationErrors[task.uuid] = Object.keys(error.response.data.errors)
+                    } else {
+                        alert('Er ging iets mis bij het opslaan van de nieuwe contactpersoon')
+                        console.log('Error!', error)
+                    }
+                })
+            } else {
+                // Create new
+                axios.post('/api/cases/' + this.covidCase.uuid + '/tasks', {
+                    task
+                }).then(response => {
+                    this.validationErrors[task.uuid] = [] // clear errors on the undefined row
+                    task.uuid = response.data.task.uuid
+                    // Add new placeholder
+                    this.tasks.push({dateOfSymptomOnset: '2021-01-01T10:00:00.000Z'})
+                }).catch( error => {
+                    if (error.response && error.response.status == 422) {
+                        this.validationErrors[task.uuid] = Object.keys(error.response.data.errors)
+                        this.$v.touch()
+                    } else {
+                        alert('Er ging iets mis bij het opslaan van de nieuwe contactpersoon')
+                        console.log('Error!', error)
+                    }
+                })
+            }
+        },
+        deleteTask(task) {
+            console.log("Deleting.. ", task)
+            axios.delete('/api/tasks/' + task.uuid).then(response => {
+                this.tasks = this.tasks.filter(taskItem => taskItem.uuid !== task.uuid)
+            })
+        },
+        isValid(taskUuid, fieldName) {
+            // Todo fixme, doesn't yet fully work, see todo earlier above
+            if (this.validationErrors[taskUuid] && this.validationErrors[taskUuid].includes('task.' + fieldName)) {
+                return false
+            }
+            return null // don't show green 'valid' indicator, but simply nothing
+        }
+    }
 }
 </script>
 

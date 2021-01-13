@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Answer;
 use App\Models\ContactDetailsAnswer;
-use App\Models\CovidCase;
 use App\Models\Question;
 use App\Models\Task;
 use App\Services\CaseService;
 use App\Services\QuestionnaireService;
 use App\Services\TaskService;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Jenssegers\Date\Date;
 
 class ApiTaskController extends ApiController
 {
@@ -102,6 +103,84 @@ class ApiTaskController extends ApiController
             // No relevant questions were skipped or unanswered: questionnaire complete!
             $task->progress = Task::TASK_DATA_COMPLETE;
         }
+    }
+
+    public function updateTask(Request $request, $taskUuid)
+    {
+        $task = $this->taskService->getTask($taskUuid);
+
+        if ($task === null) {
+            return response()->json(['error' => "Deze taak bestaat niet (meer)"], Response::HTTP_NOT_FOUND);
+        }
+        if (!$this->taskService->canAccess($task) && !$this->authService->hasPlannerRole()) {
+            return response()->json(['error' => 'Geen toegang tot de taak'], Response::HTTP_FORBIDDEN);
+        }
+
+        $validatedData = $request->validate([
+            'task.uuid' => 'required',
+            'task.label' => 'nullable', // can be null if derivedLabel was set
+            'task.taskContext' => 'nullable',
+            'task.category' => 'nullable',
+            'task.communication' => 'nullable',
+            'task.dateOfLastExposure' => 'nullable'
+        ]);
+
+        if (isset($validatedData['task']['label'])) {
+            $task->label = $validatedData['task']['label'];
+        }
+        $task->taskContext = $validatedData['task']['taskContext'] ?? null;
+        $task->category = $validatedData['task']['category'] ?? null;
+        $task->dateOfLastExposure = isset($validatedData['task']['dateOfLastExposure']) ? Date::parse($validatedData['task']['dateOfLastExposure']) : null;
+        $task->communication = $validatedData['task']['communication'] ?? 'staff';
+        $this->taskService->updateTask($task);
+
+        return response()->json(['task' => $task]);
+    }
+
+    public function createTask(Request $request, $caseUuid) {
+        $case = $this->caseService->getCase($caseUuid, false);
+
+        if ($case === null) {
+            return response()->json(['error' => "Deze case bestaat niet (meer)"], Response::HTTP_BAD_REQUEST);
+        }
+
+        if (!$this->caseService->canAccess($case) && !$this->authService->hasPlannerRole()) {
+            return response()->json(['error' => 'Geen toegang tot de case'], Response::HTTP_FORBIDDEN);
+        }
+
+        $validatedData = $request->validate([
+            'task.uuid' => 'nullable',
+            'task.label' => 'required',
+            'task.taskContext' => 'nullable',
+            'task.category' => 'nullable',
+            'task.communication' => 'nullable',
+            'task.dateOfLastExposure' => 'nullable'
+        ]);
+
+        $newTask = $this->taskService->createTask($caseUuid,
+            $validatedData['task']['label'],
+            $validatedData['task']['taskContext'] ?? null,
+            $validatedData['task']['category'] ?? '3',
+            $validatedData['task']['communication'] ?? 'staff',
+            isset($validatedData['task']['dateOfLastExposure']) ? Date::parse($validatedData['task']['dateOfLastExposure']) : null
+        );
+
+        return response()->json(['task' => $newTask]);
+    }
+
+    public function deleteTask($taskUuid) {
+        $task = $this->taskService->getTask($taskUuid);
+
+        if ($task === null) {
+            return response()->json(['error' => "Deze taak bestaat niet (meer)"], Response::HTTP_NOT_FOUND);
+        }
+        if (!$this->taskService->canAccess($task) && !$this->authService->hasPlannerRole()) {
+            return response()->json(['error' => 'Geen toegang tot de taak'], Response::HTTP_FORBIDDEN);
+        }
+
+        $this->taskService->deleteTask($task);
+
+        return response()->json(['task' => null]);
     }
 
 }
