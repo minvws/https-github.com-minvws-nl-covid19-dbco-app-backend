@@ -12,8 +12,8 @@
                 </colgroup>
                 <thead>
                 <tr>
+                    <th scope="col">Hpzone-nr.</th>
                     <th scope="col">Naam</th>
-                    <th scope="col">Casenr.</th>
                     <th scope="col">Eerste ziektedag</th>
                     <th scope="col">Status</th>
                     <th scope="col">Laatst bewerkt</th>
@@ -22,8 +22,8 @@
                 </thead>
                 <tbody>
                     <tr v-for="(covidcase, $index) in cases" :key="$index" role="button" class="custom-link" @click="navigate(covidcase.editCommand)">
-                        <th scope="row">{{ covidcase.name|truncate(30) }}</th>
-                        <td>{{ covidcase.caseId|truncate(30) }}</td>
+                        <th scope="row">{{ covidcase.caseId|truncate(30) }}</th>
+                        <td>{{ covidcase.name|truncate(30) }}</td>
                         <td>{{ covidcase.dateOfSymptomOnset|dateFormatLong }}</td>
                         <td>
                             <span class="icon text-center">
