@@ -1,5 +1,3 @@
-<?php print_r($answers) ?>
-
 <div class="row">
     <div class="col">
         <h3> {{ $task->label }} </h3>
