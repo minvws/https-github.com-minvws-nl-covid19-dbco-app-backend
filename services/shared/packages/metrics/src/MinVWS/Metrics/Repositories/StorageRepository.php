@@ -22,6 +22,35 @@ interface StorageRepository
     public function createEvent(Event $event): void;
 
     /**
+     * Count exports with the given status.
+     *
+     * @param array $status
+     *
+     * @return int
+     */
+    public function countExports(array $status): int;
+
+    /**
+     * List exports with the given status.
+     *
+     * @param int        $limit
+     * @param int        $offset
+     * @param array|null $status
+     *
+     * @return array
+     */
+    public function listExports(int $limit, int $offset, ?array $status): array;
+
+    /**
+     * Retrieve export.
+     *
+     * @param string $exportUuid
+     *
+     * @return Export|null
+     */
+    public function getExport(string $exportUuid): ?Export;
+
+    /**
      * Store export.
      *
      * Also adds all events that have not been added to an export to the export.
