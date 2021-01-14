@@ -15,6 +15,7 @@ use App\Services\QuestionnaireService;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Jenssegers\Date\Date;
 use Symfony\Component\HttpFoundation\Response;
 
 class TaskController extends Controller
@@ -93,8 +94,11 @@ class TaskController extends Controller
             $this->taskRepository->updateTask($task);
         }
 
+        // Collect relevant questions and validation rules for this questionnaire
         $relevantQuestions = [];
-        $rules = [];
+        $rules = [
+            'lastcontactdate' => 'date'
+        ];
         foreach ($questionnaire->questions as $question) {
             /**
              * @var Question $question
@@ -110,13 +114,12 @@ class TaskController extends Controller
         // Pull in the form data for the subset of questions and validate
         $validator = Validator::make($request->all(), $rules);
         if (!$validator->fails()) {
+            // Update the questionnaire
             $this->updateTaskAnswers($task, $relevantQuestions, $answers, $validator->validated());
 
             // Close Task for further editing by Index
             $task->status = Task::TASK_STATUS_CLOSED;
             $this->taskRepository->updateTask($task);
-        } else {
-            print_r($validator->errors());
         }
 
         // Return the rendered sidebar
@@ -124,8 +127,7 @@ class TaskController extends Controller
             'task' => $task,
             'questions' => $questionnaire->questions,
             'answers' => array_map(fn(Answer $answer) => $answer->toFormValue(), $answers),
-            'errors' => $validator->errors()
-        ]);
+        ])->withErrors($validator);
     }
 
     /**
@@ -136,8 +138,13 @@ class TaskController extends Controller
      */
     private function updateTaskAnswers(Task $task, array $questions, array $answers, array $formData): void
     {
-        print_r($answers);
+        // Update the Task's last exposure date
+        if ($task->dateOfLastExposure !== $formData['lastcontactdate']) {
+            $task->dateOfLastExposure = new Date($formData['lastcontactdate']);
+            $this->taskRepository->updateTask($task);
+        }
 
+        // Update the Task questionnaire
         foreach ($questions as $question) {
            if (!isset($formData[$question->uuid])) {
                // No answer in returned form: ignore, do not create empty Answer
@@ -145,22 +152,25 @@ class TaskController extends Controller
            }
 
            if (isset($answers[$question->uuid])) {
-                // Update existing answer
+               error_log("update: question={$question->label} answer={$answers[$question->uuid]->uuid} with " . var_export($formData[$question->uuid], true));
+               // Update existing answer
                 $answer = $answers[$question->uuid];
                 $answer->fromFormValue($formData[$question->uuid]);
                 $this->answerRepository->updateAnswer($answer);
 
-               error_log("update: question={$question->uuid} answer={$answers[$question->uuid]->uuid} with " . var_export($formData[$question->uuid], true));
+               error_log(var_export($answer, true));
            } else {
+               error_log("insert: question={$question->label}  with " . var_export($formData[$question->uuid], true));
                // Create new Answer
                $answer = $this->createNewAnswerForQuestion($question, $formData[$question->uuid]);
                $answer->taskUuid = $task->uuid;
                $answer->questionUuid = $question->uuid;
                $this->answerRepository->createAnswer($answer);
 
-               error_log("insert: question={$question->uuid}  with " . var_export($answer, true));
            }
         }
+        var_dump($answers);
+
     }
 
     // @todo centralize Question/Answer helpers
