@@ -5,23 +5,23 @@
 </div>
 <div class="row">
     <div class="col mt-1">
-        <label for="firstName">Voornaam</label>
-        <input type="text" maxlength="255" class="form-control" id="firstName" name="{{$question->uuid}}[firstName]" value="{{ $answers[$question->uuid]['firstname'] ?? '' }}" placeholder="">
+        <label for="firstname">Voornaam</label>
+        <input type="text" maxlength="255" class="form-control" id="firstname" name="{{$question->uuid}}[{{\App\Models\ContactDetailsAnswer::FIELD_FIRSTNAME}}]" value="{{ $answers[$question->uuid][\App\Models\ContactDetailsAnswer::FIELD_FIRSTNAME] ?? '' }}" placeholder="">
     </div>
     <div class="col mt-1">
-        <label for="lastName">Achternaam</label>
-        <input type="text" maxlength="255" class="form-control" id="lastName" name="{{$question->uuid}}[lastName]" value="{{ $answers[$question->uuid]['lastname'] ?? '' }}" placeholder="">
+        <label for="lastname">Achternaam</label>
+        <input type="text" maxlength="255" class="form-control" id="lastname" name="{{$question->uuid}}[{{\App\Models\ContactDetailsAnswer::FIELD_LASTNAME}}]" value="{{ $answers[$question->uuid][\App\Models\ContactDetailsAnswer::FIELD_LASTNAME] ?? '' }}" placeholder="">
     </div>
 </div>
 <div class="row">
     <div class="col mt-1">
-        <label for="phoneNumber">Telefoonnummer</label>
-        <input type="text" maxlength="255" class="form-control" id="phoneNumber" name="{{$question->uuid}}[phoneNumber]" value="{{ $answers[$question->uuid]['phonenumber'] ?? ''  }}" placeholder="">
+        <label for="phonenumber">Telefoonnummer</label>
+        <input type="text" maxlength="255" class="form-control" id="phonenumber" name="{{$question->uuid}}[{{\App\Models\ContactDetailsAnswer::FIELD_PHONENUMBER}}]" value="{{ $answers[$question->uuid][\App\Models\ContactDetailsAnswer::FIELD_PHONENUMBER] ?? ''  }}" placeholder="">
     </div>
 </div>
 <div class="row">
     <div class="col mt-1">
         <label for="email">E-mailadres</label>
-        <input type="text" maxlength="255" class="form-control" id="email" name="{{$question->uuid}}[email]" value="{{ $answers[$question->uuid]['email'] ?? ''  }}" placeholder="">
+        <input type="text" maxlength="255" class="form-control" id="email" name="{{$question->uuid}}[{{\App\Models\ContactDetailsAnswer::FIELD_EMAIL}}]" value="{{ $answers[$question->uuid][\App\Models\ContactDetailsAnswer::FIELD_EMAIL] ?? ''  }}" placeholder="">
     </div>
 </div>

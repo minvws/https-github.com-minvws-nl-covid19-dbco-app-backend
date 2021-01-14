@@ -9,13 +9,18 @@ class ContactDetailsAnswer extends Answer
     public ?string $email;
     public ?string $phonenumber;
 
+    public const FIELD_FIRSTNAME = 'firstname';
+    public const FIELD_LASTNAME = 'lastname';
+    public const FIELD_PHONENUMBER = 'phonenumber';
+    public const FIELD_EMAIL = 'email';
+
     public static function getValidationRules()
     {
         return [
-            'firstName' => 'nullable|string',
-            'lastName' => 'nullable|string',
-            'phoneNumber' => 'nullable|string',
-            'email' => 'nullable|email'
+            self::FIELD_FIRSTNAME => 'nullable|string',
+            self::FIELD_LASTNAME => 'nullable|string',
+            self::FIELD_PHONENUMBER => 'nullable|string',
+            self::FIELD_EMAIL => 'nullable|email'
         ];
     }
 
@@ -31,18 +36,18 @@ class ContactDetailsAnswer extends Answer
     public function toFormValue()
     {
         return [
-            'firstname' => $this->firstname,
-            'lastname' => $this->lastname,
-            'email' => $this->email,
-            'phonenumber' => $this->phonenumber
+            self::FIELD_FIRSTNAME => $this->firstname,
+            self::FIELD_LASTNAME => $this->lastname,
+            self::FIELD_EMAIL => $this->email,
+            self::FIELD_PHONENUMBER => $this->phonenumber
         ];
     }
 
     public function fromFormValue(array $formData)
     {
-        $this->firstname = $formData['firstname'] ?? null;
-        $this->lastname = $formData['lastname'] ?? null;
-        $this->email = $formData['email'] ?? null;
-        $this->phonenumber = $formData['phonenumber'] ?? null;
+        $this->firstname = $formData[self::FIELD_FIRSTNAME] ?? null;
+        $this->lastname = $formData[self::FIELD_LASTNAME] ?? null;
+        $this->email = $formData[self::FIELD_EMAIL] ?? null;
+        $this->phonenumber = $formData[self::FIELD_PHONENUMBER] ?? null;
     }
 }
