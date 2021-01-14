@@ -138,9 +138,11 @@ class ExportService
 
         $path = $this->exportBasePath . '/' . $filename;
 
+        $export->eventCount = 0;
         $handle = $this->exportRepository->openFile($path, $export);
-        $this->storageRepository->iterateEventsForExport($export->uuid, function (Event $event) use ($handle) {
+        $this->storageRepository->iterateEventsForExport($export->uuid, function (Event $event) use ($handle, $export) {
             $this->exportRepository->addEventToFile($event, $handle);
+            $export->eventCount += 1;
         });
         $this->exportRepository->closeFile($handle);
 
