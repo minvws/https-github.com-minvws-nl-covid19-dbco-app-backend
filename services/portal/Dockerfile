@@ -2,6 +2,7 @@
 FROM composer as backend
 WORKDIR /src
 
+COPY shared/packages /shared/packages
 COPY portal/src/composer.json portal/src/composer.lock /src/
 RUN composer install \
     --ignore-platform-reqs \
@@ -12,7 +13,6 @@ RUN composer install \
     --no-scripts
 
 COPY shared/library /shared/library
-COPY shared/packages /shared/packages
 COPY portal/src/ /src/
 RUN composer dump-autoload --optimize --classmap-authoritative
 
