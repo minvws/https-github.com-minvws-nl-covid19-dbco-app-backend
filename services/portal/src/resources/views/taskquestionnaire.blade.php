@@ -12,7 +12,7 @@
 
 @foreach($questions as $question)
     @if (in_array($task->category, $question->relevantForCategories))
-        @if ($answers[$question->uuid] === \App\Models\IndecipherableAnswer::INDECIPHERABLE)
+        @if (isset($answers[$question->uuid]) && $answers[$question->uuid] === \App\Models\IndecipherableAnswer::INDECIPHERABLE)
             @include("taskquestion_indecipherable")
         @else
             @include("taskquestion_" . $question->questionType)
