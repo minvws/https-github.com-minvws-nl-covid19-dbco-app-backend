@@ -68,10 +68,11 @@ class TaskController extends Controller
         }
 
         list($questionnaire, $answers) = $this->taskService->getTaskQuestionnaireAndAnswers($task);
+        $questions = $this->addLastExposureDateQuestion($questionnaire->questions);
 
         return view('taskquestionnaire', [
             'task' => $task,
-            'questions' => $questionnaire->questions,
+            'questions' => $questions,
             'answers' => array_map(fn(Answer $answer) => $answer->toFormValue(), $answers)
         ]);
     }
@@ -96,9 +97,7 @@ class TaskController extends Controller
 
         // Collect relevant questions and validation rules for this questionnaire
         $relevantQuestions = [];
-        $rules = [
-            'lastcontactdate' => 'date'
-        ];
+        $rules = [];
         foreach ($questionnaire->questions as $question) {
             /**
              * @var Question $question
@@ -110,6 +109,10 @@ class TaskController extends Controller
             $relevantQuestions[] = $question;
             $rules = array_merge($rules, $this->getQuestionFormValidationRules($question));
         }
+
+        // Special case: add last exposure date as the second question
+        $rules['lastcontactdate'] = 'nullable|date';
+        $relevantQuestions = $this->addLastExposureDateQuestion($relevantQuestions);
 
         // Pull in the form data for the subset of questions and validate
         $validator = Validator::make($request->all(), $rules);
@@ -125,9 +128,24 @@ class TaskController extends Controller
         // Return the rendered sidebar
         return view('taskquestionnaire', [
             'task' => $task,
-            'questions' => $questionnaire->questions,
+            'questions' => $relevantQuestions,
             'answers' => array_map(fn(Answer $answer) => $answer->toFormValue(), $answers),
         ])->withErrors($validator);
+    }
+
+    /**
+     * @param Question[] $questions
+     * @return Question[]
+     */
+    private function addLastExposureDateQuestion(array $questions): array
+    {
+        $_q = new Question;
+        $_q->uuid = 'lastcontactdate';
+        $_q->questionType = 'lastcontactdate';
+        $_q->relevantForCategories = ['1', '2a', '2b', '3'];
+
+        array_splice($questions, 1, 0, [$_q]);
+        return $questions;
     }
 
     /**
@@ -138,16 +156,19 @@ class TaskController extends Controller
      */
     private function updateTaskAnswers(Task $task, array $questions, array $answers, array $formData): void
     {
-        // Update the Task's last exposure date
-        if ($task->dateOfLastExposure !== $formData['lastcontactdate']) {
-            $task->dateOfLastExposure = new Date($formData['lastcontactdate']);
-            $this->taskRepository->updateTask($task);
-        }
-
         // Update the Task questionnaire
         foreach ($questions as $question) {
            if (!isset($formData[$question->uuid])) {
                // No answer in returned form: ignore, do not create empty Answer
+               continue;
+           }
+
+            // Special case: update the Task's last exposure date
+            if ($question->questionType === 'lastcontactdate') {
+               if ($task->dateOfLastExposure !== $formData['lastcontactdate']) {
+                   $task->dateOfLastExposure = new Date($formData['lastcontactdate']);
+                   $this->taskRepository->updateTask($task);
+               }
                continue;
            }
 
