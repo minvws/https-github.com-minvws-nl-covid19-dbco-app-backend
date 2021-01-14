@@ -1,3 +1,5 @@
+<?php print_r($answers) ?>
+
 <div class="row">
     <div class="col">
         <h3> {{ $task->label }} </h3>
@@ -11,6 +13,12 @@
     data-taskuuid="{{ $task->uuid }}"
 >
     @csrf
+
+    @error('lastcontactdate')
+    <div class="alert alert-danger">
+        Laatste contact is verplicht datumveld.
+    </div>
+    @enderror
 
     <div class="row mt-3">
     <div class="col">

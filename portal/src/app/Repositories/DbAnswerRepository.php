@@ -76,10 +76,11 @@ class DbAnswerRepository implements AnswerRepository
                 break;
             case 'classificationdetails':
                 $answer = new ClassificationDetailsAnswer();
-                $answer->category1Risk = ($dbAnswer->cfd_cat_1_risk === 1);
-                $answer->category2ARisk = ($dbAnswer->cfd_cat_2a_risk === 1);
-                $answer->category2BRisk = ($dbAnswer->cfd_cat_2b_risk === 1);
-                $answer->category3Risk = ($dbAnswer->cfd_cat_3_risk === 1);
+                $answer->category1Risk = $dbAnswer->cfd_cat_1_risk;
+                $answer->category2ARisk = $dbAnswer->cfd_cat_2a_risk;
+                $answer->category2BRisk = $dbAnswer->cfd_cat_2b_risk;
+                $answer->category3Risk = $dbAnswer->cfd_cat_3_risk;
+                var_export(['new answer from db' => $answer], true);
                 break;
             default:
                 $answer = new SimpleAnswer();
@@ -111,6 +112,9 @@ class DbAnswerRepository implements AnswerRepository
 
         $dbAnswer = $this->updateFromEntity($dbAnswer, $answer);
         $dbAnswer->updated_at = Date::now();
+
+        error_log('saving ' . var_export($dbAnswer, true));
+
         $dbAnswer->save();
     }
 
@@ -120,6 +124,8 @@ class DbAnswerRepository implements AnswerRepository
         $dbAnswer->task_uuid = $answer->taskUuid;
         $dbAnswer->question_uuid = $answer->questionUuid;
 
+        error_log("updateFromEntity " . get_class($answer));
+
         if ($answer instanceof SimpleAnswer) {
             $dbAnswer->spv_value = $this->seal($answer->value);
         } elseif ($answer instanceof ContactDetailsAnswer) {
@@ -128,10 +134,10 @@ class DbAnswerRepository implements AnswerRepository
             $dbAnswer->ctd_email = $this->seal($answer->email);
             $dbAnswer->ctd_phonenumber = $this->seal($answer->phonenumber);
         } elseif ($answer instanceof ClassificationDetailsAnswer) {
-            $dbAnswer->cfd_cat_1_risk = $answer->category1Risk ? 1 : 0;
-            $dbAnswer->cfd_cat_2a_risk = $answer->category2ARisk ? 1 : 0;
-            $dbAnswer->cfd_cat_2b_risk = $answer->category2BRisk ? 1 : 0;
-            $dbAnswer->cfd_cat_3_risk = $answer->category3Risk ? 1 : 0;
+            $dbAnswer->cfd_cat_1_risk = $answer->category1Risk;
+            $dbAnswer->cfd_cat_2a_risk = $answer->category2ARisk;
+            $dbAnswer->cfd_cat_2b_risk = $answer->category2BRisk;
+            $dbAnswer->cfd_cat_3_risk = $answer->category3Risk;
         }
 
         return $dbAnswer;
