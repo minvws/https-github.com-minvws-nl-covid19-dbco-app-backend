@@ -1,7 +1,7 @@
 # Build backend sources
 FROM composer as backend
 WORKDIR /src
-ds
+
 COPY portal/src/composer.json portal/src/composer.lock /src/
 RUN composer install \
     --ignore-platform-reqs \
