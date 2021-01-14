@@ -112,9 +112,6 @@ class DbAnswerRepository implements AnswerRepository
 
         $dbAnswer = $this->updateFromEntity($dbAnswer, $answer);
         $dbAnswer->updated_at = Date::now();
-
-        error_log('saving ' . var_export($dbAnswer, true));
-
         $dbAnswer->save();
     }
 
@@ -123,8 +120,6 @@ class DbAnswerRepository implements AnswerRepository
         $dbAnswer->uuid = $answer->uuid ?? Uuid::uuid4();
         $dbAnswer->task_uuid = $answer->taskUuid;
         $dbAnswer->question_uuid = $answer->questionUuid;
-
-        error_log("updateFromEntity " . get_class($answer));
 
         if ($answer instanceof SimpleAnswer) {
             $dbAnswer->spv_value = $this->seal($answer->value);

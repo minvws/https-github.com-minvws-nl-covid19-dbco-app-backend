@@ -157,8 +157,6 @@ class TaskController extends Controller
                 $answer = $answers[$question->uuid];
                 $answer->fromFormValue($formData[$question->uuid]);
                 $this->answerRepository->updateAnswer($answer);
-
-               error_log(var_export($answer, true));
            } else {
                error_log("insert: question={$question->label}  with " . var_export($formData[$question->uuid], true));
                // Create new Answer
@@ -169,8 +167,6 @@ class TaskController extends Controller
 
            }
         }
-        var_dump($answers);
-
     }
 
     // @todo centralize Question/Answer helpers
@@ -190,6 +186,7 @@ class TaskController extends Controller
                 $rules = SimpleAnswer::getValidationRules();
                 break;
             case 'multiplechoice':
+                $rules = SimpleAnswer::getValidationRules();
                 break;
             default:
                 error_log("no validation for {$question->questionType}");
@@ -219,6 +216,7 @@ class TaskController extends Controller
                 $answer = new SimpleAnswer();
                 break;
             case 'multiplechoice':
+                $answer = new SimpleAnswer();
                 break;
             default:
                 error_log("no Answer class for {$question->questionType}");
