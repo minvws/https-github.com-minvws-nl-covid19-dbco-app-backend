@@ -95,7 +95,10 @@ services:
             - ./services/shared/packages/metrics:/shared/packages/metrics
             - ./services/healthauthority-api/src:/src
             - ./metrics/export:/metrics
-            - ./sftp_id_rsa:/keys/id_rsa:ro
+            - type: bind
+              source: ./sftp_id_rsa
+              target: /keys/id_rsa
+              read_only: true
 
     healthauthority-hsm:
         extends:
@@ -124,6 +127,8 @@ services:
             - ${PORTAL_PORT:-8084}:8080
         volumes:
             - ./services/portal/src:/src
+            - ./services/shared/library:/shared/library
+            - ./services/shared/packages/metrics:/shared/packages/metrics
 
     hsm:
         extends:
@@ -135,5 +140,8 @@ services:
             file: docker-compose/common.yml
             service: sftp
         volumes:
-            - ./sftp_id_rsa.pub:/home/sftp/.ssh/keys/id_rsa.pub:ro
             - ./metrics/sftp:/home/sftp/upload
+            - type: bind
+              source: ./sftp_id_rsa.pub
+              target: /home/sftp/.ssh/keys/id_rsa.pub
+              read_only: true
