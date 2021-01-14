@@ -32,11 +32,11 @@ jobs:
         uses: engineerd/setup-kind@v0.5.0
       - name: Build container image
         run: |
-          docker build -t test/public-api:latest -f api/Dockerfile-public api/
-          docker build -t test/private-api:latest -f api/Dockerfile-private api/
-          docker build -t test/healthauthority-api:latest -f api/Dockerfile-healthauthority api/
-          docker build -t test/portal:latest -f portal/Dockerfile portal/
-          docker build -t test/bridge:latest -f bridge/Dockerfile bridge/
+          docker build -t test/public-api:latest -f services/public-api/Dockerfile services/
+          docker build -t test/private-api:latest -f services/private-api/Dockerfile services/
+          docker build -t test/healthauthority-api:latest -f services/healthauthority-api/Dockerfile services/
+          docker build -t test/portal:latest -f services/portal/Dockerfile services/
+          docker build -t test/bridge:latest -f services/bridge/Dockerfile services/bridge/
           kind load docker-image test/public-api:latest
           kind load docker-image test/private-api:latest
           kind load docker-image test/healthauthority-api:latest
