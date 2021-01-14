@@ -69,6 +69,7 @@ class DbStorageRepository implements StorageRepository
             $row->filename,
             $row->exported_at !== null ? new DateTimeImmutable($row->exported_at) : null,
             $row->uploaded_at !== null ? new DateTimeImmutable($row->uploaded_at) : null,
+            $row->event_count ?? null
         );
     }
 
@@ -100,7 +101,9 @@ class DbStorageRepository implements StorageRepository
         $params = [];
 
         $query = "
-            SELECT uuid, status, created_at, filename, exported_at, uploaded_at
+            SELECT 
+               uuid, status, created_at, filename, exported_at, uploaded_at, 
+               (SELECT COUNT(*) FROM event WHERE export_uuid = export.uuid) AS event_count
             FROM export 
         ";
 
@@ -130,7 +133,9 @@ class DbStorageRepository implements StorageRepository
     public function getExport(string $exportUuid): ?Export
     {
         $stmt = $this->client->prepare("
-            SELECT uuid, status, created_at, filename, exported_at, uploaded_at
+            SELECT
+               uuid, status, created_at, filename, exported_at, uploaded_at, 
+               (SELECT COUNT(*) FROM event WHERE export_uuid = export.uuid) AS event_count
             FROM export
             WHERE uuid = :uuid
         ");

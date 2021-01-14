@@ -43,6 +43,11 @@ class Export
     public ?DateTimeInterface $uploadedAt;
 
     /**
+     * @var int|null
+     */
+    public ?int $eventCount = null;
+
+    /**
      * Constructor.
      *
      * @param string                 $uuid
@@ -52,7 +57,7 @@ class Export
      * @param DateTimeInterface|null $exportedAt
      * @param DateTimeInterface|null $uploadedAt
      */
-    public function __construct(string $uuid, string $status, DateTimeInterface $createdAt, ?string $filename = null, ?DateTimeInterface $exportedAt = null, ?DateTimeInterface $uploadedAt = null)
+    public function __construct(string $uuid, string $status, DateTimeInterface $createdAt, ?string $filename = null, ?DateTimeInterface $exportedAt = null, ?DateTimeInterface $uploadedAt = null, ?int $eventCount = null)
     {
         $this->uuid = $uuid;
         $this->status = $status;
@@ -60,5 +65,6 @@ class Export
         $this->filename = $filename;
         $this->exportedAt = $exportedAt;
         $this->uploadedAt = $uploadedAt;
+        $this->eventCount = $eventCount;
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace MinVWS\Metrics\Commands;
 
+use MinVWS\Metrics\Models\Export;
 use MinVWS\Metrics\Services\ExportService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -74,16 +75,17 @@ class ListExportsCommand extends Command
         $exports = $this->exportService->listExports($limit, $offset, $status);
 
         $table = new Table($output);
-        $table->setHeaders(['UUID', 'Created', 'Status', 'Exported', 'Filename', 'Uploaded']);
+        $table->setHeaders(['UUID', 'Created', 'Status', 'Exported', 'Filename', 'Uploaded', '#Events']);
         $table->setRows(
             array_map(
-                fn ($e) => [
+                fn (Export $e) => [
                     $e->uuid,
                     $e->createdAt->format('Y-m-d H:i:s'),
                     $e->status,
                     $e->exportedAt !== null ? $e->exportedAt->format('Y-m-d H:i:s') : '',
                     $e->filename ?? '',
-                    $e->uploadedAt !== null ? $e->uploadedAt->format('Y-m-d H:i:s') : ''
+                    $e->uploadedAt !== null ? $e->uploadedAt->format('Y-m-d H:i:s') : '',
+                    $e->eventCount
                 ],
                 $exports
             )
