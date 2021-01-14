@@ -13,8 +13,10 @@ use App\Repositories\CaseUpdateNotificationRepository;
 use App\Repositories\PairingRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\TaskRepository;
+use DBCO\Shared\Application\Metrics\Events\OpenedEvent;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Jenssegers\Date\Date;
+use MinVWS\Metrics\Services\EventService;
 
 /**
  * Responsible for managing cases.
@@ -58,6 +60,11 @@ class CaseService
     private StateRepository $stateRepository;
 
     /**
+     * @var EventService
+     */
+    private EventService $eventService;
+
+    /**
      * Constructor.
      *
      * @param CaseRepository $caseRepository
@@ -66,7 +73,9 @@ class CaseService
      * @param AnswerRepository $answerRepository
      * @param AuthenticationService $authService
      * @param CaseUpdateNotificationRepository $caseExportRepository
+     * @param QuestionnaireService $questionnaireService
      * @param StateRepository $stateRepository
+     * @param EventService $eventService
      */
     public function __construct(CaseRepository $caseRepository,
                                 TaskRepository $taskRepository,
@@ -75,7 +84,8 @@ class CaseService
                                 AuthenticationService $authService,
                                 CaseUpdateNotificationRepository $caseExportRepository,
                                 QuestionnaireService $questionnaireService,
-                                StateRepository $stateRepository)
+                                StateRepository $stateRepository,
+                                EventService $eventService)
     {
         $this->caseRepository = $caseRepository;
         $this->taskRepository = $taskRepository;
@@ -85,6 +95,7 @@ class CaseService
         $this->caseExportRepository = $caseExportRepository;
         $this->questionnaireService = $questionnaireService;
         $this->stateRepository = $stateRepository;
+        $this->eventService = $eventService;
     }
 
     public function createDraftCase(): CovidCase
@@ -95,7 +106,9 @@ class CaseService
         // Auto assign to yourself
         $assignedTo = $owner;
 
-        return $this->caseRepository->createCase($owner, CovidCase::STATUS_DRAFT, $assignedTo);
+        $case = $this->caseRepository->createCase($owner, CovidCase::STATUS_DRAFT, $assignedTo);
+        $this->eventService->registerEvent(new OpenedEvent(OpenedEvent::ACTOR_STAFF, $case->uuid));
+        return $case;
     }
 
     /**

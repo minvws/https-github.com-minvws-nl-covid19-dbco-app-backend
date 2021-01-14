@@ -5,6 +5,7 @@ use DBCO\HealthAuthorityAPI\Application\Services\QuestionnaireService;
 use DBCO\HealthAuthorityAPI\Application\Services\CaseService;
 use DBCO\HealthAuthorityAPI\Application\Services\SecurityService;
 use DI\ContainerBuilder;
+use MinVWS\Metrics\Services\EventService;
 use MinVWS\Metrics\Services\ExportService;
 use function DI\autowire;
 use function DI\get;
@@ -19,6 +20,7 @@ return function (ContainerBuilder $containerBuilder) {
         ExportService::class => autowire(ExportService::class)
             ->constructorParameter('exportBasePath', get('metrics.export.basePath'))
             ->constructorParameter('exportFilenameTemplate', get('metrics.export.filenameTemplate'))
-            ->constructorParameter('exportFilenameTimestampFormat', get('metrics.export.filenameTimestampFormat'))
+            ->constructorParameter('exportFilenameTimestampFormat', get('metrics.export.filenameTimestampFormat')),
+        EventService::class => autowire(EventService::class)
     ]);
 };

@@ -11,6 +11,8 @@ RUN composer install \
     --no-interaction \
     --no-scripts
 
+COPY shared/library /shared/library
+COPY shared/packages /shared/packages
 COPY portal/src/ /src/
 RUN composer dump-autoload --optimize --classmap-authoritative
 

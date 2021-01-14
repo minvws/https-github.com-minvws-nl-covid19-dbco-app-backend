@@ -22,8 +22,14 @@ use App\Repositories\StateRepository;
 use App\Repositories\TaskRepository;
 use App\Repositories\DbTaskRepository;
 use App\Repositories\UserRepository;
+use DBCO\Shared\Application\Metrics\Transformers\EventTransformer;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use GuzzleHttp\Client as GuzzleClient;
+use MinVWS\Metrics\Repositories\DbStorageRepository;
+use MinVWS\Metrics\Repositories\StorageRepository;
+use MinVWS\Metrics\Transformers\EventTransformer as EventTransformerInterface;
+use PDO;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -56,5 +62,15 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->when(ApiCaseUpdateNotificationRepository::class)
             ->needs(GuzzleClient::class)
             ->give(fn () => new GuzzleClient(config('services.healthauthority_api.client_options')));
+
+        $this->app->bind(StorageRepository::class, DbStorageRepository::class);
+        $this->app->when(DbStorageRepository::class)
+            ->needs(PDO::class)
+            ->give(fn () => DB::connection()->getPdo());
+
+        $this->app->bind(EventTransformerInterface::class, EventTransformer::class);
+        $this->app->when(EventTransformer::class)
+            ->needs(PDO::class)
+            ->give(fn () => DB::connection()->getPdo());
     }
 }
