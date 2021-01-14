@@ -59,11 +59,13 @@ class ExportMetricsCommand extends Command
         $exportUuid = $input->getArgument('exportUuid', null);
         $export = $this->exportService->export($exportUuid);
         $output->writeln(' [OK]');
-
-        $output->writeln(sprintf('Export UUID:     %s', $export->uuid));
-        $output->writeln(sprintf('Export filename: %s', $export->filename));
+        $output->writeln('');
+        $output->writeln(sprintf('Export UUID     : %s', $export->uuid));
+        $output->writeln(sprintf('Export filename : %s', $export->filename));
+        $output->writeln(sprintf('Events          : %d', $export->eventCount));
 
         if ($input->getOption('upload')) {
+            $output->writeln('');
             $output->write('Uploading metrics...');
             $this->exportService->upload($export);
             $output->writeln(' [OK]');
