@@ -56,6 +56,7 @@ COPY portal/assets/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 COPY portal/assets/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_default.conf
 
 WORKDIR /src
+COPY --from=backend /shared /shared
 COPY --from=backend /src /src
 COPY --from=frontend /src/public /src/public
 
