@@ -4,9 +4,11 @@ namespace MinVWS\Metrics\Repositories;
 use Closure;
 use DateTime;
 use DateTimeImmutable;
+use Exception;
 use MinVWS\Metrics\Models\Event;
 use MinVWS\Metrics\Models\Export;
 use PDO;
+use stdClass;
 
 /**
  * Store events and exports in database.
@@ -26,6 +28,121 @@ class DbStorageRepository implements StorageRepository
     public function __construct(PDO $client)
     {
         $this->client = $client;
+    }
+
+    /**
+     * Add status to export where clause.
+     *
+     * @param string     $query
+     * @param array      $params
+     * @param array|null $status
+     */
+    private function addStatusToExportWhereClause(string &$query, array &$params, ?array $status)
+    {
+        if ($status !== null && count($status) >= 1) {
+            $in = '';
+            foreach ($status as $i => $s) {
+                $in .= (strlen($in) > 0 ? ', ' : '') . ':status' . $i;
+                $params['status' . $i] = $s;
+            }
+
+            $query .= "WHERE status IN ($in)\n";
+        } else if ($status !== null) {
+            $query .= "WHERE 1 = 0\n";
+        }
+    }
+
+    /**
+     * Convert export database row to entity.
+     *
+     * @param stdClass $row
+     * @return Export
+     *
+     * @throws Exception
+     */
+    private function exportRowToEntity(stdClass $row): Export
+    {
+        return new Export(
+            $row->uuid,
+            $row->status,
+            new DateTimeImmutable($row->created_at),
+            $row->filename,
+            $row->exported_at !== null ? new DateTimeImmutable($row->exported_at) : null,
+            $row->uploaded_at !== null ? new DateTimeImmutable($row->uploaded_at) : null,
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function countExports(?array $status): int
+    {
+        $params = [];
+
+        $query = "
+            SELECT COUNT(*) 
+            FROM export 
+        ";
+
+        $this->addStatusToExportWhereClause($query, $params, $status);
+
+        $stmt = $this->client->prepare($query);
+        $stmt->execute($params);
+
+        return (int)$stmt->fetchColumn();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function listExports(int $limit, int $offset, ?array $status): array
+    {
+        $params = [];
+
+        $query = "
+            SELECT uuid, status, created_at, filename, exported_at, uploaded_at
+            FROM export 
+        ";
+
+        $this->addStatusToExportWhereClause($query, $params, $status);
+
+        $query .= "ORDER BY created_at DESC\n";
+        $query .= sprintf("LIMIT %d, %d", $offset, $limit);
+
+        $stmt = $this->client->prepare($query);
+        $stmt->execute($params);
+
+        $exports = [];
+        while ($row = $stmt->fetchObject()) {
+            $exports[] = $this->exportRowToEntity($row);
+        }
+
+        return $exports;
+    }
+
+    /**
+     * Retrieve export.
+     *
+     * @param string $exportUuid
+     *
+     * @return Export|null
+     */
+    public function getExport(string $exportUuid): ?Export
+    {
+        $stmt = $this->client->prepare("
+            SELECT uuid, status, created_at, filename, exported_at, uploaded_at
+            FROM export
+            WHERE uuid = :uuid
+        ");
+
+        $stmt->execute(['uuid' => $exportUuid]);
+
+        $row = $stmt->fetchObject();
+        if ($row !== null) {
+            return $this->exportRowToEntity($row);
+        } else {
+            return null;
+        }
     }
 
     /**

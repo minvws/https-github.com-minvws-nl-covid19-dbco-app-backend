@@ -73,14 +73,54 @@ class ExportService
     }
 
     /**
+     * Count exports with the given status.
+     *
+     * @param array $status
+     *
+     * @return int
+     */
+    public function countExports(array $status)
+    {
+        return $this->storageRepository->countExports($status);
+    }
+
+    /**
+     * List exports with the given status.
+     *
+     * @param int   $limit
+     * @param int   $offset
+     * @param array $status
+     */
+    public function listExports(int $limit, int $offset, array $status)
+    {
+        return $this->storageRepository->listExports($limit, $offset, $status);
+    }
+
+    /**
+     * Retrieve export.
+     *
+     * @param string $exportUuid
+     *
+     * @return Export|null
+     */
+    public function getExport(string $exportUuid): ?Export
+    {
+        return $this->storageRepository->getExport($exportUuid);
+    }
+
+    /**
      * Export the latest metrics to a file at the configured export path.
      *
      * @return Export
      */
-    public function export(): Export
+    public function export(?string $exportUuid): Export
     {
-        $export = new Export(Uuid::uuid4(), Export::STATUS_INITIAL, new DateTimeImmutable());
-        $this->storageRepository->createExport($export);
+        if ($exportUuid !== null) {
+            $export = $this->storageRepository->getExport($exportUuid);
+        } else {
+            $export = new Export(Uuid::uuid4(), Export::STATUS_INITIAL, new DateTimeImmutable());
+            $this->storageRepository->createExport($export);
+        }
 
         $exportedAt = new DateTimeImmutable();
 
@@ -104,10 +144,10 @@ class ExportService
         });
         $this->exportRepository->closeFile($handle);
 
-        $export->filename = $filename;
-
+        $export->status = Export::STATUS_EXPORTED;
         $export->exportedAt = $exportedAt;
-        $this->storageRepository->updateExport($export, ['exportedAt']);
+        $export->filename = $filename;
+        $this->storageRepository->updateExport($export, ['status', 'exportedAt', 'filename']);
 
         return $export;
     }
@@ -121,7 +161,8 @@ class ExportService
     {
         $path = $this->exportBasePath . '/' . $export->filename;
         $this->uploadRepository->uploadFile($path, $export);
+        $export->status = Export::STATUS_UPLOADED;
         $export->uploadedAt = new DateTimeImmutable();
-        $this->storageRepository->updateExport($export, ['uploadedAt']);
+        $this->storageRepository->updateExport($export, ['status', 'uploadedAt']);
     }
 }
