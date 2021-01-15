@@ -42,6 +42,15 @@ Vue.filter('dateFormatLong', function (value) {
     return ''
 })
 
+// 2020-10-16
+Vue.filter('dateFormatYmd', function (value) {
+    if (value != null && value.length) {
+        const date = new Date(value)
+        return date.getFullYear() + '-' + (date.getMonth() + 1) + date.getDate()
+    }
+    return ''
+})
+
 // Gisteren 20:23
 Vue.filter('dateFormatDeltaTime', function (value) {
     if (value != null && value.length) {

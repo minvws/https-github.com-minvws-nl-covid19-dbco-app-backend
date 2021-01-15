@@ -4,7 +4,7 @@
 }
 
 .btn-outline-primary {
-    @include button-outline-variant($bco-purple, #222222, lighten($bco-purple,5%), $bco-purple);
+    @include button-outline-variant($bco-purple, $white, lighten($bco-purple,5%), $bco-purple);
 }
 
 .bg-grey {

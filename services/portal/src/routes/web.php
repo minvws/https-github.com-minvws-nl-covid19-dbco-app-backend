@@ -27,19 +27,12 @@ Route::middleware(['auth', 'rolecheck:user'])->group(function() {
     // Creating cases
     Route::get('/newcase', [Casecontroller::class, 'newCase'])->name('case-new');
     Route::get('/editcase/{uuid}', [CaseController::class, 'editCase'])->name('case-edit');
-    Route::post('/savecase', [CaseController::class, 'saveCase'])->name('case-save');
 
-    // Editing open cases
-    Route::get('/case/{uuid}', [CaseController::class, 'viewCase'])->name('case-view');
 
     // Create a pairing code
     Route::get('/paircase/{caseUuid}', [CaseController::class, 'pairCase'])->name('case-pair');
 
     // Dump data for export to HPZone
-    Route::get('/dumpcase/{uuid}', [CaseController::class, 'dumpCase'])->name('case-dump');
-    Route::post('/linkcasetoexport', [CaseController::class, 'linkCaseToExport']);
-    Route::post('/linktasktoexport', [TaskController::class, 'linkTaskToExport']);
-    Route::post('/markascopied', [CaseController::class, 'markAsCopied']);
 
     // Trigger to export case to GGD private API
     Route::get('/notifycaseupdate/{uuid}', [CaseController::class, 'notifyCaseUpdate'])->name('notify-case-update');

@@ -1,17 +1,17 @@
 <template>
-    <b-table-simple class="table-form table-ggd w-75">
+    <b-table-simple class="table-form table-ggd w-100">
         <colgroup>
-            <col class="w-40">
             <col class="w-30">
-            <col class="w-15">
-            <col class="w-15">
+            <col class="w-30">
+            <col class="w-20">
+            <col class="w-20">
         </colgroup>
         <b-thead>
             <b-tr>
                 <b-th scope="col">Naam en toelichting</b-th>
                 <b-th scope="col">Laatste contact</b-th>
-                <b-th scope="col" class="text-center">Geïnformeerd</b-th>
-                <b-th scope="col" class="text-center">Gegevens</b-th>
+                <b-th scope="col">Geïnformeerd</b-th>
+                <b-th scope="col">Gegevens</b-th>
             </b-tr>
         </b-thead>
         <b-tbody>
@@ -29,14 +29,14 @@
                     <strong>{{ task.dateOfLastExposure | dateFormatLong }}</strong>
                     <br/>{{ task.category | categoryFormatFull }}
                 </b-td>
-                <b-td class="text-center">
+                <b-td>
                     <img v-if="task.informedByIndex" src="/images/done.svg">
                     <span v-else>Nog niet</span>
                 </b-td>
-                <b-td class="text-center pt-3 pb-3">
-                    <img v-if="task.progress=='complete'" src="/images/check-100.svg">
-                    <img v-else-if="task.progress=='contactable'" src="/images/check-50.svg">
-                    <img v-else src="/images/check-warn.svg">
+                <b-td class="pt-3 pb-3">
+                    <div v-if="task.progress=='complete'"><img src="/images/check-100.svg" class="mr-2"> Gegevens compleet</div>
+                    <div v-else-if="task.progress=='contactable'"><img src="/images/check-50.svg" class="mr-2"> Voldoende gegevens</div>
+                    <div v-else><img src="/images/check-warn.svg" class="mr-2"> Gegevens incompleet</div>
                 </b-td>
             </b-tr>
 

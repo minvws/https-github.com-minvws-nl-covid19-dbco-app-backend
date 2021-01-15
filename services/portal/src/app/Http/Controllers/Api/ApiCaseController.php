@@ -149,4 +149,101 @@ class ApiCaseController extends ApiController
         }
         return response()->json(['error' => 'Onbekende fout bij opslag'], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
+
+    public function dumpCase($caseUuid)
+    {
+        $case = $this->caseService->getCase($caseUuid);
+
+        if ($case === null) {
+            return response()->json(['error' => "Deze case bestaat niet (meer)"], Response::HTTP_BAD_REQUEST);
+        }
+
+        if (!$this->caseService->canAccess($case) && !$this->authService->hasPlannerRole()) {
+            return response()->json(['error' => 'Geen toegang tot de case'], Response::HTTP_FORBIDDEN);
+        }
+
+        $user = $this->authService->getAuthenticatedUser();
+
+        $caseExport = $this->questionnaireService->getExportFriendlyTaskExport($case);
+        $tasksPerCategory = $caseExport['tasks'];
+
+        // TODO: Replace these getCopyData methods by ascii templates
+        $copydata['user'] = $this->authService->getCopyData($user);
+        $copydata['case'] = $this->caseService->getCopyDataCase($case);
+        $copydata['index'] = $this->caseService->getCopyDataIndex($case);
+
+        $copydata['contacts'] = [];
+        foreach ($tasksPerCategory as $category => $tasks) {
+            $copydata['contacts'][$category] = $this->questionnaireService->getCopyData($tasks);
+        }
+
+        // helper value
+        $case->contagiousPeriodStart = $case->calculateContagiousPeriodStart();
+
+        return response()->json([
+            'user' => $user,
+            'covidCase' => $case,
+            'copiedFields' => $caseExport['case']['copiedFields'],
+            'needsExport' => $caseExport['case']['needsExport'],
+            'copydata' => $copydata,
+            'taskcategories' => $tasksPerCategory
+        ]);
+
+    }
+
+    public function markAsCopied(Request $request)
+    {
+        $caseUuid = $request->input('caseId');
+        $taskUuid = $request->input('taskId');
+        $fieldName = $request->input('fieldName');
+
+        $case = $this->caseService->getCase($caseUuid);
+        if ($case === null) {
+            return response()->json(['error' => "Case $caseUuid is invalid"], Response::HTTP_BAD_REQUEST);
+        }
+
+        if (!$this->caseService->canAccess($case)) {
+            return response()->json(['error' => 'Access denied'], Response::HTTP_FORBIDDEN);
+        }
+
+        $task = null;
+        if ($taskUuid != null) {
+            $task = $this->taskService->getTask($taskUuid);
+
+            if ($task === null) {
+                return response()->json(['error' => "Task $taskUuid is invalid"], Response::HTTP_BAD_REQUEST);
+            }
+
+            if (!$this->taskService->canAccess($task)) {
+                return response()->json(['error' => 'Access denied'], Response::HTTP_FORBIDDEN);
+            }
+        }
+
+        $this->caseService->markAsCopied($case, $task, $fieldName);
+
+        return response()->json(['success' => 'success'], Response::HTTP_OK);
+    }
+
+    public function linkCaseToExport(Request $request)
+    {
+        $exportId = trim($request->input('exportId'));
+        if (empty($exportId)) {
+            return response()->json(['error' => "Export ID is invalid"], Response::HTTP_BAD_REQUEST);
+        }
+
+        $caseUuid = $request->input('caseId');
+        $case = $this->caseService->getCase($caseUuid);
+
+        if ($case === null) {
+            return response()->json(['error' => "Case $caseUuid is invalid"], Response::HTTP_BAD_REQUEST);
+        }
+
+        if (!$this->caseService->canAccess($case)) {
+            return response()->json(['error' => 'Access denied'], Response::HTTP_FORBIDDEN);
+        }
+
+        $this->caseService->linkCaseToExport($case, $exportId);
+
+        return response()->json(['success' => 'success'], Response::HTTP_OK);
+    }
 }

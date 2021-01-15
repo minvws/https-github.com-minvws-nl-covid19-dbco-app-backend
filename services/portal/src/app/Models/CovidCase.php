@@ -124,7 +124,10 @@ class CovidCase
     public function calculateContagiousPeriodStart(): Date
     {
         $date = $this->dateOfSymptomOnset->clone();
-        $date->addDays(-2);
+        if ($this->symptomatic) {
+            $date->addDays(-2);
+        }
+        // TODO/FIXME: use testdate when not symptomatic
         return $date;
     }
 

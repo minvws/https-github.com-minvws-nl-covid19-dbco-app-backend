@@ -29,6 +29,12 @@ Route::name('api-')->group(function() {
         Route::post('/cases/{caseUuid}/tasks', [ApiTaskController::class, 'createTask'])->name('case-task-create');
         Route::post('/tasks/{taskUuid}', [ApiTaskController::class, 'updateTask'])->name('task-update');
         Route::delete('/tasks/{taskUuid}', [ApiTaskController::class, 'deleteTask'])->name('task-delete');
+
+        Route::get('/cases/{caseUuid}/dump', [ApiCaseController::class, 'dumpCase'])->name('dump-case');
+        Route::post('/linkcasetoexport', [ApiCaseController::class, 'linkCaseToExport']);
+        Route::post('/linktasktoexport', [ApiTaskController::class, 'linkTaskToExport']);
+        Route::post('/markascopied', [ApiCaseController::class, 'markAsCopied']);
+
     });
 
     // All pages that are behind auth and require planner role
