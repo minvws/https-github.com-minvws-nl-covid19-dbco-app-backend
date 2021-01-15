@@ -104,9 +104,6 @@ class DbAnswerRepository implements AnswerRepository
     {
         $dbAnswer = new EloquentAnswer;
         $dbAnswer = $this->updateFromEntity($dbAnswer, $answer);
-
-        $dbAnswer->created_at = Date::now();
-        $dbAnswer->updated_at = $dbAnswer->created_at;
         $dbAnswer->save();
     }
 
@@ -115,9 +112,7 @@ class DbAnswerRepository implements AnswerRepository
         // TODO fixme: this retrieves the object from the db, again; but eloquent won't let us easily instantiate
         // an object directly from an Answer
         $dbAnswer = EloquentAnswer::where('uuid', $answer->uuid)->get()->first();
-
         $dbAnswer = $this->updateFromEntity($dbAnswer, $answer);
-        $dbAnswer->updated_at = Date::now();
         $dbAnswer->save();
     }
 
