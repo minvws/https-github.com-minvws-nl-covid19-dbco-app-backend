@@ -92,7 +92,6 @@ class TaskController extends Controller
 
         if ($task->questionnaireUuid === null) {
             $task->questionnaireUuid = $questionnaire->uuid;
-            $this->taskRepository->updateTask($task);
         }
 
         // Collect relevant questions and validation rules for this questionnaire
