@@ -20,13 +20,14 @@ redis:
 # Encryption
 security:
   module:
+    nonce_use_php_random_bytes: 0
     type: hsm
     hsm:
       useExistingSecret: false
       slot:
-        label: slot1
+        label: CryptoServer PKCS11 Token
       user:
-        pin: changeme
+        pin: "1234"
       pkcs11: |
         [Global]
         Logging = 0
@@ -41,24 +42,11 @@ security:
         FallbackInterval = 0
 
         [CryptoServer]
-        Device = { hsm }
+        Device = 3001@hsm-simulator
 
         CommandTimeout = 300000
         ConnectionTimeout = 60000
         KeepAlive = true
-
-# To use simple security module during development:
-# security.module.sk.exchange.key = docker run --rm php -r "echo base64_encode(sodium_crypto_box_secretkey(sodium_crypto_box_keypair()));"
-# security.module.sk.store = docker run --rm php -r "echo base64_encode(sodium_crypto_secretbox_keygen());"
-
-# security:
-  # module:
-    # type: simple
-    # sk:
-      # useExistingSecret: false # if true, create a secret with `app.fullname-encryption` in the same namespace
-      # key:
-        # exchange:
-      # store:
 
 # Debug
 debug: 0
