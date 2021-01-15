@@ -84,7 +84,6 @@ class DbAnswerRepository implements AnswerRepository
                     $answer->category2ARisk = $dbAnswer->cfd_cat_2a_risk;
                     $answer->category2BRisk = $dbAnswer->cfd_cat_2b_risk;
                     $answer->category3Risk = $dbAnswer->cfd_cat_3_risk;
-                    var_export(['new answer from db' => $answer], true);
                     break;
                 default:
                     $answer = new SimpleAnswer();
