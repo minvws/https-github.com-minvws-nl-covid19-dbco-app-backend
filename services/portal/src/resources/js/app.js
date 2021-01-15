@@ -100,18 +100,24 @@ jQuery(document).ready(function ($) {
 
     ////////////////////////////////////////////////////
     // Sidebar Task editing
+    // Note: the button we are binding is loaded via a partial, so
+    // it doesn't exist yet by the time this code is loaded.
+    // Therefor we use document.on() instead of $(button).on
     ////////////////////////////////////////////////////
-    $('#sidebar-task-edit').submit(function (event) {
-        alert('this is the jquery submit()');
-        event.preventDefault();
+    $(document).on('click', '#sidebar-task-submit', function(){
         let taskUuid = $(this).data('taskUuid');
-
+        let formData = $('#sidebar-task-edit').serialize();
         $.ajax({
             type: "POST",
             url: '/task/' + taskUuid + '/questionnaire',
-            data: null, // @todo collect all fields and values
+            data: formData,
             success: function( data ) {
                 $('.sidebar-content').html(data);
+                $('#sidebar-task-submit').html('&check; Opgeslagen!');
+                window.setTimeout(function () {
+                    $('#sidebar-task-submit').html('Opslaan');
+                }, 2500);
+
             }
         });
     });

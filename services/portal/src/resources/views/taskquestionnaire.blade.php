@@ -6,8 +6,7 @@
 
 <form method="post"
       id="sidebar-task-edit"
-      action="{{ route('task-questionnaire-save', [$task->uuid]) }}"
-      data-taskuuid="{{ $task->uuid }}">
+      action="">
 @csrf
 
 @foreach($questions as $question)
@@ -26,7 +25,7 @@
     </div>
 
     <div class="btn-group mb-3 mt-3">
-        <input id="sidebar-submit" type="submit" class="btn btn-primary" value="Opslaan" onclick="javascript:submitTaskSidebar()"/>
+        <button id="sidebar-task-submit" data-task-uuid="{{ $task->uuid }}" type="button" class="btn btn-primary">Opslaan</button>
     </div>
     <!-- End of form submit-->
 </form>
