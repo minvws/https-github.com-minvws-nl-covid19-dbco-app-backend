@@ -31,4 +31,6 @@ class IndecipherableAnswer extends Answer
     {
         return self::INDECIPHERABLE;
     }
+
+    public function fromFormValue(array $formData): void {}
 }

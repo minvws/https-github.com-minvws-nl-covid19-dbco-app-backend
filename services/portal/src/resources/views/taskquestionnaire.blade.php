@@ -4,32 +4,15 @@
     </div>
 </div>
 
-<form
-    method="post"
-    id="sidebar-task-edit"
-    action="{{ route('task-questionnaire-save', [$task->uuid]) }}"
-    data-taskuuid="{{ $task->uuid }}"
->
-    @csrf
-
-    <div class="row mt-3">
-    <div class="col">
-        <label for="date">
-            <strong>Laatste contact</strong>
-        </label>
-        <input type="date"
-               maxlength="255"
-               class="form-control"
-               id="lastcontactdate"
-               name="lastcontactdate"
-               value="{{ isset($task->dateOfLastExposure) ? $task->dateOfLastExposure->format('Y-m-d') : ''}}"
-               placeholder="" />
-    </div>
-</div>
+<form method="post"
+      id="sidebar-task-edit"
+      action="{{ route('task-questionnaire-save', [$task->uuid]) }}"
+      data-taskuuid="{{ $task->uuid }}">
+@csrf
 
 @foreach($questions as $question)
     @if (in_array($task->category, $question->relevantForCategories))
-        @if ($answers[$question->uuid] === \App\Models\IndecipherableAnswer::INDECIPHERABLE)
+        @if (isset($answers[$question->uuid]) && $answers[$question->uuid] === \App\Models\IndecipherableAnswer::INDECIPHERABLE)
             @include("taskquestion_indecipherable")
         @else
             @include("taskquestion_" . $question->questionType)
@@ -46,5 +29,4 @@
         <input id="sidebar-submit" type="submit" class="btn btn-primary" value="Opslaan" onclick="javascript:submitTaskSidebar()"/>
     </div>
     <!-- End of form submit-->
-
 </form>

@@ -12,6 +12,7 @@ use App\Security\CacheEntryNotFoundException;
 use App\Security\EncryptionHelper;
 use Illuminate\Support\Collection;
 use Jenssegers\Date\Date;
+use Ramsey\Uuid\Uuid;
 
 class DbAnswerRepository implements AnswerRepository
 {
@@ -69,7 +70,7 @@ class DbAnswerRepository implements AnswerRepository
         $answer = null;
 
         try {
-            switch ($dbAnswer->question_type) {
+            switch($dbAnswer->question_type) {
                 case 'contactdetails':
                     $answer = new ContactDetailsAnswer();
                     $answer->firstname = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->ctd_firstname);
@@ -79,10 +80,11 @@ class DbAnswerRepository implements AnswerRepository
                     break;
                 case 'classificationdetails':
                     $answer = new ClassificationDetailsAnswer();
-                    $answer->category1Risk = ($dbAnswer->cfd_cat_1_risk == 1);
-                    $answer->category2ARisk = ($dbAnswer->cfd_cat_2a_risk == 1);
-                    $answer->category2BRisk = ($dbAnswer->cfd_cat_2b_risk == 1);
-                    $answer->category3Risk = ($dbAnswer->cfd_cat_3_risk == 1);
+                    $answer->category1Risk = $dbAnswer->cfd_cat_1_risk;
+                    $answer->category2ARisk = $dbAnswer->cfd_cat_2a_risk;
+                    $answer->category2BRisk = $dbAnswer->cfd_cat_2b_risk;
+                    $answer->category3Risk = $dbAnswer->cfd_cat_3_risk;
+                    var_export(['new answer from db' => $answer], true);
                     break;
                 default:
                     $answer = new SimpleAnswer();
@@ -99,11 +101,32 @@ class DbAnswerRepository implements AnswerRepository
         return $answer;
     }
 
+    public function createAnswer(Answer $answer): void
+    {
+        $dbAnswer = new EloquentAnswer;
+        $dbAnswer = $this->updateFromEntity($dbAnswer, $answer);
+
+        $dbAnswer->created_at = Date::now();
+        $dbAnswer->updated_at = $dbAnswer->created_at;
+        $dbAnswer->save();
+    }
+
     public function updateAnswer(Answer $answer): void
     {
         // TODO fixme: this retrieves the object from the db, again; but eloquent won't let us easily instantiate
         // an object directly from an Answer
         $dbAnswer = EloquentAnswer::where('uuid', $answer->uuid)->get()->first();
+
+        $dbAnswer = $this->updateFromEntity($dbAnswer, $answer);
+        $dbAnswer->updated_at = Date::now();
+        $dbAnswer->save();
+    }
+
+    private function updateFromEntity(EloquentAnswer $dbAnswer, Answer $answer): EloquentAnswer
+    {
+        $dbAnswer->uuid = $answer->uuid ?? Uuid::uuid4();
+        $dbAnswer->task_uuid = $answer->taskUuid;
+        $dbAnswer->question_uuid = $answer->questionUuid;
 
         if ($answer instanceof SimpleAnswer) {
             $dbAnswer->spv_value = $this->seal($answer->value);
@@ -113,14 +136,13 @@ class DbAnswerRepository implements AnswerRepository
             $dbAnswer->ctd_email = $this->seal($answer->email);
             $dbAnswer->ctd_phonenumber = $this->seal($answer->phonenumber);
         } elseif ($answer instanceof ClassificationDetailsAnswer) {
-            $dbAnswer->cfd_cat_1_risk = $answer->category1Risk ? 1 : 0;
-            $dbAnswer->cfd_cat_2a_risk = $answer->category2ARisk ? 1 : 0;
-            $dbAnswer->cfd_cat_2b_risk = $answer->category2BRisk ? 1 : 0;
-            $dbAnswer->cfd_cat_3_risk = $answer->category3Risk ? 1 : 0;
+            $dbAnswer->cfd_cat_1_risk = $answer->category1Risk;
+            $dbAnswer->cfd_cat_2a_risk = $answer->category2ARisk;
+            $dbAnswer->cfd_cat_2b_risk = $answer->category2BRisk;
+            $dbAnswer->cfd_cat_3_risk = $answer->category3Risk;
         }
 
-        $dbAnswer->updated_at = Date::now();
-        $dbAnswer->save();
+        return $dbAnswer;
     }
 
     // @todo copied from another DbRepo, refactor into EncryptionHelper(?)
@@ -134,4 +156,3 @@ class DbAnswerRepository implements AnswerRepository
         }
     }
 }
-

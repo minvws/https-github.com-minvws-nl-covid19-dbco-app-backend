@@ -6,6 +6,7 @@ use App\Models\Answer;
 use App\Models\ClassificationDetailsAnswer;
 use App\Models\ContactDetailsAnswer;
 use App\Models\Question;
+use App\Models\Questionnaire;
 use App\Models\SimpleAnswer;
 use App\Models\Task;
 use App\Repositories\AnswerRepository;
@@ -14,6 +15,7 @@ use App\Services\QuestionnaireService;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Jenssegers\Date\Date;
 use Symfony\Component\HttpFoundation\Response;
 
 class TaskController extends Controller
@@ -66,10 +68,11 @@ class TaskController extends Controller
         }
 
         list($questionnaire, $answers) = $this->taskService->getTaskQuestionnaireAndAnswers($task);
+        $questions = $this->addLastExposureDateQuestion($questionnaire->questions);
 
         return view('taskquestionnaire', [
             'task' => $task,
-            'questions' => $questionnaire->questions,
+            'questions' => $questions,
             'answers' => array_map(fn(Answer $answer) => $answer->toFormValue(), $answers)
         ]);
     }
@@ -84,9 +87,16 @@ class TaskController extends Controller
             return response('access denied', 403);
         }
 
-        // Gather Task's relevant questions and existing answers
+        // Gather Task's relevant questionnaire and existing answers
         list($questionnaire, $answers) = $this->taskService->getTaskQuestionnaireAndAnswers($task);
 
+        if ($task->questionnaireUuid === null) {
+            $task->questionnaireUuid = $questionnaire->uuid;
+            $this->taskRepository->updateTask($task);
+        }
+
+        // Collect relevant questions and validation rules for this questionnaire
+        $relevantQuestions = [];
         $rules = [];
         foreach ($questionnaire->questions as $question) {
             /**
@@ -96,20 +106,19 @@ class TaskController extends Controller
                 continue;
             }
 
+            $relevantQuestions[] = $question;
             $rules = array_merge($rules, $this->getQuestionFormValidationRules($question));
         }
 
+        // Special case: add last exposure date as the second question
+        $rules['lastcontactdate'] = 'nullable|date';
+        $relevantQuestions = $this->addLastExposureDateQuestion($relevantQuestions);
+
         // Pull in the form data for the subset of questions and validate
         $validator = Validator::make($request->all(), $rules);
-//        error_log(var_export([
-//            "form" => $request->all(),
-//            "rules" => $rules,
-//            "data" => $validator->validated(),
-//            "errors" => $validator->errors()
-//        ], true));
-
         if (!$validator->fails()) {
-            $this->updateTaskAnswers($answers, $validator->validated());
+            // Update the questionnaire
+            $this->updateTaskAnswers($task, $relevantQuestions, $answers, $validator->validated());
 
             // Close Task for further editing by Index
             $task->status = Task::TASK_STATUS_CLOSED;
@@ -119,25 +128,69 @@ class TaskController extends Controller
         // Return the rendered sidebar
         return view('taskquestionnaire', [
             'task' => $task,
-            'questions' => $questionnaire->questions,
+            'questions' => $relevantQuestions,
             'answers' => array_map(fn(Answer $answer) => $answer->toFormValue(), $answers),
-            'errors' => $validator->errors()
-        ]);
+        ])->withErrors($validator);
     }
 
-    private function updateTaskAnswers(array $answers, array $formData): void
+    /**
+     * @param Question[] $questions
+     * @return Question[]
+     */
+    private function addLastExposureDateQuestion(array $questions): array
     {
-        foreach ($answers as $answer) {
-            /**
-             * @var Answer $answer
-             */
-            if (isset($formData[$answer->questionUuid])) {
-                $answer->fromFormValue($formData[$answer->questionUuid]);
+        $_q = new Question;
+        $_q->uuid = 'lastcontactdate';
+        $_q->questionType = 'lastcontactdate';
+        $_q->relevantForCategories = ['1', '2a', '2b', '3'];
+
+        array_splice($questions, 1, 0, [$_q]);
+        return $questions;
+    }
+
+    /**
+     * @param Task $task
+     * @param Question[] $questions
+     * @param Answer[] $answers
+     * @param array $formData
+     */
+    private function updateTaskAnswers(Task $task, array $questions, array $answers, array $formData): void
+    {
+        // Update the Task questionnaire
+        foreach ($questions as $question) {
+           if (!isset($formData[$question->uuid])) {
+               // No answer in returned form: ignore, do not create empty Answer
+               continue;
+           }
+
+            // Special case: update the Task's last exposure date
+            if ($question->questionType === 'lastcontactdate') {
+               if ($task->dateOfLastExposure !== $formData['lastcontactdate']) {
+                   $task->dateOfLastExposure = new Date($formData['lastcontactdate']);
+                   $this->taskRepository->updateTask($task);
+               }
+               continue;
+           }
+
+           if (isset($answers[$question->uuid])) {
+               error_log("update: question={$question->label} answer={$answers[$question->uuid]->uuid} with " . var_export($formData[$question->uuid], true));
+               // Update existing answer
+                $answer = $answers[$question->uuid];
+                $answer->fromFormValue($formData[$question->uuid]);
                 $this->answerRepository->updateAnswer($answer);
-            }
+           } else {
+               error_log("insert: question={$question->label}  with " . var_export($formData[$question->uuid], true));
+               // Create new Answer
+               $answer = $this->createNewAnswerForQuestion($question, $formData[$question->uuid]);
+               $answer->taskUuid = $task->uuid;
+               $answer->questionUuid = $question->uuid;
+               $this->answerRepository->createAnswer($answer);
+
+           }
         }
     }
 
+    // @todo centralize Question/Answer helpers
     private function getQuestionFormValidationRules(Question $question): array
     {
         // Default no validation rule: field will be ignored
@@ -154,6 +207,7 @@ class TaskController extends Controller
                 $rules = SimpleAnswer::getValidationRules();
                 break;
             case 'multiplechoice':
+                $rules = SimpleAnswer::getValidationRules();
                 break;
             default:
                 error_log("no validation for {$question->questionType}");
@@ -167,5 +221,32 @@ class TaskController extends Controller
         }
 
         return $formRules;
+    }
+
+    // @todo centralize Question/Answer helpers
+    private function createNewAnswerForQuestion(Question $question, array $formData = []): Answer
+    {
+        switch ($question->questionType) {
+            case 'classificationdetails':
+                $answer = new ClassificationDetailsAnswer;
+                break;
+            case 'contactdetails':
+                $answer = new ContactDetailsAnswer();
+                break;
+            case 'date':
+                $answer = new SimpleAnswer();
+                break;
+            case 'multiplechoice':
+                $answer = new SimpleAnswer();
+                break;
+            default:
+                error_log("no Answer class for {$question->questionType}");
+        }
+
+        if (!empty($formData)) {
+            $answer->fromFormValue($formData);
+        }
+
+        return $answer;
     }
 }
