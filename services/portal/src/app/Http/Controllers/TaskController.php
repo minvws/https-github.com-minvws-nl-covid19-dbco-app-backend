@@ -22,29 +22,6 @@ class TaskController extends Controller
         $this->questionnaireService = $questionnaireService;
     }
 
-    public function linkTaskToExport(Request $request)
-    {
-        $exportId = trim($request->input('exportId'));
-        if (empty($exportId)) {
-            return response()->json(['error' => "Export ID is invalid"], Response::HTTP_BAD_REQUEST);
-        }
-
-        $taskUuid = $request->input('taskId');
-        $task = $this->taskService->getTask($taskUuid);
-
-        if ($task === null) {
-            return response()->json(['error' => "Task $taskUuid is invalid"], Response::HTTP_BAD_REQUEST);
-        }
-
-        if (!$this->taskService->canAccess($task)) {
-            return response()->json(['error' => 'Access denied'], Response::HTTP_FORBIDDEN);
-        }
-
-        $this->taskService->linkTaskToExport($task, $exportId);
-
-        return response()->json(['success' => 'success'], Response::HTTP_OK);
-    }
-
     public function viewTaskQuestionnaire($taskUuid)
     {
         $task = $this->taskService->getTask($taskUuid);

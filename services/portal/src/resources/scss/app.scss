@@ -2,8 +2,10 @@
 
 /**
  * Import fonts.
+ * Note, due to this bug: https://github.com/webpack/webpack/issues/10873 we are deliberately using the
+ * css instead of css2 google api. Otherwise the bold weights don't get loaded.
  */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,300i,400i,500i,700i&display=swap');
 
 /**
  * Import Bootstrap assets.
@@ -42,6 +44,11 @@
 
 BODY, .form-control {
     font-size: 0.9rem;
+}
+
+H1 {
+    font-size: 20px;
+    font-weight: 700;
 }
 
 /**

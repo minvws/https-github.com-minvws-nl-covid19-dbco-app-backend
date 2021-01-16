@@ -9,7 +9,7 @@
   word-wrap: break-word;
 
   background-color: $white;
-  border: $table-border-width solid $table-border-color;
+  border: none;
 
   th, td {
     font-size: $font-size-sm;
@@ -123,13 +123,12 @@
 .table-form {
   tbody tr td {
     position: relative;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding-top: 3px;
+    padding-bottom: 3px;
 
     input, select {
       display: block;
       border-radius: 0;
-      position: absolute;
       top: 0;
       left: 0;
       margin: 0;

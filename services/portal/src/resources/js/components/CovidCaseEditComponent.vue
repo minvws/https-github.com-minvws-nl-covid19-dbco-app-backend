@@ -1,15 +1,15 @@
 <template>
-    <div>
-        <h3 class="ml-4 mt-3 mb-3"><strong><span v-if="this.caseUuid || covidCase.name.length">{{ covidCase.name }}</span><span v-else>&lt;Nieuwe case&gt;</span></strong></h3>
+    <div v-if="!this.caseUuid || loaded">
+        <h1 class="ml-4 mt-3 mb-3"><span v-if="this.caseUuid || covidCase.name.length">{{ covidCase.name }}</span><span v-else>&lt;Nieuwe case&gt;</span></h1>
         <b-tabs class="">
             <b-tab title="Medische gegevens">
                 <medical-data-component v-model="covidCase" @persist="persist()" />
             </b-tab>
-            <b-tab title="Contactonderzoek" :disabled="covidCase.name.length == 0">
+            <b-tab title="Contactonderzoek" :disabled="!covidCase.uuid">
                 <contact-tracing-component v-model="covidCase" />
             </b-tab>
-            <b-tab title="Afronden & status" v-model="covidCase" lazy>
-             <!--   <case-summary-component/> -->
+            <b-tab title="Afronden & status" :disabled="!covidCase.uuid" lazy>
+                <case-summary-component :covid-case="covidCase "/>
             </b-tab>
         </b-tabs>
     </div>
@@ -29,11 +29,13 @@ export default {
     data() {
         return {
             covidCase: {
-                "uuid": null,
-                "name": '',
-                "caseId": '',
-                "dateOfSymptomOnset": '',
-                "tasks": []
+                uuid: null,
+                name: '',
+                caseId: '',
+                dateOfSymptomOnset: '',
+                dateOfTest: '',
+                symptomatic: true,
+                tasks: []
             },
             loaded: false
         }
@@ -60,7 +62,6 @@ export default {
                     // Only update the uuid after creation, to avoid needless propagations
                     console.log('this', this)
                     if (isNew) {
-                        console.log('Pushing history')
                         this.covidCase.uuid = response.data.case.uuid
                         history.replaceState({}, '', '/editcase/' + response.data.case.uuid)
                     }

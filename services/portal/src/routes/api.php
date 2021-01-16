@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiCaseController;
 use App\Http\Controllers\Api\ApiUserController;
+use App\Http\Controllers\Api\ApiTaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,8 +22,19 @@ Route::name('api-')->group(function() {
     // All pages that are behind auth and require user role
     Route::middleware(['auth', 'rolecheck:user'])->group(function () {
         Route::get('/cases/mine', [ApiCaseController::class, 'myCases'])->name('cases-mine');
-        Route::get('/case/{caseId}', [ApiCaseController::class, 'getCase'])->name('get-case');
+        Route::get('/case/{caseUuid}', [ApiCaseController::class, 'getCase'])->name('get-case');
         Route::post('/case', [ApiCaseController::class, 'postCase'])->name('post-case');
+
+        Route::get('/cases/{caseUuid}/tasks', [ApiTaskController::class, 'getCaseTasks'])->name('case-tasks');
+        Route::post('/cases/{caseUuid}/tasks', [ApiTaskController::class, 'createTask'])->name('case-task-create');
+        Route::post('/tasks/{taskUuid}', [ApiTaskController::class, 'updateTask'])->name('task-update');
+        Route::delete('/tasks/{taskUuid}', [ApiTaskController::class, 'deleteTask'])->name('task-delete');
+
+        Route::get('/cases/{caseUuid}/dump', [ApiCaseController::class, 'dumpCase'])->name('dump-case');
+        Route::post('/linkcasetoexport', [ApiCaseController::class, 'linkCaseToExport']);
+        Route::post('/linktasktoexport', [ApiTaskController::class, 'linkTaskToExport']);
+        Route::post('/markascopied', [ApiCaseController::class, 'markAsCopied']);
+
     });
 
     // All pages that are behind auth and require planner role
