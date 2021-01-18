@@ -4,6 +4,8 @@ declare(strict_types=1);
 use DBCO\PublicAPI\Application\Helpers\KeyGenerator;
 use DBCO\PublicAPI\Application\Helpers\SecureKeyGenerator;
 use DI\ContainerBuilder;
+use MinVWS\HealthCheck\Checks\PredisHealthCheck;
+use MinVWS\HealthCheck\HealthChecker;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
@@ -40,7 +42,11 @@ return function (ContainerBuilder $containerBuilder) {
                     ->constructor(get('redis.parameters'), get('redis.options')),
 
             KeyGenerator::class => autowire(SecureKeyGenerator::class)
-                ->constructorParameter('length', get('signingKey.length'))
+                ->constructorParameter('length', get('signingKey.length')),
+
+            HealthChecker::class =>
+                autowire(HealthChecker::class)
+                    ->method('addHealthCheck', autowire(PredisHealthCheck::class))
         ]
     );
 };
