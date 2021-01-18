@@ -4,7 +4,7 @@ namespace MinVWS\HealthCheck\Models;
 /**
  * Result of health check.
  */
-class HealthCheckResult
+class HealthCheckResult implements \JsonSerializable
 {
     /**
      * @var bool
@@ -28,10 +28,25 @@ class HealthCheckResult
      * @param string|null $errorCode
      * @param string|null $errorMessage
      */
-    public function __construct(bool $isHealthy, ?string $errorCode, ?string $errorMessage)
+    public function __construct(bool $isHealthy, ?string $errorCode = null, ?string $errorMessage = null)
     {
         $this->isHealthy = $isHealthy;
         $this->errorCode = $errorCode;
         $this->errorMessage = $errorMessage;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        $data = ['isHealthy' => $this->isHealthy];
+
+        if (!empty($this->errorCode) && !empty($this->errorMessage)) {
+            $data['errorCode'] = $this->errorCode;
+            $data['errorMessage'] = $this->errorMessage;
+        }
+
+        return $data;
     }
 }

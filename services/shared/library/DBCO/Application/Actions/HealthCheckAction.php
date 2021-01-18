@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
  *
  * @package DBCO\Shared\Application\Actions
  */
-abstract class HealthCheckAction extends Action
+class HealthCheckAction extends Action
 {
     /**
      * @var HealthChecker

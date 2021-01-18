@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace DBCO\Shared\Application\Responses;
 
-use HealthCheckResultList;
 use JsonSerializable;
-
+use MinVWS\HealthCheck\Models\HealthCheckResultList;
 
 /**
  * Health check response.
@@ -42,19 +41,6 @@ class HealthCheckResponse extends Response implements JsonSerializable
      */
     public function jsonSerialize()
     {
-        $data = [
-            'isHealthy' => $this->isHealthy,
-            'results' => []
-        ];
-
-        foreach ($this->result->results as $label => $result) {
-            $data['results'][$label] = ['isHealthy' => $result->isHealthy];
-            if (!$result->isHealthy && isset($result->errorCode) && isset($result->errorMessage)) {
-                $data['results'][$label]['errorCode'] = $result->errorCode;
-                $data['results'][$label]['errorMessage'] = $result->errorMessage;
-            }
-        }
-
-        return $data;
+        return $this->result->jsonSerialize();
     }
 }

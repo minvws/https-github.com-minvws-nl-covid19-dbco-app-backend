@@ -1,6 +1,9 @@
 <?php
 namespace MinVWS\HealthCheck;
 
+use MinVWS\HealthCheck\Checks\HealthCheck;
+use MinVWS\HealthCheck\Models\HealthCheckResultList;
+
 /**
  * Health checker.
  */
@@ -14,12 +17,12 @@ class HealthChecker
     /**
      * Add health check.
      *
-     * @param string      $label        Unique label.
+     * @param string      $service      Unique service label.
      * @param HealthCheck $healthCheck  Health check.
      */
-    public function addHealthCheck(string $label, HealthCheck $healthCheck)
+    public function addHealthCheck(string $service, HealthCheck $healthCheck)
     {
-        $this->healthChecks[$label] = $healthCheck;
+        $this->healthChecks[$service] = $healthCheck;
     }
 
     /**
@@ -31,8 +34,8 @@ class HealthChecker
     {
         $result = new HealthCheckResultList();
 
-        foreach ($this->healthChecks as $label => $healthCheck) {
-            $result->addHealthCheckResult($label, $healthCheck->performHealthCheck());
+        foreach ($this->healthChecks as $service => $healthCheck) {
+            $result->addHealthCheckResult($service, $healthCheck->performHealthCheck());
         }
 
         return $result;

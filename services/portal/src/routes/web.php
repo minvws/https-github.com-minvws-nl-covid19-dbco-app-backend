@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
@@ -65,6 +66,5 @@ Route::get('auth/login', [LoginController::class, 'handleProviderCallback']);
 Route::get('auth/stub', [LoginController::class, 'stubAuthenticate']);
 
 // Liveness check for k8s
-Route::get('/status', function() {
-    return 'OK';
-});
+Route::get('/ping', [StatusController::class, 'ping']);
+// Route::get('/status', [StatusController::class, 'status']); // TODO: first discuss blocking this url in k8s

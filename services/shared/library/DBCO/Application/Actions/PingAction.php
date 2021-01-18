@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface as Response;
  *
  * @package DBCO\Shared\Application\Actions
  */
-abstract class PingAction extends Action
+class PingAction extends Action
 {
     /**
      * @inheritdoc

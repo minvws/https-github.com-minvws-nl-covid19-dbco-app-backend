@@ -25,6 +25,7 @@ return function (App $app) {
     $app->post('/v1/cases/{caseUuid}/clients', ClientRegisterAction::class);
     $app->put('/v1/cases/{token}', CaseSubmitAction::class);
 
-    $app->get('/v1/ping', PingAction::class);
+    $app->get('/v1/ping', PingAction::class); // available versioned (clients)
+    $app->get('/ping', PingAction::class); // and unversioned (kubernetes)
     $app->get('/status', HealthCheckAction::class);
 };
