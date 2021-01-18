@@ -22,6 +22,20 @@
 <div class="row">
     <div class="col mt-1">
         <label for="email">E-mailadres</label>
-        <input type="text" maxlength="255" class="form-control" id="email" name="{{$question->uuid}}[{{\App\Models\ContactDetailsAnswer::FIELD_EMAIL}}]" value="{{ $answers[$question->uuid][\App\Models\ContactDetailsAnswer::FIELD_EMAIL] ?? ''  }}" placeholder="">
+
+        @error($question->uuid . '.' . \App\Models\ContactDetailsAnswer::FIELD_EMAIL)
+        <div class="alert alert-danger">
+            Vul een geldig e-mailadres in.
+        </div>
+        @enderror
+
+        <input type="text"
+               maxlength="255"
+               class="form-control"
+               id="email"
+               name="{{$question->uuid}}[{{\App\Models\ContactDetailsAnswer::FIELD_EMAIL}}]"
+               placeholder=""
+               value="{{ $answers[$question->uuid][\App\Models\ContactDetailsAnswer::FIELD_EMAIL] ?? '' }}"
+        />
     </div>
 </div>

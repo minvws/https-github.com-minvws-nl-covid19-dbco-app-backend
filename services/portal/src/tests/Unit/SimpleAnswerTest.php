@@ -28,7 +28,7 @@ class SimpleAnswerTest extends TestCase
         $answer = new SimpleAnswer;
         $answer->value = $value;
 
-        $this->assertSame($value, $answer->toFormValue());
+        $this->assertSame(['value' => $value], $answer->toFormValue());
     }
 
     public static function answerValuesProvider(): array

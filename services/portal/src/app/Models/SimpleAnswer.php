@@ -11,9 +11,9 @@ class SimpleAnswer extends Answer
         return !empty($this->value);
     }
 
-    public function toFormValue()
+    public function toFormValue(): array
     {
-        return $this->value;
+        return ['value' => $this->value];
     }
 
     public function fromFormValue(array $formData)

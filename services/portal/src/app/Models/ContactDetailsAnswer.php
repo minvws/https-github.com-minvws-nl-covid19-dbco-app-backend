@@ -33,7 +33,7 @@ class ContactDetailsAnswer extends Answer
             !empty($this->phonenumber);
     }
 
-    public function toFormValue()
+    public function toFormValue(): array
     {
         return [
             self::FIELD_FIRSTNAME => $this->firstname,
