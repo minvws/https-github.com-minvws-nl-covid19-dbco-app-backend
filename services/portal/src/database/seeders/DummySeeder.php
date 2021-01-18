@@ -278,9 +278,9 @@ class DummySeeder extends Seeder
                 'uuid' => (string)Str::uuid(),
                 'task_uuid' => $taskUuidMartha,
                 'question_uuid' => $classificationQuestionUuid,
-                'cfd_cat_1_risk' => '1',
+                'cfd_cat_1_risk' => '0',
                 'cfd_cat_2a_risk' => '1',
-                'cfd_cat_2b_risk' => '1',
+                'cfd_cat_2b_risk' => '0',
                 'cfd_cat_3_risk' => '0',
                 'created_at' => $now,
                 'updated_at' => $now

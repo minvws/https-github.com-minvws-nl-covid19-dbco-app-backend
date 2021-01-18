@@ -20,4 +20,8 @@ class Question
 
     public ?array $answerOptions; // only used for questionType = multiplechoice
 
+    public function getAnswerValidationRules()
+    {
+        return [];
+    }
 }

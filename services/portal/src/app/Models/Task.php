@@ -10,6 +10,9 @@ class Task
     public const TASK_DATA_CONTACTABLE = 'contactable';
     public const TASK_DATA_COMPLETE = 'complete';
 
+    public const TASK_STATUS_OPEN = 'open';
+    public const TASK_STATUS_CLOSED = 'closed';
+
     public string $uuid;
 
     public string $caseUuid;
@@ -49,4 +52,6 @@ class Task
 
     public ?Date $exportedAt = null;
     public ?Date $copiedAt = null;
+
+    public string $status = self::TASK_STATUS_OPEN;
 }

@@ -143,6 +143,7 @@ class DbCaseRepository implements CaseRepository
         $dbCase->exported_at = $case->exportedAt != null ? $case->exportedAt->toDateTimeImmutable() : null;
         $dbCase->export_id = $case->exportId;
         $dbCase->date_of_symptom_onset = $case->dateOfSymptomOnset != null ? $case->dateOfSymptomOnset->toDateTimeImmutable() : null;
+
         return $dbCase->save();
     }
 
