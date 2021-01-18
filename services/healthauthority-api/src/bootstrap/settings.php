@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use function DI\env;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 
@@ -52,11 +53,30 @@ return [
         }),
 
     'privateAPI.client' => [
-        'base_uri' => DI\env('PRIVATE_API_BASE_URI')
+        'base_uri' => env('PRIVATE_API_BASE_URI')
     ],
-    'privateAPI.jwtSecret' => DI\env('PRIVATE_API_JWT_SECRET'),
+    'privateAPI.jwtSecret' => env('PRIVATE_API_JWT_SECRET'),
 
     'securityModule.nonce.usePhpRandomBytes' => $securityModuleNonceUsePhpRandomBytes,
     'securityModule.storeKey.timeZone' => 'Europe/Amsterdam',
     'securityModule.storeKey.maxDays' => 14, // max days to store earlier keys for unsealing
+
+    'metrics.export.basePath' => env('METRICS_EXPORT_BASE_PATH', '/tmp'),
+    'metrics.export.filenameTemplate' => getenv('APP_ENV') . '_[timestamp].csv',
+    'metrics.export.filenameTimestampFormat' => 'YmdHis',
+    'metrics.export.fields' => [
+        'id', 'event', 'date', 'ts_delta', 'actor', 'pseudo_id', 'vrregioncode',
+        'date_of_symptom_onset', 'contact_pseudo_id', 'category', 'pct_complete',
+        'fields', 'hpzone_id'
+    ],
+    'metrics.export.labels' => [
+        'id', 'event', 'date', 'ts_delta', 'actor', 'pseudo_id', 'vrregioncode',
+        'date_of_symptom_onset', 'contact_pseudo_id', 'category', 'pct_complete',
+        'fields', 'hpzone_id'
+    ],
+    'metrics.sftp.hostname' => env('METRICS_SFTP_HOSTNAME', ''),
+    'metrics.sftp.username' => env('METRICS_SFTP_USERNAME', ''),
+    'metrics.sftp.privateKey' => env('METRICS_SFTP_PRIVATE_KEY', ''),
+    'metrics.sftp.passphrase' => env('METRICS_SFTP_PASSPHRASE', null),
+    'metrics.sftp.uploadPath' => env('METRICS_SFTP_UPLOAD_PATH', ''),
 ];

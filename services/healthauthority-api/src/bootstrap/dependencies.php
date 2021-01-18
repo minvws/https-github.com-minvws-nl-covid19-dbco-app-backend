@@ -8,10 +8,12 @@ use DBCO\HealthAuthorityAPI\Application\Security\HSMSecurityModule;
 use DBCO\HealthAuthorityAPI\Application\Security\SecurityModule;
 use DBCO\Shared\Application\Managers\DbTransactionManager;
 use DBCO\Shared\Application\Managers\TransactionManager;
+use DBCO\Shared\Application\Metrics\Transformers\EventTransformer;
 use DI\ContainerBuilder;
 use MinVWS\HealthCheck\Checks\GuzzleHealthCheck;
 use MinVWS\HealthCheck\Checks\PredisHealthCheck;
 use MinVWS\HealthCheck\HealthChecker;
+use MinVWS\Metrics\Transformers\EventTransformer as EventTransformerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
@@ -92,6 +94,8 @@ return function (ContainerBuilder $containerBuilder) {
             'privateAPIGuzzleClient' =>
                 autowire(GuzzleHttp\Client::class)
                     ->constructor(get('privateAPI.client')),
+
+            EventTransformerInterface::class => autowire(EventTransformer::class),
 
             HealthChecker::class =>
                 autowire(HealthChecker::class)

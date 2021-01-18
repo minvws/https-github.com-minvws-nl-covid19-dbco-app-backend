@@ -29,7 +29,13 @@ function tryBlock(string $description, callable $callback) {
     }
 }
 
-$client = new GuzzleClient(['base_uri' => $_ENV['PUBLIC_API_BASE_URI']]);
+if (isset($argv[1]) && ($argv[1] === '--help') || !isset($argv[2])) {
+    echo "Usage: bin/simulator [publicApiBaseURI] [generalPublicKey]\n";
+    exit(0);
+}
+
+$publicApiBaseURI = isset($argv[1]) ? $argv[1] : $_ENV['PUBLIC_API_BASE_URI'];
+$client = new GuzzleClient(['base_uri' => $publicApiBaseURI]);
 
 $questionnaire = tryBlock(
     'Fetch questionnaire',
@@ -48,7 +54,9 @@ $questionnaire = tryBlock(
 
 
 $generalPublicKey = null;
-if (isset($_ENV['HEALTHAUTHORITY_PK_KEY_EXCHANGE'])) {
+if (isset($argv[2])) {
+    $generalPublicKey = base64_decode($argv[2]);
+} else if (isset($_ENV['HEALTHAUTHORITY_PK_KEY_EXCHANGE'])) {
     $generalPublicKey = base64_decode($_ENV['HEALTHAUTHORITY_PK_KEY_EXCHANGE']);
 } else if (isset($_ENV['REDIS_HOST'])) {
     $generalPublicKey = tryBlock(
