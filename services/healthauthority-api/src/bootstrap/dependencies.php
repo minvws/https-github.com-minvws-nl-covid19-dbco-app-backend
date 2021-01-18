@@ -9,6 +9,9 @@ use DBCO\HealthAuthorityAPI\Application\Security\SecurityModule;
 use DBCO\Shared\Application\Managers\DbTransactionManager;
 use DBCO\Shared\Application\Managers\TransactionManager;
 use DI\ContainerBuilder;
+use MinVWS\HealthCheck\Checks\GuzzleHealthCheck;
+use MinVWS\HealthCheck\Checks\PredisHealthCheck;
+use MinVWS\HealthCheck\HealthChecker;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
@@ -88,7 +91,16 @@ return function (ContainerBuilder $containerBuilder) {
                     ->constructorParameter('usePhpRandomBytesForNonce', get('securityModule.nonce.usePhpRandomBytes')),
             'privateAPIGuzzleClient' =>
                 autowire(GuzzleHttp\Client::class)
-                    ->constructor(get('privateAPI.client'))
+                    ->constructor(get('privateAPI.client')),
+
+            HealthChecker::class =>
+                autowire(HealthChecker::class)
+                    ->method('addHealthCheck', autowire(PredisHealthCheck::class))
+                    ->method('addHealthCheck',
+                        autowire(GuzzleHealthCheck::class)
+                            ->constructor(get('privateAPIGuzzleClient'), 'GET', 'ping')
+                            ->method('setExpectedResponseBody', 'PONG')
+                    )
         ]
     );
 };
