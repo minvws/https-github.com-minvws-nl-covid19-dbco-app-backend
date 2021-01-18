@@ -52,7 +52,7 @@ return function (ContainerBuilder $containerBuilder) {
 
             HealthChecker::class =>
                 autowire(HealthChecker::class)
-                    ->method('addHealthCheck', autowire(PredisHealthCheck::class))
+                    ->method('addHealthCheck', 'redis', autowire(PredisHealthCheck::class))
         ]
     );
 };

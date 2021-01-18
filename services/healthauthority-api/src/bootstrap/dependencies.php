@@ -11,6 +11,7 @@ use DBCO\Shared\Application\Managers\TransactionManager;
 use DBCO\Shared\Application\Metrics\Transformers\EventTransformer;
 use DI\ContainerBuilder;
 use MinVWS\HealthCheck\Checks\GuzzleHealthCheck;
+use MinVWS\HealthCheck\Checks\PDOHealthCheck;
 use MinVWS\HealthCheck\Checks\PredisHealthCheck;
 use MinVWS\HealthCheck\HealthChecker;
 use MinVWS\Metrics\Transformers\EventTransformer as EventTransformerInterface;
@@ -99,8 +100,10 @@ return function (ContainerBuilder $containerBuilder) {
 
             HealthChecker::class =>
                 autowire(HealthChecker::class)
-                    ->method('addHealthCheck', autowire(PredisHealthCheck::class))
+                    ->method('addHealthCheck', 'redis', autowire(PredisHealthCheck::class))
+                    ->method('addHealthCheck', 'mysql', autowire(PDOHealthCheck::class))
                     ->method('addHealthCheck',
+                        'private-api',
                         autowire(GuzzleHealthCheck::class)
                             ->constructor(get('privateAPIGuzzleClient'), 'GET', 'ping')
                             ->method('setExpectedResponseBody', 'PONG')

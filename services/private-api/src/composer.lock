@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5866db0d86a5663175b7e578319ee11e",
+    "content-hash": "792d2dd61271788e6780d1b9116eeac1",
     "packages": [
         {
             "name": "brick/math",
@@ -159,6 +159,32 @@
                 "php"
             ],
             "time": "2020-03-25T18:49:23+00:00"
+        },
+        {
+            "name": "minvws/healthcheck",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "/shared/packages/healthcheck",
+                "reference": "ebb753ded9291384bf2c28d9df1c364497e8c03d"
+            },
+            "require": {
+                "php": "^7.4"
+            },
+            "suggest": {
+                "ext-pdo": "*",
+                "predis/predis": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MinVWS\\HealthCheck\\": "src/MinVWS/HealthCheck/"
+                }
+            },
+            "description": "A small package for easily incorporating health checks",
+            "transport-options": {
+                "relative": false
+            }
         },
         {
             "name": "monolog/monolog",
@@ -3038,7 +3064,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "minvws/healthcheck": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -3047,5 +3075,5 @@
         "ext-zip": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }

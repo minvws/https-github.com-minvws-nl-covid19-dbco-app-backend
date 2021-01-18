@@ -40,6 +40,7 @@ services:
             - ${PRIVATE_API_PORT:-8081}:8080
         volumes:
             - ./services/shared/library:/shared/library
+            - ./services/shared/packages:/shared/packages
             - ./services/private-api/src:/src
 
     public-api:
@@ -52,6 +53,7 @@ services:
             - ${PUBLIC_API_PORT:-8082}:8080
         volumes:
             - ./services/shared/library:/shared/library
+            - ./services/shared/packages:/shared/packages
             - ./services/public-api/src:/src
 
     bridge-clients:
@@ -92,7 +94,7 @@ services:
             METRICS_SFTP_UPLOAD_PATH: /upload
         volumes:
             - ./services/shared/library:/shared/library
-            - ./services/shared/packages/metrics:/shared/packages/metrics
+            - ./services/shared/packages:/shared/packages
             - ./services/healthauthority-api/src:/src
             - ./metrics/export:/metrics
             - type: bind
@@ -109,7 +111,7 @@ services:
             - redis-haa
         volumes:
             - ./services/shared/library:/shared/library
-            - ./services/shared/packages/metrics:/shared/packages/metrics
+            - ./services/shared/packages:/shared/packages
             - ./services/healthauthority-api/src:/src
 
     portal:
@@ -128,7 +130,7 @@ services:
         volumes:
             - ./services/portal/src:/src
             - ./services/shared/library:/shared/library
-            - ./services/shared/packages/metrics:/shared/packages/metrics
+            - ./services/shared/packages:/shared/packages
 
     hsm:
         extends:
