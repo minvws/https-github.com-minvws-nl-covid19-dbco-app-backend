@@ -8,7 +8,9 @@ use DBCO\HealthAuthorityAPI\Application\Security\HSMSecurityModule;
 use DBCO\HealthAuthorityAPI\Application\Security\SecurityModule;
 use DBCO\Shared\Application\Managers\DbTransactionManager;
 use DBCO\Shared\Application\Managers\TransactionManager;
+use DBCO\Shared\Application\Metrics\Transformers\EventTransformer;
 use DI\ContainerBuilder;
+use MinVWS\Metrics\Transformers\EventTransformer as EventTransformerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
@@ -88,7 +90,8 @@ return function (ContainerBuilder $containerBuilder) {
                     ->constructorParameter('usePhpRandomBytesForNonce', get('securityModule.nonce.usePhpRandomBytes')),
             'privateAPIGuzzleClient' =>
                 autowire(GuzzleHttp\Client::class)
-                    ->constructor(get('privateAPI.client'))
+                    ->constructor(get('privateAPI.client')),
+            EventTransformerInterface::class => autowire(EventTransformer::class)
         ]
     );
 };

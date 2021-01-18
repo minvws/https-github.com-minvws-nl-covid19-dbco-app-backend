@@ -14,6 +14,12 @@ use DBCO\HealthAuthorityAPI\Application\Repositories\GeneralTaskRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\QuestionnaireRepository;
 
 use DI\ContainerBuilder;
+use MinVWS\Metrics\Repositories\CsvExportRepository;
+use MinVWS\Metrics\Repositories\DbStorageRepository;
+use MinVWS\Metrics\Repositories\ExportRepository;
+use MinVWS\Metrics\Repositories\SftpUploadRepository;
+use MinVWS\Metrics\Repositories\StorageRepository;
+use MinVWS\Metrics\Repositories\UploadRepository;
 use function DI\autowire;
 use function DI\get;
 
@@ -26,6 +32,19 @@ return function (ContainerBuilder $containerBuilder) {
         CaseExportRepository::class =>
             autowire(ApiCaseExportRepository::class)
                 ->constructorParameter('client', get('privateAPIGuzzleClient'))
-                ->constructorParameter('jwtSecret', get('privateAPI.jwtSecret'))
+                ->constructorParameter('jwtSecret', get('privateAPI.jwtSecret')),
+        StorageRepository::class => autowire(DbStorageRepository::class),
+        ExportRepository::class =>
+            autowire(CsvExportRepository::class)
+                ->constructorParameter('fields', get('metrics.export.fields'))
+                ->constructorParameter('labels', get('metrics.export.labels')),
+        UploadRepository::class =>
+            autowire(SftpUploadRepository::class)
+                ->constructorParameter('hostname', get('metrics.sftp.hostname'))
+                ->constructorParameter('username', get('metrics.sftp.username'))
+                ->constructorParameter('privateKey', get('metrics.sftp.privateKey'))
+                ->constructorParameter('passphrase', get('metrics.sftp.passphrase'))
+                ->constructorParameter('uploadPath', get('metrics.sftp.uploadPath'))
+
     ]);
 };

@@ -20,8 +20,11 @@ use DBCO\HealthAuthorityAPI\Application\Repositories\GeneralTaskRepository;
 use DBCO\HealthAuthorityAPI\Application\Repositories\QuestionnaireRepository;
 use DBCO\Shared\Application\Codable\JSONDecoder;
 use DBCO\Shared\Application\Managers\TransactionManager;
+use DBCO\Shared\Application\Metrics\Events\PairedEvent;
+use DBCO\Shared\Application\Metrics\Events\SubmittedEvent;
 use DBCO\Shared\Application\Models\SealedData;
 use Exception;
+use MinVWS\Metrics\Services\EventService;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 
@@ -68,6 +71,11 @@ class CaseService
     private TransactionManager $transactionManager;
 
     /**
+     * @var EventService
+     */
+    private EventService $eventService;
+
+    /**
      * @var LoggerInterface
      */
     private LoggerInterface $logger;
@@ -82,6 +90,7 @@ class CaseService
      * @param QuestionnaireRepository $questionnaireRepository
      * @param EncryptionHelper        $encryptionHelper
      * @param TransactionManager      $transactionManager
+     * @param EventService            $eventService
      * @param LoggerInterface         $logger
      */
     public function __construct(
@@ -92,6 +101,7 @@ class CaseService
         QuestionnaireRepository $questionnaireRepository,
         EncryptionHelper $encryptionHelper,
         TransactionManager $transactionManager,
+        EventService $eventService,
         LoggerInterface $logger
     )
     {
@@ -102,6 +112,7 @@ class CaseService
         $this->questionnaireRepository = $questionnaireRepository;
         $this->encryptionHelper = $encryptionHelper;
         $this->transactionManager = $transactionManager;
+        $this->eventService = $eventService;
         $this->logger = $logger;
     }
 
@@ -187,6 +198,7 @@ class CaseService
         $case = $this->caseRepository->getCase($caseUuid);
         $this->clientRepository->registerClient($client, $case->windowExpiresAt);
         $this->caseRepository->markCaseAsPaired($caseUuid);
+        $this->eventService->registerEvent(new PairedEvent(PairedEvent::ACTOR_INDEX, $caseUuid));
         $this->exportCaseForClient($case, $client);
 
         return new ClientRegistration($client, $sealedHealthAuthorityPublicKey);
@@ -214,6 +226,8 @@ class CaseService
         if (empty($json)) {
             throw new SealedBoxException();
         }
+
+        $this->eventService->registerEvent(new SubmittedEvent(SubmittedEvent::ACTOR_INDEX, $client->caseUuid));
 
         $decoder = new JSONDecoder();
 

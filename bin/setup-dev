@@ -7,6 +7,10 @@ DOCKER_COMPOSE_SETUP_AND_TOOLS="$DOCKER_COMPOSE_SETUP -f docker-compose/docker-c
 
 . $BASE_PATH/.env
 
+echo "=====[ GENERATE SFTP KEYPAIR ]======================="
+ssh-keygen -f $BASE_PATH/sftp_id_rsa -N ""
+echo
+
 echo "=====[ BUILD CONTAINERS ]======================="
 $DOCKER_COMPOSE_SETUP_AND_TOOLS build
 
