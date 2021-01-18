@@ -54,7 +54,7 @@ class ClassificationDetailsAnswerTest extends TestCase
         $answer->category2BRisk = $category2BRisk;
         $answer->category3Risk = $category3Risk;
 
-        $this->assertSame($formCategory, $answer->toFormValue());
+        $this->assertSame(['value' => $formCategory], $answer->toFormValue());
     }
 
     public static function answerValuesProvider(): array

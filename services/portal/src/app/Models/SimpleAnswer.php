@@ -11,8 +11,27 @@ class SimpleAnswer extends Answer
         return !empty($this->value);
     }
 
-    public function toFormValue()
+    public function toFormValue(): array
     {
-        return $this->value;
+        return ['value' => $this->value];
+    }
+
+    public function fromFormValue(array $formData)
+    {
+        $this->value = $formData['value'] ?? null;
+    }
+
+    public static function getValidationRules(): array
+    {
+        return [
+            'value' => 'nullable|string'
+        ];
+    }
+
+    public static function createFromFormValue(?string $value): self
+    {
+        $answer = new self;
+        $answer->fromFormValue($value);
+        return $answer;
     }
 }

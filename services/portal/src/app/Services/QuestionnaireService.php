@@ -6,6 +6,7 @@ use App\Models\CovidCase;
 use App\Models\ExportField;
 use App\Models\Questionnaire;
 use App\Models\SimpleAnswer;
+use App\Models\Task;
 use App\Repositories\AnswerRepository;
 use App\Repositories\QuestionnaireRepository;
 use App\Repositories\QuestionRepository;

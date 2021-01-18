@@ -61,12 +61,11 @@ class CaseController extends Controller
         }
     }
 
-    public function viewCase($caseUuid)
+    public function viewCase(string $caseUuid)
     {
         $case = $this->caseService->getCase($caseUuid, true);
 
         if ($case !== null && $this->caseService->canAccess($case)) {
-
             $taskgroups = array();
             foreach ($case->tasks as $task) {
                 $taskgroups[$task->communication][] = $task;
@@ -74,7 +73,7 @@ class CaseController extends Controller
 
             return view('viewcase', [
                 'case' => $case,
-                'taskgroups' => $taskgroups
+                'taskgroups' => $taskgroups,
             ]);
         } else {
             return redirect()->route('cases-list');
@@ -165,7 +164,7 @@ class CaseController extends Controller
 
         $case = $this->caseService->getCase($caseUuid);
 
-        if ($case != null && $this->caseService->canAccess($case)) {
+        if ($case !== null && $this->caseService->canAccess($case)) {
 
             $validatedData = $request->validate([
                 'action' => 'required|in:new,edit',

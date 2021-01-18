@@ -146,7 +146,6 @@
             </div>
 
             <div class="sidebar-content">
-
             </div>
         </div>
         <!-- End of sidebar content -->
