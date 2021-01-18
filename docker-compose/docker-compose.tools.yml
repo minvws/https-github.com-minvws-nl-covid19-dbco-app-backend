@@ -31,3 +31,5 @@ services:
          networks:
              - public
              - healthauthority
+         volumes:
+             - ./services/simulator/src:/src

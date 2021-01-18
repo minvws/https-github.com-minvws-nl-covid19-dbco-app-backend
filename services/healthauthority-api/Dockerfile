@@ -40,6 +40,7 @@ COPY healthauthority-api/assets/libcs_pkcs11_R2.so /usr/lib/utimaco/libcs_pkcs11
 ENV PKCS_MODULE=/usr/lib/utimaco/libcs_pkcs11_R2.so
 
 COPY shared/library /shared/library
+COPY shared/packages /shared/packages
 COPY healthauthority-api/src /src
 
 RUN cd /src && composer install && \

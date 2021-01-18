@@ -36,8 +36,6 @@ services:
             service: private-api
         depends_on:
             - redis
-        environment:
-            APP_ENV: development
         ports:
             - ${PRIVATE_API_PORT:-8081}:8080
         volumes:
@@ -50,8 +48,6 @@ services:
             service: public-api
         depends_on:
             - redis
-        environment:
-            APP_ENV: development
         ports:
             - ${PUBLIC_API_PORT:-8082}:8080
         volumes:
@@ -65,8 +61,6 @@ services:
         depends_on:
             - redis
             - healthauthority-api
-        environment:
-            APP_ENV: development
         volumes:
             - ./services/bridge/src:/src
 
@@ -77,8 +71,6 @@ services:
         depends_on:
             - redis
             - healthauthority-api
-        environment:
-            APP_ENV: development
         volumes:
             - ./services/bridge/src:/src
 
@@ -89,13 +81,24 @@ services:
         depends_on:
             - mysql
             - redis-haa
-        environment:
-            APP_ENV: development
+            - sftp
         ports:
             - ${HEALTHAUTHORITY_API_PORT:-8083}:8080
+        environment:
+            METRICS_EXPORT_BASE_PATH: /metrics
+            METRICS_SFTP_HOSTNAME: sftp
+            METRICS_SFTP_USERNAME: sftp
+            METRICS_SFTP_PRIVATE_KEY: /keys/id_rsa
+            METRICS_SFTP_UPLOAD_PATH: /upload
         volumes:
             - ./services/shared/library:/shared/library
+            - ./services/shared/packages/metrics:/shared/packages/metrics
             - ./services/healthauthority-api/src:/src
+            - ./metrics/export:/metrics
+            - type: bind
+              source: ./sftp_id_rsa
+              target: /keys/id_rsa
+              read_only: true
 
     healthauthority-hsm:
         extends:
@@ -104,10 +107,9 @@ services:
         depends_on:
             - mysql
             - redis-haa
-        environment:
-            APP_ENV: development
         volumes:
             - ./services/shared/library:/shared/library
+            - ./services/shared/packages/metrics:/shared/packages/metrics
             - ./services/healthauthority-api/src:/src
 
     portal:
@@ -121,14 +123,25 @@ services:
         build:
             args:
                 - INSTALL_DEV_TOOLS=1
-        environment:
-            APP_ENV: development
         ports:
             - ${PORTAL_PORT:-8084}:8080
         volumes:
             - ./services/portal/src:/src
+            - ./services/shared/library:/shared/library
+            - ./services/shared/packages/metrics:/shared/packages/metrics
 
     hsm:
         extends:
             file: docker-compose/common.yml
             service: hsm
+
+    sftp:
+        extends:
+            file: docker-compose/common.yml
+            service: sftp
+        volumes:
+            - ./metrics/sftp:/home/sftp/upload
+            - type: bind
+              source: ./sftp_id_rsa.pub
+              target: /home/sftp/.ssh/keys/id_rsa.pub
+              read_only: true
