@@ -18,23 +18,23 @@ class ClassificationDetailsAnswer extends Answer
             $this->category3Risk;
     }
 
-    public function toFormValue(): ?string
+    public function toFormValue(): array
     {
         // Beslisboom ggd
         if ($this->category1Risk) {
-            return "1";
+            return ['value' => '1'];
         }
         if ($this->category2ARisk) {
-            return "2a";
+            return ['value' => '2a'];
         }
         if ($this->category2BRisk) {
-            return "2b";
+            return ['value' => '2b'];
         }
         if ($this->category3Risk) {
-            return "3";
+            return ['value' => '3'];
         }
 
-        return null;
+        return ['value' => null];
     }
 
     public function fromFormValue(array $formData)

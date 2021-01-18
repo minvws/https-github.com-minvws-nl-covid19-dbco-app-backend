@@ -118,17 +118,24 @@ class TaskController extends Controller
         if (!$validator->fails()) {
             // Update the questionnaire
             $this->updateTaskAnswers($task, $relevantQuestions, $answers, $validator->validated());
+            $formAnswers = array_map(fn(Answer $answer) => $answer->toFormValue(), $answers);
 
             // Close Task for further editing by Index
             $task->status = Task::TASK_STATUS_CLOSED;
             $this->taskRepository->updateTask($task);
+        } else {
+            // Validation failed, put the user entered values back in the form
+            $formAnswers = [];
+            foreach ($relevantQuestions as $question) {
+                $formAnswers[$question->uuid] = $request->get($question->uuid);
+            }
         }
 
         // Return the rendered sidebar
         return view('taskquestionnaire', [
             'task' => $task,
             'questions' => $relevantQuestions,
-            'answers' => array_map(fn(Answer $answer) => $answer->toFormValue(), $answers),
+            'answers' => $formAnswers,
         ])->withErrors($validator);
     }
 

@@ -24,12 +24,10 @@ class IndecipherableAnswer extends Answer
 
     /**
      * No value.
-     *
-     * @return null
      */
-    public function toFormValue()
+    public function toFormValue(): array
     {
-        return self::INDECIPHERABLE;
+        return ['value' => self::INDECIPHERABLE];
     }
 
     public function fromFormValue(array $formData): void {}
