@@ -31,6 +31,7 @@ COPY shared/assets/api/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.
 COPY shared/assets/api/mpm_prefork_default.conf /etc/apache2/mods-available/mpm_prefork_default.conf
 
 COPY shared/library /shared/library
+COPY shared/packages /shared/packages
 COPY public-api/src /src
 
 RUN cd /src && composer install && \

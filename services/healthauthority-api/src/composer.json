@@ -35,7 +35,8 @@
         "slim/slim": "^4.5",
         "symfony/console": "^5.2",
         "tuupola/slim-jwt-auth": "^3.5",
-        "minvws/metrics": "dev-master"
+        "minvws/metrics": "dev-master",
+        "minvws/healthcheck": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5"
@@ -62,7 +63,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "/shared/packages/metrics"
+            "url": "/shared/packages/*"
         }
     ]
 }

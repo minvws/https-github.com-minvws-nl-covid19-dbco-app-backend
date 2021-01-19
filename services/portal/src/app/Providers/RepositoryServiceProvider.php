@@ -53,7 +53,7 @@ class RepositoryServiceProvider extends ServiceProvider
 
         $this->app->when(ApiPairingRepository::class)
                   ->needs(GuzzleClient::class)
-                  ->give(fn () => new GuzzleClient(config('services.private_api.client_options')));
+                  ->give('privateAPIGuzzleClient');
 
         $this->app->when(ApiPairingRepository::class)
             ->needs('$jwtSecret')
@@ -61,7 +61,7 @@ class RepositoryServiceProvider extends ServiceProvider
 
         $this->app->when(ApiCaseUpdateNotificationRepository::class)
             ->needs(GuzzleClient::class)
-            ->give(fn () => new GuzzleClient(config('services.healthauthority_api.client_options')));
+            ->give('healthAuthorityAPIGuzzleClient');
 
         $this->app->bind(StorageRepository::class, DbStorageRepository::class);
         $this->app->when(DbStorageRepository::class)

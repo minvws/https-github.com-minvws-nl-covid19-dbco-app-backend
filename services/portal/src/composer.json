@@ -20,7 +20,8 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "predis/predis": "^1.1",
-        "minvws/metrics": "dev-master"
+        "minvws/metrics": "dev-master",
+        "minvws/healthcheck": "dev-master"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
@@ -69,7 +70,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "/shared/packages/metrics"
+            "url": "/shared/packages/*"
         }
     ]
 }

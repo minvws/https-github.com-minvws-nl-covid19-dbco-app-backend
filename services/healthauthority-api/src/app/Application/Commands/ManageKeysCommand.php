@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use DBCO\HealthAuthorityAPI\Application\Services\SecurityService;
 use Exception;
+use Predis\Client as PredisClient;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,14 +28,20 @@ class ManageKeysCommand extends Command
     private SecurityService $securityService;
 
     /**
+     * @var PredisClient
+     */
+    private PredisClient $redisClient;
+
+    /**
      * Constructor.
      *
      * @param SecurityService $securityService
      */
-    public function __construct(SecurityService $securityService)
+    public function __construct(SecurityService $securityService, PredisClient $redisClient)
     {
         parent::__construct();
         $this->securityService = $securityService;
+        $this->redisClient = $redisClient;
     }
 
     /**
@@ -134,11 +141,12 @@ class ManageKeysCommand extends Command
             $output->writeln('Public key exchange key: ' . base64_encode($this->securityService->getKeyExchangePublicKey()));
         }
 
-        $currentDay = $this->manageStoreSecretKeys($output);
+        $currentDay = null;
 
         while (true) {
             $currentDay = $this->manageStoreSecretKeys($output, $currentDay);
             $this->invoke('Cache keys in memory', $output, fn () => $this->securityService->cacheKeys());
+            $this->redisClient->disconnect(); // force disconnect so a new connection is established later on
             sleep(60);
         }
 

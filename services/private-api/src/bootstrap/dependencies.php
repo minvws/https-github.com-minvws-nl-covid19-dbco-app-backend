@@ -5,6 +5,8 @@ use DBCO\PrivateAPI\Application\Helpers\JWTConfigHelper;
 use DBCO\PrivateAPI\Application\Helpers\SecureTokenGenerator;
 use DBCO\PrivateAPI\Application\Helpers\TokenGenerator;
 use DI\ContainerBuilder;
+use MinVWS\HealthCheck\Checks\PredisHealthCheck;
+use MinVWS\HealthCheck\HealthChecker;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
@@ -40,11 +42,17 @@ return function (ContainerBuilder $containerBuilder) {
                 autowire(SecureTokenGenerator::class)
                     ->constructorParameter('allowedChars', get('pairingCode.allowedChars'))
                     ->constructorParameter('length', get('pairingCode.length')),
+
             JWTConfigHelper::class =>
                 autowire(JWTConfigHelper::class)->constructor(get('jwt')),
+
             PredisClient::class =>
                 autowire(PredisClient::class)
-                    ->constructor(get('redis.parameters'), get('redis.options'))
+                    ->constructor(get('redis.parameters'), get('redis.options')),
+
+            HealthChecker::class =>
+                autowire(HealthChecker::class)
+                    ->method('addHealthCheck', 'redis', autowire(PredisHealthCheck::class))
         ]
     );
 };

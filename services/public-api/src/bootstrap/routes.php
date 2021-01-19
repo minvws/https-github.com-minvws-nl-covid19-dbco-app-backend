@@ -7,6 +7,8 @@ use DBCO\PublicAPI\Application\Actions\ConfigAction;
 use DBCO\PublicAPI\Application\Actions\GeneralTaskListAction;
 use DBCO\PublicAPI\Application\Actions\PairingAction;
 use DBCO\PublicAPI\Application\Actions\QuestionnaireListAction;
+use DBCO\Shared\Application\Actions\HealthCheckAction;
+use DBCO\Shared\Application\Actions\PingAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -27,7 +29,7 @@ return function (App $app) {
     $app->get('/v1/cases/{token}', CaseAction::class);
     $app->put('/v1/cases/{token}', CaseSubmitAction::class);
 
-    $app->get('/status', function (Request $request, Response $response) {
-        return $response->withStatus(200);
-    });
+    $app->get('/v1/ping', PingAction::class); // available versioned (clients)
+    $app->get('/ping', PingAction::class); // and unversioned (kubernetes)
+    $app->get('/status', HealthCheckAction::class);
 };
