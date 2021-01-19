@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3fc8aef9a387fe9806b388f84485854b",
+    "content-hash": "2a64a035e3b8b8864dfb31fc9571ef80",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1924,6 +1924,32 @@
                 "twitter"
             ],
             "time": "2020-09-28T09:39:08+00:00"
+        },
+        {
+            "name": "minvws/healthcheck",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "/shared/packages/healthcheck",
+                "reference": "ebb753ded9291384bf2c28d9df1c364497e8c03d"
+            },
+            "require": {
+                "php": "^7.4"
+            },
+            "suggest": {
+                "ext-pdo": "*",
+                "predis/predis": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MinVWS\\HealthCheck\\": "src/MinVWS/HealthCheck/"
+                }
+            },
+            "description": "A small package for easily incorporating health checks",
+            "transport-options": {
+                "relative": false
+            }
         },
         {
             "name": "minvws/metrics",
@@ -8104,7 +8130,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "minvws/metrics": 20
+        "minvws/metrics": 20,
+        "minvws/healthcheck": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
