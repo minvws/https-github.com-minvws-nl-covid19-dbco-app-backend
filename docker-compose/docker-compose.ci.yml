@@ -1,0 +1,73 @@
+version: '3.7'
+
+volumes:
+    mysql-data:
+        driver: local
+
+networks:
+    public:
+    sluice:
+    private:
+    healthauthority:
+
+services:
+    redis:
+        extends:
+            file: docker-compose/common.yml
+            service: redis
+
+    redis-haa:
+        extends:
+            file: docker-compose/common.yml
+            service: redis-haa
+
+    mysql:
+        extends:
+            file: docker-compose/common.yml
+            service: mysql
+
+    private-api:
+        extends:
+            file: docker-compose/common.yml
+            service: private-api
+        depends_on:
+            - redis
+
+    public-api:
+        extends:
+            file: docker-compose/common.yml
+            service: public-api
+        depends_on:
+            - redis
+
+    healthauthority-api:
+        extends:
+            file: docker-compose/common.yml
+            service: healthauthority-api
+        depends_on:
+            - mysql
+            - redis-haa
+
+    portal:
+        extends:
+            file: docker-compose/common.yml
+            service: portal
+        depends_on:
+            - healthauthority-api
+            - mysql
+            - redis-haa
+
+    hsm:
+        extends:
+            file: docker-compose/common.yml
+            service: hsm
+
+    worker:
+        extends:
+            file: docker-compose/common.yml
+            service: worker
+
+    mysqlclient:
+        extends:
+            file: docker-compose/tools.yml
+            service: mysqlclient
