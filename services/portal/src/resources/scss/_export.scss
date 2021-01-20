@@ -1,0 +1,24 @@
+div.copyable:hover{ background-color: $bco-purple-light }
+
+div.copyable:hover {
+    .btn {
+        display: none;
+    }
+}
+
+div.copyable {
+    .row-action {
+        display: none;
+        color: $bco-purple;
+    }
+
+    .row-status {
+        color: $bco-purple;
+    }
+}
+
+.clipboard-offscreen {
+    position: absolute;
+    left: -999em;
+}
+

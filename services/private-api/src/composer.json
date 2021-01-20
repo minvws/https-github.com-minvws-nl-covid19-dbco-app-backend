@@ -1,0 +1,65 @@
+{
+    "name": "slim/slim-skeleton",
+    "description": "A Slim Framework skeleton application for rapid development",
+    "keywords": [
+        "microframework",
+        "rest",
+        "router",
+        "psr7"
+    ],
+    "homepage": "http://github.com/slimphp/Slim-Skeleton",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Josh Lockhart",
+            "email": "info@joshlockhart.com",
+            "homepage": "http://www.joshlockhart.com/"
+        },
+        {
+            "name": "Pierre Berube",
+            "email": "pierre@lgse.com",
+            "homepage": "http://www.lgse.com/"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "ext-json": "*",
+        "ext-zip": "*",
+        "monolog/monolog": "^2.0",
+        "php-di/php-di": "^6.1",
+        "predis/predis": "^1.1",
+        "ramsey/uuid": "^4.0",
+        "slim/psr7": "^1.1",
+        "slim/slim": "^4.5",
+        "tuupola/slim-jwt-auth": "^3.5",
+        "minvws/healthcheck": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    },
+    "config": {
+        "process-timeout": 0,
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "DBCO\\PrivateAPI\\": "app/",
+            "DBCO\\Shared\\": "../shared/library/DBCO/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DBCO\\PrivateAPI\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "start": "php -S localhost:8080 -t public",
+        "test": "phpunit"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "/shared/packages/*"
+        }
+    ]
+}
