@@ -1,59 +1,42 @@
 #!/bin/bash
 BASE_PATH=$(dirname $0)/..
-DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
+DOCKER_COMPOSE="$(dirname $0)/docker-compose-dev"
+DOCKER_COMPOSE_TOOLS="$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml"
+DOCKER_COMPOSE_SETUP="$DOCKER_COMPOSE -f docker-compose/docker-compose.setup.yml"
+DOCKER_COMPOSE_SETUP_AND_TOOLS="$DOCKER_COMPOSE_SETUP -f docker-compose/docker-compose.tools.yml"
 
 . $BASE_PATH/.env
 
-echo "=====[ SETUP CONTAINERS ]======================="
+echo "=====[ GENERATE SFTP KEYPAIR ]======================="
+ssh-keygen -f $BASE_PATH/sftp_id_rsa -N ""
+echo
+
+echo "=====[ BUILD CONTAINERS ]======================="
+$DOCKER_COMPOSE_SETUP_AND_TOOLS build
+
+echo
+echo "=====[ SETUP HSM ]======================="
+$DOCKER_COMPOSE up -d hsm
+sleep 5
+$DOCKER_COMPOSE_SETUP run --rm hsm-setup
+
+echo
+echo "=====[ SETUP OTHER CONTAINERS ]======================="
 $DOCKER_COMPOSE up -d --remove-orphans
 
-if [ $DATABASE_TYPE = "mysql" ]; then
-  echo
-  echo "=====[ SETUP MYSQL DATABASE ]========================="
-  echo "Waiting for MySQL to launch on ${MYSQL_PORT:-3306}..."
-  while ! nc -z localhost ${MYSQL_PORT:-3306}; do
-    sleep 0.5
-  done
+echo
+echo "=====[ SETUP MYSQL DATABASE ]========================="
+echo "Waiting for MYSQL to launch..."
+while ! echo "SELECT 1" | $DOCKER_COMPOSE_TOOLS run --rm mysqlclient > /dev/null 2>&1; do
+  sleep 0.5
+done
 
-  sleep 5
-
-  $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
-  $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
-  $DOCKER_COMPOSE run --rm mysqlclient < $BASE_PATH/install/mysql/permissions.sql
-fi
-
-if [ $DATABASE_TYPE = "postgres" ]; then
-  echo
-  echo "=====[ SETUP POSTGRES DATABASE ]========================="
-  echo "Waiting for PostgreSQL to launch on ${POSTGRES_PORT:-5432}..."
-  while ! nc -z localhost ${POSTGRES_PORT:-5432}; do
-    sleep 0.5
-  done
-  $DOCKER_COMPOSE run --rm psql -c "CREATE USER portal PASSWORD '$PORTAL_DB_PASSWORD'"
-  $DOCKER_COMPOSE run --rm psql -c "CREATE USER healthauthority_api PASSWORD '$HEALTHAUTHORITY_API_DB_PASSWORD'"
-  $DOCKER_COMPOSE run --rm psql < $BASE_PATH/install/postgres/permissions.sql
-fi
-
-if [ $DATABASE_TYPE = "oracle" ]; then
-  echo
-  echo "=====[ SETUP ORACLE DATABASE ]========================="
-  echo "Waiting for Oracle to launch on ${ORACLE_PORT:-1521}..."
-  while ! echo "SELECT 1 FROM dual" | $DOCKER_COMPOSE run --rm sqlplus > /dev/null 2>&1; do
-    sleep 1
-  done
-
-  echo "CREATE USER healthauthority_api IDENTIFIED BY \"$HEALTHAUTHORITY_API_DB_PASSWORD\";" | $DOCKER_COMPOSE run --rm sqlplus
-  echo "CREATE USER portal IDENTIFIED BY \"$PORTAL_DB_PASSWORD\";" | $DOCKER_COMPOSE run --rm sqlplus
-  $DOCKER_COMPOSE run --rm sqlplus < $BASE_PATH/install/oracle/permissions.sql
-fi
+$DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
+$DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
+$DOCKER_COMPOSE_TOOLS run --rm mysqlclient < $BASE_PATH/services/mysql/permissions.sql
 
 $BASE_PATH/bin/update-dev
 
 echo
-echo "=====[ SEED PORTAL ]====="
+echo "=====[ SEED DATABASE ]========================="
 $DOCKER_COMPOSE run --rm --entrypoint php portal artisan db:seed
-
-echo
-echo "=====[ FILL REDIS CACHE ]====="
-$DOCKER_COMPOSE run --rm worker /src/worker questionnaire:refresh-all
-$DOCKER_COMPOSE run --rm worker /src/worker task:refresh-general

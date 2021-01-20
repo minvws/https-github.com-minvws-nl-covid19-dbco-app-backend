@@ -3,122 +3,97 @@ BASE_PATH=$(dirname $0)/..
 
 . $BASE_PATH/.env.test
 
-export DATABASE_TYPE=`source $BASE_PATH/.env && echo $DATABASE_TYPE`
-PROJECT_NAME=dbco-test-${DATABASE_TYPE}
-DOCKER_COMPOSE="docker-compose --project-directory=$BASE_PATH -p $PROJECT_NAME --env-file .env.test -f docker-compose.main.yml -f docker-compose.test.yml -f docker-compose.${DATABASE_TYPE}.yml"
+PROJECT_NAME=dbco-test
+
+DOCKER_COMPOSE="docker-compose --project-directory=$BASE_PATH -p $PROJECT_NAME --env-file ./.env.test -f docker-compose/docker-compose.test.yml"
+DOCKER_COMPOSE_SETUP="$DOCKER_COMPOSE -f docker-compose/docker-compose.setup.yml"
 
 CONTAINER=$1
+PHPUNIT_ARGS="${@:2}"
 
 if [ "$1" == "--reset" ]; then
   CONTAINER=$2
+  PHPUNIT_ARGS="${@:3}"
 
   echo "=====[ RESET ]====="
   $DOCKER_COMPOSE down --remove-orphans -v
-  docker volume rm "${PROJECT_NAME}_${DATABASE_TYPE}-data"
-  $DOCKER_COMPOSE build
+  $DOCKER_COMPOSE_SETUP build
   echo
+fi
+
+if [ "$1" == "--setup" ] || [ "$1" == "--reset" ]; then
+  echo "=====[ SETUP HSM ]======================="
+  $DOCKER_COMPOSE up -d hsm
+  sleep 5
+  $DOCKER_COMPOSE_SETUP run --rm hsm-setup
 fi
 
 echo "=====[ START CONTAINERS ]====="
 $DOCKER_COMPOSE up -d
 
-if [ $DATABASE_TYPE = "mysql" ]; then
-  echo
-  echo "=====[ START MYSQL DATABASE ]========================="
-  echo "Waiting for MYSQL to launch on ${MYSQL_PORT:-3306}..."
-  while ! echo "SELECT 1" | $DOCKER_COMPOSE run --rm mysqlclient > /dev/null 2>&1; do
-    sleep 0.5
-  done
-fi
+echo
+echo "=====[ START MYSQL DATABASE ]========================="
+echo "Waiting for MYSQL to launch..."
+while ! echo "SELECT 1" | $DOCKER_COMPOSE run --rm mysqlclient > /dev/null 2>&1; do
+  sleep 0.5
+done
 
-if [ $DATABASE_TYPE = "postgres" ]; then
-  echo
-  echo "=====[ START POSTGRES DATABASE ]========================="
-  echo "Waiting for PostgreSQL to launch on ${POSTGRES_PORT:-5432}..."
-  while ! echo "SELECT 1 FROM dual" | $DOCKER_COMPOSE run --rm psql > /dev/null 2>&1; do
-    sleep 0.5
-  done
-fi
-
-if [ $DATABASE_TYPE = "oracle" ]; then
-  echo
-  echo "=====[ START ORACLE DATABASE ]========================="
-  echo "Waiting for Oracle to launch on ${ORACLE_PORT:-1521}..."
-  while ! echo "SELECT 1 FROM dual" | $DOCKER_COMPOSE run --rm sqlplus > /dev/null 2>&1; do
-    sleep 0.5
-  done
+if [ "$1" == "--keep-alive" ]; then
+  CONTAINER=$2
+  PHPUNIT_ARGS="${@:3}"
 fi
 
 if [ "$1" == "--setup" ] || [ "$1" == "--reset" ]; then
+  sleep 10
+
   CONTAINER=$2
+  PHPUNIT_ARGS="${@:3}"
 
-  if [ $DATABASE_TYPE = "mysql" ]; then
-    echo
-    echo "=====[ SETUP MYSQL DATABASE ]========================="
-    $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
-    $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
-    $DOCKER_COMPOSE run --rm mysqlclient < $BASE_PATH/install/mysql/permissions.sql
-  fi
-
-  if [ $DATABASE_TYPE = "postgres" ]; then
-    echo
-    echo "=====[ SETUP POSTGRES DATABASE ]========================="
-    $DOCKER_COMPOSE run --rm psql -c "CREATE USER portal PASSWORD '$PORTAL_DB_PASSWORD'"
-    $DOCKER_COMPOSE run --rm psql -c "CREATE USER healthauthority_api PASSWORD '$HEALTHAUTHORITY_API_DB_PASSWORD'"
-    $DOCKER_COMPOSE run --rm psql < $BASE_PATH/install/postgres/permissions.sql
-  fi
-
-  if [ $DATABASE_TYPE = "oracle" ]; then
-    echo
-    echo "=====[ SETUP ORACLE DATABASE ]========================="
-    echo "CREATE USER healthauthority_api IDENTIFIED BY \"$HEALTHAUTHORITY_API_DB_PASSWORD\";" | $DOCKER_COMPOSE run --rm sqlplus
-    echo "CREATE USER portal IDENTIFIED BY \"$PORTAL_DB_PASSWORD\";" | $DOCKER_COMPOSE run --rm sqlplus
-    $DOCKER_COMPOSE run --rm sqlplus < $BASE_PATH/install/oracle/permissions.sql
-  fi
+  echo
+  echo "=====[ SETUP MYSQL DATABASE ]========================="
+  $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
+  $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
+  $DOCKER_COMPOSE run --rm mysqlclient < $BASE_PATH/services/mysql/permissions.sql
 fi
 
 if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "healthauthority-api" ] || [ "$CONTAINER" == "portal" ]; then
   echo
   echo "=====[ RUN MIGRATIONS ]====="
   $DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
-  echo
 fi
 
 if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "worker" ]; then
   echo
   echo "=====[ RUN TESTS FOR WORKER ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit worker
-  echo
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit worker "$PHPUNIT_ARGS"
 fi
 
 if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "private-api" ]; then
   echo
   echo "=====[ RUN TESTS FOR PRIVATE API ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit private-api
-  echo
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit private-api $PHPUNIT_ARGS
 fi
 
 if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "public-api" ]; then
   echo
   echo "=====[ RUN TESTS FOR PUBLIC API ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit public-api
-  echo
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit public-api $PHPUNIT_ARGS
 fi
 
 if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "healthauthority-api" ]; then
   echo
   echo "=====[ RUN TESTS FOR HEALTHAUTHORITY API ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority-api
-  echo
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority-api $PHPUNIT_ARGS
 fi
 
 if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "portal" ]; then
   echo
   echo "=====[ RUN TESTS FOR PORTAL ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit portal
-  echo
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit portal $PHPUNIT_ARGS
 fi
 
-echo
-echo "=====[ STOP CONTAINERS ]====="
-$DOCKER_COMPOSE stop
+if [ "$1" != "--keep-alive" ]; then
+  echo
+  echo "=====[ STOP CONTAINERS ]====="
+  $DOCKER_COMPOSE stop
+fi
