@@ -1,0 +1,39 @@
+type: object
+required:
+  - label
+  - isSelected
+  - isEnabled
+  - assignment
+properties:
+  type:
+    type: string # option
+  label:
+    type: string
+  isSelected:
+    type: boolean
+  isEnabled:
+    type: boolean
+  isQueue:
+    type: boolean
+  assignmentType:
+    type: string
+    enum:
+      - caseList
+      - organisation
+      - user
+  assignment:
+    type: object
+    oneOf:
+      - required: [assignedCaseListUuid]
+      - required: [assignedOrganisationUuid]
+      - required: [assignedUserUuid]
+    properties:
+      assignedCaseListUuid:
+        type: ['null', string]
+        format: uuid
+      assignedOrganisationUuid:
+        type: ['null', string]
+        format: uuid
+      assignedUserUuid:
+        type: ['null', string]
+        format: uuid

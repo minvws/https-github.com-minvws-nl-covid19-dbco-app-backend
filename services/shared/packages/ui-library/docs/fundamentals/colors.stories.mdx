@@ -1,0 +1,34 @@
+import { Canvas, Meta, Story, ColorPalette, ColorItem } from '@storybook/addon-docs'
+import { singleColors, colorSwatches } from './colors'
+
+<Meta title="Fundamentals/Colors" />
+
+# Fundamentals - Colors
+
+All the available color (palettes). To apply a color to an element you can use the tailwind utility classes. For example:
+
+```ts
+<div class="tw-bg-white tw-text-violet-500" />
+```
+
+/* ColorPalette / ColorItem components are only available as React components */
+
+<ColorPalette style={{wordBreak: 'break-all'}}>
+  {singleColors.map(([name, colors]) => (
+    <ColorItem
+      key={name}
+      title={`${name}`}
+      subtitle={`${name} color scheme`}
+      colors={colors}
+    />
+  ))}
+  {colorSwatches.map(([name, colors]) => (
+    <ColorItem
+      
+      key={name}
+      title={`${name}`}
+      subtitle={`${name} color scheme`}
+      colors={colors}
+    />
+  ))}
+</ColorPalette>

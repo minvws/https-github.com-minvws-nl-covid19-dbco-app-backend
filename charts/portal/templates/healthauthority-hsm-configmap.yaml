@@ -1,0 +1,14 @@
+{{- if .Values.healthauthorityHsm.enabled -}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "app.fullname" . }}-healthauthority-hsm
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: healthauthority-hsm
+data:
+  {{- with .Values.healthauthorityHsm.env }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+{{- end }}

@@ -1,0 +1,22 @@
+{
+    "phpClass": "PolicyVersionStatus",
+    "tsConst": "policyVersionStatus",
+    "items": [
+        {
+            "label": "Concept",
+            "value": "draft"
+        },
+        {
+            "label": "Binnenkort actief",
+            "value": "active-soon"
+        },
+        {
+            "label": "Actief",
+            "value": "active"
+        },
+        {
+            "label": "Oud",
+            "value": "old"
+        }
+    ]
+}

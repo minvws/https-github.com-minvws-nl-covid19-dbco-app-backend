@@ -1,0 +1,18 @@
+{
+    "phpClass": "InfectionIndicator",
+    "tsConst": "infectionIndicator",
+    "items": [
+        {
+            "label": "Zelftest",
+            "value": "selfTest"
+        },
+        {
+            "label": "Laboratoriumtest",
+            "value": "labTest"
+        },
+        {
+            "label": "Onbekend",
+            "value": "unknown"
+        }
+    ]
+}

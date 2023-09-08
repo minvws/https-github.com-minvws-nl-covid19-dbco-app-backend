@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DBCO\Shared\Tests;
@@ -24,8 +25,10 @@ class TestCase extends PHPUnit_TestCase
 {
     /**
      * @var App
+     * @note Although we do not set it in the constructor, this variable should not be null. We set it in the setUp()
+     *       method of phpunit which is called on each test.
      */
-    protected ?App $app = null;
+    protected App $app;
 
     /**
      * Returns the per test app instance.
@@ -101,6 +104,12 @@ class TestCase extends PHPUnit_TestCase
                     "  Message:\n" .
                     "    " .
                     trim(str_replace("\n", "\n" . str_repeat(" ", 4), $data->message));
+
+                if ($data->type === 'validationError') {
+                    $body .=
+                        "\n  Errors:\n    " .
+                        str_replace("\n", "\n" . str_repeat(" ", 4), json_encode($data->errors, JSON_PRETTY_PRINT));
+                }
             }
         }
 
@@ -134,15 +143,5 @@ class TestCase extends PHPUnit_TestCase
         parent::setUp();
 
         $this->app = $this->createAppInstance();
-    }
-
-    /**
-     * Clean up.
-     */
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->app = null;
     }
 }

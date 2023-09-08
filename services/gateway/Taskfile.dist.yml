@@ -1,0 +1,72 @@
+# Docs @ https://taskfile.dev/
+version: "3"
+
+vars:
+  SERVICE_NAME: '{{(.TASK | splitn ":" 2)._0}}'
+
+tasks:
+  env:
+    desc: Template {{.SERVICE_NAME}} .env and .env.testing
+    run: once
+    vars:
+      APP_ENV: '{{.APP_ENV | default "src/.env" }}'
+      APP_ENV_EXISTS:
+        sh: if [ -r "{{.APP_ENV}}" ]; then echo 1; else echo 0; fi
+      TESTING_ENV: '{{.TESTING_ENV | default "src/.env.testing"}}'
+      TESTING_ENV_EXISTS:
+        sh: if [ -r "{{.TESTING_ENV}}" ]; then echo 1; else echo 0; fi
+    cmds:
+      - task: :env
+      - docker run
+        --rm
+        --tty
+        --volume "{{.BASE_PATH}}":/workspace
+        --workdir /workspace
+        --user $(id -u):$(id -g)
+        ghcr.io/hairyhenderson/gomplate:{{.GOMPLATE_IMAGE_TAG}}
+        --file services/{{.SERVICE_NAME}}/src/.env.template
+        --out services/{{.SERVICE_NAME}}/src/.env
+        --datasource root_env=file:///workspace/.env?type=application/x-env
+        {{if eq .APP_ENV_EXISTS "1"}}
+        --datasource app_env=file:///workspace/services/{{.SERVICE_NAME}}/src/.env?type=application/x-env
+        --datasource "env=merge:app_env|root_env"
+        {{else}}
+        --datasource env=file:///workspace/.env?type=application/x-env
+        {{end}}
+      - docker run
+        --rm
+        --tty
+        --volume "{{.BASE_PATH}}":/workspace
+        --workdir /workspace
+        --user $(id -u):$(id -g)
+        ghcr.io/hairyhenderson/gomplate:{{.GOMPLATE_IMAGE_TAG}}
+        --file services/{{.SERVICE_NAME}}/src/.env.testing.template
+        --out services/{{.SERVICE_NAME}}/src/.env.testing
+        --datasource root_env=file:///workspace/.env.test?type=application/x-env
+        {{if eq .TESTING_ENV_EXISTS "1"}}
+        --datasource testing_env=file:///workspace/services/{{.SERVICE_NAME}}/src/.env.testing?type=application/x-env
+        --datasource "env=merge:testing_env|root_env"
+        {{else}}
+        --datasource env=file:///workspace/.env.test?type=application/x-env
+        {{end}}
+      - echo "Done templating ({{.SERVICE_NAME}}) .env and .env.testing"
+    sources:
+      - '{{.APP_ENV}}.template'
+      - '{{.TESTING_ENV}}.template'
+    generates:
+      - '{{.APP_ENV}}'
+      - '{{.TESTING_ENV}}'
+
+  shell:
+    desc: Interactive shell to {{.SERVICE_NAME}} docker compose service
+    interactive: true
+    cmds:
+      - task: :dev:dc
+        vars: { CLI_ARGS: "exec {{.SERVICE_NAME}} /bin/bash" }
+
+  shell:test:
+    desc: Interactive shell to test {{.SERVICE_NAME}} docker compose service
+    interactive: true
+    cmds:
+      - task: :test:dc
+        vars: { CLI_ARGS: "exec --env APP_ENV=testing {{.SERVICE_NAME}} /bin/bash" }

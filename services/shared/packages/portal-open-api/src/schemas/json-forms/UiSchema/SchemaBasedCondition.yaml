@@ -1,0 +1,9 @@
+type: object
+allOf:
+    - $ref: ./Scoped.yaml
+required:
+    - schema
+properties:
+    schema:
+        description: A JSON schema describing the value that the scope should match on.
+        $ref: ../JsonSchema/JsonSchemaDraft07.yaml

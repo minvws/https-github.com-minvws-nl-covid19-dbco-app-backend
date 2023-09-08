@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+BASE_PATH=$(dirname $0)/..
+DEV_MODE=$(cat $BASE_PATH/.dev-switch)
+
+DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
+
+$DOCKER_COMPOSE up --detach --remove-orphans mysql portal
+
+$DOCKER_COMPOSE run --rm --entrypoint php portal artisan db:wipe
+$DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
+$DOCKER_COMPOSE run --rm --entrypoint php portal artisan db:seed

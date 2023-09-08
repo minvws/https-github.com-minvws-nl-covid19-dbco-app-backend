@@ -1,0 +1,22 @@
+.form-heading{
+    color: $black;
+    font-weight: bold;
+    letter-spacing: .15px;
+    margin-top: 2rem;
+
+    &--small{
+        font-size: $font-size-sm;
+        font-weight: 500;
+    }
+
+    &--inline{
+        padding-left: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    &--in-form{
+        position: relative !important;
+        top: inherit !important;
+        left: inherit !important;
+    }
+}

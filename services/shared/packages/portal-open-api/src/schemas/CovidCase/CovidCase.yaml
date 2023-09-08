@@ -1,0 +1,144 @@
+type: object
+required:
+  - uuid
+  - caseId
+  - hpzoneNumber
+  - testMonsterNumber
+  - contactsCount
+  - dateOfBirth
+  - dateOfTest
+  - dateOfSymptomOnset
+  - statusIndexContactTracing
+  - statusExplanation
+  - createdAt
+  - updatedAt
+  - organisation
+  - assignedOrganisation
+  - assignedCaseList
+  - assignedUser
+  - isEditable
+  - isDeletable
+  - isClosable
+  - isReopenable
+  - isAssignable
+  - canChangeOrganisation
+  - isApproved
+  - label
+  - plannerView
+  - bcoStatus
+  - bcoPhase
+  - wasOutsourced
+  - wasOutsourcedToOrganisation
+  - lastAssignedUserName
+  - priority
+  - caseLabels
+  - testResults
+  - age
+  - vaccinationCount
+  - mostRecentVaccinationDate
+properties:
+  uuid:
+    type: string
+    format: uuid
+  caseId:
+    type: string
+    example: 'YQ1-361-245'
+  hpzoneNumber:
+    type: ['null', string]
+    example: '22345678'
+  testMonsterNumber:
+    type: ['null', string]
+    example: '123A012345678912'
+  contactsCount:
+    type: number
+  dateOfBirth:
+    type: string
+    format: date
+  dateOfTest:
+    type: ['null', string]
+    format: date
+  dateOfSymptomOnset:
+    type: ['null', string]
+    format: date
+  statusIndexContactTracing:
+    $ref: '../enums/StatusIndexContactTracing.yaml'
+  statusExplanation:
+    type: string
+  createdAt:
+    type: string
+    format: datetime
+  updatedAt:
+    type: string
+    format: datetime
+  organisation:
+    oneOf:
+      - type: 'null'
+      - $ref: './CovidCaseOrganisation.yaml'
+  assignedOrganisation:
+    oneOf:
+      - type: 'null'
+      - $ref: './CovidCaseOrganisation.yaml'
+  assignedCaseList:
+    oneOf:
+      - type: 'null'
+      - $ref: './CovidCaseCaseList.yaml'
+  assignedUser:
+    oneOf:
+      - type: 'null'
+      - $ref: './CovidCaseUser.yaml'
+  isEditable:
+    type: boolean
+  isDeletable:
+    type: boolean
+  isClosable:
+    type: boolean
+  isReopenable:
+    type: boolean
+  isAssignable:
+    type: boolean
+  canChangeOrganisation:
+    type: boolean
+  isApproved:
+    type: ['null', boolean]
+  label:
+    type: ['null', string]
+  plannerView:
+    $ref: '../enums/PlannerView.yaml'
+  bcoStatus:
+    $ref: '../enums/BCOStatus.yaml'
+  bcoPhase:
+    $ref: '../enums/BCOPhase.yaml'
+  wasOutsourced:
+    type: boolean
+  wasOutsourcedToOrganisation:
+    oneOf:
+      - type: 'null'
+      - type: object
+        required:
+          - name
+        properties:
+          name:
+            type: string
+  lastAssignedUserName:
+    type: ['null', string]
+  priority:
+    $ref: '../enums/Priority.yaml'
+  caseLabels:
+    type: array
+    items:
+      $ref: 'CovidCaseCaseLabel.yaml'
+  hasNotes:
+    type: boolean
+  testResults:
+    type: array
+    items:
+      $ref: '../enums/TestResultSource.yaml'
+  age:
+    type: ['null', integer]
+    format: int32
+  vaccinationCount:
+    type: ['null', integer]
+    format: int32
+  mostRecentVaccinationDate:
+    type: ['null', string]
+    format: date

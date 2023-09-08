@@ -1,0 +1,293 @@
+"Event Code";"Action Code";Description;Users;Objects
+App\Console\Commands\OsirisExportCase::exportDirectly;E;"Export case to Osiris RIVM";type=portal&details=;type=osiris-case-export&details=osiris-number
+App\Http\Controllers\AdminController@index;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiCalendarItemConfigController@index;R;"Lijst van kalender item configs ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiCalendarItemConfigController@update;U;"Calendar item config updaten";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiCalendarItemConfigDateOperationController@update;U;"Calendar item config date operation updaten";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiCalendarItemConfigStrategyController@update;U;"Calendar item config strategy updaten";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiCalendarItemController@destroy;D;"Calendar item verwijderen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiCalendarItemController@index;R;"Lijst van kalender items ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiCalendarItemController@show;R;"Calendar item ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiCalendarItemController@store;C;"Calendar item aanmaken";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiCalendarItemController@update;U;"Calendar item updaten";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiCalendarViewController@index;R;"Calendar views ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiCalendarViewController@show;R;"Calendar view ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiCalendarViewController@update;U;"Calendar view updaten";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiPolicyGuidelineController@index;R;"Lijst van beleidsrichtlijnen ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiPolicyGuidelineController@show;R;"Beleidsrichtlijn ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiPolicyGuidelineController@update;U;"Update beleidsrichtlijn";type=portal&details=organisationIds,organisationNames;type=policy-guideline&details=properties
+App\Http\Controllers\Api\Admin\ApiPolicyVersionController@destroy;D;"Beleidsversie verwijderen";type=portal&details=organisationIds,organisationNames;type=policy-version&details=
+App\Http\Controllers\Api\Admin\ApiPolicyVersionController@index;R;"Lijst van beleidsversies ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiPolicyVersionController@show;R;"Beleidsversie ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiPolicyVersionController@store;C;"Beleidsversie aanmaken";type=portal&details=organisationIds,organisationNames;type=policy-version&details=properties
+App\Http\Controllers\Api\Admin\ApiPolicyVersionController@update;U;"Beleidsversie updaten";type=portal&details=organisationIds,organisationNames;type=policy-version&details=properties
+App\Http\Controllers\Api\Admin\ApiRiskProfileController@index;R;"Lijst van risico profilen ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiRiskProfileController@show;R;"Risico profiel ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Admin\ApiRiskProfileController@update;U;"Risico profiel updaten";type=portal&details=organisationIds,organisationNames;type=risk-profile&details=properties
+App\Http\Controllers\Api\ApiAccessRequestController@deleteCase;D;"Case verwijderd via API toegang";type=portal&details=organisationIds,organisationNames;"type=case&details=
+type=access-request&details=count"
+App\Http\Controllers\Api\ApiAccessRequestController@deleteTask;D;"Contact verwijderd via API toegang";type=portal&details=organisationIds,organisationNames;"type=task&details=
+type=access-request-task&details=count"
+App\Http\Controllers\Api\ApiAccessRequestController@downloadCase;R;"Download case PDF via API toegang";type=portal&details=organisationIds,organisationNames;type=access-request&details=count
+App\Http\Controllers\Api\ApiAccessRequestController@downloadCaseHtml;R;"Download case HTML via API toegang";type=portal&details=organisationIds,organisationNames;type=access-request&details=count
+App\Http\Controllers\Api\ApiAccessRequestController@downloadTask;R;"Download contact PDF via API toegang";type=portal&details=organisationIds,organisationNames;type=access-request-task&details=count
+App\Http\Controllers\Api\ApiAccessRequestController@downloadTaskHtml;R;"Download contact HTML via API toegang";type=portal&details=organisationIds,organisationNames;type=access-request-task&details=count
+App\Http\Controllers\Api\ApiAccessRequestController@fragmentsCase;R;"Fragments van case opgehaald via API toegang";type=portal&details=organisationIds,organisationNames;type=access-request&details=count
+App\Http\Controllers\Api\ApiAccessRequestController@fragmentsTask;R;"Fragments van contact opgehaald via API toegang";type=portal&details=organisationIds,organisationNames;type=access-request-task&details=count
+App\Http\Controllers\Api\ApiAccessRequestController@overview;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiAccessRequestController@restoreCase;C;"Case hersteld via API toegang";type=portal&details=organisationIds,organisationNames;"type=case&details=
+type=access-request&details=count"
+App\Http\Controllers\Api\ApiAccessRequestController@restoreTask;C;"Contact hersteld via API toegang";type=portal&details=organisationIds,organisationNames;"type=task&details=
+type=access-request-task&details=count"
+App\Http\Controllers\Api\ApiAssignmentController@assignSingleCase;C;"Dossier toegewezen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiBsnController@pseudoBsnLookup;C;"Pseudo BSN opgezocht";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiBsnController@pseudoBsnLookup;R;"Pseudo BSN opgezocht";type=portal&details=organisationIds,organisationNames;type=pseudo-bsn&details=dateOfBirth,houseNumber,houseNumberSuffix,lastThreeDigits,postalCode,results-found
+App\Http\Controllers\Api\ApiCallToActionController::completeCallToAction;U;"voltooi een taak";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCallToActionController::createCallToAction;C;"maak een taak";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCallToActionController::dropCallToAction;U;"geef een taak terug";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCallToActionController::getCallToAction;R;"taak details ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCallToActionController::listCallToActionHistory;R;"lijst van gebeurtenissen met betrekking tot een taak";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCallToActionController::listCallToActions;R;"lijst van taken ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCallToActionController::pickupCallToAction;R;"pak een taak op";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCallToActionController@completeCallToAction;C;"voltooi een taak";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCallToActionController@createCallToAction;U;"maak een taak";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCallToActionController@dropCallToAction;C;"geef een taak terug";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCallToActionController@getCallToAction;R;"taak details ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCallToActionController@listCallToActionHistory;R;"lijst van gebeurtenissen met betrekking tot een taak";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCallToActionController@listCallToActions;R;"lijst van taken ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCallToActionController@pickupCallToAction;C;"pak een taak op";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseAssignmentController@getAssignmentOptions;C;"Case toewijzings opties opgehaald";type=portal&details=organisationIds,organisationNames;type=case&details=
+App\Http\Controllers\Api\ApiCaseAssignmentController@getAssignmentOptions;R;"Case toewijzings opties opgehaald";type=portal&details=organisationIds,organisationNames;type=case&details=
+App\Http\Controllers\Api\ApiCaseAssignmentController@getAssignmentOptionsMulti;C;"Multi case toewijzings opties opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseAssignmentController@getAssignmentOptionsMulti;R;"Multi case toewijzings opties opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseAssignmentController@getuserAssignmentOptions;R;"Gebruiker toewijzings opties opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseAssignmentController@nextCase;E;"Volgende case toegewezen";type=portal&details=organisationIds,organisationNames;type=caselist&details=
+App\Http\Controllers\Api\ApiCaseAssignmentController@updateAssignment;U;"Case toewijzing bijgewerkt";type=portal&details=organisationIds,organisationNames;type=case&details=properties
+App\Http\Controllers\Api\ApiCaseAssignmentController@updateAssignmentMulti;U;"Multi case toewijzing bijgewerkt";type=portal&details=organisationIds,organisationNames;type=case&details=properties
+App\Http\Controllers\Api\ApiCaseController::getCase;R;"Case opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseController@archiveCaseDirectly;U;;type=portal&details=organisationIds,organisationNames;type=case&details=
+App\Http\Controllers\Api\ApiCaseController@archiveCaseDirectlyMulti;U;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseController@checkUnansweredQuestions;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseController@connected;R;"Gekoppelde cases en contacten opgehaald";type=portal&details=organisationIds,organisationNames;type=case&details=connectedCases,connectedTasks,organisationId,organisationName
+App\Http\Controllers\Api\ApiCaseController@createNote;C;"Notitie gemaakt op case";type=portal&details=organisationIds,organisationNames;type=case&details=
+App\Http\Controllers\Api\ApiCaseController@getCase;R;"Case opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseController@getContactStatus;R;;type=portal&details=organisationIds,organisationNames;type=case&details=organisationId,organisationName
+App\Http\Controllers\Api\ApiCaseController@markAsCopied;C;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseController@myCases;R;"Cases opgehaald van ingelogde gebruiker";type=portal&details=bcosync,organisationIds,organisationNames;type=case&details=
+App\Http\Controllers\Api\ApiCaseController@myCases;R;"Cases opgehaald van ingelogde gebruiker";type=portal&details=organisationIds,organisationNames;type=case&details=
+App\Http\Controllers\Api\ApiCaseController@performPairingForCase;C;"Pairing voor case uitgevoerd";type=portal&details=organisationIds,organisationNames;type=case&details=organisationId,organisationName
+App\Http\Controllers\Api\ApiCaseController@reopenCase;E;"Afgesloten case opnieuw geopend";type=portal&details=organisationIds,organisationNames;type=case&details=organisationId,organisationName
+App\Http\Controllers\Api\ApiCaseController@updateCaseBcoPhase;U;"Huidige case BCO fase bijgewerkt";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseController@updateCaseBcoPhaseMulti;U;"Huidige case BCO fase bijgewerkt";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseController@updateCaseOrganisation;C;;type=portal&details=organisationIds,organisationNames;type=case&details=organisationId,organisationName
+App\Http\Controllers\Api\ApiCaseController@updateContactStatus;U;"Contact status bijgewerkt";type=portal&details=organisationIds,organisationNames;type=case&details=organisationId,organisationName
+App\Http\Controllers\Api\ApiCaseController@updatePseudoBsn;U;"Pseudo BSN bijgewerkt";type=portal&details=organisationIds,organisationNames;"type=case&details=organisationId,organisationName
+type=pseudo-bsn&details=newPseudoBsnGuid"
+App\Http\Controllers\Api\ApiCaseFragmentController::getFragment;R;"Los fragment opgehaald";type=portal&details=organisationIds,organisationNames;type=case&details=count,fragments
+App\Http\Controllers\Api\ApiCaseFragmentController::getFragments;R;"Fragmenten opgehaald";type=portal&details=organisationIds,organisationNames;type=case&details=count,fragments
+App\Http\Controllers\Api\ApiCaseFragmentController::updateFragment;U;"Fragment bijgewerkt";type=portal&details=organisationIds,organisationNames;type=case&details=count,fragments
+App\Http\Controllers\Api\ApiCaseFragmentController::updateFragments;U;"Fragments bijgewerkt";type=portal&details=organisationIds,organisationNames;type=case&details=count,fragments
+App\Http\Controllers\Api\ApiCaseFragmentController@getFragment;R;"Los fragment opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseFragmentController@getFragments;R;"Fragmenten opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseFragmentController@updateFragment;U;"Fragment bijgewerkt";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseFragmentController@updateFragments;U;"Fragments bijgewerkt";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseLabelController@getCaseLabels;R;"Case labels opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseListController@createCaseList;C;"Case lijst aangemaakt";type=portal&details=organisationIds,organisationNames;type=caselist&details=
+App\Http\Controllers\Api\ApiCaseListController@deleteCaseList;D;"Case lijst verwijderd";type=portal&details=organisationIds,organisationNames;type=caselist&details=
+App\Http\Controllers\Api\ApiCaseListController@getCaseList;R;"Case lijst opgehaald";type=portal&details=organisationIds,organisationNames;type=caselist&details=
+App\Http\Controllers\Api\ApiCaseListController@listCaseLists;R;"Case lijsten opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseListController@updateCaseList;U;"Case lijst bijgewerkt";type=portal&details=organisationIds,organisationNames;type=caselist&details=
+App\Http\Controllers\Api\ApiCaseLockController@hasCaseLock;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseLockController@refreshCaseLock;C;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseLockController@removeCaseLock;D;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseMessageController@getMessage;R;;type=portal&details=organisationIds,organisationNames;type=message&details=
+App\Http\Controllers\Api\ApiCaseMessageController@getMessages;R;"Case berichten opgehaald";type=portal&details=organisationIds,organisationNames;type=message&details=
+App\Http\Controllers\Api\ApiCaseMetricsController@getCreatedArchived;R;"Aantallen gearchiveerde cases opgehaald voor stuurinformatie";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseMetricsController@refreshCreatedArchived;C;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseSyncController@getCaseFragments;R;;type=portal&details=organisationIds,organisationNames;type=case&details=organisationId,organisationName
+App\Http\Controllers\Api\ApiCaseUpdateController@applyCaseUpdate;C;"Case wijziging toegepast";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseUpdateController@getCaseUpdate;R;"Bijgewerkte case opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseUpdateController@listCaseUpdates;R;"Bijgewerkte cases getoond";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCaseValidationStatusController@getCaseValidationStatus;R;;type=portal&details=organisationIds,organisationNames;type=case&details=organisationId,organisationName
+App\Http\Controllers\Api\ApiCaseValidationStatusMessagesController@getCaseValidationStatusMessages;R;;type=portal&details=organisationIds,organisationNames;type=case&details=organisationId,organisationName
+App\Http\Controllers\Api\ApiCatalogController@index;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiCatalogController@show;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiContextController@createContext;C;"Case context aangemaakt";type=portal&details=organisationIds,organisationNames;type=context&details=
+App\Http\Controllers\Api\ApiContextController@deleteContextSection;D;"Case context sectie verwijderd";type=portal&details=organisationIds,organisationNames;type=context-section&details=
+App\Http\Controllers\Api\ApiContextController@getCaseContexts;R;"Case contexts opgehaald";type=portal&details=organisationIds,organisationNames;type=context&details=
+App\Http\Controllers\Api\ApiContextController@getContextSections;R;"Case context sectie opgehaald";type=portal&details=organisationIds,organisationNames;type=context&details=
+App\Http\Controllers\Api\ApiContextController@linkPlaceToContext;C;"Plaats aan context gelinkt";type=portal&details=organisationIds,organisationNames;type=context-place&details=
+App\Http\Controllers\Api\ApiContextController@storeContextSection;C;"Case context sectie opgeslagen";type=portal&details=organisationIds,organisationNames;type=context-section&details=
+App\Http\Controllers\Api\ApiContextController@unlinkPlaceFromContext;D;"Plaats van context verwijderd";type=portal&details=organisationIds,organisationNames;type=context-place&details=
+App\Http\Controllers\Api\ApiContextController@updateContext;U;"Case context bijgewerkt";type=portal&details=organisationIds,organisationNames;type=context&details=
+App\Http\Controllers\Api\ApiContextFragmentController::getFragment;R;"Los fragment opgehaald";type=portal&details=organisationIds,organisationNames;type=context&details=fragments
+App\Http\Controllers\Api\ApiContextFragmentController::getFragments;R;"Fragmenten opgehaald";type=portal&details=organisationIds,organisationNames;type=context&details=fragments
+App\Http\Controllers\Api\ApiContextFragmentController::updateFragment;U;"Fragment bijgewerkt";type=portal&details=organisationIds,organisationNames;type=context&details=fragments
+App\Http\Controllers\Api\ApiContextFragmentController::updateFragments;U;"Fragments bijgewerkt";type=portal&details=organisationIds,organisationNames;type=context&details=fragments
+App\Http\Controllers\Api\ApiContextFragmentController@getFragment;R;"Los fragment opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiContextFragmentController@getFragments;R;"Fragmenten opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiExpertQuestionController::answerExpertQuestion;U;"Hulpvraag beantwoorden";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiExpertQuestionController::assignExpertQuestion;U;"Hulpvraag oppakken";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiExpertQuestionController::findExpertQuestionByCaseId;R;"Navigeren naar hulpvraag op basis van case id";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiExpertQuestionController::getExpertQuestion;R;"Hulpvraag details ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiExpertQuestionController::listExpertQuestions;R;"Lijst van hulpvragen opvragen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiExpertQuestionController::unassignExpertQuestion;R;"Opgepakte hulpvraag teruggeven";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiExpertQuestionController@answerExpertQuestion;U;"Hulpvraag beantwoorden";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiExpertQuestionController@assignExpertQuestion;C;"Hulpvraag oppakken";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiExpertQuestionController@create;C;"Nieuwe supervisie vraag toegevoegd";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiExpertQuestionController@findExpertQuestionByCaseId;C;"Navigeren naar hulpvraag op basis van case id";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiExpertQuestionController@getExpertQuestion;R;"Hulpvraag details ophalen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiExpertQuestionController@listExpertQuestions;R;"Lijst van hulpvragen opvragen";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiExpertQuestionController@unassignExpertQuestion;D;"Opgepakte hulpvraag teruggeven";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiExpertQuestionController@update;U;"Supervisie vraag bijgewerkt";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiHistoryController@osiris;R;"Osiris log";type=portal&details=organisationIds,organisationNames;type=case&details=
+App\Http\Controllers\Api\ApiHpZoneCopyController@diagnostics;R;"Kopieertabellen van diagnostics opgehaald";type=portal&details=organisationIds,organisationNames;type=case&details=organisationId,organisationName
+App\Http\Controllers\Api\ApiIndexTypeController@getIndexType;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiIndexTypeController@listIndexTypes;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiIndexTypeController@updateIndexType;U;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiIntakeController@listIntakes;R;"Intakes opgehaald";type=portal&details=organisationIds,organisationNames;type=intakes&details=
+App\Http\Controllers\Api\ApiOrganisationController@listOrganisations;R;"Organisaties opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiOrganisationController@updateCurrentOrganisation;U;"Huidige organisatie bijgewerkt";type=portal&details=organisationIds,organisationNames;type=organisation&details=
+App\Http\Controllers\Api\ApiOrganisationController@updateCurrentOrganisationBcoPhase;E;"Huidige organisatie BCO fase bijgewerkt";type=portal&details=organisationIds,organisationNames;type=organisation&details=
+App\Http\Controllers\Api\ApiPlaceController::addressLookup;R;"Adres opgehaald";type=portal&details=organisationIds,organisationNames;type=address-lookup&details=
+App\Http\Controllers\Api\ApiPlaceController::createPlace;C;"Plaats aangemaakt";type=portal&details=organisationIds,organisationNames;type=place&details=
+App\Http\Controllers\Api\ApiPlaceController::createPlaceSection;C;"Plaats sectie opgeslagen";type=portal&details=organisationIds,organisationNames;type=place-section&details=
+App\Http\Controllers\Api\ApiPlaceController::getPlaceCases;R;"Toon dossiers met deze context";type=portal&details=organisationIds,organisationNames;type=covidcase&details=
+App\Http\Controllers\Api\ApiPlaceController::getPlaceSections;R;"Plaats secties opgehaald";type=portal&details=organisationIds,organisationNames;type=section&details=
+App\Http\Controllers\Api\ApiPlaceController::mergePlaceSection;U;"Plaats secties samengevoegd";type=portal&details=organisationIds,organisationNames;type=place-section&details=
+App\Http\Controllers\Api\ApiPlaceController::updatePlace;U;"Plaats aangemaakt";type=portal&details=organisationIds,organisationNames;type=place&details=
+App\Http\Controllers\Api\ApiPlaceController::updatePlaceSection;U;"Plaats sectie opgeslagen";type=portal&details=organisationIds,organisationNames;type=place-section&details=
+App\Http\Controllers\Api\ApiPlaceController@addressLookup;R;"Adres opgehaald";type=portal&details=organisationIds,organisationNames;type=address&details=houseNumber,postalCode
+App\Http\Controllers\Api\ApiPlaceController@createPlace;C;"Plaats aangemaakt";type=portal&details=organisationIds,organisationNames;type=place&details=
+App\Http\Controllers\Api\ApiPlaceController@createPlaceSection;U;"Plaats sectie opgeslagen";type=portal&details=organisationIds,organisationNames;"type=place&details=
+type=place-section&details="
+App\Http\Controllers\Api\ApiPlaceController@getPlace;R;"Plaats opgehaald";type=portal&details=organisationIds,organisationNames;type=place&details=
+App\Http\Controllers\Api\ApiPlaceController@getPlaceCases;R;"Toon dossiers met deze context";type=portal&details=organisationIds,organisationNames;"type=place&details=
+type=covidcase&details="
+App\Http\Controllers\Api\ApiPlaceController@getPlaceSections;R;"Plaats secties opgehaald";type=portal&details=organisationIds,organisationNames;"type=place&details=
+type=section&details="
+App\Http\Controllers\Api\ApiPlaceController@mergePlace;U;"Plaatsen samengevoegd";type=portal&details=organisationIds,organisationNames;type=place&details=mergePlaces
+App\Http\Controllers\Api\ApiPlaceController@mergePlaceSection;C;"Plaats secties samengevoegd";type=portal&details=organisationIds,organisationNames;"type=place&details=
+type=place-section&details="
+App\Http\Controllers\Api\ApiPlaceController@resetCount;C;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiPlaceController@searchPlaces;C;;type=portal&details=organisationIds,organisationNames;type=place&details=
+App\Http\Controllers\Api\ApiPlaceController@searchPlaces;R;;type=portal&details=organisationIds,organisationNames;type=place&details=
+App\Http\Controllers\Api\ApiPlaceController@searchSimilarPlaces;C;"Vergelijkbare plaatsen gezocht";type=portal&details=organisationIds,organisationNames;type=place&details=
+App\Http\Controllers\Api\ApiPlaceController@searchSimilarPlaces;R;"Vergelijkbare plaatsen gezocht";type=portal&details=organisationIds,organisationNames;type=place&details=
+App\Http\Controllers\Api\ApiPlaceController@updatePlace;U;"Plaats aangemaakt";type=portal&details=organisationIds,organisationNames;type=place&details=
+App\Http\Controllers\Api\ApiPlaceController@updatePlaceSection;E;"Plaats sectie opgeslagen";type=portal&details=organisationIds,organisationNames;"type=place&details=
+type=place-section&details="
+App\Http\Controllers\Api\ApiPlaceVerificationController@unVerifyPlace;U;"Plaats ongeverifieerd";type=portal&details=organisationIds,organisationNames;type=place&details=
+App\Http\Controllers\Api\ApiPlaceVerificationController@verifyPlace;U;"Plaats geverifieerd";type=portal&details=organisationIds,organisationNames;type=place&details=
+App\Http\Controllers\Api\ApiPlaceVerificationController@verifyPlaceMulti;U;"Multi plaats geverifieerd";type=portal&details=organisationIds,organisationNames;type=place&details=
+App\Http\Controllers\Api\ApiPlannerCaseController@countCases;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiPlannerCaseController@createCase;C;"Case aangemaakt";type=portal&details=organisationIds,organisationNames;type=case&details=labelsUpdated,organisationId,organisationName,priorityUpdated
+App\Http\Controllers\Api\ApiPlannerCaseController@deleteCase;D;"Case verwijderd";type=portal&details=organisationIds,organisationNames;type=case&details=
+App\Http\Controllers\Api\ApiPlannerCaseController@getCase;R;"Case opgehaald voor planner";type=portal&details=organisationIds,organisationNames;type=case&details=organisationId,organisationName
+App\Http\Controllers\Api\ApiPlannerCaseController@getPlannerTimeline;R;;type=portal&details=organisationIds,organisationNames;type=case&details=
+App\Http\Controllers\Api\ApiPlannerCaseController@getTimeline;R;;type=portal&details=organisationIds,organisationNames;type=case&details=
+App\Http\Controllers\Api\ApiPlannerCaseController@listCases;R;"Cases opgehaald door werkverdeler";type=portal&details=organisationIds,organisationNames;type=case&details=
+App\Http\Controllers\Api\ApiPlannerCaseController@searchCase;C;"Case opgezocht met ID";type=portal&details=organisationIds,organisationNames;type=case&details=caseId,hpzoneId,uuid
+App\Http\Controllers\Api\ApiPlannerCaseController@updateCase;U;"Case bijgewerkt";type=portal&details=organisationIds,organisationNames;type=case&details=labelsUpdated,organisationId,organisationName,priorityUpdated
+App\Http\Controllers\Api\ApiPlannerCaseController@updateCaseMeta;U;;type=portal&details=organisationIds,organisationNames;type=case&details=labelsUpdated,organisationId,organisationName,priorityUpdated
+App\Http\Controllers\Api\ApiPlannerCaseController@updatePriority;U;"Case prioriteit bijgewerkt";type=portal&details=organisationIds,organisationNames;type=case&details=priority
+App\Http\Controllers\Api\ApiPolicyGuidelineController@getPolicyGuideline;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiPolicyGuidelineController@listPolicyGuideline;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiPolicyGuidelineController@updatePolicyGuideline;U;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiPolicyProfileController@getPolicyProfile;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiPolicyProfileController@listPolicyProfiles;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiPolicyProfileController@updatePolicyProfile;U;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiRiskProfileController@getRiskProfile;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiRiskProfileController@listRiskProfiles;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiRiskProfileController@updateRiskProfile;U;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiSearchController@search;C;"Case opgezocht";type=portal&details=organisationIds,organisationNames;"type=search&details=
+type=task&details=
+type=case&details="
+App\Http\Controllers\Api\ApiTaskController@createTask;C;"Case contact aangemaakt";type=portal&details=organisationIds,organisationNames;type=task&details=
+App\Http\Controllers\Api\ApiTaskController@deleteTask;D;"Case contact verwijderd";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiTaskController@getCaseTasks;R;"Case contacten opgehaald";type=portal&details=organisationIds,organisationNames;type=task&details=
+App\Http\Controllers\Api\ApiTaskController@getConnectedTasks;R;"Verbonden contacten opgehaald";type=portal&details=organisationIds,organisationNames;type=task&details=connectedCases,connectedTasks
+App\Http\Controllers\Api\ApiTaskController@updatePseudoBsn;U;"Pseudo BSN bijgewerkt";type=portal&details=organisationIds,organisationNames;"type=task&details=
+type=pseudo-bsn&details=newPseudoBsnGuid"
+App\Http\Controllers\Api\ApiTaskController@updateTask;U;"Case contacten bijgewerkt";type=portal&details=organisationIds,organisationNames;type=task&details=
+App\Http\Controllers\Api\ApiTaskFragmentController::getFragment;R;"Los fragment opgehaald";type=portal&details=organisationIds,organisationNames;type=task&details=fragments
+App\Http\Controllers\Api\ApiTaskFragmentController::getFragments;R;"Fragmenten opgehaald";type=portal&details=organisationIds,organisationNames;type=task&details=fragments
+App\Http\Controllers\Api\ApiTaskFragmentController::updateFragment;U;"Fragment bijgewerkt";type=portal&details=organisationIds,organisationNames;type=task&details=fragments
+App\Http\Controllers\Api\ApiTaskFragmentController::updateFragments;U;"Fragments bijgewerkt";type=portal&details=organisationIds,organisationNames;type=task&details=fragments
+App\Http\Controllers\Api\ApiTaskFragmentController@getFragment;R;"Los fragment opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiTaskFragmentController@getFragments;R;"Fragmenten opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiTaskFragmentController@updateFragment;U;"Fragment bijgewerkt";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\ApiTaskFragmentController@updateFragments;U;"Fragments bijgewerkt";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Callcenter\ApiCallcenterSearchController@search;C;"Zoek dossier";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Case\Message\ApiCaseMessageDeleteController@send;D;"Bericht verwijderen";type=portal&details=organisationIds,organisationNames;type=message&details=
+App\Http\Controllers\Api\Case\Message\ApiCaseMessageToIndexController@send;C;"Verzend bericht naar index";type=portal&details=organisationIds,organisationNames;type=message&details=
+App\Http\Controllers\Api\Case\Message\ApiCaseMessageToIndexTemplateController@get;R;"Bericht template voor index opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Case\Message\ApiCaseMessageToTaskController@send;C;"Verzend bericht naar contact";type=portal&details=organisationIds,organisationNames;type=message&details=
+App\Http\Controllers\Api\Case\Message\ApiCaseMessageToTaskTemplateController@get;R;"Bericht template voor contact opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Case\TestResult\ApiCaseTestResultController@createManualTestResult;C;"Testresultaat toegevoegd";type=portal&details=organisationIds,organisationNames;"type=case&details=
+type=testResult&details="
+App\Http\Controllers\Api\Case\TestResult\ApiCaseTestResultController@deleteTestResult;D;"Testresultaat verwijderd";type=portal&details=organisationIds,organisationNames;"type=case&details=
+type=testResult&details="
+App\Http\Controllers\Api\Case\TestResult\ApiCaseTestResultController@getCaseTestResults;R;"Testresultaten opgehaald";type=portal&details=organisationIds,organisationNames;"type=case&details=
+type=testResult&details="
+App\Http\Controllers\Api\Disease\ApiDiseaseController@active;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseController@create;C;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseController@delete;D;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseController@index;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseController@show;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseController@update;U;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseModelController@archive;E;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseModelController@clone;E;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseModelController@create;C;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseModelController@delete;D;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseModelController@publish;E;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseModelController@showForm;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseModelController@update;U;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseModelUIController@archive;E;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseModelUIController@clone;E;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseModelUIController@create;C;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseModelUIController@delete;D;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseModelUIController@publish;E;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseModelUIController@showForm;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Disease\ApiDiseaseModelUIController@update;U;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Dossier\ApiContactController@create;C;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Dossier\ApiContactController@show;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Dossier\ApiContactController@update;U;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Dossier\ApiContactController@validateForCreate;E;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Dossier\ApiContactController@validateForUpdate;E;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Dossier\ApiDossierController@create;C;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Dossier\ApiDossierController@show;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Dossier\ApiDossierController@update;U;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Dossier\ApiDossierController@validateForCreate;E;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Dossier\ApiDossierController@validateForUpdate;E;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Export\ApiExportCaseController@index;R;;type=export&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Export\ApiExportCaseController@show;R;;type=export&details=organisationIds,organisationNames;type=case&details=
+App\Http\Controllers\Api\Export\ApiExportEventController@index;R;;type=export&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Export\ApiExportEventController@show;R;;type=export&details=organisationIds,organisationNames;type=event&details=
+App\Http\Controllers\Api\Export\ApiExportPlaceController@index;R;;type=export&details=organisationIds,organisationNames;
+App\Http\Controllers\Api\Export\ApiExportPlaceController@show;R;;type=export&details=organisationIds,organisationNames;type=place&details=
+App\Http\Controllers\Api\Export\ApiSchemaController@show;R;;type=export&details=organisationIds,organisationNames;
+App\Http\Controllers\Auth\LoginController@handleProviderCallback;E;"Login callback Identityhub";type=portal&details=organisationIds,organisationNames;type=user&details=
+App\Http\Controllers\Auth\LoginController@logout;E;Uitgelogd;type=portal&details=;type=user&details=
+App\Http\Controllers\CallToActionController@create;R;;type=portal&details=organisationIds,organisationNames;type=case&details=organisationId,organisationName
+App\Http\Controllers\CallToActionController@index;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\CallcenterController@search;R;"Zoek dossier";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\CaseController@editCase;R;"Case geopend in BCO weergave";type=portal&details=organisationIds,organisationNames;type=case&details=organisationId,organisationName
+App\Http\Controllers\CaseController@notifyCaseUpdate;R;;type=portal&details=organisationIds,organisationNames;type=case&details=organisationId,organisationName
+App\Http\Controllers\CaseMetricsController@listCaseMetrics;R;"Bekijk stuurinformatie";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\CatalogController@listCatalog;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\ComplianceController@listAccessRequests;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\ComplianceController@viewSearchResults;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\ConsentController::showConsent;R;"Toon toestemming";type=portal&details=organisationIds,organisationNames;type=user&details=
+App\Http\Controllers\ConsentController::showPrivacyStatement;R;"Toon privacy statement";type=portal&details=organisationIds,organisationNames;type=user&details=
+App\Http\Controllers\ConsentController::storeConsent;R;"Toestemming opgeslagen";type=portal&details=organisationIds,organisationNames;type=user&details=
+App\Http\Controllers\ConsentController@showConsent;R;"Toon toestemming";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\ConversationCoachController@index;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\MedicalSupervisorController@index;R;;type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\PlaceController@editPlace;R;"Context geopend in detail weergave";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\PlaceController@listPlaces;R;"Toon lijst met contexten";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\PlannerController@listCases;R;"Cases opgehaald";type=portal&details=organisationIds,organisationNames;
+App\Http\Controllers\RootController@rootRedirect;R;;type=portal&details=organisationIds,organisationNames;
+App\Repositories\DbChoreRepository::cancelChore;E;;type=portal&details=;
+App\Repositories\DbChoreRepository::completeChore;E;;type=portal&details=organisationIds,organisationNames;
+\App\Http\Controllers\CaseController@listUserCases;R;"Gebruikers cases opgehaald";type=portal&details=organisationIds,organisationNames;

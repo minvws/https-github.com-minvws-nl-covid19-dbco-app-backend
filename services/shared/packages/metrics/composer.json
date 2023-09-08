@@ -2,9 +2,9 @@
     "name": "minvws/metrics",
     "description": "A small package for registering and exporting metrics",
     "require": {
-        "php": "^7.4",
+        "php": ">=7.4",
         "ext-pdo": "*",
-        "symfony/console": "^5.2",
+        "symfony/console": "^5.2 || ^6.0",
         "ramsey/uuid": "^4.0",
         "phpseclib/phpseclib": "~3.0"
     },

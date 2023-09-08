@@ -1,0 +1,15 @@
+includes:
+    - phpstan-baseline.neon
+parameters:
+    checkGenericClassInNonGenericObjectType: false
+    checkMissingIterableValueType: false
+    tmpDir: /tmp/phpstan
+    level: max
+    paths:
+        - .
+    excludePaths:
+        - storage/
+        - bootstrap/cache/
+        - tests/
+        - vendor/
+        - app/Prometheus

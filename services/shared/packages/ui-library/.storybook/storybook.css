@@ -1,0 +1,29 @@
+/*  All styling only used for styling within Storybook:
+ */
+
+.storybook-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5em;
+}
+.storybook-block {
+    padding: 2rem 1.2rem;
+    aspect-ratio: 1.65/1;
+    min-width: min-content;
+}
+.sbdocs-h2 {
+    margin-top: 30px !important;
+}
+.sbdocs-h3 {
+    margin-top: 20px !important;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #001E49;
+}

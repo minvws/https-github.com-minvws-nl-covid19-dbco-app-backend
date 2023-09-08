@@ -1,0 +1,90 @@
+# Default values for message-queue:process
+
+replicaCount: 1
+image:
+  repository: ghcr.io/minvws/nl-covid19-dbco-app-backend-private/portal
+  tag: 0.0.0
+  pullPolicy: IfNotPresent
+imagePullSecrets:
+# service:
+#   enabled: true
+#   type: ClusterIP
+#   httpPort: 8080
+#   externalPort: 8080
+# metrics-server add-on required
+hpa:
+  enabled: false
+  maxReplicas: 10
+  # average total CPU usage per pod (1-100)
+  cpu:
+  # average memory usage per pod (100Mi-1Gi)
+  memory:
+  # average http requests per second per pod (k8s-prometheus-adapter)
+  requests:
+ingestWorker:
+  command: ["/usr/local/bin/php"]
+  args: ["message-queue:process", "intake"]
+# Environment variables that will be passed into the container
+# env:
+  # APP_DEBUG: "0"
+  # APP_ENV: production
+  # APP_ENV_NAME: production
+  # DB_CONNECTION: mysql
+  # DB_DATABASE: mysql
+  # DB_HOST: mysql
+  # AMQP_HOST
+  # AMQP_PORT
+env: {}
+# Environment variables secrets that will be passed into the container.
+# When set. This will generate a Secret with the name `app.fullname`.
+# When not set. You can create a secret yourself with the name `app.fullname`.
+# envSecrets:
+  # APP_KEY:
+  # INDEX_SALT:
+  # AMQP_USERNAME
+  # AMQP_PASSWORD
+envSecrets: {}
+emptyCustomConfigMap: false
+emptyCustomSecrets: false
+# Configure volumes for mounting files (e.g. using ConfigMap, Secret) in your containers
+volumeMounts: ""
+volumes: ""
+# Apache
+apache:
+  run:
+    user: "www-data"
+    group: "www-data"
+serviceAccount:
+  # Specifies whether a service account should be created
+  enabled: false
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+serviceMonitor:
+  enabled: false
+  interval: 15s
+  path: /prometheus/metrics
+livenessProbe: {}
+readinessProbe: {}
+resources:
+  requests:
+    cpu: 1m
+    memory: 16Mi
+containerSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
+  seccompProfile:
+    type: RuntimeDefault
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+lifecycle: {}
+terminationGracePeriodSeconds: 60
+nodeSelector: {}
+tolerations: []
+affinity: {}
+podAnnotations: {}

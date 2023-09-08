@@ -1,4 +1,5 @@
 <?php
+
 namespace MinVWS\Metrics\Repositories;
 
 use Closure;
@@ -55,11 +56,12 @@ interface StorageRepository
      *
      * Also adds all events that have not been added to an export to the export.
      *
-     * @param Export $export
+     * @param Export   $export
+     * @param int|null $limit
      *
      * @return void
      */
-    public function createExport(Export $export): void;
+    public function createExport(Export $export, ?int $limit): void;
 
     /**
      * Iterate all events that are part of the given export.
@@ -69,7 +71,7 @@ interface StorageRepository
      *
      * @return mixed
      */
-    public function iterateEventsForExport(string $exportUuid, Closure $callback): void;
+    public function iterateForExport(string $exportUuid, Closure $callback): void;
 
     /**
      * Update export.

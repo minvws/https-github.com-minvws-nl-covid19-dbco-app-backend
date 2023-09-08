@@ -1,0 +1,15 @@
+type: object
+required:
+    - dataSchema
+    - uiSchema
+properties:
+    dataSchema:
+        description: |
+            A JSON schema (Draft 07) describing the data that is used for the form. 
+            Even though the actual data will be FormData or FormCollectionData, these 
+            meta data properties should not be included in this dataSchema.
+            This JSON schema is used for referencing the data in the uiSchema.
+            And to provide frontend (JSON Schema) validation on the form data.
+        $ref: ../JsonSchema/JsonSchemaDraft07.yaml
+    uiSchema:
+        $ref: ../UiSchema/UiSchema.yaml

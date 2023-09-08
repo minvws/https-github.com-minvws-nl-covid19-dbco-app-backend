@@ -1,0 +1,15 @@
+{
+    "phpClass": "IndexOriginDate",
+    "tsConst": "indexOriginDate",
+    "default": "dateOfTest",
+    "items": [
+        {
+            "label": "Testdatum",
+            "value": "dateOfTest"
+        },
+        {
+            "label": "EZD",
+            "value": "symptomsOnset"
+        }
+    ]
+}

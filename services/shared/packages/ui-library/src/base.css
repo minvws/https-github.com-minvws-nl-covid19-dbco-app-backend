@@ -1,0 +1,40 @@
+/**
+ * Import fonts.
+ * Note, due to this bug: https://github.com/webpack/webpack/issues/10873 we are deliberately using the
+ * css instead of css2 google api. Otherwise the bold weights don't get loaded.
+ */
+ @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,300i,400i,500i,700i&display=swap');
+ @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+/**
+ * Preflight is currently not used because it's more strict than Bootstrap's reboot and causes some styles to change.
+ * This is to be fixed in the future. 
+ * In the meantime we inject just a few selected styles that both preflight and bootstrap's reboot share, and a lot of components will be dependend on.
+ */
+
+/* start reset */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+button {
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+/* end of reset */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+

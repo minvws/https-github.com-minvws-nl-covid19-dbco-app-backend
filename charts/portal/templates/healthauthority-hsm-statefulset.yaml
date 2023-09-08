@@ -1,0 +1,105 @@
+{{- if .Values.healthauthorityHsm.enabled -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "app.fullname" . }}-healthauthority-hsm
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: healthauthority-hsm
+spec:
+  replicas: 1
+  serviceName: {{ template "app.fullname" . }}
+  selector:
+    matchLabels:
+      {{- include "app.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: healthauthority-hsm
+  template:
+    metadata:
+      labels:
+        {{- include "app.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: healthauthority-hsm
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/healthauthority-hsm-configmap.yaml") . | sha256sum }}
+        {{- range $key, $value := .Values.healthauthorityHsm.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+    spec:
+      terminationGracePeriodSeconds: {{ .Values.healthauthorityHsm.terminationGracePeriodSeconds }}
+      {{- if .Values.serviceAccount.enabled }}
+      serviceAccountName: {{ template "app.serviceAccountName" . }}
+      {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}-healthauthority-hsm
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["php"]
+          {{- with .Values.healthauthorityHsm.console.args }}
+          args: {{  toYaml . | nindent 12 }}
+          {{- end }}
+          securityContext:
+{{ toYaml .Values.healthauthorityHsm.containerSecurityContext | indent 12 }}
+          envFrom:
+          - configMapRef:
+              name: {{ template "app.fullname" . }}-healthauthority-hsm
+          - secretRef:
+              name: {{ template "app.fullname" . }}-healthauthority-hsm
+              optional: true
+          {{- with .Values.healthauthorityHsm.resources }}
+          resources: {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.healthauthorityHsm.livenessProbe }}
+          livenessProbe: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.healthauthorityHsm.readinessProbe }}
+          readinessProbe: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.healthauthorityHsm.lifecycle }}
+          lifecycle: {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+          - name: pkcs11
+            mountPath: /etc/utimaco
+          - name: storage
+            mountPath: /data/utimaco/
+    {{- with .Values.healthauthorityHsm.securityContext }}
+      securityContext: {{ toYaml . | nindent 8 }}
+    {{- end }}
+
+    {{- with .Values.healthauthorityHsm.nodeSelector }}
+      nodeSelector: {{ toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.healthauthorityHsm.affinity }}
+      affinity: {{ toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.healthauthorityHsm.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+      - name: pkcs11
+        secret:
+          secretName: {{ template "app.fullname" . }}-healthauthority-hsm-pkcs11
+    {{- if not .Values.healthauthorityHsm.persistence.enabled }}
+      - name: storage
+        emptyDir: {}
+    {{- else if .Values.healthauthorityHsm.persistence.existingClaim }}
+      - name: storage
+        persistentVolumeClaim:
+          claimName: {{ .Values.healthauthorityHsm.persistence.existingClaim }}
+  {{- else }}
+  volumeClaimTemplates:
+  - metadata:
+      name: storage
+    spec:
+      storageClassName: {{ .Values.healthauthorityHsm.persistence.storageClassName | quote }}
+      accessModes:
+        {{- toYaml .Values.healthauthorityHsm.persistence.accessModes | nindent 8 }}
+      resources:
+        requests:
+          storage: {{ .Values.healthauthorityHsm.persistence.size | quote }}
+      {{- end }}
+
+{{- end }}

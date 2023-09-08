@@ -1,10 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DBCO\Shared\Application\Actions;
 
 use Exception;
 use JsonSerializable;
+use MinVWS\Audit\AuditService;
+use MinVWS\Audit\Helpers\PHPDocHelper;
+use MinVWS\Audit\Models\AuditEvent;
+use MinVWS\Audit\Models\AuditObject;
+use MinVWS\Audit\Models\AuditUser;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
@@ -15,6 +21,11 @@ abstract class Action
      * @var LoggerInterface
      */
     protected $logger;
+
+    /**
+     * @var AuditService
+     */
+    protected AuditService $auditService;
 
     /**
      * @var Request
@@ -34,9 +45,10 @@ abstract class Action
     /**
      * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, AuditService $auditService)
     {
         $this->logger = $logger;
+        $this->auditService = $auditService;
     }
 
     /**
@@ -92,5 +104,26 @@ abstract class Action
     protected function respond(\DBCO\Shared\Application\Responses\Response $response): Response
     {
         return $response->respond($this->response);
+    }
+
+    /**
+     * Run case action with AuditObject
+     *
+     * @auditEventDescription Case actie uitgevoerd met AuditObject
+     *
+     * @param $callable
+     * @return Response
+     * @throws \ReflectionException
+     */
+    protected function runCaseActionWithAuditObject($callable, string $methodName): Response
+    {
+        $auditObject = AuditObject::create('case', '');
+        $auditUser = AuditUser::create(static::AUDIT_USER_TYPE, '');
+        return $this->auditService->registerHttpEvent(
+            AuditEvent::create($methodName, AuditEvent::ACTION_UPDATE, PHPDocHelper::getTagAuditEventDescriptionByActionName(__METHOD__))
+                ->object($auditObject)
+                ->user($auditUser),
+            fn(AuditEvent $auditEvent) => $callable($auditObject, $auditUser)
+        );
     }
 }

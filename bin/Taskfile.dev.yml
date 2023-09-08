@@ -1,0 +1,135 @@
+# Docs @ https://taskfile.dev/
+version: "3"
+
+vars:
+  DOCKER_COMPOSE_DEV: "{{.BASE_PATH}}/bin/docker-compose-dev"
+  DOCKER_COMPOSE_DEV_TOOLS: "{{.BASE_PATH}}/bin/docker-compose-dev-tools"
+
+tasks:
+  dc:
+    cmds:
+      - "{{.DOCKER_COMPOSE_DEV}} {{.CLI_ARGS}}"
+
+  dc:tools:
+    cmds:
+      - "{{.DOCKER_COMPOSE_DEV_TOOLS}} {{.CLI_ARGS}}"
+
+  setup:if-not-exist:
+    vars:
+      PROJECT_EXISTS:
+        sh: '{{.DOCKER_COMPOSE_DEV}} ps --all --services'
+    status:
+      -  test ! -z "{{.PROJECT_EXISTS}}"
+    cmds:
+      - task: setup
+
+  setup:
+    desc: Setup development environment
+    interactive: true
+    cmds:
+      - task: :portal:env
+      - task: :gateway:env
+      - "{{.BASE_PATH}}/bin/setup-dev"
+
+  up:
+    desc: Start the development environment
+    cmds:
+      - task: create-switch-file:if-not-exist
+      - task: :portal:env
+      - task: :gateway:env
+      - task: setup:if-not-exist
+      - task: dc
+        vars: { CLI_ARGS: up --detach --remove-orphans --no-recreate }
+
+  stop:
+    desc: Stop the development environment
+    cmds:
+      - task: dc
+        vars: { CLI_ARGS: stop }
+
+  down:
+    desc: Down the development environment
+    cmds:
+      - task: dc:tools
+        vars: { CLI_ARGS: down --volumes --remove-orphans }
+
+  reset:
+    desc: Reset the development environment
+    cmds:
+      - task: down
+      - task: setup
+
+  reset:fe:
+    desc: Reset the frontend dev env (on host machine)
+    cmds:
+      - "{{.BASE_PATH}}/bin/reset-fe"
+
+  shell:fe:
+    desc: Start the FE build container shell
+    cmds:
+      - "{{.BASE_PATH}}/bin/shell-fe"
+
+  restart:
+    desc: Stop and up the development environment
+    cmds:
+      - task: stop
+      - task: setup:if-not-exist
+      - task: up
+
+  update:
+    desc: Update the development environment
+    cmds:
+      - "{{.BASE_PATH}}/bin/update-dev"
+
+  create-switch-file:if-not-exist:
+    status:
+      -  test -f {{.BASE_PATH}}/.dev-switch
+    cmds:
+      - "echo -n 'portal-only' > {{.BASE_PATH}}/.dev-switch"
+
+  create-switch-file:if-not-exist:integrated:
+    status:
+      -  test -f {{.BASE_PATH}}/.dev-switch
+    cmds:
+      - "echo -n 'integrated' > {{.BASE_PATH}}/.dev-switch"
+
+  switch:
+    desc: Switch development setup between portal-only an integrated (this resets your setup)
+    vars:
+      CURRENT:
+        sh: if [ -r "{{.BASE_PATH}}/.dev-switch" ]; then cat {{.BASE_PATH}}/.dev-switch ; else echo -n "integrated"; fi
+      NEW:
+        sh: if [ -r "{{.BASE_PATH}}/.dev-switch" ]; then grep -Fxq "portal-only" {{.BASE_PATH}}/.dev-switch && echo -n "integrated" || echo -n "portal-only" ; else echo -n "portal-only"; fi
+    cmds:
+      - task: create-switch-file:if-not-exist:integrated
+      - "echo 'Switching: {{.CURRENT}} ==> {{.NEW}}'"
+      - task: down
+      - task: :cleanup
+      - "rm {{.BASE_PATH}}/.dev-switch"
+      - "echo -n {{.NEW}} > {{.BASE_PATH}}/.dev-switch"
+      - task: up
+
+  switch:current:
+    desc: Display current development mode
+    cmds:
+      - cat {{.BASE_PATH}}/.dev-switch
+      - echo
+    preconditions:
+      - sh: test -r "{{.BASE_PATH}}/.dev-switch"
+        msg: "There is no devmode file present"
+
+  switch:portal-only:
+    desc: Switch to portal-only development mode
+    cmds:
+      - task: switch
+    preconditions:
+      - sh: grep -vFxq "portal-only" {{.BASE_PATH}}/.dev-switch
+        msg: "You are already on portal-only"
+
+  switch:integrated:
+    desc: Switch to integrated development mode
+    cmds:
+      - task: switch
+    preconditions:
+      - sh: grep -vFxq "integrated" {{.BASE_PATH}}/.dev-switch
+        msg: "You are already on integrated"

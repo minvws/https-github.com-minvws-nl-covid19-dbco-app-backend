@@ -1,31 +1,43 @@
+<?php
+
+declare(strict_types=1);
+
+use App\Models\Task;
+
+/**
+ * @var Task $task
+ */
+?>
 <div class="row">
     <div class="col">
         <h3> {{ $task->label }} </h3>
     </div>
 </div>
 
-<form method="post"
-      id="sidebar-task-edit"
-      action="">
-@csrf
-
 @foreach($questions as $question)
+    @if ($question->questionType === 'classificationdetails')
+        @continue
+    @endif
+
     @if (in_array($task->category, $question->relevantForCategories))
         @if (isset($answers[$question->uuid]) && $answers[$question->uuid] === \App\Models\IndecipherableAnswer::INDECIPHERABLE)
-            @include("taskquestion_indecipherable")
+            @include("includes/taskquestions/taskquestion_indecipherable")
         @else
-            @include("taskquestion_" . $question->questionType)
+            @include("includes/taskquestions/taskquestion_" . $question->questionType)
         @endif
     @endif
 @endforeach
 
-<!-- Form submit -->
-    <div class="alert alert-warning mb-3 mt-3">
-        Let op: als je wijzigingen opslaat, toont het portaal niet meer de nieuwe gegevens die de index in de app invult.
+<div class="row mt-3">
+    <div class="col">
+        <h3>GGD</h3>
     </div>
+</div>
 
-    <div class="btn-group mb-3 mt-3">
-        <button id="sidebar-task-submit" data-task-uuid="{{ $task->uuid }}" type="button" class="btn btn-primary">Opslaan</button>
+<div class="row">
+    <div class="col mt-1">
+        <label for="dossier_number">Dossier Nummer</label>
+        <input type="text" maxlength="255" class="form-control" id="dossier_number" name="ggd_dossier_number"
+               value="{{ $task->dossierNumber ?? ''  }}" placeholder="">
     </div>
-    <!-- End of form submit-->
-</form>
+</div>

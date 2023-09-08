@@ -1,0 +1,7 @@
+Entiteit,Veld,Label,Omschrijving,Datatype,Reden_Privacy_Attentie,Epidemiologische surveillance,Kwaliteit van zorg,Bestuurlijke advisering,Operationele bijsturing,Wetenschappelijk onderzoek,Nader te bepalen
+DummySchemaProvider,fieldWithPurpose,Field with purpose,Field with purpose,,Lorem ipsum linking,linking,linking,linking,linking,linking,
+DummySchemaProvider,schemaVersion,Versie field,Versienummer van de entiteit,,Lorem ipsum interpret,interpretEpiCurve,leadTime,,linking,Scholen,
+DummySchemaProvider,fieldWithoutPurpose,Field without purpose,Field without purpose,,Lorem ipsum schools,Scholen,linking,,nvt,Tijdigheid,byHealthAuthorities,
+DummySchemaProvider.NestedDummySchemaProvider,fieldWithPurpose,Field with purpose,Field with purpose,,Lorem ipsum linking2,linking,linking,linking,linking,linking,
+DummySchemaProvider.NestedDummySchemaProvider,schemaVersion,Versie field,Versienummer van de entiteit,,Lorem ipsum interpret2,interpretEpiCurve,leadTime,,linking,Scholen,
+DummySchemaProvider.NestedDummySchemaProvider,fieldWithoutPurpose,Field without purpose,Field without purpose,,Lorem ipsum schools2,Scholen,linking,,nvt,Tijdigheid,byHealthAuthorities,

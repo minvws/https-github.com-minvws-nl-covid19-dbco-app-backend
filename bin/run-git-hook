@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+BASE_PATH=$(dirname $0)/..
+
+command=$BASE_PATH/bin/$1
+
+if ! [ -x "$command" ]; then
+  echo "$command is not executable"
+  exit 1
+fi
+
+changed_services=$( printf "%s\n" "$@" | sort | grep services/ | sed -E 's/services\/([^/]+)\/.*/\1/' | uniq  )
+#if [ "$changed_services" = "" ]; then
+#  exit 0
+#fi
+
+exit_code=0
+for service in ${changed_services[@]}
+do
+  $command $service || exit_code=$?
+done
+
+exit $exit_code

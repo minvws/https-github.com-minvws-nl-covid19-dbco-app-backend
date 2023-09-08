@@ -1,0 +1,7 @@
+<PutResultaat xmlns="http://tempuri.org/PutResultaat.xsd">
+  <resultaat>
+    <osiris_nummer>123456</osiris_nummer>
+    <bericht_ok>true</bericht_ok>
+    <melding_ok>true</melding_ok>
+  </resultaat>
+</PutResultaat>

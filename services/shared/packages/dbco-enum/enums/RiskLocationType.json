@@ -1,0 +1,42 @@
+{
+    "phpClass": "RiskLocationType",
+    "tsConst": "riskLocationType",
+    "items": [
+        {
+            "label": "Verpleeghuis of woonzorgcentrum",
+            "value": "nursing-home"
+        },
+        {
+            "label": "Instelling voor verstandelijk en/of lichamelijk beperkten",
+            "value": "disabled-residental-car"
+        },
+        {
+            "label": "GGZ-instelling (geestelijke gezondheidszorg)",
+            "value": "ggz-institution"
+        },
+        {
+            "label": "Begeleid kleinschalig wonen",
+            "value": "assisted-living"
+        },
+        {
+            "label": "Penitentiaire instelling",
+            "value": "prison"
+        },
+        {
+            "label": "(Semi-)residentiele jeugdinstelling",
+            "value": "youth-institution"
+        },
+        {
+            "label": "Asielzoekerscentrum / opvang voor vluchtelingen",
+            "value": "asylum-center"
+        },
+        {
+            "label": "Overige maatschappelijke opvang",
+            "value": "social-living"
+        },
+        {
+            "label": "Anders",
+            "value": "other"
+        }
+    ]
+}

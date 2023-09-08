@@ -1,0 +1,365 @@
+<?xml version="1.0"?>
+<phpmd-baseline>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Console/Commands/BcoPhaseReplace.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Console/Commands/DbCollectStatsCommand.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Console/Commands/GenerateSearchHashes.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Console/Commands/OsirisCaseInvalidCounter.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Console/Commands/OsirisExportCase.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Console/Commands/Support/Choice.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Console/Commands/ZipcodeImporter.php" method="handle"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Console/Commands/ZipcodeImporter.php" method="handle"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Console/Commands/ZipcodeImporter.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Console/Commands/ZipcodeImporter.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Console/Kernel.php"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="app/Dto/ExpertQuestionTimelineDto.php" method="__construct"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Helpers/CaseHelper.php" method="getPlannerView"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Helpers/CaseHelper.php" method="getPlannerView"/>
+  <violation rule="PHPMD\Rule\CleanCode\MissingImport" file="app/Helpers/helpers.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiAbstractFragmentController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Http/Controllers/Api/ApiAbstractFragmentController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\UndefinedVariable" file="app/Http/Controllers/Api/ApiAbstractFragmentController.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Http/Controllers/Api/ApiAccessRequestController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiAccessRequestController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Http/Controllers/Api/ApiAccessRequestController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiCallToActionController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiCaseAssignmentController.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Http/Controllers/Api/ApiCaseController.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="app/Http/Controllers/Api/ApiCaseController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiCaseController.php"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="app/Http/Controllers/Api/ApiCaseController.php" method="__construct"/>
+  <violation rule="PHPMD\Rule\CleanCode\UndefinedVariable" file="app/Http/Controllers/Api/ApiCaseController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiCaseListController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiCaseMessageController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiCaseUpdateController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiCatalogController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiContextController.php"/>
+  <violation rule="PHPMD\Rule\Design\NumberOfChildren" file="app/Http/Controllers/Api/ApiController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiExpertQuestionController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiHpZoneCopyController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Http/Controllers/Api/ApiHpZoneCopyController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Http/Controllers/Api/ApiHpZoneCopyController.php" method="buildContextsCollection"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiIntakeController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiOrganisationController.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Http/Controllers/Api/ApiPlaceController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiPlaceController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Http/Controllers/Api/ApiPlaceController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiPlannerCaseController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\UndefinedVariable" file="app/Http/Controllers/Api/ApiPlannerCaseController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Http/Controllers/Api/ApiPlannerCaseController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiSearchController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/ApiTaskController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Http/Controllers/Api/ApiTaskController.php" method="updateTask"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Http/Controllers/Api/ApiTaskController.php" method="updateTask"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/Case/Message/ApiCaseMessageDeleteController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/Case/Message/ApiCaseMessageToIndexController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/Case/Message/ApiCaseMessageToTaskController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/Case/Message/ApiCaseMessageToTaskTemplateController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Api/Export/AbstractApiExportController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Http/Controllers/Api/Export/AbstractApiExportController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="app/Http/Controllers/Api/Traits/ValidatesModels.php" method="prefixDottedFormat"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Http/Controllers/Api/Traits/ValidatesModels.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/Auth/LoginController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Http/Controllers/CaseController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Controllers/ConsentController.php"/>
+  <violation rule="PHPMD\Rule\Design\NumberOfChildren" file="app/Http/Controllers/Controller.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Http/Controllers/RootController.php" method="rootRedirect"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Http/Controllers/RootController.php" method="rootRedirect"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Middleware/Prometheus.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="app/Http/Middleware/TrustHosts.php" method="allSubdomainsOfUrl"/>
+  <violation rule="PHPMD\Rule\Design\NumberOfChildren" file="app/Http/Requests/Api/ApiRequest.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\UndefinedVariable" file="app/Http/Requests/Api/CaseAssignment/GetOptionsMultiRequest.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Http/Requests/Api/CovidCase/UpdateContactStatusRequest.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\UndefinedVariable" file="app/Http/Requests/Api/Place/VerifyMultipleRequest.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Responses/Api/CaseUpdate/UpdateFieldDiffDecorator.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Http/Responses/Api/Catalog/EnumTypeDecorator.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Http/Responses/Api/Catalog/FieldDecorator.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Http/Responses/Api/Catalog/SchemaTypeDecorator.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Http/Responses/Callcenter/SearchResultEncoder.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Http/Responses/PlannerCase/CovidCaseEncoder.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Jobs/ExportCaseToOsiris.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Listeners/Osiris/CaseExportFailedListener.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Listeners/Osiris/JobProcessedListener.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Mail/IntakeConfirmation.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Mail/IntakeConfirmation.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Mail/IntakeConfirmation.php" method="getAdditionalAdvices"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Models/Assignment/Assignment.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Models/Assignment/CaseListAssignment.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Models/Assignment/CaseListAssignment.php" method="isValidForCaseWithSelectedOrganisation"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Models/Assignment/NullCaseListAssignment.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Models/Assignment/NullOrganisationAssignment.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Models/Assignment/NullUserAssignment.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Models/Assignment/Options.php" method="getRootOptions"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Models/Assignment/OrganisationAssignment.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Models/Assignment/UserAssignment.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Models/Context/ContextMomentDateRuleSet.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Models/Context/General.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Models/Context/Moment.php" method="loadSchema"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Models/Context/Moment.php" method="loadSchema"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="app/Models/CovidCase.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="app/Models/CovidCase.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Models/CovidCase.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Models/CovidCase/General.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Models/CovidCase/General.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Models/CovidCase/Index.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Models/CovidCase/Index.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Models/CovidCase/PlannerCase.php" method="encode"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Models/CovidCase/PlannerCase.php" method="encode"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Models/CovidCase/Symptoms.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ErrorControlOperator" file="app/Models/CovidCase/Symptoms.php" method="postLoad"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Models/CovidCase/Symptoms.php" method="postLoad"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Models/CovidCase/Test.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Models/Eloquent/CaseList.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Models/Eloquent/CaseUpdateContactFragment.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Models/Eloquent/CaseUpdateContactFragment.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Models/Eloquent/CaseUpdateFragment.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Models/Eloquent/Context.php"/>
+  <violation rule="PHPMD\Rule\Design\NumberOfChildren" file="app/Models/Eloquent/EloquentBaseModel.php"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="app/Models/Eloquent/EloquentCase.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="app/Models/Eloquent/EloquentCase.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Models/Eloquent/EloquentCase.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="app/Models/Eloquent/EloquentCase.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Models/Eloquent/EloquentCase.php"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="app/Models/Eloquent/EloquentCase.php" method="loadSchema"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Models/Eloquent/EloquentOrganisation.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Models/Eloquent/EloquentTask.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Models/Eloquent/EloquentTask.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Models/Eloquent/Intake.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Models/Eloquent/Place.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Models/Eloquent/TestResult.php"/>
+  <violation rule="PHPMD\Rule\Design\NumberOfChildren" file="app/Models/Metric/CounterMetric.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Models/PlannerCase/ListOptions.php" method="decode"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Models/PlannerCase/ListOptions.php" method="decode"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Models/Rules/PeriodRuleSet.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Models/StatusIndexContactTracing.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Models/StatusIndexContactTracing.php" method="fromString"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="app/Models/StatusIndexContactTracing.php" method="UNKNOWN"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="app/Models/StatusIndexContactTracing.php" method="NOT_APPROACHED"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="app/Models/StatusIndexContactTracing.php" method="NOT_REACHABLE"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="app/Models/StatusIndexContactTracing.php" method="CONVERSATION_STARTED"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="app/Models/StatusIndexContactTracing.php" method="CLOSED_OUTSIDE_GGD"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="app/Models/StatusIndexContactTracing.php" method="CLOSED_NO_COLLABORATION"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="app/Models/StatusIndexContactTracing.php" method="COMPLETED"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="app/Models/StatusIndexContactTracing.php" method="NEW"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="app/Models/StatusIndexContactTracing.php" method="NOT_STARTED"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="app/Models/StatusIndexContactTracing.php" method="TWO_TIMES_NOT_REACHED"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="app/Models/StatusIndexContactTracing.php" method="CALLBACK_REQUEST"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="app/Models/StatusIndexContactTracing.php" method="LOOSE_END"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="app/Models/StatusIndexContactTracing.php" method="FOUR_TIMES_NOT_REACHED"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="app/Models/StatusIndexContactTracing.php" method="BCO_FINISHED"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="app/Models/StatusIndexContactTracing.php" method="CLOSED"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="app/Models/Task.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Models/Task.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Observers/TaskObserver.php" method="postLoadGeneralFromQuestionnaire"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Observers/TaskObserver.php" method="postLoadGeneralFromQuestionnaire"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Observers/TaskObserver.php" method="preStoreGeneral"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Observers/TaskObserver.php" method="preStoreGeneral"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="app/Policies/EloquentCasePolicy.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Policies/EloquentCasePolicy.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="app/Policies/EloquentCasePolicy.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Policies/EloquentCasePolicy.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="app/Policies/ExpertQuestionPolicy.php" method="canAccessRequestedList"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Policies/PlacePolicy.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="app/Prometheus/Storage/Redis.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Prometheus/Storage/Redis.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Prometheus/Storage/Redis.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Prometheus/Storage/Redis/PhpRedis.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Prometheus/Storage/Redis/Predis.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Prometheus/Storage/Redis/Predis.php" method="processTimeout"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Prometheus/Storage/Redis/Predis.php" method="processTimeout"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Providers/AppServiceProvider.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Providers/EloquentServiceProvider.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Providers/GuzzleClientServiceProvider.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Providers/MiscServiceProvider.php"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="app/Providers/MiscServiceProvider.php" method="register"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Providers/OsirisServiceProvider.php"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="app/Providers/OsirisServiceProvider.php" method="register"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="app/Providers/OsirisServiceProvider.php" method="tagOsirisAnswerBuilders"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Providers/RepositoryServiceProvider.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Providers/RepositoryServiceProvider.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Providers/RouteServiceProvider.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Providers/RouteServiceProvider.php" method="configureRouteBindings"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Providers/RouteServiceProvider.php" method="configureRouteBindings"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="app/Providers/RouteServiceProvider.php" method="configureRouteBindings"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Providers/RouteServiceProvider.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Providers/SecurityServiceProvider.php"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="app/Repositories/Bsn/LocalBsnRepository.php" method="fixtures"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="app/Repositories/CaseData.php" method="__construct"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Repositories/CaseFragmentRepository.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Repositories/CaseListRepository.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Repositories/CaseRepository.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Repositories/CaseUpdateRepository.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Repositories/CaseUpdateRepository.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Repositories/DbCaseAssignmentHistoryRepository.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Repositories/DbCaseFragmentRepository.php"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="app/Repositories/DbCaseRepository.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="app/Repositories/DbCaseRepository.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Repositories/DbCaseRepository.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="app/Repositories/DbCaseRepository.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Repositories/DbCaseRepository.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Repositories/DbCaseRepository.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Repositories/DbCaseRepository.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Repositories/DbCaseRepository.php" method="addViewOrderBy"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Repositories/DbCaseRepository.php" method="caseFromEloquentModel"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Repositories/DbCaseRepository.php" method="caseFromEloquentModel"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Repositories/DbContextFragmentRepository.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Repositories/DbPlaceRepository.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Repositories/DbTaskFragmentRepository.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Repositories/DbTaskFragmentRepository.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Repositories/DbTaskFragmentRepository.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Repositories/DbTaskFragmentRepository.php" method="storeTaskFragments"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Repositories/DbTaskFragmentRepository.php" method="storeTaskFragments"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Repositories/DbTaskRepository.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Repositories/DbTaskRepository.php" method="taskFromEloquentModel"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Repositories/DbTaskRepository.php" method="taskFromEloquentModel"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Repositories/ExpertQuestionRepository.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Repositories/ExpertQuestionRepository.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Repositories/GGDSOCAuditRepository.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Repositories/Intake/IntakeRepository.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Repositories/Intake/IntakeRepository.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="app/Repositories/SearchHashTaskRepository.php" method="getTasksByUuids"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Repositories/TaskFragmentRepository.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Schema/Conditions/ConditionField.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Schema/Eloquent/Traits/HasFragment.php" method="setMutatedAttributeValue"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Schema/Eloquent/Traits/HasSchema.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Schema/Entity.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="app/Schema/Entity.php"/>
+  <violation rule="PHPMD\Rule\Design\NumberOfChildren" file="app/Schema/Entity.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Schema/Entity.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Schema/Entity.php"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="app/Schema/Fields/Field.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="app/Schema/Fields/Field.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Schema/Fields/Field.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="app/Schema/Fields/Field.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Schema/Fields/Field.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Schema/Fields/Field.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Schema/Fields/Field.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Schema/Fragment.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\UndefinedVariable" file="app/Schema/Fragment.php"/>
+  <violation rule="PHPMD\Rule\Design\NumberOfChildren" file="app/Schema/FragmentCompat.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="app/Schema/FragmentModel.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Schema/FragmentModel.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Schema/FragmentModel.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Schema/FragmentModel.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Schema/Generator/JSONSchema/Diff/Schema/Schema.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Schema/Generator/JSONSchema/Diff/Schema/SchemaList.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Schema/Generator/JSONSchema/Diff/Schema/SchemaVersion.php" method="diffDefs"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Schema/OwnerProxy.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Schema/Purpose/Traits/HasPurposeSpecification.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Schema/SchemaLinter.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Schema/SchemaVersion.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Schema/SchemaVersion.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Schema/Test/Factory.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Schema/Types/ArrayType.php" method="valuesEqual"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Schema/Types/SchemaType.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Schema/Types/Type.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Schema/Types/Type.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Schema/Update/Update.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Schema/Validation/ValidationRules.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Schema/Validation/ValidationRules.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Services/AbstractFragmentService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Services/AbstractFragmentService.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Services/AccessRequestService.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/AccessRequestService.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Assignment/AssignmentJwtTokenAuthService.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Assignment/TokenDecoder/FirebaseHs256TokenDecoder.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="app/Services/CaseAssignmentService.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/CaseAssignmentService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Services/CaseAssignmentService.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Services/CaseAssignmentService.php" method="buildAssignmentOptions"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Services/CaseAssignmentService.php" method="updateAssignmentOptionForCase"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/CaseConnectedService.php"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseVariableName" file="app/Services/CaseConnectedService.php" method="convertConnectedTasks"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Services/CaseFragmentService.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Services/CaseSearchService.php" method="searchByRequest"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Services/CaseSearchService.php" method="searchByRequest"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="app/Services/CaseService.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Services/CaseService.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="app/Services/CaseService.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/CaseService.php"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="app/Services/CaseService.php" method="__construct"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Services/CaseService.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Services/CaseService.php" method="createPlannerCase"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/CaseService.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Services/CaseService.php" method="updateCaseStatusByCasequalityUser"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/CaseUpdate/CaseUpdateService.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="app/Services/Catalog/TypeRepository.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Catalog/TypeRepository.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Services/Catalog/TypeRepository.php" method="typeMatchesCategories"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Services/Catalog/TypeRepository.php" method="typeMatchesCategories"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Chores/CallToActionService.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="app/Services/Chores/ChoreService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/CircuitBreakerService.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/ContextService.php"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="app/Services/ContextService.php" method="createContext"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="app/Services/ContextService.php" method="updateContext"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Services/ContextService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/ContextService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/EmailLanguageService.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Export/AbstractExportService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/Export/AbstractExportService.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Export/Helpers/ExportCursorHelper.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Export/Helpers/ExportEncodingHelper.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/Export/Helpers/ExportEncodingHelper.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/Export/JSONSchemaService.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Factory/TimelineDtoFactory.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/Factory/TimelineDtoFactory.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/FragmentMigration/Builder.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/FragmentMigration/Builder.php"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="app/Services/FragmentMigration/FragmentExtractionHelper.php" method="extractFragmentVersion"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Guideline/GuidelineService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/Guideline/GuidelineService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/Intake/IncomingMessageToRawIntakeConverter.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Intake/IntakeService.php"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="app/Services/Intake/IntakeService.php" method="__construct"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Services/Intake/IntakeService.php" method="addCaseLabelsToIntake"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Services/Intake/IntakeService.php" method="addCaseLabelsToIntake"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="app/Services/Intake/IntakeService.php" method="addCaseLabelsToIntake"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Intake/RawIntakeToIntakeConverter.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Intake/RawIntakeValidator.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/Intake/RawIntakeValidator.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="app/Services/Location/Dto/Location.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Message/MessageFactoryService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/Message/MessageFactoryService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/Message/MessageTextRenderer.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Message/Transport/SecureMailMessageTransport.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/Message/Transport/SecureMailMessageTransport.php"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="app/Services/NFIR/DemoDataProvider.php" method="generateJsonForComplianceOfficersOverview"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="app/Services/NFIR/DemoDataProvider.php" method="generateJsonForComplianceAccess"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/NFIR/DemoDataProvider.php"/>
+  <violation rule="PHPMD\Rule\Design\NumberOfChildren" file="app/Services/Osiris/Answer/AbstractSingleValueBuilder.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Services/Osiris/Answer/NCOVondaandcomorBuilder.php" method="getValues"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Services/Osiris/Answer/NCOVondaandcomorV2Builder.php" method="getValues"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Services/Osiris/Answer/NCOVondaandcomorV2Builder.php" method="getValues"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="app/Services/Osiris/Answer/TripsBuilder.php" method="getCountryCode"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Osiris/CaseExportHandler.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Osiris/CaseExportService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Services/Osiris/CaseExportService.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Services/Osiris/CaseValidator.php" method="validate"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Services/Osiris/CaseValidator.php" method="validate"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="app/Services/Osiris/CaseValidator.php" method="validate"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/Osiris/OsirisClient.php"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Services/Osiris/OsirisClient.php" method="parseResponse"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/PlaceService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="app/Services/PlaceService.php" method="searchPlace"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Services/PlaceService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="app/Services/PlaceService.php" method="saveSituationNumbers"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Services/QuestionnaireService.php" method="getExportFriendlyTaskExport"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="app/Services/QuestionnaireService.php" method="getExportFriendlyTaskExport"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="app/Services/QuestionnaireService.php" method="getExportFriendlyTaskExport"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="app/Services/Queue/AMQPStreamConnection.php" method="create_connection"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseParameterName" file="app/Services/Queue/AMQPStreamConnection.php" method="close"/>
+  <violation rule="PHPMD\Rule\Controversial\CamelCaseVariableName" file="app/Services/Queue/AMQPStreamConnection.php" method="close"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="app/Services/SearchHash/AbstractSearchHasher.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/SearchHash/AbstractSearchHasher.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Services/SearchHash/AbstractSearchHasher.php" method="isValid"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/SearchHash/SearchService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/SearchHash/SearchService.php"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="app/Services/SecureMail/SecureMailMessage.php" method="new"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="app/Services/TaskFragmentService.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/TaskService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="app/Services/TaskService.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/TestDataService.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="app/Services/TestDataService.php" method="createCases"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/TestResult/CaseImportService.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="app/Services/TestResult/Factories/Models/CovidCase/CovidCaseFactory.php"/>
+</phpmd-baseline>

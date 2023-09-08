@@ -1,0 +1,14 @@
+{
+    "phpClass": "SearchHashResultType",
+    "tsConst": "searchHashResultType",
+    "items": [
+        {
+            "label": "Index",
+            "value": "index"
+        },
+        {
+            "label": "Contact",
+            "value": "contact"
+        }
+    ]
+}

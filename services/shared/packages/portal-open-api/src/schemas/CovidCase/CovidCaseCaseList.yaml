@@ -1,0 +1,12 @@
+type: object
+required:
+  - uuid
+  - isQueue
+properties:
+  uuid:
+    type: string
+    format: uuid
+  isQueue:
+    type: boolean
+  name:
+    type: string

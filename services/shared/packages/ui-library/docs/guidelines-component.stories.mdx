@@ -1,0 +1,156 @@
+import { Canvas, Meta, Story, ColorPalette, ColorItem } from '@storybook/addon-docs';
+
+<Meta title="Component guidelines" />
+
+# Component guidelines
+
+To help write structured and reusable components for the UI library we have compiled a list of guidelines
+that everyone should try to follow. If you disagree or have issues with any of them please bring this up
+at the next frontend chapter to discuss.
+
+## Get inspired
+
+Don't reinvent the wheel, have a look how other component libraries approach components and their properties.
+Some good libraries are: 
+
+- [Chakra ui](https://chakra-ui.com/docs/components)
+- [Material ui](https://mui.com/material-ui/react-autocomplete/)
+- [Vue tailwind](https://www.vue-tailwind.com/docs/installation/)
+
+
+## Design System components
+
+When implementing components from the design system the **implementation details are the responsibility of the
+developers**. We need to match the visual design from the figma files, but we **don't need to match any properties**
+that might be listed in there. Designed components from the design system may also be split up
+into multiple components if this keeps the implementation details simpler and more maintainable.
+
+> Some designs are also depedend on the context in which they are in. <br/>
+> _For example a bold link doesn't neccessarily need to be an option of a `Link` component, but can simply inherited from the parent style. (e.g. a link that is wrapped in a `<b>` tag)_
+
+However when a component is finished and the implementation details are clear. We should aim to have the
+related figma files updated to the implementation details as well.
+
+## Component files
+
+A component should be completely self-contained inside it's own folder. This folder contains the main component file, tests, stories, all its assets and anything else it might need. 
+Anything that is to be used accross multiple components will be turned into its own component and be documented accordingly.
+A component directory and its contents may look as follows:
+
+```
+components/
+|-- MyComponent/
+    |-- MyComponent.vue
+    |-- MyComponent.stories.ts
+    |-- MyComponent.spec.ts
+    |-- MyComponentPart.vue
+    |-- images/
+        |-- asset-1.jpeg
+        |-- asset-2.jpeg
+```
+
+## `<template>` content
+
+### Keep it simple
+
+If the template becomes bigger than ~30+ lines consider splitting it up into multiple components. This can help to reduce complexity and keep things more readable.
+
+
+### Slot vs property
+
+When to use a slot or a propery might not always be clear. But in general:
+
+Use a `<slot />`
+
+- For text content when the component only has a single slot and it's the main content of the component (button text, paragraph text).
+- For content that maybe also contain other components.
+
+Use a `prop="value"`
+
+- When the content can only contain `string` values (such as attributes, placeholder text or label) - and it is __not__ the "main" content of the component (see first item above).
+- To specify required - or - restrict attributes
+- To apply common use cases to simplify the usage of the component.
+
+
+## Properties
+
+### Be descriptive 
+
+Try to describe the effect of a property so it is easy to understand when looking at the implementation.
+
+**Don't** use properties such as
+
+-   `variant="primary"`
+-   `variant="secondary"`
+-   `variant="tertiary"`
+-   `destructive`
+
+**Do** use properties such as
+
+-   `variant="solid"`
+-   `variant="outline"`
+-   `variant="plain"`
+-   `color="red"`
+
+### Use strict types
+
+All properties should be typed as strictly as possible.
+
+For commons properties such as `size` use the types that are predefined in the `types.d.ts` so the implementation is the same accross all components.
+
+```
+import type { Extends, Sizes } from '../../types';
+
+type Size = Extends<Sizes, 'sm' | 'md' | 'lg'>;
+
+...
+
+export default defineComponent({
+    props: {
+        size: { type: String as PropType<Size>, default: 'sm' },
+    },
+...
+```
+ 
+## Styling 
+
+Often you will want to apply certain styles based on a property value or even a combination of values. We recommend that you use a `Record<Property, string[]>` to define the different styles.
+
+```
+<template>
+    <button :class="styles">
+        <slot />
+    <button>
+</template>
+
+<script lang="ts">
+type Variant = 'solid' | 'outline';
+type Color = 'violet' | 'red';
+
+const variantStyles: Record<Variant, string[]> = {
+    solid: ['tw-text-white'],
+    outline: ['tw-bg-white', 'tw-border-gray-200'],
+};
+
+const colorStyles: Record<`${Color}-${Variant}`, string[]> = {
+    ['violet-solid']: ['tw-bg-violet-700', 'hover:tw-bg-violet-800', 'tw-border-violet-700'],
+    ['violet-outline']: ['tw-text-violet-700', 'hover:tw-text-violet-800', 'hover:tw-border-violet-800'],
+    ['red-solid']: ['tw-bg-red-600', 'tw-border-red-600', 'hover:tw-bg-red-700'],
+    ['red-outline']: ['tw-text-red-600', 'hover:tw-text-red-700', 'hover:tw-border-red-700', 'focus:tw-text-red-700'],
+};
+
+export default defineComponent({
+    props: {
+        variant: { type: String as PropType<Variant>, default: 'solid' },
+        color: { type: String as PropType<Color>, default: 'violet' },
+    },
+    setup({ variant, color }) {
+        const styles = [
+            ...variantStyles[variant],
+            ...colorStyles[`${color}-${variant}`]
+        ]
+
+         return { styles };
+    },
+...
+```

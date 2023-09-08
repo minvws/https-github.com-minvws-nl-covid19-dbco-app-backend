@@ -1,0 +1,67 @@
+{
+    "phpClass": "ContactTracingStatus",
+    "tsConst": "contactTracingStatus",
+    "default": "new",
+    "items": [
+        {
+            "label": "Index nog niet benaderd",
+            "value": "not_approached"
+        },
+        {
+            "label": "De index was onbereikbaar",
+            "value": "not_reachable"
+        },
+        {
+            "label": "Gestart, nog niet afgerond",
+            "value": "conversation_started"
+        },
+        {
+            "label": "Case afronden, BCO wordt uitgevoerd buiten GGD",
+            "value": "closed_outside_ggd"
+        },
+        {
+            "label": "Case afronden, index wil niet (volledig) meewerken aan BCO",
+            "value": "closed_no_collaboration"
+        },
+        {
+            "label": "Indexgesprek voltooid",
+            "value": "completed"
+        },
+        {
+            "label": "Nieuw",
+            "value": "new"
+        },
+        {
+            "label": "Nog niet begonnen",
+            "value": "not_started"
+        },
+        {
+            "label": "2x geen gehoor: index niet bereikt",
+            "value": "two_times_not_reached"
+        },
+        {
+            "label": "Terugbelverzoek",
+            "value": "callback_request"
+        },
+        {
+            "label": "Los eindje: kleine openstaande taken",
+            "value": "loose_end"
+        },
+        {
+            "label": "4x geen gehoor: index niet bereikt",
+            "value": "four_times_not_reached"
+        },
+        {
+            "label": "BCO Afgerond",
+            "value": "bco_finished"
+        },
+        {
+            "label": "Gesloten",
+            "value": "closed"
+        },
+        {
+            "label": "Onbekend",
+            "value": "unknown"
+        }
+    ]
+}

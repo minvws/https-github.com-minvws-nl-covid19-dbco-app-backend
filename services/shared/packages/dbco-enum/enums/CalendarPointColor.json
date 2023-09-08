@@ -1,0 +1,38 @@
+{
+    "phpClass": "CalendarPointColor",
+    "tsConst": "calendarPointColor",
+    "items": [
+        {
+            "label": "Rood",
+            "value": "red"
+        },
+        {
+            "label": "Oranje",
+            "value": "orange"
+        },
+        {
+            "label": "Accessibility geel",
+            "value": "yellow"
+        },
+        {
+            "label": "Zee Groen",
+            "value": "green"
+        },
+        {
+            "label": "Azuur blauw",
+            "value": "azure_blue"
+        },
+        {
+            "label": "Paars blauw",
+            "value": "purple"
+        },
+        {
+            "label": "Lavendel",
+            "value": "lavender"
+        },
+        {
+            "label": "Rose",
+            "value": "pink"
+        }
+    ]
+}

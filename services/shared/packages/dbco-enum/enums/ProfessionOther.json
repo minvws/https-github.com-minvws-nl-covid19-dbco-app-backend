@@ -1,0 +1,39 @@
+{
+    "phpClass": "ProfessionOther",
+    "tsConst": "professionOther",
+    "description": "Other professions.",
+    "items": [
+        {
+            "value": "kapper",
+            "label": "Kapper"
+        },
+        {
+            "value": "schoonheidsspecialist",
+            "label": "Schoonheidsspecialist"
+        },
+        {
+            "value": "manicure",
+            "label": "Manicure"
+        },
+        {
+            "value": "pedicure",
+            "label": "Pedicure"
+        },
+        {
+            "value": "rijinstructeur",
+            "label": "Rij-instructeur"
+        },
+        {
+            "value": "winkelmedewerker",
+            "label": "Winkelmedewerker"
+        },
+        {
+            "value": "trainer",
+            "label": "Trainer/sport instructeur"
+        },
+        {
+            "value": "anders",
+            "label": "Anders"
+        }
+    ]
+}

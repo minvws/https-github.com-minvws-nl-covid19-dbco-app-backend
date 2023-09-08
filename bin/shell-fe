@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+DOCKER_COMPOSE_TOOLS=$(dirname $0)/docker-compose-dev-tools
+
+$DOCKER_COMPOSE_TOOLS run --rm --workdir /build/portal/src --env PORTAL_HMR_PROXY_URL=http://portal:8080 --publish 0.0.0.0:9000:9000 frontend-build bash

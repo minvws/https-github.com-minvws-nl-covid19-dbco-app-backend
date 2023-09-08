@@ -1,0 +1,16 @@
+type: object
+description: Form error object, a partial type of the AJV error object. See https://jsonforms.io/docs/validation#external-validation-errors
+required:
+    - instancePath
+    - message
+properties:
+    schemaPath:
+        type: string
+    instancePath:
+        type: string
+    keyword:
+        type: string
+    message:
+        type: string
+    params:
+        type: object

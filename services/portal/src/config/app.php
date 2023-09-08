@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Providers\OpenApiValidatorMiddlewareServiceProvider;
+
 return [
 
     /*
@@ -13,7 +17,20 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'BCO Portaal'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Type
+    |--------------------------------------------------------------------------
+    |
+    | This value determines what type of application is running. Each type
+    | unlocks different kind of features and separated these features from
+    | the other applications.
+    |
+    */
+
+    'type' => env('APP_TYPE', 'portal'),
 
     /*
     |--------------------------------------------------------------------------
@@ -27,6 +44,8 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
+    'env_name' => env('APP_ENV_NAME', 'training'),
+    'env_version' => env('APP_VERSION', 'latest'),
 
     /*
     |--------------------------------------------------------------------------
@@ -68,6 +87,8 @@ return [
     */
 
     'timezone' => 'UTC',
+    'display_timezone' => 'Europe/Amsterdam',
+    'schedule_timezone' => 'Europe/Amsterdam',
 
     /*
     |--------------------------------------------------------------------------
@@ -106,7 +127,7 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    'faker_locale' => 'nl_NL',
 
     /*
     |--------------------------------------------------------------------------
@@ -162,6 +183,10 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+
+        Dyrynda\Database\LaravelEfficientUuidServiceProvider::class,
+        Arquivei\LaravelPrometheusExporter\PrometheusServiceProvider::class,
+        Arquivei\LaravelPrometheusExporter\DatabaseServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -176,10 +201,26 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
-        App\Providers\RepositoryServiceProvider::class,
         App\Providers\SecurityServiceProvider::class,
-        App\Providers\MiscServiceProvider::class
-
+        App\Providers\RepositoryServiceProvider::class,
+        App\Providers\MiscServiceProvider::class,
+        App\Providers\OsirisServiceProvider::class,
+        App\Providers\LocationApiServiceProvider::class,
+        App\Providers\BsnServiceProvider::class,
+        App\Providers\TaskDecryptableDefinerProvider::class,
+        App\Providers\PermissionServiceProvider::class,
+        App\Providers\EloquentServiceProvider::class,
+        App\Providers\MessageQueueServiceProvider::class,
+        App\Providers\PrometheusServiceProvider::class,
+        App\Providers\MessageTransportProvider::class,
+        App\Providers\SearchHashServiceProvider::class,
+        App\Providers\MittensClientServiceProvider::class,
+        App\Providers\AssignmentServiceProvider::class,
+        App\Providers\CircuitBreakerServiceProvider::class,
+        App\Providers\ClockworkServiceProvider::class,
+        App\Providers\CaseServiceProvider::class,
+        App\Providers\AuditServiceProvider::class,
+        OpenApiValidatorMiddlewareServiceProvider::class,
     ],
 
     /*
@@ -220,7 +261,7 @@ return [
         'Password' => Illuminate\Support\Facades\Password::class,
         'Queue' => Illuminate\Support\Facades\Queue::class,
         'Redirect' => Illuminate\Support\Facades\Redirect::class,
-        'Redis' => Illuminate\Support\Facades\Redis::class,
+        'RedisManager' => Illuminate\Support\Facades\Redis::class,
         'Request' => Illuminate\Support\Facades\Request::class,
         'Response' => Illuminate\Support\Facades\Response::class,
         'Route' => Illuminate\Support\Facades\Route::class,
@@ -232,6 +273,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'Prometheus' => Arquivei\LaravelPrometheusExporter\PrometheusFacade::class,
     ],
 
 ];

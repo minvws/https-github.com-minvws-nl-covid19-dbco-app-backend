@@ -1,0 +1,38 @@
+post:
+  summary: Multi case assignment options
+  operationId: cases-assignment-options
+  description: Retrieve available assignment options for multiple cases.
+  security:
+    - cookieAuth: []
+  parameters:
+    - $ref: '../../parameters/header/xsrfToken.yaml'
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - cases
+          properties:
+            cases:
+              type: array
+              items:
+                type: string
+                format: uuid
+  responses:
+    200:
+      description: List of available assignment options
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - options
+            properties:
+              options:
+                type: array
+                items:
+                  $ref: ../../schemas/CaseAssignment/CaseAssignmentOption.yaml
+    default:
+      $ref: '../../responses/UnexpectedError.yaml'

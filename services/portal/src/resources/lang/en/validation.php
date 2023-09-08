@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -103,6 +105,7 @@ return [
     'required_with_all' => 'The :attribute field is required when :values are present.',
     'required_without' => 'The :attribute field is required when :values is not present.',
     'required_without_all' => 'The :attribute field is required when none of :values are present.',
+    'prohibited_if' => 'The :attribute field is prohibited when :other is :value.',
     'same' => 'The :attribute and :other must match.',
     'size' => [
         'numeric' => 'The :attribute must be :size.',
@@ -145,7 +148,29 @@ return [
     | of "email". This simply helps us make our message more expressive.
     |
     */
+    'attributes' => [
+        'general.reference' => 'reference',
+        'general.organisation' => 'region',
+        'general.organisation.uuid' => 'region',
+        'general.notes' => 'notes',
 
-    'attributes' => [],
+        'index.firstname' => 'firstname',
+        'index.lastname' => 'lastname',
+        'index.dateOfBirth' => 'date of birth',
+        'index.address.postalCode' => 'postal code',
+        'index.address.houseNumber' => 'housenumber',
+        'index.address.houseNumberSuffix' => 'housenumber suffix',
+        'index.address.street' => 'street',
+        'index.address.town' => 'ciry',
+        'index.bsn' => 'citizen service number',
+
+        'contact.phone' => 'phone',
+        'contact.email' => 'email',
+
+        'test.dateOfTest' => 'date of test',
+        'test.selfTestLabTestDate' => 'date of selftest',
+    ],
+
+    'uniquestartdate' => 'The given start_date is already used for another policyversion',
 
 ];

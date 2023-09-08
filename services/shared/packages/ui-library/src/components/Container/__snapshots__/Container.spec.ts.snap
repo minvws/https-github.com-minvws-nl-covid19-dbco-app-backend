@@ -1,0 +1,3 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Container.vue > should be able to render with default props 1`] = `"<div class=\\"tw-block tw-w-full tw-px-4 tw-mx-auto tw-max-w-[1440px]\\">test content</div>"`;

@@ -1,0 +1,19 @@
+{
+    "phpClass": "YesNoUnknown",
+    "tsConst": "yesNoUnknown",
+    "description": "Used when a boolean just doesn't cut it.",
+    "items": [
+        {
+            "value": "yes",
+            "label": "Ja"
+        },
+        {
+            "value": "no",
+            "label": "Nee"
+        },
+        {
+            "value": "unknown",
+            "label": "Onbekend"
+        }
+    ]
+}

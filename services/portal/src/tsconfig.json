@@ -1,0 +1,21 @@
+{
+    "extends": "@vue/tsconfig/tsconfig.json",
+    "compilerOptions": {
+        // These 2 values can probably be removed in a separate PR as this currently would cause too many file changes.
+        "importsNotUsedAsValues": "remove",
+        "isolatedModules": false,
+
+        "noEmit": true,
+        "preserveValueImports": false, // Needs to be set to false to preserve enum values
+        "allowJs": true, // we still have JS components
+        "types": ["node", "vite/client", "vitest/globals"],
+        "paths": {
+            "@/*": ["./resources/js/*"]
+        },
+        "lib": ["esnext", "dom", "dom.iterable", "scripthost", "es2015"]
+    },
+    "include": ["**/*.ts", "**/*.vue", "@dbco/ui-library"],
+    "vueCompilerOptions": {
+        "target": 2.7
+    }
+}

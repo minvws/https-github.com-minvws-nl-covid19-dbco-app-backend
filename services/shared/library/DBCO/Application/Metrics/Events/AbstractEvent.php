@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace DBCO\Shared\Application\Metrics\Events;
 
 use MinVWS\Metrics\Events\Event;
@@ -10,6 +13,7 @@ abstract class AbstractEvent implements Event
 {
     public const ACTOR_STAFF = 'staff';
     public const ACTOR_INDEX = 'index';
+    public const ACTOR_SYSTEM = 'system';
 
     /**
      * @var string

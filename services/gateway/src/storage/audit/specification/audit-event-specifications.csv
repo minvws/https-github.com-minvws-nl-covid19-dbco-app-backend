@@ -1,0 +1,3 @@
+"Event Code";"Action Code";Description;Users;Objects
+App\Http\Controllers\HeartbeatController@__invoke;R;"Heartbeat via API";;type=heartbeat&details=
+App\Http\Controllers\ReportTestResultController@__invoke;C;"Ontvang test resultaat via API toegang";;type=processTestResultReport&details=

@@ -1,4 +1,5 @@
 <?php
+
 namespace MinVWS\Metrics\Repositories;
 
 use Exception;
@@ -56,10 +57,7 @@ class SftpUploadRepository implements UploadRepository
     }
 
     /**
-     * Upload the file at the given path.
-     *
-     * @param string $path
-     * @param Export $export
+     * @inheritDoc
      */
     public function uploadFile(string $path, Export $export)
     {

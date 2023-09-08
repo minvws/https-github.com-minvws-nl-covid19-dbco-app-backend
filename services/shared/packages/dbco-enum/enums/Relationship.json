@@ -1,0 +1,62 @@
+{
+    "phpClass": "Relationship",
+    "tsConst": "relationship",
+    "items": [
+        {
+            "label": "Ouder",
+            "value": "parent"
+        },
+        {
+            "label": "Kind",
+            "value": "child"
+        },
+        {
+            "label": "Broer of zus",
+            "value": "sibling"
+        },
+        {
+            "label": "Partner",
+            "value": "partner"
+        },
+        {
+            "label": "Familielid (overig)",
+            "value": "family"
+        },
+        {
+            "label": "Huisgenoot",
+            "value": "roommate"
+        },
+        {
+            "label": "Vriend of kennis",
+            "value": "friend"
+        },
+        {
+            "label": "Medestudent of leerling",
+            "value": "student"
+        },
+        {
+            "label": "Collega",
+            "value": "colleague"
+        },
+        {
+            "label": "Klant",
+            "value": "client"
+        },
+        {
+            "label": "Patiënt",
+            "value": "patient"
+        },
+        {
+            "label": "Gezondheidszorg medewerker",
+            "value": "health"
+        },
+        {
+            "label": "Ex-partner",
+            "value": "ex"
+        },
+        {
+            "label": "Overig",
+            "value": "other"
+        }
+    ]
+}

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+BASE_PATH=$(dirname $0)/..
+DEV_MODE=$(cat $BASE_PATH/.dev-switch)
+
+if [ $DEV_MODE == "portal-only" ]
+then 
+    echo "Only available in integrated devmode. Run task dev:switch or improve this script to run with portal-only mode if applicable"
+    exit 1
+fi

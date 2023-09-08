@@ -1,4 +1,5 @@
 <?php
+
 namespace DBCO\Shared\Application;
 
 use Psr\Container\ContainerInterface;
@@ -31,7 +32,7 @@ class ConsoleApplication extends Application
      *
      * @param ContainerInterface $container
      */
-    public function setContainer(ContainerInterface  $container)
+    public function setContainer(ContainerInterface $container): void
     {
         $this->container = $container;
     }

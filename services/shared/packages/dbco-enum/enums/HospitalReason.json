@@ -1,0 +1,18 @@
+{
+    "phpClass": "HospitalReason",
+    "tsConst": "hospitalReason",
+    "items": [
+        {
+            "label": "(Verdenking van) COVID-19",
+            "value": "covid"
+        },
+        {
+            "label": "Andere indicatie",
+            "value": "other"
+        },
+        {
+            "label": "Onbekend",
+            "value": "unknown"
+        }
+    ]
+}

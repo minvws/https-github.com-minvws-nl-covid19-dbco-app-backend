@@ -1,0 +1,22 @@
+.privacy {
+    border-radius: $border-radius-medium;
+    background: white;
+    padding: 1.25rem;
+
+    &.container {
+        padding: 3rem 2rem;
+        margin-bottom: 1rem;
+    }
+
+    h2 {
+        margin-top: 2rem;
+    }
+
+    li {
+        margin-top: 0.5rem;
+    }
+
+    .last-updated {
+        color: $light-grey;
+    }
+}

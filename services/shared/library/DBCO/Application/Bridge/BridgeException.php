@@ -1,4 +1,5 @@
 <?php
+
 namespace DBCO\Shared\Application\Bridge;
 
 use Exception;

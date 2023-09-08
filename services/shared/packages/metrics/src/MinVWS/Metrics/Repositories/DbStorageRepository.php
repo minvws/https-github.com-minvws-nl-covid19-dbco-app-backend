@@ -1,14 +1,17 @@
 <?php
+
 namespace MinVWS\Metrics\Repositories;
 
 use Closure;
-use DateTime;
 use DateTimeImmutable;
+use DateTimeZone;
 use Exception;
 use MinVWS\Metrics\Models\Event;
 use MinVWS\Metrics\Models\Export;
 use PDO;
 use stdClass;
+
+use function json_encode;
 
 /**
  * Store events and exports in database.
@@ -20,7 +23,7 @@ class DbStorageRepository implements StorageRepository
     /**
      * @var PDO
      */
-    private PDO $client;
+    protected PDO $client;
 
     /**
      * Constructor.
@@ -37,7 +40,7 @@ class DbStorageRepository implements StorageRepository
      * @param array      $params
      * @param array|null $status
      */
-    private function addStatusToExportWhereClause(string &$query, array &$params, ?array $status)
+    protected function addStatusToExportWhereClause(string &$query, array &$params, ?array $status)
     {
         if ($status !== null && count($status) >= 1) {
             $in = '';
@@ -47,7 +50,7 @@ class DbStorageRepository implements StorageRepository
             }
 
             $query .= "WHERE status IN ($in)\n";
-        } else if ($status !== null) {
+        } elseif ($status !== null) {
             $query .= "WHERE 1 = 0\n";
         }
     }
@@ -60,16 +63,16 @@ class DbStorageRepository implements StorageRepository
      *
      * @throws Exception
      */
-    private function exportRowToEntity(stdClass $row): Export
+    protected function exportRowToEntity(stdClass $row): Export
     {
         return new Export(
             $row->uuid,
             $row->status,
             new DateTimeImmutable($row->created_at),
             $row->filename,
-            $row->exported_at !== null ? new DateTimeImmutable($row->exported_at) : null,
-            $row->uploaded_at !== null ? new DateTimeImmutable($row->uploaded_at) : null,
-            $row->event_count ?? null
+            $row->exported_at !== null ? new DateTimeImmutable($row->exported_at, new DateTimeZone('UTC')) : null,
+            $row->uploaded_at !== null ? new DateTimeImmutable($row->uploaded_at, new DateTimeZone('UTC')) : null,
+            $row->item_count ?? null
         );
     }
 
@@ -103,7 +106,7 @@ class DbStorageRepository implements StorageRepository
         $query = "
             SELECT 
                uuid, status, created_at, filename, exported_at, uploaded_at, 
-               (SELECT COUNT(*) FROM event WHERE export_uuid = export.uuid) AS event_count
+               (SELECT COUNT(*) FROM event WHERE export_uuid = export.uuid) AS item_count
             FROM export 
         ";
 
@@ -135,7 +138,7 @@ class DbStorageRepository implements StorageRepository
         $stmt = $this->client->prepare("
             SELECT
                uuid, status, created_at, filename, exported_at, uploaded_at, 
-               (SELECT COUNT(*) FROM event WHERE export_uuid = export.uuid) AS event_count
+               (SELECT COUNT(*) FROM event WHERE export_uuid = export.uuid) AS item_count
             FROM export
             WHERE uuid = :uuid
         ");
@@ -165,14 +168,14 @@ class DbStorageRepository implements StorageRepository
             'type' => $event->type,
             'data' => json_encode($event->data),
             'exportData' => json_encode($event->exportData),
-            'createdAt' => $event->createdAt->format(DateTime::ATOM)
+            'createdAt' => $event->createdAt->setTimezone(new DateTimeZone('UTC'))->format("Y-m-d H:i:s")
         ]);
     }
 
     /**
      * @inheritdoc
      */
-    public function createExport(Export $export): void
+    public function createExport(Export $export, ?int $limit): void
     {
         $stmt = $this->client->prepare("
             INSERT INTO export (uuid, status, created_at)
@@ -182,24 +185,32 @@ class DbStorageRepository implements StorageRepository
         $stmt->execute([
             'uuid' => $export->uuid,
             'status' => $export->status,
-            'createdAt' => $export->createdAt->format(DateTime::ATOM)
+            'createdAt' => $export->createdAt->setTimezone(new DateTimeZone('UTC'))->format("Y-m-d H:i:s")
         ]);
 
-        $stmt = $this->client->prepare("
+        $query = "
             UPDATE event 
             SET export_uuid = :exportUuid
             WHERE export_uuid IS NULL
-        ");
+        ";
 
-        $stmt->execute([
+        $params = [
             'exportUuid' => $export->uuid,
-        ]);
+        ];
+
+        if ($limit !== null) {
+            $query .= ' ORDER BY created_at ASC LIMIT :limit';
+            $params['limit'] = $limit;
+        }
+
+        $stmt = $this->client->prepare($query);
+        $stmt->execute($params);
     }
 
     /**
      * @inheritdoc
      */
-    public function iterateEventsForExport(string $exportUuid, Closure $callback): void
+    public function iterateForExport(string $exportUuid, Closure $callback): void
     {
         $stmt = $this->client->prepare("
             SELECT uuid, type, data, export_data, created_at
@@ -243,7 +254,7 @@ class DbStorageRepository implements StorageRepository
                 case 'exportedAt':
                 case 'uploadedAt':
                     $setStatements[] = str_replace('At', '_at', $field) . " = :$field";
-                    $params[$field] = isset($export->$field) ? $export->$field->format(DateTime::ATOM) : null;
+                    $params[$field] = isset($export->$field) ? $export->$field->setTimezone(new DateTimeZone('UTC'))->format("Y-m-d H:i:s") : null;
                     break;
             }
         }

@@ -1,0 +1,28 @@
+{
+    "phpClass": "Gender",
+    "tsConst": "gender",
+    "description": "Gender selection",
+    "properties": {
+        "mittensCode": {
+            "type": "string",
+            "scope": "php"
+        }
+    },
+    "items": [
+        {
+            "label": "Man",
+            "value": "male",
+            "mittensCode": "M"
+        },
+        {
+            "label": "Vrouw",
+            "value": "female",
+            "mittensCode": "V"
+        },
+        {
+            "label": "Overig",
+            "value": "other",
+            "mittensCode": "O"
+        }
+    ]
+}

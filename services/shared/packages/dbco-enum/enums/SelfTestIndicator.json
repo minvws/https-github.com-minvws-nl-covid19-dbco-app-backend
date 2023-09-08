@@ -1,0 +1,37 @@
+{
+    "phpClass": "SelfTestIndicator",
+    "tsConst": "selfTestIndicator",
+    "properties": {
+        "osirisCode": {
+            "type": "int",
+            "scope": "php"
+        }
+    },
+    "items": [
+        {
+            "label": "Ja, met moleculaire diagnostiek (PCR, LAMP, andere nucleïnezuur amplificatietest (NAAT))",
+            "value": "molecular",
+            "osirisCode": 1
+        },
+        {
+            "label": "Ja, met antigeen(snel)test",
+            "value": "antigen",
+            "osirisCode": 2
+        },
+        {
+            "label": "Nee, hertest volgt op een later moment ",
+            "value": "planned-retest",
+            "osirisCode": 3
+        },
+        {
+            "label": "Nee, er wordt geen hertest uitgevoerd",
+            "value": "no-retest",
+            "osirisCode": 4
+        },
+        {
+            "label": "Onbekend",
+            "value": "unknown",
+            "osirisCode": 5
+        }
+    ]
+}

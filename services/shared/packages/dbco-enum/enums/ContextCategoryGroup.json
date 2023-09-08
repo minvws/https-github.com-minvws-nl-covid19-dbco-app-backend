@@ -1,0 +1,77 @@
+{
+    "phpClass": "ContextCategoryGroup",
+    "tsConst": "contextCategoryGroup",
+    "description": "Context category groups.",
+    "traits": ["\\MinVWS\\DBCO\\Enum\\Traits\\ContextCategoryGroupCategories"],
+    "traitProperties": {
+        "categories": {
+            "type": "\\MinVWS\\DBCO\\Enum\\Models\\ContextCategory[]",
+            "description": "Categories that are part of this group.",
+            "method": "getCategories"
+        }
+    },
+    "properties": {
+        "view": {
+            "type": "ContextListView",
+            "description": "Context list view",
+            "scope": "shared"
+        }
+    },
+    "items": [
+        {
+            "value": "horeca",
+            "label": "Horeca, Retail & Entertainment",
+            "view": "overig"
+        },
+        {
+            "value": "opvang",
+            "label": "Maatschappelijke opvang (MO) & Penitentiaire Instelling (PI)",
+            "view": "overig"
+        },
+        {
+            "value": "onderwijs",
+            "label": "Onderwijs / KDV",
+            "view": "onderwijs"
+        },
+        {
+            "value": "transport",
+            "label": "Reizen / vervoer",
+            "view": "overig"
+        },
+        {
+            "value": "thuis",
+            "label": "Privésfeer",
+            "view": "overig"
+        },
+        {
+            "value": "vereniging",
+            "label": "Vereniging / sport / religieuze bijeenkomst",
+            "view": "overig"
+        },
+        {
+            "value": "vvt",
+            "label": "Langdurige zorg / VVT",
+            "view": "zorg"
+        },
+        {
+            "value": "zorg",
+            "label": "Zorg / (Para)medische praktijk",
+            "view": "zorg"
+        },
+        {
+            "value": "overig",
+            "label": "Overig",
+            "view": "overig"
+        },
+        {
+            "value": "anders",
+            "label": "Andere werkplek",
+            "view": "overig"
+        },
+        {
+            "value": "onbekend",
+            "label": "Onbekend",
+            "view": "overig"
+        }
+    ]
+}

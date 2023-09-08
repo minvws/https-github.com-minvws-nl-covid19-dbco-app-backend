@@ -1,0 +1,28 @@
+{
+    "phpClass": "BCOStatus",
+    "tsConst": "bcoStatus",
+    "description": "BCO status for case",
+    "default": "draft",
+    "items": [
+        {
+            "label": "Concept",
+            "value": "draft"
+        },
+        {
+            "label": "Open",
+            "value": "open"
+        },
+        {
+            "label": "Controleren",
+            "value": "completed"
+        },
+        {
+            "label": "Gesloten",
+            "value": "archived"
+        },
+        {
+            "label": "Onbekend",
+            "value": "unknown"
+        }
+    ]
+}

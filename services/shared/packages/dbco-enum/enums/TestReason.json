@@ -1,0 +1,78 @@
+{
+    "phpClass": "TestReason",
+    "tsConst": "testReason",
+    "currentVersion": 3,
+    "items": [
+        {
+            "label": "Klachten",
+            "value": "symptoms"
+        },
+        {
+            "label": "Gewaarschuwd door GGD na contact met besmet persoon",
+            "value": "contact_warned_by_ggd"
+        },
+        {
+            "label": "Gewaarschuwd door een besmet persoon vanwege contact",
+            "value": "contact"
+        },
+        {
+            "label": "Betrokkenheid bij uitbraak (bijv. school / werk / instelling / club)",
+            "value": "outbreak"
+        },
+        {
+            "label": "Melding van CoronaMelder",
+            "value": "coronamelder",
+            "maxVersion": 1
+        },
+        {
+            "label": "Na terugkeer uit risicogebied (vanaf niveau oranje)",
+            "value": "return"
+        },
+        {
+            "label": "Voor werk",
+            "value": "work"
+        },
+        {
+            "label": "Voor onderwijs / kinderopvang",
+            "value": "education_daycare"
+        },
+        {
+            "label": "Voor medische behandeling",
+            "value": "medical_treatment"
+        },
+        {
+            "label": "Voor/na evenement (bijv. Fieldlab of testen voor toegang)",
+            "value": "event",
+            "maxVersion": 2
+        },
+        {
+            "label": "Na ontmoeting met mensen",
+            "value": "meeting_people",
+            "maxVersion": 2
+        },
+        {
+            "label": "Na ontmoeting met (veel) mensen",
+            "value": "meeting_many_people",
+            "minVersion": 3
+        },
+        {
+            "label": "Voor de zekerheid af en toe een zelftest",
+            "value": "regular_selftest",
+            "maxVersion": 2
+        },
+        {
+            "label": "Voor een herstelbewijs",
+            "value": "proof_of_recovery",
+            "minVersion": 3
+        },
+        {
+            "label": "Wens tot bevestigen zelftest",
+            "value": "confirm_selftest",
+            "minVersion": 3
+        },
+        {
+            "label": "Andere reden",
+            "value": "other"
+        }
+    ]
+}

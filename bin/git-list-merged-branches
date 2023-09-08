@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Lists all branches that have been merged with develop
+for k in $(git branch -r --sort=committerdate --merged develop --format='%(refname:short)'); do 
+  date=$(git log -1 --pretty=format:"%ad" --date=short $k)
+  author=$(git log -1 --pretty=format:"%an" $k)
+  printf "\r%-90s  : %10s : ${author}\n" "$k" $date
+done

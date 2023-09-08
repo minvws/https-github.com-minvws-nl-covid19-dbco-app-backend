@@ -1,0 +1,14 @@
+{
+    "phpClass": "PolicyPersonType",
+    "tsConst": "policyPersonType",
+    "items": [
+        {
+            "label": "Index",
+            "value": "index"
+        },
+        {
+            "label": "Contact",
+            "value": "contact"
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+type: object
+allOf:
+    - $ref: ./BaseLayoutElement.yaml
+required:
+    - type
+    - label
+properties:
+    type:
+        type: string
+        enum:
+            - 'Category'
+    label:
+        type: string

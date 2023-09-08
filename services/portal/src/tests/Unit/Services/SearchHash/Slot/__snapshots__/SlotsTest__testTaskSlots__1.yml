@@ -1,0 +1,6 @@
+-
+    - 'dateOfBirth#lastThreeBsnDigits'
+    - 'dateOfBirth#lastname'
+-
+    - 'dateOfBirth#houseNumber#houseNumberSuffix#postalCode'
+    - 'dateOfBirth#phone'

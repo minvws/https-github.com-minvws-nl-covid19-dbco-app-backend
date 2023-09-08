@@ -1,3 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+BASE_PATH=$(dirname $0)/..
 DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
-$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml run --rm mysqlclient "$@"
+DOCKER_COMPOSE_TOOLS="$(dirname $0)/docker-compose-dev-tools"
+
+$DOCKER_COMPOSE_TOOLS run --rm mysqlclient "$@"

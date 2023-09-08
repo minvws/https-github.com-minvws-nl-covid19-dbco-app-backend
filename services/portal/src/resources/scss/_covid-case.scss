@@ -1,0 +1,17 @@
+.covid-case {
+  &__topbar {
+    position: relative;
+
+    &::before {
+      background-color: white;
+      content: '';
+      display: block;
+      overflow: hidden;
+      position: absolute;
+      left: -100vw;
+      right: -100vw;
+      top: 0;
+      bottom: 0;
+    }
+  }
+}

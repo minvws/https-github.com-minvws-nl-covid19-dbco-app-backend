@@ -1,0 +1,55 @@
+{
+    "phpClass": "ProfessionCare",
+    "tsConst": "professionCare",
+    "description": "Care professions.",
+    "items": [
+        {
+            "value": "verzorger",
+            "label": "Verzorger"
+        },
+        {
+            "value": "verpleegkundige",
+            "label": "Verpleegkundige"
+        },
+        {
+            "value": "arts",
+            "label": "Arts"
+        },
+        {
+            "value": "tandarts",
+            "label": "Tandarts/mondhygiënist"
+        },
+        {
+            "value": "dietist",
+            "label": "Diëtist"
+        },
+        {
+            "value": "huidtherapeut",
+            "label": "Huidtherapeut"
+        },
+        {
+            "value": "logopedist",
+            "label": "Logopedist"
+        },
+        {
+            "value": "fysiotherapeut",
+            "label": "Fysiotherapeut/ergotherapeut/oefentherapeut/podotherapeut "
+        },
+        {
+            "value": "orthoptist",
+            "label": "Optometrist/orthoptist"
+        },
+        {
+            "value": "audiocien",
+            "label": "Audioloog/audiocien"
+        },
+        {
+            "value": "thuiszorg",
+            "label": "Thuiszorgmedewerker"
+        },
+        {
+            "value": "anders",
+            "label": "Anders"
+        }
+    ]
+}

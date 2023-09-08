@@ -1,0 +1,83 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+<Meta title="Fundamentals/Border-radii" />
+
+# Fundamentals - Border-radii
+
+Based on the Design System in [Figma](https://www.figma.com/file/aFJlQTQ4XzGF18OsiRVqJa/?node-id=85%3A352), there are 4 four kinds of border radii. This fundamental element will be de different than the implementation in Tailwind. This is because Tailwind has a varity of border-radius options. For the style-guide we aim for uniformity and therefore less options would be more appropriate.
+
+-   `Border Radius S` = 4px
+-   `Border Radius M` = 8px
+-   `Border Radius L` = 16px
+-   `Border Radius Round` = 50%
+
+Since we are using Tailwind, the default values in the theme are altered to match the values in figma.
+
+To  do so, the values are redefined in the `tailwind.config.js` file.
+```js
+const config = {
+    prefix: 'tw-',
+    ...
+    theme: {
+        borderRadius: {
+            none: '0',
+            sm: '4px',
+            DEFAULT: '4px',
+            md: '8px',
+            lg: '16px',
+            full: '9999px',
+        },
+    },
+};
+```
+This generates the following output:
+
+
+ Border-radius | Theme | Class
+---|---|---
+0px | `borderRadius.none` | `.tw-rounded-none`
+4px | `borderRadius.sm` | `.tw-rounded-sm`, `.tw-rounded`
+8px | `borderRadius.md` | `.tw-rounded-md`
+16px | `borderRadius.lg` | `.tw-rounded-lg`
+999px | `borderRadius.full` | `.tw-rounded-full`
+
+__We are following the naming from Tailwind, so "round" will be refered to as *full*.__
+
+## Examples
+
+The defined border-radii can be use through two different methods. You can use them either through classes or directly in the styling of an element.
+
+### Examples using classes
+
+```html
+<div class="tw-rounded-sm" />
+<div class="tw-rounded-md" />
+<div class="tw-rounded-lg" />
+<div class="tw-rounded-full" />
+```
+
+<div className="storybook-container" id="border-radii-container">
+    <div class="tw-rounded-sm storybook-block tw-bg-violet-400">Small</div>
+    <div class="tw-rounded-md storybook-block tw-bg-violet-400">Medium</div>
+    <div class="tw-rounded-lg storybook-block tw-bg-violet-400">Large</div>
+    <div class="tw-rounded-full storybook-block tw-bg-violet-400">Full</div>
+</div>
+
+### Example used as part of the styling of an image
+
+```html
+<img src="https://source.unsplash.com/200x200" />
+```
+
+```css
+img {
+    border-radius: theme('borderRadius.sm');
+}
+```
+
+<div className="storybook-container" id="border-radii-container">
+    <img src="https://source.unsplash.com/200x200" class="tw-rounded-sm" />
+    <img src="https://source.unsplash.com/200x200" class="tw-rounded-md"/>
+    <img src="https://source.unsplash.com/200x200" class="tw-rounded-lg"/>
+    <img src="https://source.unsplash.com/200x200" class="tw-rounded-full"/>
+</div>

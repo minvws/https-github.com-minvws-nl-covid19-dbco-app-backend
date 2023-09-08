@@ -1,0 +1,59 @@
+import { Canvas, Meta, Story, ColorPalette, ColorItem } from '@storybook/addon-docs'
+import { TestBox, TextStyleDisplay } from '../components'
+
+<Meta title="Fundamentals/Styles" />
+
+# Fundamentals - Shared styles
+
+<br/><br/>
+
+## Shared styles
+
+Some styles are defined using [tailwind plugins](https://tailwindcss.com/docs/plugins) to make them easier for sharing across components.
+
+### Basic text style
+
+```
+<p class="tw-body-md" />
+```
+
+
+<Canvas>
+  <Story name="Text style">
+    {{
+        components: { TextStyleDisplay },
+        template: `
+        <div>
+          <TextStyleDisplay name="body sm" className="tw-body-sm" />
+          <TextStyleDisplay name="body md" className="tw-body-md" />
+          <TextStyleDisplay name="body lg" className="tw-body-lg" />
+        </div>
+          `,
+      }}
+  </Story>
+</Canvas>
+
+### Focus style
+
+```
+<p class="tw-focus-outline" />
+```
+
+
+<Canvas>
+  <Story name="Focus style">
+    {{
+        components: { TestBox },
+        template: `
+        <div>
+          <TestBox color="gray" centerContent class="tw-focus-outline">
+            Focus style
+          </TestBox>
+          <TestBox as="button" color="green" centerContent class="tw-my-8 focus:tw-focus-outline">
+            Focus me
+          </TestBox>
+        </div>
+          `,
+      }}
+  </Story>
+</Canvas>

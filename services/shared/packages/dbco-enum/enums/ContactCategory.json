@@ -1,0 +1,32 @@
+{
+    "phpClass": "ContactCategory",
+    "tsConst": "contactCategory",
+    "description": "Contact categories.",
+    "items": [
+        {
+            "value": "1",
+            "name": "cat1",
+            "label": "1 - Huisgenoot (Leven in dezelfde woonomgeving en langdurig contact op minder dan 1,5 meter)"
+        },
+        {
+            "value": "2a",
+            "name": "cat2a",
+            "label": "2A - Nauw contact (Opgeteld meer dan 15 minuten binnen 1,5 meter)"
+        },
+        {
+            "value": "2b",
+            "name": "cat2b",
+            "label": "2B - Nauw contact (Opgeteld minder dan 15 minuten binnen 1,5 meter, met hoogrisico contact)"
+        },
+        {
+            "value": "3a",
+            "name": "cat3a",
+            "label": "3A - Overig contact (Opgeteld meer dan 15 minuten op meer dan 1,5 meter, in dezelfde ruimte)"
+        },
+        {
+            "value": "3b",
+            "name": "cat3b",
+            "label": "3B - Overig contact (Opgeteld minder dan 15 minuten binnen 1,5 meter, zonder hoogrisico contact, in dezelfde ruimte of buiten)"
+        }
+    ]
+}

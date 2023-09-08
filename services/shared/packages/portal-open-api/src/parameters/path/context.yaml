@@ -1,0 +1,8 @@
+name: context
+in: path
+required: true
+description: The id of the context to retrieve or modify
+example: 'ad06f565-b874-4f7a-b316-e057e8dffb7f'
+schema:
+  type: string
+  format: uuid

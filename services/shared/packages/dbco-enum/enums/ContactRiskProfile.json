@@ -1,0 +1,78 @@
+{
+    "phpClass": "ContactRiskProfile",
+    "tsConst": "contactRiskProfile",
+    "items": [
+        {
+            "label": "Categorie 1 - Wel gevaccineerd - Afstand houden wel mogelijk",
+            "value": "cat1_vaccinated_distance_possible"
+        },
+        {
+            "label": "Categorie 1 - Wel gevaccineerd - Afstand houden niet mogelijk",
+            "value": "cat1_vaccinated_distance_not_possible"
+        },
+        {
+            "label": "Categorie 1 - Niet gevaccineerd - Afstand houden wel mogelijk",
+            "value": "cat1_not_vaccinated_distance_possible"
+        },
+        {
+            "label": "Categorie 1 - Niet gevaccineerd - Afstand houden niet mogelijk",
+            "value": "cat1_not_vaccinated_distance_not_possible"
+        },
+        {
+            "label": "Categorie 1 - Vaccinatie onbekend - Afstand houden wel mogelijk",
+            "value": "cat1_vaccination_unknown_distance_possible"
+        },
+        {
+            "label": "Categorie 1 - Vaccinatie onbekend - Afstand houden niet mogelijk",
+            "value": "cat1_vaccination_unknown_distance_not_possible"
+        },
+        {
+            "label": "Categorie 2 - Wel gevaccineerd - Afstand houden wel mogelijk",
+            "value": "cat2_vaccinated_distance_possible"
+        },
+        {
+            "label": "Categorie 2 - Wel gevaccineerd - Afstand houden niet mogelijk",
+            "value": "cat2_vaccinated_distance_not_possible"
+        },
+        {
+            "label": "Categorie 2 - Niet gevaccineerd - Afstand houden wel mogelijk",
+            "value": "cat2_not_vaccinated_distance_possible"
+        },
+        {
+            "label": "Categorie 2 - Niet gevaccineerd - Afstand houden niet mogelijk",
+            "value": "cat2_not_vaccinated_distance_not_possible"
+        },
+        {
+            "label": "Categorie 2 - Vaccinatie onbekend - Afstand houden wel mogelijk",
+            "value": "cat2_vaccination_unknown_distance_possible"
+        },
+        {
+            "label": "Categorie 2 - Vaccinatie onbekend - Afstand houden niet mogelijk",
+            "value": "cat2_vaccination_unknown_distance_not_possible"
+        },
+        {
+            "label": "Categorie 3 - Wel gevaccineerd - Afstand houden wel mogelijk",
+            "value": "cat3_vaccinated_distance_possible"
+        },
+        {
+            "label": "Categorie 3 - Wel gevaccineerd - Afstand houden niet mogelijk",
+            "value": "cat3_vaccinated_distance_not_possible"
+        },
+        {
+            "label": "Categorie 3 - Niet gevaccineerd - Afstand houden wel mogelijk",
+            "value": "cat3_not_vaccinated_distance_possible"
+        },
+        {
+            "label": "Categorie 3 - Niet gevaccineerd - Afstand houden niet mogelijk",
+            "value": "cat3_not_vaccinated_distance_not_possible"
+        },
+        {
+            "label": "Categorie 3 - Vaccinatie onbekend - Afstand houden wel mogelijk",
+            "value": "cat3_vaccination_unknown_distance_possible"
+        },
+        {
+            "label": "Categorie 3 - Vaccinatie onbekend - Afstand houden niet mogelijk",
+            "value": "cat3_vaccination_unknown_distance_not_possible"
+        }
+    ]
+}

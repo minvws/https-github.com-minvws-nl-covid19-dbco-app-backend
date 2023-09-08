@@ -1,0 +1,36 @@
+{
+    "type": "object",
+    "properties": {
+        "person": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string",
+                    "validationRules": {
+                        "warning": [
+                            "required",
+                            "max:50"
+                        ]
+                    }
+                },
+                "lastName": {
+                    "type": "string",
+                    "validationRules": {
+                        "warning": [
+                            "required",
+                            "max:50"
+                        ]
+                    }
+                },
+                "city": {
+                    "type": "string",
+                    "validationRules": {
+                        "warning": [
+                            "max:200"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

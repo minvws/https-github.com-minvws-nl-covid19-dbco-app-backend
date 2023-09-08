@@ -1,0 +1,35 @@
+{
+    "name": "minvws/dbco-enum",
+    "description": "Contains enum definitions and generates enum classes for ts and php",
+    "require": {
+        "php": "7.4 - 8.2",
+        "minvws/dbco-codable": "^1.0.2",
+        "laravel/framework": "^9.0 || ^10.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0",
+        "phpstan/phpstan": "^1.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "MinVWS\\DBCO\\Enum\\": [
+                "output/php/",
+                "src/php/"
+            ],
+            "MinVWS\\DBCO\\Enum\\Tests\\": "tests/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {}
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/minvws/dbco-codable"
+        }
+    ]
+}

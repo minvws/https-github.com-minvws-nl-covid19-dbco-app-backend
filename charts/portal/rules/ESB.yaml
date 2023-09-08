@@ -1,0 +1,24 @@
+- alert: esb_lead_time_too_high
+  expr: histogram_quantile(0.98, sum(rate(portal_test_result_report:processing_duration_bucket{namespace="{{.Release.Namespace}}"}[5m])) by (le, namespace)) > 10
+  for: 30m
+  labels:
+    severity: warning
+  annotations:
+    summary: "{{.Release.Namespace}} - De doorlooptijd van een ESB melding is the hoog."
+    URL: https://grafana.vws.iks.guida.io/d/2jOae6IVk/ggd-bco-meldingen-worker?orgId=1&from=1675070553550&to=1675092153550&viewPanel=25
+
+- alert: failed_test_result_report_import
+  expr: round(sum(increase(portal_test_result_report_import:status_counter{namespace="{{.Release.Namespace}}",status="failed"}[5m]))) > 0
+  for: 15m
+  labels:
+    severity: error
+  annotations:
+    summary: "{{.Release.Namespace}} - De test-result-worker heeft job(s) niet goed kunnen verwerken."
+
+- alert: mittens_circuit_breaker_active
+  expr: sum(portal_mittens_circuit_breaker_gauge{namespace="{{.Release.Namespace}}"}) == bool 1
+  for: 30m
+  labels:
+    severity: warning
+  annotations:
+    summary: "{{.Release.Namespace}} - De circuit breaker voor Mittens is actief"

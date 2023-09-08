@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -exo pipefail
+
+php artisan rabbitmq:setup
+php artisan migrate -n --force

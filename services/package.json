@@ -1,0 +1,51 @@
+{
+    "name": "nl-covid19-dbco-app-backend-private",
+    "private": true,
+    "workspaces": [
+        "shared/packages/dbco-enum",
+        "portal/src",
+        "shared/packages/schema",
+        "portal/systemtests",
+        "shared/packages/portal-api",
+        "shared/packages/portal-open-api",
+        "shared/packages/ui-library"
+    ],
+    "scripts": {
+        "dev": "yarn workspace portal dev",
+        "build": "yarn workspace portal build",
+        "test": "yarn workspace portal test && yarn workspace @dbco/ui-library test",
+        "test:hl": "yarn workspace portal test:hl && yarn workspace @dbco/ui-library test:hl",
+        "test:ci": "yarn workspace portal test:ci && yarn workspace @dbco/ui-library test:ci",
+        "e2e": "yarn workspace systemtests test:hl",
+        "e2e:ui": "yarn workspace systemtests test",
+        "storybook": "yarn workspace @dbco/ui-library storybook",
+        "lint": "yarn run lint:check",
+        "lint:check": "yarn run eslint . --ext .ts,.vue,.js --quiet && echo \"✔ Finished linting\"",
+        "lint:fix": "yarn run eslint . --fix --ext .ts,.vue,.js && echo \"✔ Finished linting\"",
+        "format:check": "yarn run prettier --check \"**/*.js\" \"**/*.ts\" \"**/*.vue\" \"{,!(node_modules|vendor)/**/}*.json\" && echo \"✔ Finished prettier\"",
+        "format:fix": "yarn run prettier --write \"**/*.js\" \"**/*.ts\" \"**/*.vue\" \"{,!(node_modules|vendor)/**/}*.json\" && echo \"✔ Finished prettier\"",
+        "type:check": "yarn workspace portal type:check && yarn workspace @dbco/ui-library type:check && yarn workspace systemtests type:check",
+        "volar": "yarn workspace portal volar && yarn workspace @dbco/ui-library volar",
+        "pr": "yarn run format:fix && yarn run lint:fix && yarn run type:check && yarn run volar"
+    },
+    "packageManager": "yarn@2.4.3",
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "6.4.0",
+        "@typescript-eslint/parser": "6.4.0",
+        "eslint": "8.47.0",
+        "eslint-config-prettier": "9.0.0",
+        "eslint-plugin-import": "2.28.0",
+        "eslint-plugin-unused-imports": "2.0.0",
+        "eslint-plugin-vue": "9.17.0",
+        "eslint-plugin-vuejs-accessibility": "2.2.0",
+        "prettier": "3.0.2"
+    },
+    "resolutions_comments": {
+        "json5": "Version 2.2.2 adresses security vulnerability https://cve.circl.lu/cve/CVE-2022-46175",
+        "semver": "Version 7.5.2 adresses security vulnerability https://cve.circl.lu/cve/CVE-2023-26115"
+    },
+    "resolutions": {
+        "json5": "^2.2.2",
+        "semver": "^7.5.2"
+    }
+}

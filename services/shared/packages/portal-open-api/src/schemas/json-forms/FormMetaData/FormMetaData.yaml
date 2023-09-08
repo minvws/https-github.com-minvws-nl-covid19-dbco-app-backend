@@ -1,0 +1,20 @@
+type: object
+required:
+    - $links
+properties:
+    $links:
+        description: An object with links to that is used by the form to perform CRUD actions
+        type: object
+        properties:
+            self:
+                $ref: './FormRequestConfig.yaml'
+            create:
+                $ref: './FormRequestConfig.yaml'
+            update:
+                $ref: './FormRequestConfig.yaml'
+            delete:
+                $ref: './FormRequestConfig.yaml'
+    $validationErrors:
+        type: array
+        items:
+            $ref: './FormValidationError.yaml'

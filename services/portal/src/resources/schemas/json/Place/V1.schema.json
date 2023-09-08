@@ -1,0 +1,1201 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "/api/export/schemas/Place/V1",
+    "type": "object",
+    "title": "Locatie",
+    "description": "Een locatie waar \u00e9\u00e9n of meer contexten in dossiers naar kunnen verwijzen",
+    "properties": {
+        "category": {
+            "purposeSpecification": {
+                "purposes": {
+                    "epidemiologicalSurveillance": {
+                        "description": "Epidemiologische surveillance",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "qualityOfCare": {
+                        "description": "Kwaliteit van zorg",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "administrativeAdvice": {
+                        "description": "Bestuurlijke advisering",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "operationalAdjustment": {
+                        "description": "Operationele bijsturing",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "scientificResearch": {
+                        "description": "Wetenschappelijk onderzoek",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "type": "string"
+        },
+        "country": {
+            "purposeSpecification": {
+                "purposes": {
+                    "epidemiologicalSurveillance": {
+                        "description": "Epidemiologische surveillance",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "qualityOfCare": {
+                        "description": "Kwaliteit van zorg",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "administrativeAdvice": {
+                        "description": "Bestuurlijke advisering",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "operationalAdjustment": {
+                        "description": "Operationele bijsturing",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "scientificResearch": {
+                        "description": "Wetenschappelijk onderzoek",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "type": "string"
+        },
+        "createdAt": {
+            "purposeSpecification": {
+                "purposes": {
+                    "epidemiologicalSurveillance": {
+                        "description": "Epidemiologische surveillance",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "qualityOfCare": {
+                        "description": "Kwaliteit van zorg",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "administrativeAdvice": {
+                        "description": "Bestuurlijke advisering",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "operationalAdjustment": {
+                        "description": "Operationele bijsturing",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "scientificResearch": {
+                        "description": "Wetenschappelijk onderzoek",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "type": "string",
+            "format": "date-time"
+        },
+        "ggdCode": {
+            "purposeSpecification": {
+                "purposes": {
+                    "toBeDetermined": {
+                        "description": "Nader te bepalen",
+                        "subPurpose": {
+                            "identifier": "byHealthAuthorities",
+                            "description": "Doelbinding nog niet bepaald: wordt nog vastgesteld door de GGDen"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "type": "string"
+        },
+        "ggdMunicipality": {
+            "purposeSpecification": {
+                "purposes": {
+                    "toBeDetermined": {
+                        "description": "Nader te bepalen",
+                        "subPurpose": {
+                            "identifier": "byHealthAuthorities",
+                            "description": "Doelbinding nog niet bepaald: wordt nog vastgesteld door de GGDen"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "type": "string"
+        },
+        "housenumber": {
+            "purposeSpecification": {
+                "purposes": {
+                    "epidemiologicalSurveillance": {
+                        "description": "Epidemiologische surveillance",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "qualityOfCare": {
+                        "description": "Kwaliteit van zorg",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "administrativeAdvice": {
+                        "description": "Bestuurlijke advisering",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "operationalAdjustment": {
+                        "description": "Operationele bijsturing",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "scientificResearch": {
+                        "description": "Wetenschappelijk onderzoek",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "type": "string"
+        },
+        "housenumberSuffix": {
+            "purposeSpecification": {
+                "purposes": {
+                    "epidemiologicalSurveillance": {
+                        "description": "Epidemiologische surveillance",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "qualityOfCare": {
+                        "description": "Kwaliteit van zorg",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "administrativeAdvice": {
+                        "description": "Bestuurlijke advisering",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "operationalAdjustment": {
+                        "description": "Operationele bijsturing",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "scientificResearch": {
+                        "description": "Wetenschappelijk onderzoek",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "type": "string"
+        },
+        "isVerified": {
+            "purposeSpecification": {
+                "purposes": {
+                    "epidemiologicalSurveillance": {
+                        "description": "Epidemiologische surveillance",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "qualityOfCare": {
+                        "description": "Kwaliteit van zorg",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "administrativeAdvice": {
+                        "description": "Bestuurlijke advisering",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "operationalAdjustment": {
+                        "description": "Operationele bijsturing",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "scientificResearch": {
+                        "description": "Wetenschappelijk onderzoek",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "type": "boolean"
+        },
+        "label": {
+            "purposeSpecification": {
+                "purposes": {
+                    "epidemiologicalSurveillance": {
+                        "description": "Epidemiologische surveillance",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "qualityOfCare": {
+                        "description": "Kwaliteit van zorg",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "administrativeAdvice": {
+                        "description": "Bestuurlijke advisering",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "operationalAdjustment": {
+                        "description": "Operationele bijsturing",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "scientificResearch": {
+                        "description": "Wetenschappelijk onderzoek",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "type": "string"
+        },
+        "locationId": {
+            "purposeSpecification": {
+                "purposes": {
+                    "toBeDetermined": {
+                        "description": "Nader te bepalen",
+                        "subPurpose": {
+                            "identifier": "byHealthAuthorities",
+                            "description": "Doelbinding nog niet bepaald: wordt nog vastgesteld door de GGDen"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "type": "string"
+        },
+        "organisation": {
+            "purposeSpecification": {
+                "purposes": {
+                    "epidemiologicalSurveillance": {
+                        "description": "Epidemiologische surveillance",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "qualityOfCare": {
+                        "description": "Kwaliteit van zorg",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "administrativeAdvice": {
+                        "description": "Bestuurlijke advisering",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "operationalAdjustment": {
+                        "description": "Operationele bijsturing",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "scientificResearch": {
+                        "description": "Wetenschappelijk onderzoek",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "$ref": "#/$defs/Organisation-V1"
+        },
+        "postalcode": {
+            "purposeSpecification": {
+                "purposes": {
+                    "epidemiologicalSurveillance": {
+                        "description": "Epidemiologische surveillance",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "qualityOfCare": {
+                        "description": "Kwaliteit van zorg",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "administrativeAdvice": {
+                        "description": "Bestuurlijke advisering",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "operationalAdjustment": {
+                        "description": "Operationele bijsturing",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "scientificResearch": {
+                        "description": "Wetenschappelijk onderzoek",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "type": "string"
+        },
+        "pseudoId": {
+            "purposeSpecification": {
+                "purposes": {
+                    "epidemiologicalSurveillance": {
+                        "description": "Epidemiologische surveillance",
+                        "subPurpose": {
+                            "identifier": "linking",
+                            "description": "Koppelen van entiteiten"
+                        }
+                    },
+                    "qualityOfCare": {
+                        "description": "Kwaliteit van zorg",
+                        "subPurpose": {
+                            "identifier": "linking",
+                            "description": "Koppelen van entiteiten"
+                        }
+                    },
+                    "administrativeAdvice": {
+                        "description": "Bestuurlijke advisering",
+                        "subPurpose": {
+                            "identifier": "linking",
+                            "description": "Koppelen van entiteiten"
+                        }
+                    },
+                    "operationalAdjustment": {
+                        "description": "Operationele bijsturing",
+                        "subPurpose": {
+                            "identifier": "linking",
+                            "description": "Koppelen van entiteiten"
+                        }
+                    },
+                    "scientificResearch": {
+                        "description": "Wetenschappelijk onderzoek",
+                        "subPurpose": {
+                            "identifier": "linking",
+                            "description": "Koppelen van entiteiten"
+                        }
+                    }
+                }
+            },
+            "type": "string"
+        },
+        "schemaVersion": {
+            "description": "Versienummer van de entiteit",
+            "purposeSpecification": {
+                "purposes": {
+                    "epidemiologicalSurveillance": {
+                        "description": "Epidemiologische surveillance",
+                        "subPurpose": {
+                            "identifier": "versionControl",
+                            "description": "Versiebeheer"
+                        }
+                    },
+                    "qualityOfCare": {
+                        "description": "Kwaliteit van zorg",
+                        "subPurpose": {
+                            "identifier": "versionControl",
+                            "description": "Versiebeheer"
+                        }
+                    },
+                    "administrativeAdvice": {
+                        "description": "Bestuurlijke advisering",
+                        "subPurpose": {
+                            "identifier": "versionControl",
+                            "description": "Versiebeheer"
+                        }
+                    },
+                    "operationalAdjustment": {
+                        "description": "Operationele bijsturing",
+                        "subPurpose": {
+                            "identifier": "versionControl",
+                            "description": "Versiebeheer"
+                        }
+                    },
+                    "scientificResearch": {
+                        "description": "Wetenschappelijk onderzoek",
+                        "subPurpose": {
+                            "identifier": "versionControl",
+                            "description": "Versiebeheer"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "type": "integer"
+        },
+        "sections": {
+            "purposeSpecification": {
+                "purposes": {
+                    "epidemiologicalSurveillance": {
+                        "description": "Epidemiologische surveillance",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "qualityOfCare": {
+                        "description": "Kwaliteit van zorg",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "administrativeAdvice": {
+                        "description": "Bestuurlijke advisering",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "operationalAdjustment": {
+                        "description": "Operationele bijsturing",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "scientificResearch": {
+                        "description": "Wetenschappelijk onderzoek",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/Section-V1"
+            }
+        },
+        "street": {
+            "purposeSpecification": {
+                "purposes": {
+                    "epidemiologicalSurveillance": {
+                        "description": "Epidemiologische surveillance",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "qualityOfCare": {
+                        "description": "Kwaliteit van zorg",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "administrativeAdvice": {
+                        "description": "Bestuurlijke advisering",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "operationalAdjustment": {
+                        "description": "Operationele bijsturing",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "scientificResearch": {
+                        "description": "Wetenschappelijk onderzoek",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "type": "string"
+        },
+        "town": {
+            "purposeSpecification": {
+                "purposes": {
+                    "epidemiologicalSurveillance": {
+                        "description": "Epidemiologische surveillance",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "qualityOfCare": {
+                        "description": "Kwaliteit van zorg",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "administrativeAdvice": {
+                        "description": "Bestuurlijke advisering",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "operationalAdjustment": {
+                        "description": "Operationele bijsturing",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "scientificResearch": {
+                        "description": "Wetenschappelijk onderzoek",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "type": "string"
+        },
+        "updatedAt": {
+            "purposeSpecification": {
+                "purposes": {
+                    "epidemiologicalSurveillance": {
+                        "description": "Epidemiologische surveillance",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "qualityOfCare": {
+                        "description": "Kwaliteit van zorg",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "administrativeAdvice": {
+                        "description": "Bestuurlijke advisering",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "operationalAdjustment": {
+                        "description": "Operationele bijsturing",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    },
+                    "scientificResearch": {
+                        "description": "Wetenschappelijk onderzoek",
+                        "subPurpose": {
+                            "identifier": "transmissionPattern",
+                            "description": "Transmissiepatroon"
+                        }
+                    }
+                },
+                "remark": ""
+            },
+            "type": "string",
+            "format": "date-time"
+        },
+        "uuid": {
+            "description": "Binnen portaal uniek id voor een plek",
+            "purposeSpecification": {
+                "purposes": {
+                    "epidemiologicalSurveillance": {
+                        "description": "Epidemiologische surveillance",
+                        "subPurpose": {
+                            "identifier": "linking",
+                            "description": "Koppelen van entiteiten"
+                        }
+                    },
+                    "qualityOfCare": {
+                        "description": "Kwaliteit van zorg",
+                        "subPurpose": {
+                            "identifier": "linking",
+                            "description": "Koppelen van entiteiten"
+                        }
+                    },
+                    "administrativeAdvice": {
+                        "description": "Bestuurlijke advisering",
+                        "subPurpose": {
+                            "identifier": "linking",
+                            "description": "Koppelen van entiteiten"
+                        }
+                    },
+                    "operationalAdjustment": {
+                        "description": "Operationele bijsturing",
+                        "subPurpose": {
+                            "identifier": "linking",
+                            "description": "Koppelen van entiteiten"
+                        }
+                    },
+                    "scientificResearch": {
+                        "description": "Wetenschappelijk onderzoek",
+                        "subPurpose": {
+                            "identifier": "linking",
+                            "description": "Koppelen van entiteiten"
+                        }
+                    }
+                },
+                "remark": "Denk bij uitgifte aan pseudonimisering, om het koppelen tussen verschillende uitgiften te voorkomen."
+            },
+            "type": "string"
+        }
+    },
+    "$defs": {
+        "Enum-BCOPhase-V1": {
+            "oneOf": [
+                {
+                    "const": "none",
+                    "description": "Geen Fase"
+                },
+                {
+                    "const": "1",
+                    "description": "Fase 1"
+                },
+                {
+                    "const": "2",
+                    "description": "Fase 2"
+                },
+                {
+                    "const": "3",
+                    "description": "Fase 3"
+                },
+                {
+                    "const": "4",
+                    "description": "Fase 4"
+                },
+                {
+                    "const": "5",
+                    "description": "Fase 5"
+                },
+                {
+                    "const": "steekproef",
+                    "description": "Fase Steekproef"
+                }
+            ]
+        },
+        "Organisation-V1": {
+            "type": "object",
+            "title": "Organisatie",
+            "description": "BCO portaal gebruikers-organisatie",
+            "properties": {
+                "abbreviation": {
+                    "description": "twee of drieletterige afkorting van de GGD regio",
+                    "purposeSpecification": {
+                        "purposes": {
+                            "epidemiologicalSurveillance": {
+                                "description": "Epidemiologische surveillance",
+                                "subPurpose": {
+                                    "identifier": "regionalRisk",
+                                    "description": "Regionaal risico"
+                                }
+                            },
+                            "qualityOfCare": {
+                                "description": "Kwaliteit van zorg",
+                                "subPurpose": {
+                                    "identifier": "locations",
+                                    "description": "Locaties"
+                                }
+                            },
+                            "administrativeAdvice": {
+                                "description": "Bestuurlijke advisering",
+                                "subPurpose": {
+                                    "identifier": "localCourse",
+                                    "description": "Lokaal verloop"
+                                }
+                            },
+                            "operationalAdjustment": {
+                                "description": "Operationele bijsturing",
+                                "subPurpose": {
+                                    "identifier": "separations",
+                                    "description": "Uitsplitsingen"
+                                }
+                            },
+                            "scientificResearch": {
+                                "description": "Wetenschappelijk onderzoek",
+                                "subPurpose": {
+                                    "identifier": "regionalRisk",
+                                    "description": "Regionaal risico"
+                                }
+                            }
+                        },
+                        "remark": ""
+                    },
+                    "type": "string"
+                },
+                "bcoPhase": {
+                    "description": "BCO fase waarin de organisatie nu werkt",
+                    "purposeSpecification": {
+                        "purposes": {
+                            "epidemiologicalSurveillance": {
+                                "description": "Epidemiologische surveillance",
+                                "subPurpose": {
+                                    "identifier": "regionalRisk",
+                                    "description": "Regionaal risico"
+                                }
+                            },
+                            "qualityOfCare": {
+                                "description": "Kwaliteit van zorg",
+                                "subPurpose": {
+                                    "identifier": "locations",
+                                    "description": "Locaties"
+                                }
+                            },
+                            "administrativeAdvice": {
+                                "description": "Bestuurlijke advisering",
+                                "subPurpose": {
+                                    "identifier": "localCourse",
+                                    "description": "Lokaal verloop"
+                                }
+                            },
+                            "operationalAdjustment": {
+                                "description": "Operationele bijsturing",
+                                "subPurpose": {
+                                    "identifier": "separations",
+                                    "description": "Uitsplitsingen"
+                                }
+                            },
+                            "scientificResearch": {
+                                "description": "Wetenschappelijk onderzoek",
+                                "subPurpose": {
+                                    "identifier": "regionalRisk",
+                                    "description": "Regionaal risico"
+                                }
+                            }
+                        },
+                        "remark": ""
+                    },
+                    "$ref": "#/$defs/Enum-BCOPhase-V1"
+                },
+                "externalId": {
+                    "type": "string"
+                },
+                "hpZoneCode": {
+                    "description": "Code waarmee de organsiatie in HPZone bekend is",
+                    "purposeSpecification": {
+                        "purposes": {
+                            "epidemiologicalSurveillance": {
+                                "description": "Epidemiologische surveillance",
+                                "subPurpose": {
+                                    "identifier": "regionalRisk",
+                                    "description": "Regionaal risico"
+                                }
+                            },
+                            "qualityOfCare": {
+                                "description": "Kwaliteit van zorg",
+                                "subPurpose": {
+                                    "identifier": "locations",
+                                    "description": "Locaties"
+                                }
+                            },
+                            "administrativeAdvice": {
+                                "description": "Bestuurlijke advisering",
+                                "subPurpose": {
+                                    "identifier": "localCourse",
+                                    "description": "Lokaal verloop"
+                                }
+                            },
+                            "operationalAdjustment": {
+                                "description": "Operationele bijsturing",
+                                "subPurpose": {
+                                    "identifier": "separations",
+                                    "description": "Uitsplitsingen"
+                                }
+                            },
+                            "scientificResearch": {
+                                "description": "Wetenschappelijk onderzoek",
+                                "subPurpose": {
+                                    "identifier": "regionalRisk",
+                                    "description": "Regionaal risico"
+                                }
+                            }
+                        },
+                        "remark": ""
+                    },
+                    "type": "string"
+                },
+                "isAllowedToReportTestResults": {
+                    "purposeSpecification": {
+                        "purposes": {
+                            "epidemiologicalSurveillance": {
+                                "description": "Epidemiologische surveillance",
+                                "subPurpose": {
+                                    "identifier": "regionalRisk",
+                                    "description": "Regionaal risico"
+                                }
+                            },
+                            "qualityOfCare": {
+                                "description": "Kwaliteit van zorg",
+                                "subPurpose": {
+                                    "identifier": "locations",
+                                    "description": "Locaties"
+                                }
+                            },
+                            "administrativeAdvice": {
+                                "description": "Bestuurlijke advisering",
+                                "subPurpose": {
+                                    "identifier": "localCourse",
+                                    "description": "Lokaal verloop"
+                                }
+                            },
+                            "operationalAdjustment": {
+                                "description": "Operationele bijsturing",
+                                "subPurpose": {
+                                    "identifier": "separations",
+                                    "description": "Uitsplitsingen"
+                                }
+                            },
+                            "scientificResearch": {
+                                "description": "Wetenschappelijk onderzoek",
+                                "subPurpose": {
+                                    "identifier": "regionalRisk",
+                                    "description": "Regionaal risico"
+                                }
+                            }
+                        },
+                        "remark": ""
+                    },
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "Naam van de organsiatie",
+                    "purposeSpecification": {
+                        "purposes": {
+                            "epidemiologicalSurveillance": {
+                                "description": "Epidemiologische surveillance",
+                                "subPurpose": {
+                                    "identifier": "regionalRisk",
+                                    "description": "Regionaal risico"
+                                }
+                            },
+                            "qualityOfCare": {
+                                "description": "Kwaliteit van zorg",
+                                "subPurpose": {
+                                    "identifier": "locations",
+                                    "description": "Locaties"
+                                }
+                            },
+                            "administrativeAdvice": {
+                                "description": "Bestuurlijke advisering",
+                                "subPurpose": {
+                                    "identifier": "localCourse",
+                                    "description": "Lokaal verloop"
+                                }
+                            },
+                            "operationalAdjustment": {
+                                "description": "Operationele bijsturing",
+                                "subPurpose": {
+                                    "identifier": "separations",
+                                    "description": "Uitsplitsingen"
+                                }
+                            },
+                            "scientificResearch": {
+                                "description": "Wetenschappelijk onderzoek",
+                                "subPurpose": {
+                                    "identifier": "regionalRisk",
+                                    "description": "Regionaal risico"
+                                }
+                            }
+                        },
+                        "remark": ""
+                    },
+                    "type": "string"
+                },
+                "schemaVersion": {
+                    "description": "Versienummer van de entiteit",
+                    "purposeSpecification": {
+                        "purposes": {
+                            "epidemiologicalSurveillance": {
+                                "description": "Epidemiologische surveillance",
+                                "subPurpose": {
+                                    "identifier": "versionControl",
+                                    "description": "Versiebeheer"
+                                }
+                            },
+                            "qualityOfCare": {
+                                "description": "Kwaliteit van zorg",
+                                "subPurpose": {
+                                    "identifier": "versionControl",
+                                    "description": "Versiebeheer"
+                                }
+                            },
+                            "administrativeAdvice": {
+                                "description": "Bestuurlijke advisering",
+                                "subPurpose": {
+                                    "identifier": "versionControl",
+                                    "description": "Versiebeheer"
+                                }
+                            },
+                            "operationalAdjustment": {
+                                "description": "Operationele bijsturing",
+                                "subPurpose": {
+                                    "identifier": "versionControl",
+                                    "description": "Versiebeheer"
+                                }
+                            },
+                            "scientificResearch": {
+                                "description": "Wetenschappelijk onderzoek",
+                                "subPurpose": {
+                                    "identifier": "versionControl",
+                                    "description": "Versiebeheer"
+                                }
+                            }
+                        },
+                        "remark": ""
+                    },
+                    "type": "integer"
+                },
+                "uuid": {
+                    "description": "Binnen portaal uniek id voor de organisatie",
+                    "purposeSpecification": {
+                        "purposes": {
+                            "epidemiologicalSurveillance": {
+                                "description": "Epidemiologische surveillance",
+                                "subPurpose": {
+                                    "identifier": "linking",
+                                    "description": "Koppelen van entiteiten"
+                                }
+                            },
+                            "qualityOfCare": {
+                                "description": "Kwaliteit van zorg",
+                                "subPurpose": {
+                                    "identifier": "linking",
+                                    "description": "Koppelen van entiteiten"
+                                }
+                            },
+                            "administrativeAdvice": {
+                                "description": "Bestuurlijke advisering",
+                                "subPurpose": {
+                                    "identifier": "linking",
+                                    "description": "Koppelen van entiteiten"
+                                }
+                            },
+                            "operationalAdjustment": {
+                                "description": "Operationele bijsturing",
+                                "subPurpose": {
+                                    "identifier": "linking",
+                                    "description": "Koppelen van entiteiten"
+                                }
+                            },
+                            "scientificResearch": {
+                                "description": "Wetenschappelijk onderzoek",
+                                "subPurpose": {
+                                    "identifier": "linking",
+                                    "description": "Koppelen van entiteiten"
+                                }
+                            }
+                        },
+                        "remark": "Denk bij uitgifte aan pseudonimisering, om het koppelen tussen verschillende uitgiften te voorkomen."
+                    },
+                    "type": "string"
+                }
+            }
+        },
+        "Section-V1": {
+            "type": "object",
+            "properties": {
+                "label": {
+                    "purposeSpecification": {
+                        "purposes": {
+                            "epidemiologicalSurveillance": {
+                                "description": "Epidemiologische surveillance",
+                                "subPurpose": {
+                                    "identifier": "transmissionPattern",
+                                    "description": "Transmissiepatroon"
+                                }
+                            },
+                            "qualityOfCare": {
+                                "description": "Kwaliteit van zorg",
+                                "subPurpose": {
+                                    "identifier": "transmissionPattern",
+                                    "description": "Transmissiepatroon"
+                                }
+                            },
+                            "administrativeAdvice": {
+                                "description": "Bestuurlijke advisering",
+                                "subPurpose": {
+                                    "identifier": "transmissionPattern",
+                                    "description": "Transmissiepatroon"
+                                }
+                            },
+                            "operationalAdjustment": {
+                                "description": "Operationele bijsturing",
+                                "subPurpose": {
+                                    "identifier": "transmissionPattern",
+                                    "description": "Transmissiepatroon"
+                                }
+                            },
+                            "scientificResearch": {
+                                "description": "Wetenschappelijk onderzoek",
+                                "subPurpose": {
+                                    "identifier": "transmissionPattern",
+                                    "description": "Transmissiepatroon"
+                                }
+                            }
+                        },
+                        "remark": ""
+                    },
+                    "type": "string"
+                },
+                "pseudoId": {
+                    "purposeSpecification": {
+                        "purposes": {
+                            "epidemiologicalSurveillance": {
+                                "description": "Epidemiologische surveillance",
+                                "subPurpose": {
+                                    "identifier": "linking",
+                                    "description": "Koppelen van entiteiten"
+                                }
+                            },
+                            "qualityOfCare": {
+                                "description": "Kwaliteit van zorg",
+                                "subPurpose": {
+                                    "identifier": "linking",
+                                    "description": "Koppelen van entiteiten"
+                                }
+                            },
+                            "administrativeAdvice": {
+                                "description": "Bestuurlijke advisering",
+                                "subPurpose": {
+                                    "identifier": "linking",
+                                    "description": "Koppelen van entiteiten"
+                                }
+                            },
+                            "operationalAdjustment": {
+                                "description": "Operationele bijsturing",
+                                "subPurpose": {
+                                    "identifier": "linking",
+                                    "description": "Koppelen van entiteiten"
+                                }
+                            },
+                            "scientificResearch": {
+                                "description": "Wetenschappelijk onderzoek",
+                                "subPurpose": {
+                                    "identifier": "linking",
+                                    "description": "Koppelen van entiteiten"
+                                }
+                            }
+                        }
+                    },
+                    "type": "string"
+                },
+                "schemaVersion": {
+                    "purposeSpecification": {
+                        "remark": ""
+                    },
+                    "type": "integer"
+                },
+                "uuid": {
+                    "purposeSpecification": {
+                        "remark": ""
+                    },
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

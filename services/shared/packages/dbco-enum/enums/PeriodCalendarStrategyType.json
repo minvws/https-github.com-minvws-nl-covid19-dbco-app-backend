@@ -1,0 +1,22 @@
+{
+    "phpClass": "PeriodCalendarStrategyType",
+    "tsConst": "periodCalendarStrategyType",
+    "default": "periodFixedStrategy",
+    "items": [
+        {
+            "label": "Vast",
+            "value": "periodFixedStrategy",
+            "name": "fixedStrategy"
+        },
+        {
+            "label": "Flexibel met minimum en maximum",
+            "value": "periodFlexStrategy",
+            "name": "flexStrategy"
+        },
+        {
+            "label": "Datum onbekend",
+            "value": "periodFadedStrategy",
+            "name": "fadedStrategy"
+        }
+    ]
+}

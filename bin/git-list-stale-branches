@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# List all branches with the last commit older than 1 month ago
+# sorted by last commit date & author
+for k in $(git branch -r --sort=committerdate --sort=authorname --no-merged develop --format='%(refname:short)'); do 
+  if [ -z "$(git log -1 --after='1 month ago' -s $k)" ]; then
+    date=$(git log -1 --pretty=format:"%ad" --date=short $k)
+    author=$(git log -1 --pretty=format:"%an" $k)
+    printf "\r%-90s  : %10s : ${author}\n" "$k" $date
+  fi
+done
+
+

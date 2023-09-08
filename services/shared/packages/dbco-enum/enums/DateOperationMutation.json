@@ -1,0 +1,14 @@
+{
+    "phpClass": "DateOperationMutation",
+    "tsConst": "dateOperationMutation",
+    "items": [
+        {
+            "label": "add",
+            "value": "add"
+        },
+        {
+            "label": "sub",
+            "value": "sub"
+        }
+    ]
+}

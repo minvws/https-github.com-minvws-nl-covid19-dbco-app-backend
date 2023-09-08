@@ -1,0 +1,147 @@
+# Based on the Draft 07 schema: http://json-schema.org/draft-07/schema#
+# Modified in order to be compatible with the OpenAPI schema.
+#
+# Notable changes made:
+# - `i18n` key was added for the internationalization of the schema
+#      also see: https://jsonforms.io/docs/i18n
+# - Removed the `boolean` type from the main (JsonSchemaDraft07) schema
+#     and applied the boolean as a `oneOf` directly to the related
+#     properties `additionalItems` and `additionalProperties` instead.
+# - The `const` and `default` properties are "any" typed
+# - AdditionalProperties is set to false to provide a more strict validation
+#     (this is not part of the default Draft 07 schema)
+type: object
+additionalProperties: false
+properties:
+    default: {}
+    const: {}
+    $id:
+        type: string
+        format: uri-reference
+    $schema:
+        type: string
+        format: uri
+    $ref:
+        type: string
+        format: uri-reference
+    $comment:
+        type: string
+    title:
+        type: string
+    i18n:
+        type: string
+    description:
+        type: string
+    readOnly:
+        type: boolean
+        default: false
+    writeOnly:
+        type: boolean
+        default: false
+    examples:
+        type: array
+        items: {}
+    multipleOf:
+        type: number
+        exclusiveMinimum: 0
+    maximum:
+        type: number
+    exclusiveMaximum:
+        type: number
+    minimum:
+        type: number
+    exclusiveMinimum:
+        type: number
+    maxLength:
+        $ref: './JsonSchemaDraft07Definitions.yaml#/definitions/nonNegativeInteger'
+    minLength:
+        $ref: './JsonSchemaDraft07Definitions.yaml#/definitions/nonNegativeIntegerDefault0'
+    pattern:
+        type: string
+        format: regex
+    additionalItems:
+        oneOf:
+            - type: boolean
+            - $ref: './JsonSchemaDraft07.yaml'
+    items:
+        anyOf:
+            - $ref: './JsonSchemaDraft07.yaml'
+            - $ref: './JsonSchemaDraft07Definitions.yaml#/definitions/schemaArray'
+        default: true
+    maxItems:
+        $ref: './JsonSchemaDraft07Definitions.yaml#/definitions/nonNegativeInteger'
+    minItems:
+        $ref: './JsonSchemaDraft07Definitions.yaml#/definitions/nonNegativeIntegerDefault0'
+    uniqueItems:
+        type: boolean
+        default: false
+    contains:
+        $ref: './JsonSchemaDraft07.yaml'
+    maxProperties:
+        $ref: './JsonSchemaDraft07Definitions.yaml#/definitions/nonNegativeInteger'
+    minProperties:
+        $ref: './JsonSchemaDraft07Definitions.yaml#/definitions/nonNegativeIntegerDefault0'
+    required:
+        $ref: './JsonSchemaDraft07Definitions.yaml#/definitions/stringArray'
+    additionalProperties:
+        oneOf:
+            - type: boolean
+            - $ref: './JsonSchemaDraft07.yaml'
+    definitions:
+        type: object
+        additionalProperties:
+            $ref: './JsonSchemaDraft07.yaml'
+        default: {}
+    properties:
+        type: object
+        additionalProperties:
+            $ref: './JsonSchemaDraft07.yaml'
+        default: {}
+    patternProperties:
+        type: object
+        additionalProperties:
+            $ref: './JsonSchemaDraft07.yaml'
+        propertyNames:
+            format: regex
+        default: {}
+    dependencies:
+        type: object
+        additionalProperties:
+            anyOf:
+                - $ref: './JsonSchemaDraft07.yaml'
+                - $ref: './JsonSchemaDraft07Definitions.yaml#/definitions/stringArray'
+    propertyNames:
+        $ref: './JsonSchemaDraft07.yaml'
+    enum:
+        type: array
+        items: {}
+        minItems: 1
+        uniqueItems: true
+    type:
+        anyOf:
+            - $ref: './JsonSchemaDraft07Definitions.yaml#/definitions/simpleTypes'
+            - type: array
+              items:
+                  $ref: './JsonSchemaDraft07Definitions.yaml#/definitions/simpleTypes'
+              minItems: 1
+              uniqueItems: true
+    format:
+        type: string
+    contentMediaType:
+        type: string
+    contentEncoding:
+        type: string
+    if:
+        $ref: './JsonSchemaDraft07.yaml'
+    then:
+        $ref: './JsonSchemaDraft07.yaml'
+    else:
+        $ref: './JsonSchemaDraft07.yaml'
+    allOf:
+        $ref: './JsonSchemaDraft07Definitions.yaml#/definitions/schemaArray'
+    anyOf:
+        $ref: './JsonSchemaDraft07Definitions.yaml#/definitions/schemaArray'
+    oneOf:
+        $ref: './JsonSchemaDraft07Definitions.yaml#/definitions/schemaArray'
+    not:
+        $ref: './JsonSchemaDraft07.yaml'

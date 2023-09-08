@@ -1,0 +1,172 @@
+# Default values for gateway
+
+replicaCount: 1
+image:
+  repository: ghcr.io/minvws/nl-covid19-dbco-app-backend-private/portal
+  tag: &imageTag 0.0.0
+  pullPolicy: IfNotPresent
+imagePullSecrets:
+service:
+  enabled: true
+  type: ClusterIP
+  httpPort: 8080
+  externalPort: 8080
+# metrics-server add-on required
+hpa:
+  enabled: false
+  maxReplicas: 10
+  # average total CPU usage per pod (1-100)
+  cpu:
+  # average memory usage per pod (100Mi-1Gi)
+  memory:
+  # average http requests per second per pod (k8s-prometheus-adapter)
+  requests:
+# Environment variables that will be passed into the container
+# env:
+  # APP_KEY: ${GATEWAY_APP_KEY}
+  # APP_URL: ${GATEWAY_APP_URL}
+  # APP_TYPE: gateway
+  # GATEWAY_JWT_SECRET: ${GATEWAY_JWT_SECRET}
+  # OSIRIS_BASE_URL: ${OSIRIS_BASE_URL}
+  # APP_NAME: ${GATEWAY_APP_NAME-gateway}
+  # APP_ENV: ${APP_ENV-development}
+  # APP_DEBUG: ${DEBUG:-0}
+  # RABBITMQ_HOST: ${RABBITMQ_TEST_RESULTS_HOST:-rabbitmq-test-results}
+  # RABBITMQ_PORT: ${RABBITMQ_TEST_RESULTS_PORT:-5673}
+env: {}
+# Environment variables secrets that will be passed into the container.
+# When set. This will generate a Secret with the name `app.fullname`.
+# When not set. You can create a secret yourself with the name `app.fullname`.
+# envSecrets:
+  # OSIRIS_LOGIN: ${OSIRIS_LOGIN}
+  # OSIRIS_PASSWORD: ${OSIRIS_PASSWORD}
+  # RABBITMQ_USER: ${RABBITMQ_TEST_RESULTS_USER:-guest}
+  # RABBITMQ_PASSWORD: ${RABBITMQ_TEST_RESULTS_PASSWORD:-guest}
+envSecrets: {}
+emptyCustomConfigMap: false
+emptyCustomSecrets: false
+# Configure volumes for mounting files (e.g. using ConfigMap, Secret) in your containers
+volumeMounts: ""
+volumes: ""
+# Apache
+apache:
+  run:
+    user: "www-data"
+    group: "www-data"
+serviceAccount:
+  # Specifies whether a service account should be created
+  enabled: false
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+serviceMonitor:
+  enabled: false
+  interval: 15s
+  path: /prometheus/metrics
+ingress:
+  enabled: false
+  annotations: {}
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
+  path: /*
+  hosts: []
+  #    - public-api.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+# Redis for metrics
+redis:
+  sidecar:
+    enabled: true
+    image:
+      repository: redis
+      tag: 6
+      pullPolicy: IfNotPresent
+    args:
+      - >-
+        --save --appendonly no
+    livenessProbe:
+      exec:
+        command:
+        - sh
+        - -c
+        - redis-cli -h $(hostname) ping
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 3
+      successThreshold: 1
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        memory: 64Mi
+  host: localhost
+  port: 6379
+livenessProbe:
+  httpGet:
+    path: /ping
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 1
+  failureThreshold: 3
+  successThreshold: 1
+readinessProbe:
+  httpGet:
+    path: /status
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 30
+  timeoutSeconds: 5
+  failureThreshold: 3
+  successThreshold: 1
+resources:
+  limits:
+  requests:
+    cpu: 1m
+    memory: 16Mi
+containerSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
+  seccompProfile:
+    type: RuntimeDefault
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+lifecycle:
+  preStop:
+    exec:
+      command: [ "/bin/sh", "-c", "sleep 15 && apachectl -k graceful-stop" ]
+terminationGracePeriodSeconds: 60
+nodeSelector: {}
+tolerations: []
+affinity: {}
+podAnnotations: {}
+
+locust:
+  enabled: false
+  image:
+    repository: ghcr.io/minvws/nl-covid19-dbco-app-backend-private/locust
+    tag: *imageTag
+  loadtest:
+    name: gateway
+    locust_host: http://gateway:8080
+    locust_locustfile: locustfile.py
+    locust_locustfile_configmap: ""
+    locust_lib_configmap: ""
+    environment_external_secret:
+      gateway:
+        - GATEWAY_JWT_SECRET
+  securityContext:
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000

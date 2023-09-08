@@ -1,0 +1,39 @@
+{
+	"folders": [
+		{
+			"name": "Portal",
+			"path": "./services/portal/src"
+		},
+		{
+			"name": "Portal API",
+			"path": "./services/shared/packages/portal-api"
+		},
+		{
+			"name": "Portal system tests",
+			"path": "./services/portal/systemtests"
+		},
+		{
+			"name": "Services",
+			"path": "./services"
+		},
+		{
+			"name": "UI Library",
+			"path": "./services/shared/packages/ui-library"
+		},
+		{
+			"name": "Open API",
+			"path": "./services/shared/packages/portal-open-api"
+		},
+		{
+			"name": "Services",
+			"path": "./services"
+		},
+		{
+			"name": "Root",
+			"path": "./"
+		},
+
+	],
+	"settings": {
+	}
+}

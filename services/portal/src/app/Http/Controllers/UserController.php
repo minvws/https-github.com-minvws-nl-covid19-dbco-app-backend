@@ -1,8 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Services\AuthenticationService;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Contracts\View\View;
+use MinVWS\Audit\Services\AuditService;
+
+use function config;
+use function view;
 
 class UserController extends Controller
 {
@@ -13,8 +21,13 @@ class UserController extends Controller
         $this->authenticationService = $authenticationService;
     }
 
-    public function profile()
+    /**
+     * @throws AuthenticationException
+     */
+    public function profile(AuditService $auditService): View
     {
+        $auditService->setEventExpected(false);
+
         $user = $this->authenticationService->getAuthenticatedUser();
         $roles = config('authorization.roles');
 

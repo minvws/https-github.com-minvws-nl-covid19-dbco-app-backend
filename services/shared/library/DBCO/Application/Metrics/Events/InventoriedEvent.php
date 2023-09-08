@@ -1,4 +1,5 @@
 <?php
+
 namespace DBCO\Shared\Application\Metrics\Events;
 
 /**
@@ -13,8 +14,8 @@ class InventoriedEvent extends AbstractEvent
      * @param string $caseUuid
      * @param string $taskUuid
      */
-    public function __construct(string $actor, string $caseUuid, string $taskUuid)
+    public function __construct(string $actor, string $caseUuid, string $taskUuid, array $taskFields)
     {
-        parent::__construct('inventoried', $actor, $caseUuid, $taskUuid);
+        parent::__construct('inventoried', $actor, $caseUuid, $taskUuid, $taskFields);
     }
 }

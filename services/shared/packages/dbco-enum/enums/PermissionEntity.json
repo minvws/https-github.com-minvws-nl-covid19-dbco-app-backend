@@ -1,0 +1,30 @@
+{
+    "phpClass": "PermissionEntity",
+    "description": "Entity for permission",
+    "items": [
+        {
+            "label": "case",
+            "value": "case"
+        },
+        {
+            "label": "task",
+            "value": "task"
+        },
+        {
+            "label": "context",
+            "value": "context"
+        },
+        {
+            "label": "place",
+            "value": "place"
+        },
+        {
+            "label": "intake",
+            "value": "intake"
+        },
+        {
+            "label": "organisation",
+            "value": "organisation"
+        }
+    ]
+}

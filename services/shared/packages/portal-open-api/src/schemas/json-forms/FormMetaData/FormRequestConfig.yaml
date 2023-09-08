@@ -1,0 +1,15 @@
+type: object
+required:
+    - href
+properties:
+    href:
+        $ref: ../../common/URL.yaml
+    method:
+        type: string
+        description: HTTP method to use for the request, defaults to GET
+        enum:
+            - 'GET'
+            - 'POST'
+            - 'PUT'
+            - 'PATCH'
+            - 'DELETE'

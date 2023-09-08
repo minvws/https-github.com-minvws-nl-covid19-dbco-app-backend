@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+BASE_PATH=$(dirname $0)/..
+DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
+DOCKER_COMPOSE_TOOLS="$DOCKER_COMPOSE --file $BASE_PATH/docker-compose/docker-compose.tools.yml"
+
+$(dirname $0)/assert-devmode-integrated
+
+CONTAINER=$1
+PHPCS_ARGS="${@:2}"
+
+EXIT_CODE=0
+
+if [ ! "$(docker ps --quiet --filter name=portal)" ]; then
+  echo "=====[ START CONTAINERS ]====="
+  $DOCKER_COMPOSE up --detach --remove-orphans
+fi
+
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "gateway" ]; then
+  echo
+  echo "=====[ RUN PHPCS FOR GATEWAY ]====="
+  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpcs gateway $PHPCS_ARGS || EXIT_CODE=$?
+fi
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "portal" ]; then
+  echo
+  echo "=====[ RUN PHPCS FOR PORTAL ]====="
+  $DOCKER_COMPOSE run --rm portal /src/vendor/bin/phpcs -n $PHPCS_ARGS || EXIT_CODE=$?
+fi
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "library" ]; then
+  echo
+  echo "=====[ RUN PHPCS FOR LIBRARY ]====="
+  $DOCKER_COMPOSE_TOOLS run --rm --entrypoint=/src/vendor/bin/phpcs portal --standard=/shared/library/DBCO/phpcs.xml "$PHPCS_ARGS" || EXIT_CODE=$?
+fi
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "package-audit" ]; then
+  echo
+  echo "=====[ RUN PHPCS FOR PACKAGE AUDIT ]====="
+  $DOCKER_COMPOSE_TOOLS run --rm --entrypoint=/src/vendor/bin/phpcs portal --standard=/shared/packages/audit/phpcs.xml "$PHPCS_ARGS" || EXIT_CODE=$?
+fi
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "package-codable" ]; then
+  echo
+  echo "=====[ RUN PHPCS FOR PACKAGE CODABLE ]====="
+  $DOCKER_COMPOSE_TOOLS run --rm --entrypoint=/src/vendor/bin/phpcs portal --standard=/shared/packages/codable/phpcs.xml "$PHPCS_ARGS" || EXIT_CODE=$?
+fi
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "package-dbco-encryption" ]; then
+  echo
+  echo "=====[ RUN PHPCS FOR PACKAGE DBCO-ENCRYPTION ]====="
+  $DOCKER_COMPOSE_TOOLS run --rm --entrypoint=/src/vendor/bin/phpcs portal --standard=/shared/packages/dbco-encryption/phpcs.xml "$PHPCS_ARGS" || EXIT_CODE=$?
+fi
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "package-dbco-metrics" ]; then
+  echo
+  echo "=====[ RUN PHPCS FOR PACKAGE DBCO-METRICS ]====="
+  $DOCKER_COMPOSE_TOOLS run --rm --entrypoint=/src/vendor/bin/phpcs portal --standard=/shared/packages/dbco-metrics/phpcs.xml "$PHPCS_ARGS" || EXIT_CODE=$?
+fi
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "package-dbco-pairing-request" ]; then
+  echo
+  echo "=====[ RUN PHPCS FOR PACKAGE DBCO-PAIRING-REQUEST ]====="
+  $DOCKER_COMPOSE_TOOLS run --rm --entrypoint=/src/vendor/bin/phpcs portal --standard=/shared/packages/dbco-pairing-request/phpcs.xml "$PHPCS_ARGS" || EXIT_CODE=$?
+fi
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "package-dbco-enum" ]; then
+  echo
+  echo "=====[ RUN PHPCS FOR PACKAGE DBCO-ENUM ]====="
+  $DOCKER_COMPOSE_TOOLS run --rm --entrypoint=/src/vendor/bin/phpcs portal --standard=/shared/packages/dbco-enum/phpcs.xml "$PHPCS_ARGS" || EXIT_CODE=$?
+fi
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "package-healthcheck" ]; then
+  echo
+  echo "=====[ RUN PHPCS FOR PACKAGE HEALTHCHECK ]====="
+  $DOCKER_COMPOSE_TOOLS run --rm --entrypoint=/src/vendor/bin/phpcs portal --standard=/shared/packages/healthcheck/phpcs.xml "$PHPCS_ARGS" || EXIT_CODE=$?
+fi
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "package-metrics" ]; then
+  echo
+  echo "=====[ RUN PHPCS FOR PACKAGE METRICS ]====="
+  $DOCKER_COMPOSE_TOOLS run --rm --entrypoint=/src/vendor/bin/phpcs portal --standard=/shared/packages/metrics/phpcs.xml "$PHPCS_ARGS" || EXIT_CODE=$?
+fi
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "package-timer" ]; then
+  echo
+  echo "=====[ RUN PHPCS FOR PACKAGE TIMER ]====="
+  $DOCKER_COMPOSE_TOOLS run --rm --entrypoint=/src/vendor/bin/phpcs portal --standard=/shared/packages/timer/phpcs.xml "$PHPCS_ARGS" || EXIT_CODE=$?
+fi
+
+exit $EXIT_CODE

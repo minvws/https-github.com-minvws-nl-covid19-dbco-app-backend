@@ -1,0 +1,10 @@
+# cookie
+inactivityTimerExpiryDate:
+  $ref: 'cookie/inactivityTimerExpiryDate.yaml'
+
+xsrfToken:
+  $ref: cookie/xsrftoken.yaml
+
+# path
+case:
+  $ref: 'path/case.yaml'

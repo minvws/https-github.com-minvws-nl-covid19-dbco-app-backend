@@ -1,0 +1,7 @@
+type: object
+required:
+    - scope
+properties:
+    scope:
+        type: string
+        example: '#/properties/name'

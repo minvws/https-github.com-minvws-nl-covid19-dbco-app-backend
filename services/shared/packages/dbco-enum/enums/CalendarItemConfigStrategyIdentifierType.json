@@ -1,0 +1,18 @@
+{
+    "phpClass": "CalendarItemConfigStrategyIdentifierType",
+    "tsConst": "calendarItemConfigStrategyIdentifierType",
+    "items": [
+        {
+            "label": "point",
+            "value": "point"
+        },
+        {
+            "label": "Period Start",
+            "value": "periodStart"
+        },
+        {
+            "label": "Period End",
+            "value": "periodEnd"
+        }
+    ]
+}

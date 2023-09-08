@@ -1,0 +1,23 @@
+{
+    "phpClass": "MessageTemplateType",
+    "tsConst": "messageTemplateType",
+    "description": "Message template type",
+    "items": [
+        {
+            "label": "Bericht verwijderd",
+            "value": "deletedMessage"
+        },
+        {
+            "label": "Informatiebrief versturen",
+            "value": "personalAdvice"
+        },
+        {
+            "label": "Informatiebrief versturen naar contact",
+            "value": "contactInfection"
+        },
+        {
+            "label": "Verstuur een e-mail als telefonisch contact niet lukt",
+            "value": "missedPhone"
+        }
+    ]
+}

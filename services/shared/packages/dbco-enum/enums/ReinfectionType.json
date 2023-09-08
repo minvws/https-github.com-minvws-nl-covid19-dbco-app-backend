@@ -1,0 +1,18 @@
+{
+    "phpClass": "ReinfectionType",
+    "tsConst": "reinfectionType",
+    "items": [
+        {
+            "label": "Ja, bewezen herbesmetting",
+            "value": "truth"
+        },
+        {
+            "label": "Ja, mogelijke herbesmetting",
+            "value": "maybe"
+        },
+        {
+            "label": "Nee",
+            "value": "no"
+        }
+    ]
+}

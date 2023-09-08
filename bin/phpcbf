@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+BASE_PATH=$(dirname $0)/..
+docker_compose="$(dirname $0)/docker-compose-dev --file $BASE_PATH/docker-compose/docker-compose.tools.yml"
+
+$(dirname $0)/assert-devmode-integrated
+
+container=$1
+phpcbf_args="${@:2}"
+exit_code=0
+
+function print_cbf_header() {
+  echo
+  echo "=====[ RUN PHPCBF FOR $1 ]====="
+}
+
+function run_phpcbf() {
+  $docker_compose run --rm --entrypoint=/src/vendor/bin/phpcbf $@ $phpcbf_args || exit_code=$?
+}
+
+function run() {
+  if [ -z "$container" ] || [ "$container" == $2 ]; then
+    print_cbf_header "$1";
+    run_phpcbf $2;
+  fi
+}
+
+function run_package() {
+  if [ -z "$container" ] || [ "$container" == $2 ]; then
+    print_cbf_header "$1";
+    if [ ! -z "$3" ]; then
+        path=$3;
+    else
+        path="packages/${2}";
+    fi
+    run_phpcbf portal --standard=/shared/${path}/phpcs.xml /shared/${path};
+  fi
+}
+
+if [ ! "$(docker ps --quiet --filter name=portal)" ]; then
+  echo "=====[ START CONTAINERS ]====="
+  $docker_compose up --detach --remove-orphans
+fi
+
+run "GATEWAY" "gateway"
+run "PORTAL" portal
+
+run_package "LIBRARY" library library/DBCO
+run_package "PACKAGE AUDIT" audit
+run_package "PACKAGE CODABLE" codable
+run_package "DBCO-ENCRYPTION" dbco-encryption
+run_package "DBCO-METRICS" dbco-metrics
+run_package "DBCO-PAIRING-REQUEST" dbco-pairing-request
+run_package "DBCO-ENUM" dbco-enum
+run_package "HEALTHCHECK" healthcheck
+run_package "METRICS" metrics
+
+exit $exit_code

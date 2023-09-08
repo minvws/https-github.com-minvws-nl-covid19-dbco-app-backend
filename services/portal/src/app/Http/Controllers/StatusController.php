@@ -1,37 +1,41 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use MinVWS\Audit\Services\AuditService;
 use MinVWS\HealthCheck\HealthChecker;
 
-/**
- * Used for performing health checks.
- *
- * @package App\Http\Controllers
- */
+use function response;
+
+use const JSON_PRETTY_PRINT;
+
 class StatusController extends Controller
 {
-    /**
-     * Ping.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|Response
-     */
-    public function ping()
+    public function __construct(private readonly AuditService $auditService)
     {
+    }
+
+    public function ping(): Application|ResponseFactory|Response
+    {
+        $this->auditService->setEventExpected(false);
         return response('PONG', Response::HTTP_OK);
     }
 
-    /**
-     * Health check.
-     *
-     * @param HealthChecker $healthChecker
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function status(HealthChecker $healthChecker)
+    public function status(HealthChecker $healthChecker): JsonResponse
     {
+        $this->auditService->setEventExpected(false);
         $result = $healthChecker->performHealthChecks();
-        return response()->json($result->jsonSerialize(), $result->isHealthy ? Response::HTTP_OK : Response::HTTP_SERVICE_UNAVAILABLE);
+        return response()->json(
+            $result->jsonSerialize(),
+            $result->isHealthy ? Response::HTTP_OK : Response::HTTP_SERVICE_UNAVAILABLE,
+            [],
+            JSON_PRETTY_PRINT,
+        );
     }
 }

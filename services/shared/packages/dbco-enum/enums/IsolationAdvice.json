@@ -1,0 +1,20 @@
+{
+    "phpClass": "IsolationAdvice",
+    "tsConst": "isolationAdvice",
+    "currentVersion": 2,
+    "items": [
+        {
+            "label": "Gescheiden leven van huisgenoten & schoonmaken van gedeelde keuken en/of badkamer uitgelegd",
+            "value": "live-seperated-explained"
+        },
+        {
+            "label": "Quarantainebeleid wanneer strikte thuisisolatie niet mogelijk is uitgelegd (de laatste dag van quarantaine is afhankelijk van de dag dat index uit isolatie gaat)",
+            "value": "isolation-impossible-explained",
+            "maxVersion": 1
+        },
+        {
+            "label": "Testadvies voor nauwe contacten & huisgenoten uitgelegd",
+            "value": "test-advice-housemates-explained"
+        }
+    ]
+}

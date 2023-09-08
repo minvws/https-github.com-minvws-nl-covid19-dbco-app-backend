@@ -1,0 +1,23 @@
+{
+    "phpClass": "NoBsnOrAddressReason",
+    "tsConst": "noBsnOrAddressReason",
+    "description": "Reason for missing bsn",
+    "items": [
+        {
+            "value": "homeless",
+            "label": "Dak- of thuisloos"
+        },
+        {
+            "value": "foreign_passerby",
+            "label": "Buitenlandse passant (geen BSN)"
+        },
+        {
+            "value": "postalcode_unknown",
+            "label": "Postcode onbekend"
+        },
+        {
+            "value": "no_cooperation",
+            "label": "Wil niet meewerken"
+        }
+    ]
+}

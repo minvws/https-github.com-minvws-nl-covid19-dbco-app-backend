@@ -1,0 +1,467 @@
+{
+    "components": {
+        "calendarItemStrategyForm": {
+            "mutationLabel": {
+                "point": {
+                    "pointFixedStrategy": {
+                        "0": "Dag",
+                        "1": "Minimaal",
+                        "2": "Maximaal"
+                    },
+                    "pointFlexStrategy": {
+                        "0": "Dag",
+                        "1": "Minimaal",
+                        "2": "Maximaal"
+                    }
+                },
+                "periodStart": {
+                    "periodFixedStrategy": {
+                        "0": "Vanaf",
+                        "1": "Op zijn vroegst",
+                        "2": "Uiterlijk vanaf"
+                    },
+                    "periodFlexStrategy": {
+                        "0": "Vanaf",
+                        "1": "Op zijn vroegst",
+                        "2": "Uiterlijk vanaf"
+                    },
+                    "periodFadedStrategy": {
+                        "0": "Fade-in beginnen",
+                        "1": "Op zijn vroegst",
+                        "2": "Uiterlijk vanaf"
+                    }
+                },
+                "periodEnd": {
+                    "periodFixedStrategy": {
+                        "0": "Tot en met",
+                        "1": "Op zijn vroegst",
+                        "2": "Uiterlijk tot en met"
+                    },
+                    "periodFlexStrategy": {
+                        "0": "Tot en met",
+                        "1": "Op zijn vroegst",
+                        "2": "Uiterlijk tot en met"
+                    },
+                    "periodFadedStrategy": {
+                        "0": "Fade-out beginnen",
+                        "1": "Op zijn vroegst",
+                        "2": "Uiterlijk tot en met"
+                    }
+                }
+            }
+        },
+        "assignmentConflictModal": {
+            "title": "Je toewijzing is niet doorgevoerd | Je toewijzingen zijn niet doorgevoerd",
+            "reason": "Iemand anders heeft de toewijzing van deze case zojuist gewijzigd: | Iemand anders heeft de toewijzing van deze cases zojuist gewijzigd:",
+            "description": "Jouw toewijzing is daarom niet doorgevoerd. | Daarom zijn niet al je toewijzingen doorgevoerd.",
+            "description_none": "Jouw toewijzingen zijn daarom niet doorgevoerd.",
+            "button": "Ok"
+        },
+        "covidCaseHistory": {
+            "no_answer": "(Nog) niet beantwoord",
+            "no_history": "Er is nog geen geschiedenis op deze case",
+            "note_deadline": "Uitvoerdatum",
+            "created_at": "Taak aangemaakt",
+            "hide_details": "Verberg details",
+            "show_details": "Bekijk details",
+            "tabs": {
+                "default": "Geschiedenis",
+                "osiris": "Osiris"
+            }
+        },
+        "covidCaseOsirisLog": {
+            "errors": "Blokkerend voor Osiris",
+            "messages": "Terugkoppeling Osiris",
+            "no_items": "Er is nog geen Osiris log op deze case",
+            "number": "Meldnummer RIVM: {osirisNumber}",
+            "reopened": "Case heropend",
+            "titles": {
+                "failed": "Osiris melding mislukt",
+                "main": "Osiris (Meldnummer: {logId})",
+                "success": "Osiris melding succesvol",
+                "validation": "Osiris melding niet verstuurd",
+                "blocked": "Osiris melding geblokkeerd"
+            },
+            "warnings": "Niet blokkerend voor Osiris"
+        },
+        "question": {
+            "no_creation_date": "geen datum beschikbaar",
+            "no_user_info": "geen gebruikersinformatie beschikbaar"
+        },
+        "questionSidebar": {
+            "answer_question": "Beantwoorden",
+            "close_question": "Vraag sluiten",
+            "drop_question": "Terugzetten",
+            "no_question_selected_hint": "Klik op een vraag om deze hier in te zien en/of te beantwoorden...",
+            "no_question_selected": "Geen vraag geselecteerd",
+            "pick_up_to_answer_hint": "Je kan de vraag beantwoorden door de vraag op te pakken. Je kan de vraag altijd teruggeven.",
+            "pick_up_question": "Vraag oppakken",
+            "question_for_conversation-coach": "Hulpvraag aan gesprekscoach",
+            "question_for_medical-supervision": "Hulpvraag aan arts voor medisch advies",
+            "view": "Naar dossier"
+        },
+        "callToActionTable": {
+            "load_more": "Meer taken laden",
+            "update_message": "Er zijn 1 of meerdere taken toegevoegd"
+        },
+        "choreTable": {
+            "status": {
+                "not_yet_picked_up": "Nog niet opgepakt",
+                "picked_up_by_you": "Opgepakt door jou"
+            }
+        },
+        "questionTable": {
+            "status_answered_by_you": "Beantwoord door jou",
+            "update_message": "Er zijn 1 of meerdere vragen toegevoegd"
+        },
+        "answerSidebar": {
+            "answer_placeholder": "Schrijf je antwoord...",
+            "answer_title": "Antwoord",
+            "answer_send_label": "Vraag beantwoorden",
+            "answer_answered_label": "Antwoord verstuurd",
+            "answer_required_message": "Bij het beantwoorden van een vraag is een toelichting vereist"
+        },
+        "navigatorInput": {
+            "not_enough_input": "Voer een geldig casenummer in",
+            "search_casenumber": "Zoek Casenummer"
+        },
+        "callToActionSidebar": {
+            "actions": {
+                "cancel": "Annuleren",
+                "complete": "Taak afronden",
+                "confirm": {
+                    "complete": "Afronden",
+                    "drop": "Teruggeven"
+                },
+                "drop": "Taak teruggeven",
+                "pick_up": "Taak oppakken",
+                "pick_up_loading": "Taak laden",
+                "show_history": "Bekijk alle notities",
+                "view": "Naar dossier"
+            },
+            "hints": {
+                "no_creation_date": "geen datum beschikbaar",
+                "no_created_by_info": "Aanmaker gegevens niet beschikbaar",
+                "no_history": "Er is nog geen geschiedenis op deze taak",
+                "no_selection": "Klik op een taak om deze te bekijken en op te pakken",
+                "pick_up": "De taakbeschrijving en de aanmaker van de taak kunnen pas worden weergegeven, nadat je de taak hebt opgepakt."
+            },
+            "history": {
+                "action": {
+                    "note": "Notitie aangemaakt door {nameAndRoles}",
+                    "picked-up": "Taak opgepakt door {nameAndRoles}",
+                    "returned": "Taak teruggezet door {nameAndRoles}",
+                    "completed": "Taak afgerond door {nameAndRoles}",
+                    "expired": "De termijn van bewerking is verstreken. De taak is automatisch teruggezet."
+                }
+            },
+            "note": {
+                "complete": {
+                    "placeholder": "Schrijf hier waarom je de taak afrond.",
+                    "required": "Bij het afronden van een taak is een toelichting vereist.",
+                    "success": "Taak afgerond",
+                    "title": "Taak afronden"
+                },
+                "drop": {
+                    "placeholder": "Schrijf hier waarom je de taak terug geeft.",
+                    "required": "Bij het teruggeven van een taak is een toelichting vereist.",
+                    "success": "Taak teruggegeven",
+                    "title": "Taak teruggeven"
+                }
+            },
+            "titles": {
+                "description": "Beschrijving",
+                "deadline": "Uitvoerdatum",
+                "created_by": "Aangemaakt door",
+                "created_at": "Taak aangemaakt",
+                "history": "Geschiedenis",
+                "no_selection": "Geen taak geselecteerd",
+                "selection": "Taak geselecteerd"
+            }
+        },
+        "createCallToAction": {
+            "actions": {
+                "cancel": "Annuleren",
+                "submit": "Aanmaken"
+            },
+            "date": {
+                "label": "Uitvoerdatum",
+                "placeholder": "Vul de dag in waarop de taak uitgevoerd moet worden",
+                "required": "Je hebt nog geen uitvoerdatum ingevoerd"
+            },
+            "description": {
+                "label": "Beschrijving",
+                "placeholder": "Beschrijf de taak",
+                "required": "Je hebt je taak nog niet beschreven"
+            },
+            "role": {
+                "label": "Voor wie is deze taak?",
+                "placeholder": "Kies een rol",
+                "required": "Je hebt nog geen keuze gemaakt"
+            },
+            "subject": {
+                "label": "Onderwerp",
+                "placeholder": "Vat de taak samen, zonder persoonsgegevens te delen",
+                "required": "Je hebt het onderwerp nog niet beschreven"
+            }
+        },
+        "supervisionBackendErrorModal": {
+            "title": "Iemand anders is bezig met deze vraag",
+            "reason": "Je kunt daarom de vraag niet openen. Ververs de pagina om te zien welke vragen nog openstaan.",
+            "button": "Ok"
+        },
+        "callToActionBackendErrorModal": {
+            "title": "Taak is niet (meer) beschikbaar",
+            "reason": "Je kunt daarom de taak niet openen. Ververs de pagina om te zien welke taken nog openstaan.",
+            "button": "Ok"
+        },
+        "resetIndexCount": {
+            "button": "Check afronden"
+        },
+        "placeCasesTable": {
+            "headers": {
+                "age": "Leeftijd",
+                "ezdDate": "EZD",
+                "dateVisited": "Datums bezoeken",
+                "identifier": "Naam (of case)",
+                "relationContext": "Relatie Context",
+                "sections": "Afdeling(en)",
+                "vaccination": "Vaccinaties",
+                "index": "Indexnummer"
+            },
+            "tooltips": {
+                "vaccination": "Aantal vaccinaties dat de index heeft gehad en de datum van de laatste prik"
+            },
+            "hints": {
+                "all_cases_loaded": "Er zijn verder geen indexen met een EZD in de 28 dagen voor {date}",
+                "load_more": "Meer indexen laden",
+                "no_access": "Er ging iets mis. Probeer het opnieuw.",
+                "no_cases": "Er zijn geen indexen met een EZD in de afgelopen 28 dagen",
+                "no_index_cases": "Er zijn geen indexen",
+                "all_index_cases_loaded": "Alle indexen zijn geladen",
+                "show_all": "Toon alle {count}"
+            }
+        },
+        "placesOverviewTable": {
+            "filters": {
+                "isVerified": {
+                    "label": "Die zijn",
+                    "all": "geverifieerd of ongeverifieerd",
+                    "verified": "geverifieerd",
+                    "unverified": "ongeverifieerd"
+                },
+                "category": {
+                    "label": "Contexten:",
+                    "all": "Alle categorieën"
+                }
+            },
+            "actions": {
+                "edit": "Context bewerken",
+                "main": "Actie",
+                "merge": "Context samenvoegen",
+                "unverify": "Verificatie ongedaan maken",
+                "verify": "Context verifiëren"
+            },
+            "badges": {
+                "category": "Handmatig"
+            },
+            "headers": {
+                "actions": "Acties",
+                "category": "Categorie",
+                "description": "Omschrijving",
+                "indexCount": "Unieke indexen",
+                "indexCountSinceReset": "Toename",
+                "lastCheck": "Laatste check",
+                "lastIndexPresence": "Laatste bezoek"
+            },
+            "hints": {
+                "load_more": "Meer contexten laden",
+                "no_places": "Er zijn nog geen locaties.",
+                "no_results": "Geen contexten gevonden voor '{query}'. Probeer een andere zoekopdracht.",
+                "search_term_fallback": "zoekopdracht"
+            },
+            "tooltips": {
+                "indexCount": "Aantal indexen dat context heeft bezocht en waarvan de EZD in de afgelopen 28 dagen lag.",
+                "indexCountSinceReset": "Aantal indexen dat context heeft bezocht sinds er voor het laatst een check is afgerond.",
+                "lastIndexPresence": "Datum waarop voor het laatst een index aanwezig was op context.",
+                "situations": "Er zijn een of meerdere situatienummers aan deze context verbonden",
+                "verified": "Geverifieerde context"
+            }
+        },
+        "caseLockNotification": {
+            "title": "Je kunt dit dossier nu niet bewerken. {userAndOrganisation} is in het dossier bezig."
+        },
+        "caseUnlockNotification": {
+            "title": "Dit dossier is weer beschikbaar",
+            "action": "Dossier bewerken"
+        },
+        "dropDownAgeFilter": {
+            "dropDownLabel": "Alle leeftijden",
+            "ageLabel": "Van",
+            "ageEnd": "Tot en met",
+            "resetButton": "Wissen",
+            "filterButton": "Filteren"
+        },
+        "covidCaseDetailModal": {
+            "actions": {
+                "close": "Sluiten",
+                "view": "Bekijk case"
+            },
+            "tabs": {
+                "default": "Over case"
+            }
+        },
+        "covidCaseDetails": {
+            "actions": {
+                "add_note": "Notitie plaatsen"
+            },
+            "titles": {
+                "hp_zone": "HPZone nummer",
+                "test_monster_number": "Monsternummer",
+                "portal_number": "BCO Portaal nummer",
+                "date_of_birth": "Leeftijd",
+                "priority": "Prioriteit",
+                "label": "Label",
+                "date_of_test": "Testdatum",
+                "created_at": "Datum toegevoegd",
+                "test_result_source": "Bron van melding",
+                "assignment": "Toewijzing",
+                "updated_at": "Laatste wijziging",
+                "notes": "Notities"
+            },
+            "hints": {
+                "note_placeholder": "Noteer hier eventuele bijzonderheden over de case, bijvoorbeeld over de bereikbaarheid. Deel hier geen persoonsgegevens.",
+                "note_added": "Notitie is toegevoegd aan geschiedenis"
+            }
+        },
+        "covidCasePlannerTable": {
+            "assignment": {
+                "default": "Toewijzen",
+                "organisation": {
+                    "outsourced": "Deze case is teruggekomen van {organisationName}",
+                    "queue": "(Wachtrij)",
+                    "user": "(bij BCO-er)"
+                }
+            },
+            "headers": {
+                "assigned": "Toewijzing",
+                "caseId": "Case",
+                "caseLabels": "Label",
+                "contactsCount": "Contacten",
+                "createdAt": "Datum toegevoegd",
+                "dateOfBirth": "Leeftijd",
+                "lastAssignedUserName": "Laatste toewijzing",
+                "priority": "Prio",
+                "status": "Status",
+                "testResultSource": "Bron van melding",
+                "updatedAt": "Laatste wijziging"
+            },
+            "filters": {
+                "organisation": {
+                    "default_option_label": "Alle GGD’en",
+                    "label": "Cases van:",
+                    "search_placeholder": "Zoek organisaties"
+                },
+                "label": {
+                    "default_option_label": "Alle labels",
+                    "label": "Met:",
+                    "search_placeholder": "Zoek labels"
+                },
+                "userAssignment": {
+                    "default_option_label": "Alle medewerkers",
+                    "label": "Bij:",
+                    "search_placeholder": "Zoek medewerkers"
+                },
+                "statusIndexContactTracing": {
+                    "default_option_label": "Alle statussen",
+                    "label": "Met:",
+                    "search_placeholder": "Zoek status"
+                },
+                "testResultSource": {
+                    "default_option_label": "Alle bronnen",
+                    "label": "Bron:",
+                    "search_placeholder": "Zoek bron"
+                }
+            },
+            "tooltips": {
+                "not_approved": "Deze case is afgekeurd en teruggestuurd ter verbetering",
+                "needs_attention": "Deze case heeft extra aandacht nodig"
+            },
+            "hints": {
+                "load_more": "Meer cases laden",
+                "no_cases": "Er zijn geen cases."
+            }
+        },
+        "modals": {
+            "CovidCaseDeleteModal": {
+                "title": "Weet je zeker dat je dit dossier wilt verwijderen?",
+                "okTitle": "Verwijderen",
+                "cancelTitle": "Annuleren"
+            }
+        }
+    },
+    "errors": {
+        "copy": "Er ging iets mis bij het kopieren van {toCopy}",
+        "create": "Er ging iets mis bij het aanmaken van {toCreate}",
+        "edit": "Er ging iets mis bij het bewerken van {toEdit}",
+        "pair": "Er ging iets mis bij het koppelen van {toPair}",
+        "request": "Er ging iets mis bij het ophalen van {requested}"
+    },
+    "pages": {
+        "createCallToAction": {
+            "return": "terug naar Indexdossier",
+            "success": "Taak aangemaakt voor",
+            "title": "Taak aanmaken",
+            "legend": "Over de taak"
+        },
+        "medicalSupervisor": {
+            "title": "Hulpvragen medische supervisie"
+        },
+        "conversationCoach": {
+            "title": "Hulpvragen gesprekscoach"
+        },
+        "placeEdit": {
+            "title": "Context bewerken",
+            "tabs": {
+                "connectedIndex": "Gekoppelde indexen",
+                "visited": "Bezoeken"
+            }
+        }
+    },
+    "roles": {
+        "admin": "Admin",
+        "callcenter": "Callcenter Basis",
+        "callcenter_expert": "Callcenter Expert",
+        "casequality_nationwide": "Landelijk Dossierchecker",
+        "casequality": "Dossierchecker",
+        "clusterspecialist": "Clusterspecialist",
+        "compliance": "Compliance Officer",
+        "contextmanager": "Contextbeheerder",
+        "conversation_coach_nationwide": "Landelijk Gesprekscoach",
+        "conversation_coach": "Gesprekscoach",
+        "medical_supervisor_nationwide": "Landelijk Medisch Supervisor",
+        "medical_supervisor": "Medisch Supervisor",
+        "planner_nationwide": "Landelijk Werkverdeler",
+        "planner": "Werkverdeler",
+        "user_alt": "BCO-medewerker",
+        "user_nationwide": "Landelijk Gebruiker",
+        "user_planner": "Werkverdeler",
+        "user": "Gebruiker"
+    },
+    "utils": {
+        "date": {
+            "ago": "{timeDifference} geleden"
+        }
+    },
+    "shared": {
+        "test_result_source_multiple": "Meerdere bronnen",
+        "case_delete_osiris_warning": {
+            "title": "Osiris updaten",
+            "text": "Meldingen worden automatisch uit Osiris verwijderd. Je hoeft hiervoor niets meer te doen."
+        },
+        "case_delete_warning": {
+            "compliance": "Na verwijderen is het nog 7 dagen mogelijk om dit dossier te herstellen.",
+            "planner": "Jij kan dit niet meer wijzigen. De compliance officer heeft nog 7 dagen de mogelijkheid om dit dossier te herstellen."
+        }
+    }
+}

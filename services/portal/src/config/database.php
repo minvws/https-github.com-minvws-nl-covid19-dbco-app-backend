@@ -1,29 +1,58 @@
 <?php
 
-use Illuminate\Support\Str;
+declare(strict_types=1);
 
-$redisSentinelService = env('REDIS_SENTINEL_SERVICE');
-if (empty($redisSentinelService)) {
-    $redis = [
-        'host' => env('REDIS_HOST', '127.0.0.1'),
-        'password' => env('REDIS_PASSWORD', null),
-        'port' => env('REDIS_PORT', '6379')
+$createSingleRedisConfig = static function (string $prefix = 'REDIS_') {
+    return [
+        'host' => env($prefix . 'HOST', '127.0.0.1'),
+        'username' => env($prefix . 'USERNAME', null),
+        'password' => env($prefix . 'PASSWORD', null),
+        'port' => env($prefix . 'PORT', '6379'),
     ];
-} else {
-    $redis = [
-        [
-            'host' => env('REDIS_HOST', '127.0.0.1'),
-            'port' => env('REDIS_PORT', '6379')
-        ],
+};
+
+$createSentinelRedisConfig = static function (string $prefix = 'REDIS_') {
+    $prefixedHost = env($prefix . 'HOST');
+    if (!is_string($prefixedHost)) {
+        $prefixedHost = '';
+    }
+
+    $ipAddresses = gethostbynamel($prefixedHost);
+
+    if ($ipAddresses === false) {
+        $ipAddresses = [];
+    }
+
+    $sentinels = [];
+    foreach ($ipAddresses as $ipAddress) {
+        $sentinels[] = "tcp://{$ipAddress}:" . env($prefix . 'PORT', '26379');
+    }
+
+    return [
+        ...$sentinels,
         'options' => [
             'replication' => 'sentinel',
-            'service' => $redisSentinelService,
+            'service' => env($prefix . 'SENTINEL_SERVICE'),
             'parameters' => [
-                'password' => env('REDIS_PASSWORD', null)
-            ]
-        ]
+                'username' => env($prefix . 'USERNAME', null),
+                'password' => env($prefix . 'PASSWORD', null),
+            ],
+        ],
     ];
-}
+};
+
+$createRedisConfig = static function (string $prefix = 'REDIS_') use ($createSingleRedisConfig, $createSentinelRedisConfig) {
+    $redisSentinelService = env($prefix . 'SENTINEL_SERVICE');
+    if (empty($redisSentinelService)) {
+        return $createSingleRedisConfig($prefix);
+    }
+
+    return $createSentinelRedisConfig($prefix);
+};
+
+$redis = $createRedisConfig();
+$redisHSM = $createSingleRedisConfig('REDIS_HSM_');
+$redisPrometheus = empty(env('REDIS_PROMETHEUS_HOST')) ? $redis : $createRedisConfig('REDIS_PROMETHEUS_');
 
 return [
 
@@ -57,15 +86,6 @@ return [
     */
 
     'connections' => [
-
-        'sqlite' => [
-            'driver' => 'sqlite',
-            'url' => env('DATABASE_URL'),
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
-            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-        ],
-
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
@@ -83,37 +103,10 @@ return [
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8, time_zone = 'UTC'",
+                PDO::ATTR_EMULATE_PREPARES => env('DB_EMULATE_PREPARES', false),
             ]) : [],
         ],
-
-        'postgres' => [
-            'driver' => 'pgsql',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'schema' => 'public',
-            'sslmode' => 'prefer',
-        ],
-
-        'sqlsrv' => [
-            'driver' => 'sqlsrv',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', '1433'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
-            'prefix' => '',
-            'prefix_indexes' => true,
-        ],
-
     ],
 
     /*
@@ -145,11 +138,13 @@ return [
         'client' => env('REDIS_CLIENT', 'predis'),
 
         'options' => [
-            'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => ''
+            'prefix' => '',
         ],
 
         'default' => $redis,
-        'cache' => $redis
+        'ganesha' => $redis,
+        'prometheus' => $redisPrometheus,
+        'cache' => $redis,
+        'hsm' => $redisHSM,
     ],
 ];

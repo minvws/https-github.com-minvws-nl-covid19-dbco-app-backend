@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+DOCKER_COMPOSE_TOOLS=$(dirname $0)/docker-compose-dev-tools
+
+$DOCKER_COMPOSE_TOOLS run --rm --workdir /build/portal/src --publish 6006:6006 frontend-build yarn run storybook

@@ -1,0 +1,83 @@
+{{- if .Values.healthauthorityHsm.redis.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "app.fullname" . }}-healthauthority-hsm-redis
+  labels:
+    app.kubernetes.io/name: {{ include "app.fullname" . }}-healthauthority-hsm-redis
+spec:
+  replicas: 1
+  strategy:
+    type: {{ .Values.healthauthorityHsm.redis.strategyType }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "app.fullname" . }}-healthauthority-hsm-redis
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "app.fullname" . }}-healthauthority-hsm-redis
+    spec:
+      terminationGracePeriodSeconds: {{ .Values.healthauthorityHsm.redis.terminationGracePeriodSeconds }}
+      {{- if .Values.serviceAccount.enabled }}
+      serviceAccountName: {{ template "app.serviceAccountName" . }}
+      {{- end }}
+      {{- if .Values.healthauthorityHsm.redis.imagePullSecrets }}
+      imagePullSecrets:
+        - name: {{ .Values.healthauthorityHsm.redis.imagePullSecrets }}
+      {{- end }}
+      containers:
+        - name: redis
+          image: "{{ .Values.healthauthorityHsm.redis.image.repository }}:{{ .Values.healthauthorityHsm.redis.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - redis-server
+            - "/redis-master/redis.conf"
+          ports:
+          - containerPort: 6379
+            name: redis
+            protocol: TCP
+          securityContext:
+{{ toYaml .Values.healthauthorityHsm.redis.containerSecurityContext | indent 12 }}
+          {{- with .Values.healthauthorityHsm.redis.resources }}
+          resources: {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.healthauthorityHsm.redis.livenessProbe }}
+          livenessProbe: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.healthauthorityHsm.redis.readinessProbe }}
+          readinessProbe: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.healthauthorityHsm.redis.lifecycle }}
+          lifecycle: {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - mountPath: /redis-master
+              name: config
+    {{- with .Values.healthauthorityHsm.securityContext }}
+      securityContext: {{ toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.healthauthorityHsm.nodeSelector }}
+      nodeSelector: {{ toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.healthauthorityHsm.affinity }}
+      affinity: {{ toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.healthauthorityHsm.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+        - name: config
+          {{- if .Values.healthauthorityHsm.redis.useSecret}}
+          secret:
+            secretName: {{ template "app.fullname" . }}-healthauthority-hsm-redis
+            items:
+              - key: redis.conf
+                path: redis.conf
+          {{- else }}
+          configMap:
+            name: {{ template "app.fullname" . }}-healthauthority-hsm-redis
+            items:
+              - key: redis.conf
+                path: redis.conf
+          {{- end }}
+{{- end }}

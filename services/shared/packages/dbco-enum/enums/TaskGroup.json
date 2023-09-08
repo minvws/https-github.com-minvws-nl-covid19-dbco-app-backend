@@ -1,0 +1,20 @@
+{
+    "phpClass": "TaskGroup",
+    "tsConst": "taskGroup",
+    "items": [
+        {
+            "value": "contact",
+            "label": "contact"
+        },
+        {
+            "name": "positiveSource",
+            "value": "positivesource",
+            "label": "positiveSource"
+        },
+        {
+            "name": "symptomaticSource",
+            "value": "symptomaticsource",
+            "label": "symptomaticSource"
+        }
+    ]
+}

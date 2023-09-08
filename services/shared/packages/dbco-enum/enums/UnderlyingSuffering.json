@@ -1,0 +1,177 @@
+{
+    "phpClass": "UnderlyingSuffering",
+    "tsConst": "underlyingSuffering",
+    "currentVersion": 2,
+    "properties": {
+        "osirisCode": {
+            "type": "int",
+            "scope": "php"
+        }
+    },
+    "items": [
+        {
+            "label": "Aangeboren afweerstoornissen",
+            "value": "immune-disorders",
+            "osirisCode": 18,
+            "minVersion": 2
+        },
+        {
+            "label": "Auto-immuunziekte, waarvoor afweeronderdrukkende medicijnen",
+            "value": "autoimmune-disease",
+            "osirisCode": 21,
+            "minVersion": 2
+        },
+        {
+            "label": "Bloedziekte (o.a. leukemie)",
+            "value": "blood-disease",
+            "osirisCode": 10,
+            "maxVersion": 1
+        },
+        {
+            "label": "Kwaadaardige bloedziekte (bijv. leukemie), gediagnosticeerd in afgelopen 5 jaar",
+            "value": "malignant-blood-disease",
+            "osirisCode": 10,
+            "minVersion": 2
+        },
+        {
+            "label": "Chronische hart- en vaatziekten",
+            "value": "cardio-vascular",
+            "osirisCode": 3,
+            "maxVersion": 1
+        },
+        {
+            "label": "Chronische hartziekte, waardoor indicatie griepprik",
+            "value": "chronic-heart-disease",
+            "osirisCode": 3,
+            "minVersion": 2
+        },
+        {
+            "label": "Chronische longziekte",
+            "value": "chronic",
+            "osirisCode": 9,
+            "maxVersion": 1
+        },
+        {
+            "label": "Chronische longziekte, waardoor indicatie griepprik",
+            "value": "chronic-lung-disease",
+            "osirisCode": 9,
+            "minVersion": 2
+        },
+        {
+            "label": "Diabetes (suikerziekte)",
+            "value": "diabetes",
+            "osirisCode": 4,
+            "maxVersion": 1
+        },
+        {
+            "label": "Diabetes met instabiele glucosewaarden en/of met complicaties",
+            "value": "diabetes-unstable-glucoselevels",
+            "osirisCode": 4,
+            "minVersion": 2
+        },
+        {
+            "label": "Dementie / Alzheimer",
+            "value": "dementia-alzheimers",
+            "osirisCode": 15
+        },
+        {
+            "label": "HIV onbehandeld",
+            "value": "hiv-untreated",
+            "osirisCode": 19,
+            "minVersion": 2
+        },
+        {
+            "label": "Kanker of kwaadaardige tumor",
+            "value": "malignity",
+            "osirisCode": 22,
+            "maxVersion": 1
+        },
+        {
+            "label": "Solide tumor, in de afgelopen 3 maanden behandeld met chemotherapie/immunotherapie",
+            "value": "solid-tumor",
+            "osirisCode": 22,
+            "minVersion": 2
+        },
+        {
+            "label": "Leveraandoening",
+            "value": "liver",
+            "osirisCode": 5,
+            "maxVersion": 1
+        },
+        {
+            "label": "Cirrose (ernstige leverziekte)",
+            "value": "liver_cirrhosis",
+            "osirisCode": 5,
+            "minVersion": 2
+        },
+        {
+            "label": "Nieraandoening",
+            "value": "kidney",
+            "osirisCode": 8,
+            "maxVersion": 1
+        },
+        {
+            "label": "Nierziekte, waarvoor nierdialyse (of op de wachtlijst)",
+            "value": "kidney-dialysis",
+            "osirisCode": 8,
+            "minVersion": 2
+        },
+        {
+            "label": "Obesitas (overgewicht, BMI hoger dan 30)",
+            "value": "obesitas",
+            "osirisCode": 14,
+            "maxVersion": 1
+        },
+        {
+            "label": "Morbide obesitas (zeer ernstig overgewicht, BMI hoger dan 40)",
+            "value": "morbid-obesity",
+            "osirisCode": 14,
+            "minVersion": 2
+        },
+        {
+            "label": "Orgaan, stamcel of beenmerg transplantatie",
+            "value": "transplant",
+            "osirisCode": 20,
+            "maxVersion": 1
+        },
+        {
+            "label": "Orgaan- of stamceltransplantatie",
+            "value": "organ-stemcell-transplant",
+            "osirisCode": 20,
+            "minVersion": 2
+        },
+        {
+            "label": "Parkinson",
+            "value": "parkinson",
+            "osirisCode": 16
+        },
+        {
+            "label": "Sikkelcelziekte",
+            "value": "sicklecell-disease",
+            "osirisCode": 23,
+            "minVersion": 2
+        },
+        {
+            "label": "Slecht functionerend afweersysteem (incl. HIV)",
+            "value": "immune-deficiency",
+            "osirisCode": 7,
+            "maxVersion": 1
+        },
+        {
+            "label": "Syndroom van Down",
+            "value": "down-syndrome",
+            "osirisCode": 17
+        },
+        {
+            "label": "Ziekte van het zenuwstelsel (bijv. epilepsie of spierziekte zoals ALS)",
+            "value": "neurologic-neuromuscuklar",
+            "maxVersion": 1
+        },
+        {
+            "label": "Chronische ziekte van het zenuwstelsel of spierziekte, waardoor problemen met de ademhaling",
+            "value": "chronic-nervoussystem-disease",
+            "osirisCode": 6,
+            "minVersion": 2
+        }
+    ]
+}

@@ -1,0 +1,4 @@
+Fragment,Veld,Label,Omschrijving,Conditie,Waardes en formaat?
+DummySchemaProvider,schemaVersion,Versie,Versienummer van de entiteit,,,
+DummySchemaProvider,fieldWithPurpose,Veld,Veld met doelbindingen,,,
+DummySchemaProvider,fieldWithoutPurpose,Veld2,Veld zonder doelbindingen,,,

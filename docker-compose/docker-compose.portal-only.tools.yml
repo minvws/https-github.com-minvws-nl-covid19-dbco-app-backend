@@ -1,0 +1,28 @@
+version: '3.7'
+
+volumes:
+    global:
+    portal:
+    systemtests:
+    enum:
+    schema:
+    yarn:
+
+services:
+    mysqlclient:
+        extends:
+            file: docker-compose/tools.yml
+            service: mysqlclient
+
+    frontend-build:
+        image: node:16-bullseye
+        volumes:
+            - type: bind
+              source: ./services
+              target: /build
+            - global:/build/node_modules/
+            - portal:/build/portal/src/node_modules/
+            - systemtests:/build/portal/systemtests/node_modules/
+            - enum:/build/shared/packages/dbco-enum/node_modules/
+            - schema:/build/shared/packages/schema/node_modules/
+            - yarn:/build/.yarn/cache

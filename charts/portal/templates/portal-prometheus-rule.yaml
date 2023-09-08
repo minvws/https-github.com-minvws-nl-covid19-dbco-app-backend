@@ -1,0 +1,18 @@
+{{- if .Values.prometheus.rules.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ template "app.fullname" . }}-rules
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+    {{- if .Values.prometheus.rules.additionalLabels }}
+{{ toYaml .Values.prometheus.rules.additionalLabels | indent 4 -}}
+    {{- end }}
+spec:
+  groups:
+  {{- range $path, $_ := .Files.Glob "rules/*" }}
+    - name: {{ $.Release.Namespace }}/{{ $.Release.Name }}/{{ $path }}
+      rules:
+      {{- tpl ($.Files.Get $path) $ | nindent 8 }}
+  {{- end }}
+{{- end }}
