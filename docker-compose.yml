@@ -1,27 +1,30 @@
-version: '3.7'
+secrets:
+    composer_auth:
+        file: ./auth.json
 
 volumes:
     mysql-data:
         driver: local
-    hsm-data:
-        driver: local
-
-networks:
-    public:
-    sluice:
-    private:
-    healthauthority:
+    phpstan:
 
 services:
-    redis:
+    # Redis Sluice Persistent
+    redis-sp:
         extends:
             file: docker-compose/common.yml
-            service: redis
+            service: redis-sp
 
-    redis-haa:
+    # Redis Health Authority Volatile
+    redis-hav:
         extends:
             file: docker-compose/common.yml
-            service: redis-haa
+            service: redis-hav
+
+    # Redis Health Authority Persistent
+    redis-hap:
+        extends:
+            file: docker-compose/common.yml
+            service: redis-hap
 
     mysql:
         extends:
@@ -30,112 +33,82 @@ services:
         ports:
             - ${MYSQL_PORT:-3306}:3306
 
-    private-api:
+    rabbitmq:
         extends:
             file: docker-compose/common.yml
-            service: private-api
-        depends_on:
-            - redis
+            service: rabbitmq
         ports:
-            - ${PRIVATE_API_PORT:-8081}:8080
-        volumes:
-            - ./services/shared/library:/shared/library
-            - ./services/shared/packages:/shared/packages
-            - ./services/private-api/src:/src
-
-    public-api:
-        extends:
-            file: docker-compose/common.yml
-            service: public-api
-        depends_on:
-            - redis
-        ports:
-            - ${PUBLIC_API_PORT:-8082}:8080
-        volumes:
-            - ./services/shared/library:/shared/library
-            - ./services/shared/packages:/shared/packages
-            - ./services/public-api/src:/src
-
-    bridge-clients:
-        extends:
-            file: docker-compose/common.yml
-            service: bridge-clients
-        depends_on:
-            - redis
-            - healthauthority-api
-        volumes:
-            - ./services/bridge/src:/src
-
-    bridge-caseresults:
-        extends:
-            file: docker-compose/common.yml
-            service: bridge-caseresults
-        depends_on:
-            - redis
-            - healthauthority-api
-        volumes:
-            - ./services/bridge/src:/src
-
-    healthauthority-api:
-        extends:
-            file: docker-compose/common.yml
-            service: healthauthority-api
-        depends_on:
-            - mysql
-            - redis-haa
-            - sftp
-        ports:
-            - ${HEALTHAUTHORITY_API_PORT:-8083}:8080
-        environment:
-            METRICS_EXPORT_BASE_PATH: /metrics
-            METRICS_SFTP_HOSTNAME: sftp
-            METRICS_SFTP_USERNAME: sftp
-            METRICS_SFTP_PRIVATE_KEY: /keys/id_rsa
-            METRICS_SFTP_UPLOAD_PATH: /upload
-        volumes:
-            - ./services/shared/library:/shared/library
-            - ./services/shared/packages:/shared/packages
-            - ./services/healthauthority-api/src:/src
-            - ./metrics/export:/metrics
-            - type: bind
-              source: ./sftp_id_rsa
-              target: /keys/id_rsa
-              read_only: true
-
-    healthauthority-hsm:
-        extends:
-            file: docker-compose/common.yml
-            service: healthauthority-hsm
-        depends_on:
-            - mysql
-            - redis-haa
-        volumes:
-            - ./services/shared/library:/shared/library
-            - ./services/shared/packages:/shared/packages
-            - ./services/healthauthority-api/src:/src
+            - ${RABBITMQ_PORT:-5672}:5672
+            - ${RABBITMQ_MANAGEMENT_PORT:-15673}:15672
 
     portal:
+        platform: linux/amd64
         extends:
             file: docker-compose/common.yml
             service: portal
         depends_on:
-            - healthauthority-api
             - mysql
-            - redis-haa
+            - redis-hav
+            - redis-hap
+            - rabbitmq
         build:
+            target: base
             args:
-                - INSTALL_DEV_TOOLS=1
+                - DEV=1
+            secrets:
+                - composer_auth
+        environment:
+            - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
         ports:
             - ${PORTAL_PORT:-8084}:8080
         volumes:
             - ./services/portal/src:/src
             - ./services/shared/library:/shared/library
             - ./services/shared/packages:/shared/packages
+            - ./services/shared/resources:/shared/resources
+            - ./services/portal/assets/supervisord:/etc/supervisor
+            - phpstan:/tmp/phpstan
 
-    hsm:
+    default-worker:
         extends:
             file: docker-compose/common.yml
-            service: hsm
+            service: default-worker
+        depends_on:
+            - mysql
+            - redis-hav
+            - redis-hap
+            - rabbitmq
+        environment:
+            - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
+        volumes:
+            - ./services/portal/src:/src
+            - ./services/shared/packages/dbco-enum/output/ts:/src/resources/js/types/enums
+            - ./services/shared/library:/shared/library
+            - ./services/shared/packages:/shared/packages
+            - ./services/shared/resources:/shared/resources
+        command: ["sh", "-c", "trap : 3 15 ; wait-for-it rabbitmq:${RABBITMQ_PORT:-5672} --timeout=0 --strict -- php artisan queue:listen --sleep=10 && wait"]
+        build:
+            secrets:
+                - composer_auth
+
+    gateway:
+        extends:
+            file: docker-compose/common.yml
+            service: gateway
+        depends_on:
+            - rabbitmq
+            - redis-hap
+        build:
+            args:
+                - DEV=1
+            secrets:
+                - composer_auth
+        ports:
+            - ${GATEWAY_PORT:-8085}:8080
+        volumes:
+            - ./services/gateway/src:/src
+            - ./services/shared/packages:/shared/packages:cached
+            - ./services/shared/library:/shared/library:cached
 
     sftp:
         extends:
@@ -147,3 +120,29 @@ services:
               source: ./sftp_id_rsa.pub
               target: /home/sftp/.ssh/keys/id_rsa.pub
               read_only: true
+
+    smtp:
+        image: mailhog/mailhog
+        ports:
+            - ${MAILHOG_PORT-8025}:8025
+
+    # Load testing
+    locust:
+        build:
+            context: ./services
+            dockerfile: locust/Dockerfile
+        ports:
+            - ${LOCUST_PORT:-8089}:8089
+        environment:
+            GATEWAY_JWT_SECRET: ${GATEWAY_JWT_SECRET}
+            USE_HEADER: ${LOCUST_EXPORT_API_USE_HEADER_AUTH:-true}
+            GGD_IDENTIFIER_ITERATION_ENABLED: ${LOCUST_GGD_IDENTIFIER_ITERATION_ENABLED:-false}
+            DEBUG_MODE: ${LOCUST_DEBUG_MODE-False}
+            CN_NAME: ${LOCUST_CN_NAME:-""}
+            PORTAL_HOST: ${LOCUST_PORTAL_HOST:-http://portal:8080}
+            LOCUST_CERT_FILE_NAME: ${LOCUST_CERT_FILE_NAME:-""}
+            LOCUST_CERT_KEY_FILE_NAME: ${LOCUST_CERT_KEY_FILE_NAME:-""}
+
+        volumes:
+            - ./services/locust:/mnt/locust
+        command: -f /mnt/locust/ --class-picker

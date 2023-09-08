@@ -1,0 +1,17 @@
+type: object
+oneOf:
+    - $ref: ../FormData/FormData.yaml
+    - $ref: ../FormCollectionData/FormCollectionData.yaml
+required:
+    - $config
+properties:
+    $config:
+        description: An URL that should return the `FormConfig` object for this form.
+        $ref: ../../common/URL.yaml
+    $forms:
+        description: An object with links to other forms that may be referred by the uiSchema (to be opened in a modal)
+        patternProperties:
+            '^[a-zA-Z]+$':
+                description: The key is the name of the form, the value is the url to a FormData object
+                $ref: '#/components/schemas/URL' # relative path does not work here
+        additionalProperties: false

@@ -1,0 +1,46 @@
+#!/usr/bin/env php
+<?php
+
+use App\Schema\Generator\JSONSchema\Diff\Schema\Loader\SchemaListLoader;
+use App\Schema\Generator\JSONSchema\Diff\Schema\SchemaList;
+use MinVWS\Codable\JSONEncoder;
+
+spl_autoload_register(function ($class) {
+    if (str_starts_with($class, 'MinVWS\\Codable\\')) {
+        $path = str_replace('\\', '/', $class);
+        require_once __DIR__ . '/../services/shared/packages/codable/src/' . $path . '.php';
+    } elseif (str_starts_with($class, 'App\\')) {
+        $path = str_replace(['App\\', '\\'], ['app/', '/'], $class);
+        require_once __DIR__ . '/../services/portal/src/' . $path . '.php';
+    }
+});
+
+function load(?string $tagOrBranch): SchemaList
+{
+    $rootPath = __DIR__ . '/..';
+    $schemaBasePath = 'services/portal/src/resources/schemas/json';
+    $schemaNames = ['CovidCase', 'Place', 'Event'];
+
+    if ($tagOrBranch !== null) {
+        return SchemaListLoader::loadFromGit($schemaBasePath, $schemaNames, $tagOrBranch);
+    } else {
+        return SchemaListLoader::loadLocal($schemaBasePath, $schemaNames, $rootPath);
+    }
+}
+
+if (count($argv) > 2) {
+    $new = $argv[1];
+    $original = $argv[2];
+} else {
+    $new = null;
+    $original = $argv[1] ?? 'main';
+}
+
+$diff = load($new)->diff(load($original));
+
+if ($diff === null) {
+    exit();
+}
+
+$encoder = new JSONEncoder();
+echo $encoder->encode($diff, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);

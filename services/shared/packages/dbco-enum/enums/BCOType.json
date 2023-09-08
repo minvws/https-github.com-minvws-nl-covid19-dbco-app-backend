@@ -1,0 +1,32 @@
+{
+    "phpClass": "BCOType",
+    "tsConst": "bcoType",
+    "description": "BCO type for case",
+    "properties": {
+        "description": {
+            "type": "string",
+            "description": "Description",
+            "scope": "shared"
+        }
+    },
+    "items": [
+        {
+            "label": "Uitgebreid",
+            "value": "extensive",
+            "description": "Als de index tot een doelgroep behoort waarvan het RIVM of de GGD van de index heeft gezegd dat er uitgebreid BCO moet worden gedaan, of als VOI/VOC van toepassing is."
+        },
+        {
+            "label": "Standaard",
+            "value": "standard",
+            "description": "Alleen het uitslaggesprek."
+        },
+        {
+            "label": "Anders",
+            "value": "other"
+        },
+        {
+            "label": "Onbekend",
+            "value": "unknown"
+        }
+    ]
+}

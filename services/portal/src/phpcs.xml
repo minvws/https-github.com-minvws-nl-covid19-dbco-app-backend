@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rule name="minvws">
+    <description>minvws/portal</description>
+    <arg value="sp"/>
+    <arg name="colors"/>
+    <arg name="cache" value=".phpcs.cache"/>
+    <arg name="extensions" value="php"/>
+
+    <file>.</file>
+    <exclude-pattern>./bootstrap/cache</exclude-pattern>
+    <exclude-pattern>./node_modules</exclude-pattern>
+    <exclude-pattern>./public/build</exclude-pattern>
+    <exclude-pattern>./public/css</exclude-pattern>
+    <exclude-pattern>./public/images</exclude-pattern>
+    <exclude-pattern>./public/js</exclude-pattern>
+    <exclude-pattern>./public/mix</exclude-pattern>
+    <exclude-pattern>./public/vendor</exclude-pattern>
+    <exclude-pattern>./resources/attachments</exclude-pattern>
+    <exclude-pattern>./resources/js</exclude-pattern>
+    <exclude-pattern>./resources/schemas</exclude-pattern>
+    <exclude-pattern>./resources/scss</exclude-pattern>
+    <exclude-pattern>./storage</exclude-pattern>
+    <exclude-pattern>./systemtests</exclude-pattern>
+    <exclude-pattern>./vendor</exclude-pattern>
+    <exclude-pattern>./vitest</exclude-pattern>
+    <exclude-pattern>./raw-coverage-portal-backend-tests.php</exclude-pattern>
+
+    <!-- include strict ruleset -->
+    <rule ref="MinVWS-strict">
+        <exclude name="Generic.Files.LineLength.TooLong"/>
+        <exclude name="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration"/>
+    </rule>
+
+    <!-- excludes rules partially (by path) -->
+    <rule ref="Generic.Files.InlineHTML">
+        <exclude-pattern>./resources/views</exclude-pattern>
+    </rule>
+    <rule ref="Generic.Strings.UnnecessaryStringConcat.Found">
+        <exclude-pattern>./app/Schema/Generator/PHP</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
+        <exclude-pattern>./database/migrations/*</exclude-pattern>
+    </rule>
+    <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
+        <exclude-pattern>./public/index.php</exclude-pattern>
+    </rule>
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <exclude-pattern>./app/Models/StatusIndexContactTracing.php</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Commenting.DocCommentSpacing">
+        <exclude-pattern>./app/Models</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration">
+        <exclude-pattern>./app/Models/CovidCase/Codables</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable">
+        <exclude-pattern>./resources/views</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
+        <exclude-pattern>./database</exclude-pattern>
+        <properties>
+            <property name="rootNamespaces" type="array">
+                <element key="src/app" value="App"/>
+                <element key="src/tests" value="Tests"/>
+            </property>
+        </properties>
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
+        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification"/>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Functions.StaticClosure">
+        <exclude-pattern>./app/Console/Commands/TestDataGenerateCommand.php</exclude-pattern>
+        <exclude-pattern>./app/Services/TestDataService.php</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
+        <exclude-pattern>src/bootstrap/app.php</exclude-pattern>
+        <exclude-pattern>src/config/*.php</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
+        <properties>
+            <property name="spacesCountAroundEqualsSign" value="0"/>
+        </properties>
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+        <exclude-pattern>./database/factories</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable">
+        <exclude-pattern>./server.php</exclude-pattern>
+        <exclude-pattern>./bootstrap/app.php</exclude-pattern>
+    </rule>
+
+    <rule ref="Squiz.Arrays.ArrayDeclaration.KeySpecified">
+        <exclude-pattern>./config/database.php</exclude-pattern>
+    </rule>
+    <rule ref="Squiz.Classes.ClassFileName">
+        <exclude-pattern>./database/migrations</exclude-pattern>
+    </rule>
+
+    <rule ref="Generic.Commenting.Todo.CommentFound">
+        <message>Todo comments are not allowed</message>
+        <type>error</type>
+    </rule>
+
+    <rule ref="Generic.Commenting.Todo.TaskFound">
+        <message>Todo comments are not allowed: %s</message>
+        <type>error</type>
+    </rule>
+</rule>

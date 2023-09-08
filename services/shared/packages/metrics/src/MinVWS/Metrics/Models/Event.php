@@ -1,4 +1,5 @@
 <?php
+
 namespace MinVWS\Metrics\Models;
 
 use DateTimeInterface;

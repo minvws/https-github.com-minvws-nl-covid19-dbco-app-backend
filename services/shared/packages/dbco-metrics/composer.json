@@ -1,0 +1,21 @@
+{
+    "name": "minvws/dbco-metrics",
+    "description": "Shared code for DBCO metrics",
+    "require": {
+        "php": ">=7.4"
+    },
+    "suggest": {
+        "predis/predis": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "MinVWS\\DBCO\\Metrics\\": "src/MinVWS/DBCO/Metrics/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../packages/*"
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+type: string
+enum:
+  - unknown
+  - not_approached
+  - not_reachable
+  - conversation_started
+  - closed_outside_ggd
+  - closed_no_collaboration
+  - completed
+  - new
+  - not_started
+  - two_times_not_reached
+  - callback_request
+  - loose_end
+  - four_times_not_reached
+  - bco_finished
+  - closed

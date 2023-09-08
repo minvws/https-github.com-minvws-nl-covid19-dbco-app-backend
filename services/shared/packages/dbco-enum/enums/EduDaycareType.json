@@ -1,0 +1,22 @@
+{
+    "phpClass": "EduDaycareType",
+    "tsConst": "eduDaycareType",
+    "items": [
+        {
+            "label": "Middelbaar- of Hoger Beroepsonderwijs of een Universiteit",
+            "value": "vocational-or-professional-education-or-university"
+        },
+        {
+            "label": "(speciaal) Voortgezet Onderwijs (VWO, HAVO, VMBO, praktijkschool)",
+            "value": "secondary-education"
+        },
+        {
+            "label": "(speciaal) Basisonderwijs",
+            "value": "primary-education"
+        },
+        {
+            "label": "Onbekend",
+            "value": "unknown"
+        }
+    ]
+}

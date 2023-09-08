@@ -1,0 +1,22 @@
+{
+    "phpClass": "CasequalityFeedback",
+    "tsConst": "casequalityFeedback",
+    "items": [
+        {
+            "label": "Goedgekeurd: sluiten",
+            "value": "approve_and_archive"
+        },
+        {
+            "label": "Aanpassing nodig: teruggeven aan werkverdeler",
+            "value": "reject_and_reopen"
+        },
+        {
+            "label": "Niet gecontroleerd: teruggeven aan werkverdeler voor controle",
+            "value": "complete"
+        },
+        {
+            "label": "Niet gecontroleerd: sluiten",
+            "value": "archive"
+        }
+    ]
+}

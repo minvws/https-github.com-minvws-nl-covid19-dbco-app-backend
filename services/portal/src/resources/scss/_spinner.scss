@@ -1,0 +1,10 @@
+.spinner {
+    &--medium {
+        height: 6rem;
+    }
+    &--small {
+        width: 0.875rem; // 14/16px
+        height: 0.875rem;
+        margin-right: 0.3125rem; // 5/16px
+    }
+}

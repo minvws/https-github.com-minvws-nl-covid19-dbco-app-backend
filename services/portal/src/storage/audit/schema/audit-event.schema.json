@@ -1,0 +1,105 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "type": "object",
+    "required": ["type", "event", "users", "objects", "source"],
+    "properties": {
+        "type": {
+            "type": "string",
+            "const": "AuditEvent"
+        },
+        "event": {
+            "type": "object",
+            "required": ["code", "actionCode", "description", "createdAt", "result"],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "actionCode": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "result": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "users": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 1,
+            "items": {
+                "type": "object",
+                "required": ["type", "identifier"],
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "identifier": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "roles": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "purposes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "details": {
+                        "type": "object",
+                        "description": "Key-value store containing user specific details"
+                    },
+                    "ip": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "objects": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": ["type", "identifier"],
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "identifier": {
+                        "type": "string"
+                    },
+                    "details": {
+                        "type": "object",
+                        "description": "Key-value store containing object specific details"
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "source": {
+            "type": "object",
+            "required": ["service"],
+            "properties": {
+                "service": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "additionalProperties": false
+}

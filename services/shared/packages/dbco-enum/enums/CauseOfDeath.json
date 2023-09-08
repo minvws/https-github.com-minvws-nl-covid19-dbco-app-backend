@@ -1,0 +1,18 @@
+{
+    "phpClass": "CauseOfDeath",
+    "tsConst": "causeOfDeath",
+    "items": [
+        {
+            "label": "SARS-CoV-2",
+            "value": "covid19"
+        },
+        {
+            "label": "Anders",
+            "value": "other"
+        },
+        {
+            "label": "Onbekend",
+            "value": "unknown"
+        }
+    ]
+}

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -8,12 +10,10 @@ class AddQuestionnaire extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('questionnaire', function (Blueprint $table) {
+        Schema::create('questionnaire', static function (Blueprint $table): void {
             $table->uuid('uuid')->primary();
             $table->string('name');
             $table->string('task_type');
@@ -21,8 +21,8 @@ class AddQuestionnaire extends Migration
             $table->timestamps();
         });
 
-        Schema::create('question', function (Blueprint $table) {
-           $table->uuid('uuid')->primary();
+        Schema::create('question', static function (Blueprint $table): void {
+            $table->uuid('uuid')->primary();
 
             $table->uuid('questionnaire_uuid');
             $table->foreign('questionnaire_uuid')->references('uuid')
@@ -37,7 +37,7 @@ class AddQuestionnaire extends Migration
             $table->timestamps();
         });
 
-        Schema::create('answer_option', function(Blueprint $table) {
+        Schema::create('answer_option', static function (Blueprint $table): void {
             $table->uuid('uuid')->primary();
 
             $table->uuid('question_uuid');
@@ -55,10 +55,8 @@ class AddQuestionnaire extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('answer_option');
         Schema::dropIfExists('question');

@@ -1,0 +1,40 @@
+CovidCase:
+    $ref: './CovidCase/CovidCase.yaml'
+
+CaseAssignment:
+    $ref: './CaseAssignment/CaseAssignment.yaml'
+CaseAssignmentOption:
+    $ref: './CaseAssignment/CaseAssignmentOption.yaml'
+CaseAssignmentStatus:
+    $ref: './CaseAssignment/CaseAssignmentStatus.yaml'
+
+Error:
+    $ref: './Error.yaml'
+
+# Enums
+BCOPhase:
+    $ref: enums/BCOPhase.yaml
+BCOStatus:
+    $ref: enums/BCOStatus.yaml
+PlannerView:
+    $ref: enums/PlannerView.yaml
+Priority:
+    $ref: enums/Priority.yaml
+StatusIndexContactTracing:
+    $ref: enums/StatusIndexContactTracing.yaml
+TestResultSource:
+    $ref: enums/TestResultSource.yaml
+
+# JSON Forms
+FormConfig:
+    $ref: json-forms/FormConfig/FormConfig.yaml
+FormRootData:
+    $ref: json-forms/FormRootData/FormRootData.yaml
+FormData:
+    $ref: json-forms/FormData/FormData.yaml
+FormCollectionData:
+    $ref: json-forms/FormCollectionData/FormCollectionData.yaml
+UiSchema:
+    $ref: json-forms/UiSchema/UiSchema.yaml
+JsonSchemaDraft07:
+    $ref: json-forms/JsonSchema/JsonSchemaDraft07.yaml

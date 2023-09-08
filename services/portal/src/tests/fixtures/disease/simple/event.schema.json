@@ -1,0 +1,13 @@
+{
+    "type": "object",
+    "properties": {
+        "circumstances": {
+            "type": "object",
+            "properties": {
+                "isUsingPPE": {
+                    "type": "boolean"
+                }
+            }
+        }
+    }
+}

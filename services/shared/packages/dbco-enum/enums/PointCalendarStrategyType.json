@@ -1,0 +1,17 @@
+{
+    "phpClass": "PointCalendarStrategyType",
+    "tsConst": "pointCalendarStrategyType",
+    "default": "pointFixedStrategy",
+    "items": [
+        {
+            "label": "Vast",
+            "value": "pointFixedStrategy",
+            "name": "fixedStrategy"
+        },
+        {
+            "label": "Flexibel met minimum en maximum",
+            "value": "pointFlexStrategy",
+            "name": "flexStrategy"
+        }
+    ]
+}

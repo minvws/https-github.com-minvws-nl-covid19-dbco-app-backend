@@ -1,0 +1,22 @@
+{
+    "phpClass": "ContactsInformedStatus",
+    "tsConst": "contactsInformedStatus",
+    "items": [
+        {
+            "label": "Nog niet gestart",
+            "value": "not_started"
+        },
+        {
+            "label": "Gestart, nog niet afgerond",
+            "value": "not_completed"
+        },
+        {
+            "label": "Afgerond, niet iedereen bereikt",
+            "value": "completed_not_everyone_reached"
+        },
+        {
+            "label": "Afgerond: iedereen bereikt of n.v.t.",
+            "value": "completed"
+        }
+    ]
+}

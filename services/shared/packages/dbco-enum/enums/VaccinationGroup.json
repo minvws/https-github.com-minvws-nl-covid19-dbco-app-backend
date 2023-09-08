@@ -1,0 +1,30 @@
+{
+    "phpClass": "VaccinationGroup",
+    "tsConst": "vaccinationGroup",
+    "items": [
+        {
+            "label": "Bewoner verpleeghuis",
+            "value": "resident-nursing-home"
+        },
+        {
+            "label": "Bewoner instelling voor mensen met een verstandelijke beperking",
+            "value": "resident-institution"
+        },
+        {
+            "label": "Gezondheidszorgmedewerker",
+            "value": "healthcare-worker"
+        },
+        {
+            "label": "Ouder dan 60 jaar",
+            "value": "age-above-60"
+        },
+        {
+            "label": "Jonger dan 60 jaar met medische indicatie",
+            "value": "age-below-60-medical-condition"
+        },
+        {
+            "label": "Jonger dan 60 jaar zonder medische indicatie",
+            "value": "age-below-60"
+        }
+    ]
+}

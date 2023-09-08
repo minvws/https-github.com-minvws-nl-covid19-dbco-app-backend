@@ -1,0 +1,31 @@
+get:
+  summary: Load the context fragment
+  operationId: load-fragment
+  description: Load the fragment from the database.
+  security:
+    - cookieAuth: []
+  parameters:
+    - $ref: '../../../parameters/path/context.yaml'
+  responses:
+    '200':
+      description: Contact fragment
+      content:
+        application/json:
+          schema:
+            $ref: '../../../schemas/Fragment.yaml'
+put:
+  summary: Update the context fragment
+  operationId: update-fragment
+  description: Update the fragment in the database.
+  security:
+    - cookieAuth: []
+  parameters:
+    - $ref: '../../../parameters/cookie/xsrfToken.yaml'
+    - $ref: '../../../parameters/path/context.yaml'
+  responses:
+    '200':
+      description: Contact fragment
+      content:
+        application/json:
+          schema:
+            $ref: '../../../schemas/Fragment.yaml'

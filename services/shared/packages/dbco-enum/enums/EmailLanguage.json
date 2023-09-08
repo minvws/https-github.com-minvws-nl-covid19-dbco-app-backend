@@ -1,0 +1,42 @@
+{
+    "phpClass": "EmailLanguage",
+    "tsConst": "emailLanguage",
+    "items": [
+        {
+            "label": "Nederlands",
+            "value": "nl"
+        },
+        {
+            "label": "Engels",
+            "value": "en"
+        },
+        {
+            "label": "Duits",
+            "value": "de"
+        },
+        {
+            "label": "Pools",
+            "value": "pl"
+        },
+        {
+            "label": "Oekraïens",
+            "value": "ua"
+        },
+        {
+            "label": "Roemeens",
+            "value": "to"
+        },
+        {
+            "label": "Turks",
+            "value": "tr"
+        },
+        {
+            "label": "Arabisch",
+            "value": "ar"
+        },
+        {
+            "label": "Eenvoudig Nederlands + Afbeeldingen",
+            "value": "b1"
+        }
+    ]
+}

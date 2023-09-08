@@ -1,6 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Str;
+
+$appName = env('APP_NAME');
+if (!is_string($appName)) {
+    $appName = 'laravel';
+}
 
 return [
 
@@ -31,9 +38,9 @@ return [
     |
     */
 
-    'lifetime' => env('SESSION_LIFETIME', 8 * 60),
+    'lifetime' => env('SESSION_LIFETIME', 30),
 
-    'expire_on_close' => false,
+    'expire_on_close' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -128,7 +135,7 @@ return [
 
     'cookie' => env(
         'SESSION_COOKIE',
-        Str::slug(env('APP_NAME', 'laravel'), '_').'_session'
+        Str::slug($appName, '_') . '_session',
     ),
 
     /*
@@ -168,7 +175,7 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE'),
+    'secure' => env('SESSION_SECURE_COOKIE', true),
 
     /*
     |--------------------------------------------------------------------------

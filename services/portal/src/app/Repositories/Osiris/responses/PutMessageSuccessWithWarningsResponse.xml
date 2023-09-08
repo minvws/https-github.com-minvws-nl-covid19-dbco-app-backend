@@ -1,0 +1,9 @@
+<PutResultaat xmlns="http://tempuri.org/PutResultaat.xsd">
+  <resultaat>
+    <osiris_nummer>123456</osiris_nummer>
+    <bericht_ok>true</bericht_ok>
+    <melding_ok>true</melding_ok>
+    <fout_toelichting>Deze persoon was jonger dan 6 maanden. /.br--> Let op: deze datum ligt te ver in het verledenGekke foutmelding vanuit OSIRIS</fout_toelichting>
+    <fout_reden>Nog bizarre fout reden</fout_reden>
+  </resultaat>
+</PutResultaat>

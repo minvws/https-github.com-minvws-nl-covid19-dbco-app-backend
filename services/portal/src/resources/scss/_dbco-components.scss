@@ -1,0 +1,37 @@
+.dropdown {
+    .btn.dropdown-toggle {
+        font-size: $font-size-sm;
+    }
+
+    .btn-link {
+        color: $black;
+        &::after, span {
+            color: $light-grey;
+        }
+
+        &.text-primary {
+            &::after, span {
+                color: $primary;
+            }
+        }
+    }
+
+    .dropdown-item {
+        font-size: $font-size-sm;
+
+        &:active {
+            color: $black;
+        }
+    }
+
+    .b-dropdown-text {
+        width: 300px;
+        font-size: $font-size-sm;
+    }
+}
+
+.dbco-dropdown {
+    .dropdown-toggle {
+        padding: 0px;
+    }
+}

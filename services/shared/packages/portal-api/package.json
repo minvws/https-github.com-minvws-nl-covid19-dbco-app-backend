@@ -1,0 +1,20 @@
+{
+    "name": "@dbco/portal-api",
+    "private": true,
+    "version": "1.0.0",
+    "dependencies": {
+        "@dbco/schema": "1.0.0",
+        "axios": "1.4.0"
+    },
+    "exports": {
+        ".": "./src/index.ts",
+        "./*": "./src/*"
+    },
+    "typesVersions": {
+        "*": {
+            "*": [
+                "./src/*"
+            ]
+        }
+    }
+}

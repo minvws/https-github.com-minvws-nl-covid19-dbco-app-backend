@@ -1,3 +1,8 @@
-GRANT ALL PRIVILEGES ON portal.* TO 'portal'@'%';
-GRANT ALL PRIVILEGES ON portal.* TO 'healthauthority_api'@'%';
+-- user used for running migrations
+GRANT SUPER ON *.* TO 'admin'@'%';
+GRANT ALL PRIVILEGES ON portal.* TO 'admin'@'%';
+
+-- portal
+GRANT SELECT, INSERT, UPDATE, DELETE ON portal.* TO 'portal'@'%';
+
 FLUSH PRIVILEGES;

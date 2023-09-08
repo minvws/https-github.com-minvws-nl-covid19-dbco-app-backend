@@ -1,0 +1,117 @@
+{
+    "phpClass": "JobSector",
+    "tsConst": "jobSector",
+    "description": "Job sectors.",
+    "properties": {
+        "description": {
+            "type": "string",
+            "description": "Description",
+            "scope": "ts"
+        },
+        "group": {
+            "type": "JobSectorGroup",
+            "description": "Job sector group",
+            "scope": "shared"
+        }
+    },
+    "items": [
+        {
+            "value": "21",
+            "name": "ziekenhuis",
+            "label": "Ziekenhuis",
+            "description": null,
+            "group": "care"
+        },
+        {
+            "value": "22",
+            "name": "verpleeghuisOfVerzorgingshuis",
+            "label": "Verpleeghuis of verzorgingshuis",
+            "description": null,
+            "group": "care"
+        },
+        {
+            "value": "20",
+            "name": "andereZorg",
+            "label": "Andere zorg, binnen 1,5 meter afstand van mensen",
+            "description": null,
+            "group": "care"
+        },
+        {
+            "value": "16",
+            "name": "dagopvang",
+            "label": "Dagopvang",
+            "description": "0 tot 4 jaar",
+            "group": "eduDaycare"
+        },
+        {
+            "value": "17",
+            "name": "basisschoolEnBuitenschoolseOpvang",
+            "label": "Basisschool en buitenschoolse opvang",
+            "description": "4 tot 12 jaar",
+            "group": "eduDaycare"
+        },
+        {
+            "value": "25",
+            "name": "middelbaarOnderwijsOfMiddelbaarBeroepsonderwijs",
+            "label": "Middelbaar onderwijs of middelbaar beroepsonderwijs",
+            "description": "12 jaar en ouder",
+            "group": "eduDaycare"
+        },
+        {
+            "value": "27",
+            "name": "medewerkerHogerOnderwijs",
+            "label": "Hoger beroepsonderwijs of wetenschappelijk onderwijs",
+            "description": "16 jaar en ouder",
+            "group": "eduDaycare"
+        },
+        {
+            "value": "4",
+            "name": "werkMetDierenOfDierlijkeProducten",
+            "label": "Werk met dieren, vlees of producten van dierlijk materiaal",
+            "description": null,
+            "group": "foodOrAnimals"
+        },
+        {
+            "value": "28",
+            "name": "werkMetEtenOfDrinken",
+            "label": "Werk met eten en drinken of met het verpakken van eten en drinken in een fabriek of op het land",
+            "description": null,
+            "group": "foodOrAnimals"
+        },
+        {
+            "value": "15",
+            "name": "horeca",
+            "label": "Horeca met klantcontact",
+            "description": null,
+            "group": "other"
+        },
+        {
+            "value": "29",
+            "name": "mantelzorg",
+            "label": "Mantelzorg",
+            "description": null,
+            "group": "other"
+        },
+        {
+            "value": "30",
+            "name": "openbaarvervoer",
+            "label": "Openbaar vervoer met klantcontact",
+            "description": null,
+            "group": "other"
+        },
+        {
+            "value": "31",
+            "name": "politieBrandweer",
+            "label": "Politie, BOA, marechaussee, brandweer, of Dienst Justitiële Inrichtingen",
+            "description": null,
+            "group": "other"
+        },
+        {
+            "value": "13",
+            "name": "andereBeroep",
+            "label": "Ander beroep",
+            "description": null,
+            "group": "other"
+        }
+    ]
+}

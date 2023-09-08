@@ -1,0 +1,8 @@
+type: object
+allOf:
+    - $ref: ./BaseControlElement.yaml
+required:
+    - customRenderer
+properties:
+    customRenderer:
+        type: string

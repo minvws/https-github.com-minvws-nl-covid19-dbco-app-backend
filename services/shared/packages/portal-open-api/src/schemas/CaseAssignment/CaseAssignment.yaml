@@ -1,0 +1,24 @@
+type: object
+required:
+  - staleSince
+oneOf:
+  - required: [caseListUuid]
+  - required: [assignedUserUuid]
+  - required: [assignedCaseListUuid]
+  - required: [assignedOrganisationUuid]
+properties:
+  caseListUuid:
+    type: string
+    format: uuid
+  assignedUserUuid:
+    type: string
+    format: uuid
+  assignedCaseListUuid:
+    type: string
+    format: uuid
+  assignedOrganisationUuid:
+    type: string
+    format: uuid
+  staleSince:
+    type: string
+    format: date-time

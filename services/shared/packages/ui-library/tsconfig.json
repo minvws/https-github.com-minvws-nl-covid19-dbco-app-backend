@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "declaration": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "noEmit": true,
+        "allowJs": true, // required to retrieve the types from the Tailwind theme
+        "types": ["node", "vitest/globals"],
+        "paths": {
+            // Override the react import to be empty as it was causing JSX errors in the vue templates
+            // ( react is a dependency of storybook )
+            // @see: https://github.com/vuejs/language-tools/discussions/592
+            "react": ["./stubs/empty"]
+        }
+    },
+    "include": ["**/*.ts", "**/*.vue", "./src/types/**/*.d.ts"],
+    "vueCompilerOptions": {
+        "target": 2.7
+    }
+}

@@ -1,0 +1,223 @@
+# Docs @ https://taskfile.dev/
+version: "3"
+
+vars:
+  SERVICE_NAME: '{{(.TASK | splitn ":" 2)._0}}'
+
+tasks:
+  env:
+    desc: Template {{.SERVICE_NAME}} .env and .env.testing
+    run: once
+    vars:
+      APP_ENV: '{{.APP_ENV | default "src/.env" }}'
+      APP_ENV_EXISTS:
+        sh: if [ -r "{{.APP_ENV}}" ]; then echo 1; else echo 0; fi
+      TESTING_ENV: '{{.TESTING_ENV | default "src/.env.testing"}}'
+      TESTING_ENV_EXISTS:
+        sh: if [ -r "{{.TESTING_ENV}}" ]; then echo 1; else echo 0; fi
+      DEV_SWITCH_EXISTS:
+        sh: if [ -r "{{.BASE_PATH}}/.dev-switch" ]; then echo 1; else echo 0; fi
+    cmds:
+      - task: :env
+      - docker run
+        --rm
+        --tty
+        --volume "{{.BASE_PATH}}":/workspace
+        --workdir /workspace
+        --user $(id -u):$(id -g)
+        ghcr.io/hairyhenderson/gomplate:{{.GOMPLATE_IMAGE_TAG}}
+        --file services/portal/src/.env.template
+        --out services/portal/src/.env
+        --datasource root_env=file:///workspace/.env?type=application/x-env
+        {{if eq .APP_ENV_EXISTS "1"}}
+        --datasource app_env=file:///workspace/services/portal/src/.env?type=application/x-env
+        --datasource "env=merge:app_env|root_env"
+        {{else}}
+        --datasource env=file:///workspace/.env?type=application/x-env
+        {{end}}
+        {{if eq .DEV_SWITCH_EXISTS "1"}}
+        --datasource devmode=file:///workspace/.dev-switch?type=text/plain
+        {{end}}
+      - docker run
+        --rm
+        --tty
+        --volume "{{.BASE_PATH}}":/workspace
+        --workdir /workspace
+        --user $(id -u):$(id -g)
+        ghcr.io/hairyhenderson/gomplate:{{.GOMPLATE_IMAGE_TAG}}
+        --file services/portal/src/.env.testing.template
+        --out services/portal/src/.env.testing
+        --datasource root_env=file:///workspace/.env.test?type=application/x-env
+        {{if eq .TESTING_ENV_EXISTS "1"}}
+        --datasource testing_env=file:///workspace/services/portal/src/.env.testing?type=application/x-env
+        --datasource "env=merge:testing_env|root_env"
+        {{else}}
+        --datasource env=file:///workspace/.env.test?type=application/x-env
+        {{end}}
+      - echo "Done templating ({{.SERVICE_NAME}}) .env and .env.testing"
+    sources:
+      - '{{.APP_ENV}}.template'
+      - '{{.TESTING_ENV}}.template'
+    generates:
+      - '{{.APP_ENV}}'
+      - '{{.TESTING_ENV}}'
+
+  shell:
+    desc: Interactive shell to {{.SERVICE_NAME}} docker compose service
+    interactive: true
+    cmds:
+      - task: :dev:dc
+        vars: { CLI_ARGS: exec portal /bin/bash }
+
+  shell:test:
+    desc: Interactive shell to test {{.SERVICE_NAME}} docker compose service
+    interactive: true
+    cmds:
+      - task: :test:dc
+        vars: { CLI_ARGS: exec --env APP_ENV=testing portal /bin/bash }
+
+  db:fresh:
+    desc: Drop all tables and re-rerun all migrations (includes seeding)
+    cmds:
+      - task: :dev:up
+      - task: :dev:dc
+        vars: { CLI_ARGS: exec portal php artisan migrate:fresh --seed }
+
+  composer:
+    desc: Run Composer scripts
+    vars:
+      ENV: '{{.ENV | default "dev"}}'
+    cmds:
+      - task: :{{.ENV}}:up
+      - task: :{{.ENV}}:dc
+        vars: { CLI_ARGS: 'exec portal composer run --timeout 0 {{.RUN | default "-l"}}' }
+
+  phpcbf:
+    desc: PHP Code Beautifier
+    vars:
+      ENV: '{{.ENV | default "dev"}}'
+    cmds:
+      - task: :{{.ENV}}:up
+      - task: :{{.ENV}}:dc
+        vars: { CLI_ARGS: 'exec portal /src/vendor/bin/phpcbf -n' }
+
+  phpcs:
+    desc: PHP Code Sniffer
+    vars:
+      ENV: '{{.ENV | default "dev"}}'
+    cmds:
+      - task: :{{.ENV}}:up
+      - task: :{{.ENV}}:dc
+        vars: { CLI_ARGS: 'exec portal /src/vendor/bin/phpcs -n' }
+
+  phpstan:
+    desc: PHP Static Analyzer
+    vars:
+      ENV: '{{.ENV | default "dev"}}'
+    cmds:
+      - task: :{{.ENV}}:up
+      - task: :{{.ENV}}:dc
+        vars: { CLI_ARGS: 'exec portal /src/vendor/bin/phpstan --memory-limit=-1' }
+
+  phpstan:generate-baseline:
+    desc: PHP Static Analyzer Generate Baseline
+    vars:
+      ENV: '{{.ENV | default "dev"}}'
+    cmds:
+      - task: :{{.ENV}}:up
+      - task: :{{.ENV}}:dc
+        vars: { CLI_ARGS: 'exec portal /src/vendor/bin/phpstan --memory-limit=-1 --generate-baseline' }
+
+  phpmd:
+    desc: PHP Mess Detector
+    vars:
+      ENV: '{{.ENV | default "dev"}}'
+    cmds:
+      - task: :{{.ENV}}:up
+      - task: :{{.ENV}}:dc
+        vars: { CLI_ARGS: 'exec portal /src/vendor/bin/phpmd app/ ansi ./ruleset.xml' }
+
+  test:
+    desc: Run PHPUnit for {{.SERVICE_NAME}} service
+    cmds:
+      - task: :test:up
+      - task: composer
+        vars: { RUN: test, ENV: '{{.ENV | default "test"}}' }
+
+  test:update-snapshots:
+    desc: Update PHPUnit's snapshots for {{.SERVICE_NAME}} service
+    cmds:
+      - task: :test:up
+      - task: composer
+        vars: { RUN: update-snapshots, ENV: '{{.ENV | default "test"}}' }
+
+  typecheck:
+    desc: Run phpstan for {{.SERVICE_NAME}} service
+    cmds:
+      - task: :dev:up
+      - task: composer
+        vars: { RUN: typecheck }
+
+  generate:cases:
+    desc: Generate (covid) cases for {{.SERVICE_NAME}} service
+    cmds:
+      - task: :dev:up
+      - echo "Generating 100 random cases:"
+      - task: :dev:dc
+        vars: { CLI_ARGS: 'exec portal php artisan test-data:generate 100' }
+      - echo "Generating 100 random cases for default org:"
+      - task: :dev:dc
+        vars: { CLI_ARGS: 'exec portal php artisan test-data:generate 100 --organisationUuids=00000000-0000-0000-0000-000000000000' }
+
+  generate:enums:
+    desc: Generate PHP/TS enums (minvws/dbco-enum)
+    cmds:
+      - task: :dev:up
+      - task: :dev:dc
+        vars: { CLI_ARGS: 'exec portal php /shared/packages/dbco-enum/scripts/generate.php' }
+
+  checkcoverage:
+    desc: Generate code-coverage for newly added backend {{.SERVICE_NAME}} code
+    vars:
+      PORTAL_PATH: '{{.BASE_PATH}}/services/portal/src'
+    cmds:
+      - rm -f {{.PORTAL_PATH}}/raw-coverage-portal-backend-tests.php
+      - task: composer
+        vars: { RUN: "coverage", ENV: test }
+      - task: be:checkcoverage:report
+
+  checkcoverage:report:
+    vars:
+      PORTAL_PATH: '{{.BASE_PATH}}/services/portal/src'
+    cmds:
+      - rm -rf {{.PORTAL_PATH}}/diff
+      - mkdir {{.PORTAL_PATH}}/diff
+      - git fetch
+      - git diff --unified=0 origin/develop...HEAD --output {{.PORTAL_PATH}}/diff/develop.diff
+      - task: composer
+        vars: { RUN: "checkcoverage", ENV: test }
+
+  storybook:
+    desc: Start storybook
+    cmds:
+      - "{{.BASE_PATH}}/bin/storybook"
+
+  fe:install:
+    desc: Run yarn install for portal (without updating lock file)
+    cmds:
+      - "{{.BASE_PATH}}/bin/portal-yarn-install"
+
+  fe:update:
+    desc: Run yarn install for portal
+    cmds:
+      - "{{.BASE_PATH}}/bin/portal-yarn-update"
+
+  fe:build:
+    desc: Run yarn run build for portal
+    cmds:
+      - "{{.BASE_PATH}}/bin/portal-yarn-build"
+
+  fe:dev:
+    desc: Run yarn run dev for portal
+    cmds:
+      - "{{.BASE_PATH}}/bin/portal-yarn-dev"

@@ -1,0 +1,11 @@
+{
+    "phpClass": "ContactOriginDate",
+    "tsConst": "contactOriginDate",
+    "default": "dateOfLastExposure",
+    "items": [
+        {
+            "label": "Laatste contactdatum",
+            "value": "dateOfLastExposure"
+        }
+    ]
+}

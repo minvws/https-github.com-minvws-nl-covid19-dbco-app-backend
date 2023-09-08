@@ -1,0 +1,79 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+<Meta title="Fundamentals/Shadows" />
+
+# Fundamentals - Shadows
+
+Based on the Design System in [Figma](https://www.figma.com/file/aFJlQTQ4XzGF18OsiRVqJa/?node-id=85%3A353), there are 4 four kinds of shadows.
+
+-   `Shadow S`
+-   `Shadow M`
+-   `Shadow L`
+-   `Focus`
+
+
+Since we are using Tailwind, the default values in the theme are altered to match the values in figma.
+
+To  do so, the values are redefined in the `tailwind.config.js` file.
+```js
+const config = {
+    prefix: 'tw-',
+    ...
+    theme: {
+     boxShadow: {
+            none: '0',
+            sm: ' 0px 2px 4px rgba(0, 30, 73, 0.075)',
+            DEFAULT: ' 0px 2px 4px rgba(0, 30, 73, 0.075)',
+            md: ' 0px 8px 16px rgba(0, 30, 73, 0.15)',
+            lg: ' 0px 16px 48px rgba(0, 30, 73, 0.175)',
+        },
+    },
+};
+```
+This generates the following output:
+
+
+ Shadow | Theme | Class
+---|---|---
+0px | `boxShadow.none` | `.tw-shadow-none`
+4px | `boxShadow.sm` | `.tw-shadow-sm`, `.tw-shadow`
+8px | `boxShadow.md` | `.tw-shadow-md`
+16px | `boxShadow.lg` | `.tw-shadow-lg`
+
+## Examples
+
+The defined shadows can be use through two different methods. You can use them either through classes or directly in the styling of an element.
+
+### Examples using classes
+
+```html
+<div class="tw-shadow-sm" />
+<div class="tw-shadow-md" />
+<div class="tw-shadow-lg" />
+```
+
+<div className="storybook-container" id="shadow-container">
+    <div class="tw-shadow-sm storybook-block tw-bg-blue-400">Shadow Small</div>
+    <div class="tw-shadow-md storybook-block tw-bg-green-400">Shadow Medium</div>
+    <div class="tw-shadow-lg storybook-block tw-bg-red-400">Shadow Large</div>
+</div>
+
+### Example used as part of the styling
+
+```html
+<img src="https://source.unsplash.com/200x200" />
+```
+
+```css
+img {
+    box-shadow:  theme('boxShadow.sm');
+}
+```
+
+<div className="storybook-container" id="shadow-container">
+<img src="https://source.unsplash.com/200x200" class="tw-shadow-sm"/>
+<img src="https://source.unsplash.com/200x200" class="tw-shadow-md"/>
+<img src="https://source.unsplash.com/200x200" class="tw-shadow-lg"/>
+<img src="https://source.unsplash.com/200x200" class="tw-shadow-none"/>
+
+</div>

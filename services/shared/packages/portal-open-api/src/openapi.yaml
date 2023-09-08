@@ -1,0 +1,62 @@
+openapi: '3.1.0'
+info:
+  version: 1.0.0
+  title: DBCO Portal
+  description: API used for the portal for healthcare (BCO) workers
+  license:
+    name: EUROPEAN UNION PUBLIC LICENCE v. 1.2
+    url: https://opensource.org/licenses/EUPL-1.2
+  contact:
+    name: API Support
+    url: https://www.rijksoverheid.nl/documenten/publicaties/2020/05/19/digitale-ondersteuning-covid-19
+    email: dienstpostbusRDO@minvws.nl
+servers:
+  - url: http://localhost:8084/api
+    description: Local development server
+tags:
+  # Automically displaying all schemas in the redocly docs seems to be a "premium" feature.
+  # I haven't found an easy to use docs generator that also supports 3.1 yet.
+  # For now we can manually list important models here using the <SchemaDefinition> tag.
+  - name: Models
+    x-displayName: Models
+    description: |
+      ## Covid Case
+      <SchemaDefinition schemaRef="/components/schemas/CovidCase" showReadOnly={true} showWriteOnly={true} />
+
+      ## Case Assignment Option
+      <SchemaDefinition schemaRef="/components/schemas/CaseAssignmentOption" showReadOnly={true} showWriteOnly={true} />
+
+      # JSON Forms
+
+      ## FormConfig
+      <SchemaDefinition schemaRef="/components/schemas/FormConfig" showReadOnly={true} showWriteOnly={true} />
+
+      ## FormRootData
+      <SchemaDefinition schemaRef="/components/schemas/FormRootData" showReadOnly={true} showWriteOnly={true} />
+
+      ## UiSchema
+      <SchemaDefinition schemaRef="/components/schemas/UiSchema" showReadOnly={true} showWriteOnly={true} />
+paths:
+  /cases/{case}/assignment:
+    $ref: './resources/cases/{case}/assignment.yaml'
+  /cases/{case}/assignment/options:
+    $ref: './resources/cases/{case}/assignmentOptions.yaml'
+  /cases/assignment:
+    $ref: './resources/cases/assignment.yaml'
+  /cases/assignment/options:
+    $ref: './resources/cases/assignmentOptions.yaml'
+  /contexts/{context}/fragments/contact:
+    $ref: './resources/contexts/{context}/fragment.yaml'
+
+components:
+  parameters:
+    $ref: './parameters/_index.yaml'
+  schemas:
+    $ref: './schemas/_index.yaml'
+  responses:
+    $ref: './responses/_index.yaml'
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: bco_portaal_session

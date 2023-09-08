@@ -1,0 +1,14 @@
+title: CovidCaseLabel
+type: object
+required:
+  - uuid
+  - label
+  - is_selectable
+properties:
+  uuid:
+    type: string
+    format: uuid
+  label:
+    type: boolean
+  is_selectable:
+    type: boolean

@@ -1,0 +1,52 @@
+{
+    "phpClass": "ABC",
+    "currentVersion": 2,
+    "properties": {
+        "indexInAlphabet": {
+            "phpType": "int",
+            "scope": "php"
+        }
+    },
+    "items": [
+        {
+            "value": "a",
+            "label": "A",
+            "indexInAlphabet": 1
+        },
+        {
+            "value": "b",
+            "label": "B",
+            "indexInAlphabet": 2
+        },
+        {
+            "value": "c",
+            "label": "C",
+            "indexInAlphabet": 3
+        },
+        {
+            "value": "Δ",
+            "name": "delta",
+            "label": "Δ",
+            "indexInAlphabet": 3,
+            "maxVersion": 1
+        },
+        {
+            "value": "d",
+            "label": "D",
+            "indexInAlphabet": 4,
+            "minVersion": 2
+        },
+        {
+            "value": "e",
+            "label": "E",
+            "indexInAlphabet": 5,
+            "minVersion": 3
+        },
+        {
+            "value": "f",
+            "label": "F",
+            "indexInAlphabet": 6,
+            "minVersion": 3
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+BASE_PATH=$(dirname $0)/..
+DEV_MODE=$(cat $BASE_PATH/.dev-switch)
+
+COMPOSE_FILE=$(if [ $DEV_MODE == "portal-only" ]; then echo -n "$BASE_PATH/docker-compose/docker-compose.portal-only.tools.yml"; else echo -n "$BASE_PATH/docker-compose/docker-compose.tools.yml"; fi)
+
+$BASE_PATH/bin/docker-compose-dev --file $COMPOSE_FILE "$@"

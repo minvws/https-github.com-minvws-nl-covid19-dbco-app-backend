@@ -1,0 +1,12 @@
+*/src/vendor
+*/src/.env
+
+portal/src/.env
+portal/src/bootstrap/cache/*
+portal/src/node_modules
+portal/src/public/dist/*
+portal/src/storage/app/*
+portal/src/storage/framework/cache/*
+portal/src/storage/framework/sessions/*
+portal/src/storage/framework/views/*
+portal/src/storage/logs/*

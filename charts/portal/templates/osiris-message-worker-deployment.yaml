@@ -1,0 +1,102 @@
+{{- if .Values.osirisMessageWorker.enabled -}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "app.fullname" . }}-osiris-message-worker
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: osiris-message-worker
+spec:
+  replicas: {{ .Values.osirisMessageWorker.replicaCount }}
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "app.fullname" . }}
+      app.kubernetes.io/component: osiris-message-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "app.fullname" . }}
+        app.kubernetes.io/component: osiris-message-worker
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/osiris-message-worker-configmap.yaml") . | sha256sum }}
+        {{- range $key, $value := .Values.osirisMessageWorker.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+    spec:
+    {{- with .Values.topologySpreadConstraints}}
+      topologySpreadConstraints:
+{{ toYaml . | indent 8 }}
+      {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.osirisMessageWorker.terminationGracePeriodSeconds }}
+      {{- if .Values.serviceAccount.enabled }}
+      serviceAccountName: {{ template "app.serviceAccountName" . }}
+      {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}-osiris-message-worker
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.osirisMessageWorker.command }}
+          command: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.osirisMessageWorker.args }}
+          args: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          securityContext:
+{{ toYaml .Values.osirisMessageWorker.containerSecurityContext | indent 12 }}
+          envFrom:
+          - configMapRef:
+              name: {{ template "app.fullname" . }}
+          - secretRef:
+              name: {{ template "app.fullname" . }}
+              optional: true
+          - configMapRef:
+              name: {{ template "app.fullname" . }}-custom
+              optional: true
+          - secretRef:
+              name: {{ template "app.fullname" . }}-custom
+              optional: true
+          - configMapRef:
+              name: {{ template "app.fullname" . }}-osiris-message-worker
+              optional: true
+          - secretRef:
+              name: {{ template "app.fullname" . }}-osiris-message-worker
+              optional: true
+          {{- with .Values.osirisMessageWorker.resources }}
+          resources: {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.osirisMessageWorker.livenessProbe }}
+          livenessProbe: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.osirisMessageWorker.readinessProbe }}
+          readinessProbe: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.osirisMessageWorker.lifecycle }}
+          lifecycle: {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.osirisMessageWorker.volumeMounts }}
+          volumeMounts:
+          {{- tpl . $ | nindent 12 }}
+          {{- end }}
+    {{- with .Values.osirisMessageWorker.securityContext }}
+      securityContext: {{ toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.osirisMessageWorker.nodeSelector }}
+      nodeSelector: {{ toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.osirisMessageWorker.affinity }}
+      affinity: {{ toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.osirisMessageWorker.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.osirisMessageWorker.volumes }}
+      volumes: {{- tpl . $ | nindent 8 }}
+    {{- end }}
+{{- end }}

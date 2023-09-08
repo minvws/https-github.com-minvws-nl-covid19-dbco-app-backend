@@ -1,19 +1,44 @@
 .nav-tabs {
-  margin-bottom: 2rem;
+  border-color: $input-grey;
+  max-width: 95%;
 
-  .nav-link {
-    color: $grey-medium;
-
-    &.active, &:hover {
-      color: $black;
-      font-weight: bold;
+    &--borderless {
+        border-bottom: none;
     }
 
-    &.active {
-      border-color: transparent;
-      border-bottom-color: $blue;
-      border-bottom-width: 2px;
+    .nav-link {
+        color: $light-grey;
+        margin-right: 1rem;
+        padding: 1rem 0;
+        margin-bottom: 0px;
+
+        @media (min-width: $breakpoint-md) {
+            margin-right: 1.5rem;
+        }
+
+        &.active,
+        &:hover {
+            color: $black;
+        }
+
+        &.active {
+            border-color: transparent;
+            border-bottom-color: $bco-purple;
+            border-bottom-width: 4px;
+        }
     }
+
+    &--in-card {
+        .nav-link {
+          padding-bottom: 0.5rem;
+        }
+    }
+
+  .nav-item {
+      margin-bottom: 0;
+
+      &:last-child > .nav-link {
+        margin-right: 0;
+      }
   }
 }
-

@@ -1,0 +1,45 @@
+put:
+  summary: Multi case assignment
+  operationId: cases-assignment
+  description: Assign multiple cases to a user, list or organisation.
+  security:
+    - cookieAuth: []
+  parameters:
+    - $ref: '../../parameters/header/xsrfToken.yaml'
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          allOf:
+            - $ref: '../../schemas/CaseAssignment/CaseAssignment.yaml'
+            - type: object
+              required:
+                - cases
+              properties:
+                cases:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+  responses:
+    200:
+      description: Some success, but the following cases are conflicting.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../schemas/CaseAssignment/CaseAssignmentStatus.yaml'
+    204:
+      description: Success, there are no conflicting cases
+    409:
+      description: All cases in the request are conflicting
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../schemas/CaseAssignment/CaseAssignmentStatus.yaml'
+    default:
+      $ref: '../../responses/UnexpectedError.yaml'

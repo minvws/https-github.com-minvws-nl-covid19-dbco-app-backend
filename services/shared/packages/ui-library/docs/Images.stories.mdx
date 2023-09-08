@@ -1,0 +1,83 @@
+import { Canvas, Meta, Story, ColorPalette, ColorItem } from '@storybook/addon-docs';
+
+<Meta title="Images & SVG's" />
+
+# Images and SVG's
+
+Images and SVG's can be imported using the configured webpack loaders. Even though there is a path alias configured for `@images` which current points to the `resources/img` directory. We recommend you place any required assets next to the component which is dependend on it. If you find that the same image is used in multiple places. Consider if it could be turned into its own Vue component.
+
+<br />
+
+## Images
+
+All images can be imported directly in a component and will return an url which you can use.
+
+```ts
+<template>
+    <img :src="examplePng"/>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import examplePng from './example.png';
+
+export default defineComponent({
+    setup() {
+        return { examplePng }
+    }
+});
+</script>
+```
+
+## Images in CSS
+
+Also images that are loaded via the `url()` function will be processed by webpack and will be replaced by the correct url during the build process.
+
+```ts
+<template>
+    <div class="example" />
+</template>
+
+...
+
+<style lang="css" scoped>
+.example {
+    background-image: url('./example.png');
+}
+</style>
+```
+
+## SVG's as Vue components
+
+SVG's can also be imported as a Vue component. This is done using the `?vue` query parameter on the import path. It will return a SVG Vue component which you can directly use in your template.
+
+> Don't forget to name the import as a component (PascalCase).
+
+Also see the `Spinner` component for a working example of using a SVG as a component.
+
+```ts
+<template>
+    <ExampleSvg />
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import ExampleSvg from './example.svg?vue';
+
+export default defineComponent({
+    components: {
+        ExampleSvg,
+    },
+});
+</script>
+```
+
+## SvgVue - Deprecated
+
+You might still come across `<SvgVue />` components. This is a component to provide backwards compatiblity to a the previously used [Laravel `svg-vue`](https://github.com/danielstgt/svg-vue#readme) package. It will dynamically load the svg from the `resources/svg` directory. This component is however deprecated and should be replaced by new implementations directly importing the SVG files.
+
+```ts
+<template>
+    <SvgVue icon="info" class="svg-icon" />
+</template>
+```

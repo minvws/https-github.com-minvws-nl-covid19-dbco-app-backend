@@ -1,0 +1,5 @@
+Contact: mailto:security@rdobeheer.nl
+Expires: 2024-03-16T00:00:00.000Z
+Preferred-Languages: nl, en
+Canonical: https://www.bco-portaal.nl/.well-known/security.txt
+Policy: https://rdobeheer.nl/kwetsbaarheid-melden

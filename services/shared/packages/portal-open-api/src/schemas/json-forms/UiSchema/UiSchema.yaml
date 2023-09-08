@@ -1,0 +1,10 @@
+oneOf:
+    # layouts
+    - $ref: ./LayoutElement/LayoutElement.yaml
+    - $ref: ./LayoutElement/GroupElement.yaml
+    - $ref: ./LayoutElement/CategoryElement.yaml
+    - $ref: ./LayoutElement/AlertElement.yaml
+    # controls
+    - $ref: ./ControlElement/ControlElement.yaml
+    - $ref: ./ControlElement/CustomControlElement.yaml
+    - $ref: ./ControlElement/ChildFormControlElement.yaml

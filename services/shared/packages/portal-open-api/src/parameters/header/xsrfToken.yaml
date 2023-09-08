@@ -1,0 +1,6 @@
+name: X-XSRF-TOKEN
+in: header
+required: true
+description: XSRF Token
+schema:
+  type: string

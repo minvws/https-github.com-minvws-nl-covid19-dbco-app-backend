@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -13,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'smtp'),
+    'default' => env('MAIL_MAILER', 'smtp_ggdcontact'),
 
     /*
     |--------------------------------------------------------------------------
@@ -34,32 +36,26 @@ return [
     */
 
     'mailers' => [
-        'smtp' => [
+        'smtp_bcomail' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-            'port' => env('MAIL_PORT', 587),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
+            'host' => env('SMTP_BCOMAIL_HOST', 'smtp.bcomail.nl'),
+            'port' => env('SMTP_BCOMAIL_PORT', 587),
+            'encryption' => env('SMTP_BCOMAIL_ENCRYPTION', 'tls'),
+            'username' => env('SMTP_BCOMAIL_USERNAME'),
+            'password' => env('SMTP_BCOMAIL_PASSWORD'),
             'timeout' => null,
             'auth_mode' => null,
         ],
 
-        'ses' => [
-            'transport' => 'ses',
-        ],
-
-        'mailgun' => [
-            'transport' => 'mailgun',
-        ],
-
-        'postmark' => [
-            'transport' => 'postmark',
-        ],
-
-        'sendmail' => [
-            'transport' => 'sendmail',
-            'path' => '/usr/sbin/sendmail -bs',
+        'smtp_ggdcontact' => [
+            'transport' => 'smtp',
+            'host' => env('SMTP_GGDCONTACT_HOST', 'smtp.ggdcontact.nl'),
+            'port' => env('SMTP_GGDCONTACT_PORT', 587),
+            'encryption' => env('SMTP_GGDCONTACT_ENCRYPTION', 'tls'),
+            'username' => env('SMTP_GGDCONTACT_USERNAME'),
+            'password' => env('SMTP_GGDCONTACT_PASSWORD'),
+            'timeout' => null,
+            'auth_mode' => null,
         ],
 
         'log' => [
@@ -69,6 +65,21 @@ return [
 
         'array' => [
             'transport' => 'array',
+        ],
+
+        'zivver' => [
+            'transport' => 'smtp',
+            'host' => env('ZIVVER_HOST', 'smtp.zivver.com'),
+            'port' => env('ZIVVER_PORT', 587),
+            'encryption' => env('ZIVVER_ENCRYPTION', 'tls'),
+            'username' => env('ZIVVER_USERNAME'),
+            'password' => env('ZIVVER_PASSWORD'),
+            'timeout' => null,
+            'auth_mode' => null,
+            'from' => [
+                'address' => env('ZIVVER_FROM_ADDRESS', 'noreply@zelfbco.nl'),
+                'name' => env('ZIVVER_FROM_NAME', 'GGD'),
+            ],
         ],
     ],
 
@@ -84,8 +95,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'noreply@ggdcontact.nl'),
+        'name' => env('MAIL_FROM_NAME', 'GGD Contact'),
     ],
 
     /*

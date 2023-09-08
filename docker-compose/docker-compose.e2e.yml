@@ -1,0 +1,40 @@
+secrets:
+    composer_auth:
+        file: ./auth.json
+
+volumes:
+    mysql-data:
+        driver: local
+    src:
+
+services:
+    redis-hap:
+        extends:
+            file: docker-compose/common.yml
+            service: redis-hap
+
+    mysql:
+        extends:
+            file: docker-compose/common.yml
+            service: mysql
+
+    portal:
+        extends:
+            file: docker-compose/common.yml
+            service: portal
+        image: portal
+        depends_on:
+            - mysql
+            - redis-hap
+        build:
+            target: base
+            args:
+                - DEV=1
+            secrets:
+                - composer_auth
+        environment:
+            - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
+        ports:
+            - "8080:8080"
+        volumes:
+            - src:/src

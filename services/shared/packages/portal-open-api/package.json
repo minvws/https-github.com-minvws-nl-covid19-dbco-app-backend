@@ -1,0 +1,36 @@
+{
+    "name": "@dbco/portal-open-api",
+    "private": true,
+    "version": "1.0.0",
+    "scripts": {
+        "build-docs": "redocly build-docs dbco-portal --output=./output/openapi.html",
+        "preview-docs": "redocly preview-docs dbco-portal",
+        "generate": "yarn lint && yarn bundle && yarn docs && yarn transform-ts && yarn build-client",
+        "clean": "rimraf output",
+        "lint": "redocly lint ./src/openapi.yaml",
+        "bundle": "yarn clean && redocly bundle ./src/openapi.yaml --output ./output/openapi.yaml",
+        "build-client": "orval --config ./orval.config.ts",
+        "transform-ts": "openapi-typescript ./output/openapi.yaml --output ./output/openapi.ts",
+        "docs": "cp ./output/openapi.yaml ../../../../docs/openapi/portal.yml"
+    },
+    "exports": {
+        ".": "./output/openapi.ts",
+        "./*": "./output/*"
+    },
+    "typesVersions": {
+        "*": {
+            "*": [
+                "./output/*"
+            ]
+        }
+    },
+    "dependenciesComments": {
+        "orval": "v6.13 because the later versions currently freeze during the client generation process"
+    },
+    "devDependencies": {
+        "@redocly/cli": "1.0.2",
+        "openapi-typescript": "6.5.0",
+        "orval": "6.13.1",
+        "rimraf": "5.0.1"
+    }
+}

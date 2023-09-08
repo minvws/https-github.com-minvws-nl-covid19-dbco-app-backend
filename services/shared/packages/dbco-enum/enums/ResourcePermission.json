@@ -1,0 +1,18 @@
+{
+    "phpClass": "ResourcePermission",
+    "tsConst": "resourcePermission",
+    "description": "Resource Permission",
+    "default": null,
+    "items": [
+        {
+            "label": "Edit",
+            "value": "edit",
+            "name": "edit"
+        },
+        {
+            "label": "View",
+            "value": "view",
+            "name": "view"
+        }
+    ]
+}

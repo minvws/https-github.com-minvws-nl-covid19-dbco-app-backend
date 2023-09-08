@@ -1,71 +1,149 @@
-version: '3.7'
+version: "3.7"
 
 volumes:
     mysql-data:
         driver: local
 
-networks:
-    public:
-    sluice:
-    private:
-    healthauthority:
-
 services:
-    redis:
+    redis-sp:
         extends:
             file: docker-compose/common.yml
-            service: redis
+            service: redis-sp
 
-    redis-haa:
+    redis-hav:
         extends:
             file: docker-compose/common.yml
-            service: redis-haa
+            service: redis-hav
+
+    rabbitmq:
+        extends:
+            file: docker-compose/common.yml
+            service: rabbitmq
+        ports:
+            - ${RABBITMQ_MANAGEMENT_PORT:-15673}:15672
+
+    redis-hap:
+        extends:
+            file: docker-compose/common.yml
+            service: redis-hap
 
     mysql:
         extends:
             file: docker-compose/common.yml
             service: mysql
-
-    private-api:
-        extends:
-            file: docker-compose/common.yml
-            service: private-api
-        depends_on:
-            - redis
-
-    public-api:
-        extends:
-            file: docker-compose/common.yml
-            service: public-api
-        depends_on:
-            - redis
-
-    healthauthority-api:
-        extends:
-            file: docker-compose/common.yml
-            service: healthauthority-api
-        depends_on:
-            - mysql
-            - redis-haa
+        ports:
+            - ${MYSQL_PORT:-3306}:3306
 
     portal:
         extends:
             file: docker-compose/common.yml
             service: portal
+        image: portal
+        environment:
+            ALLOW_DEMO_LOGIN: ${PORTAL_ALLOW_DEMO_LOGIN:-true}
+            AMQP_QUEUE_INTAKE_DECLARE_EXCHANGE_AND_QUEUE: ${PORTAL_AMQP_QUEUE_INTAKE_DECLARE_EXCHANGE_AND_QUEUE:-true}
+            APP_DEBUG: ${DEBUG:-0}
+            APP_ENV: ${APP_ENV:-development}
+            APP_KEY: ${PORTAL_APP_KEY}
+            APP_TYPE: portal
+            APP_URL: ${PORTAL_APP_URL}
+            BSN_PROVIDER: ${BSN_PROVIDER:-local}
+            CLOCKWORK_REQUESTS_SLOW_THRESHOLD: ${CLOCKWORK_REQUESTS_SLOW_THRESHOLD:-2000}
+            DB_CONNECTION: mysql
+            DB_DATABASE: portal
+            DB_HOST: mysql
+            DB_PASSWORD: ${PORTAL_DB_PASSWORD:-mysql}
+            DB_USERNAME: ${PORTAL_DB_USERNAME:-root}
+            ELASTICSEARCH_HOST: ${NFIR_ELASTICSEARCH_HOST}
+            ELASTICSEARCH_PASS: ${NFIR_ELASTICSEARCH_PASS}
+            ELASTICSEARCH_PORT: ${NFIR_ELASTICSEARCH_PORT:-9200}
+            ELASTICSEARCH_SCHEME: ${NFIR_ELASTICSEARCH_SCHEME}
+            ELASTICSEARCH_USER: ${NFIR_ELASTICSEARCH_USER}
+            EXPORT_CURSOR_JWT_SECRET: ${EXPORT_CURSOR_JWT_SECRET}
+            INDEX_SALT: ${INDEX_SALT}
+            LOCATION_API_KEY: ${LOCATION_API_KEY}
+            LOCATION_BASE_URI: ${LOCATION_BASE_URI}
+            LOG_CHANNEL: ${LOG_CHANNEL:-stderr}
+            MAIL_MAILER: ${PORTAL_MAIL_MAILER:-smtp_bcomail}
+            MAIL_MAILER_INSECURE: ${PORTAL_MAIL_MAILER_INSECURE:-secure_mail}
+            MAIL_MAILER_SECURE: ${PORTAL_MAIL_MAILER_SECURE:-secure_mail}
+            MITTENS_BASE_URI: ${MITTENS_BASE_URI:-}
+            MITTENS_CLIENT_SSL_CERT: ${MITTENS_CLIENT_SSL_CERT:-}
+            MITTENS_CLIENT_SSL_KEY: ${MITTENS_CLIENT_SSL_KEY:-}
+            MITTENS_DIGID_ACCESS_TOKENS_PATH: ${MITTENS_DIGID_ACCESS_TOKENS_PATH:-}
+            MITTENS_PII_ACCESS_TOKENS_PATH: ${MITTENS_PII_ACCESS_TOKENS_PATH:-}
+            MITTENS_PSEUDO_BSN_TOKENS_FOR: ${MITTENS_PSEUDO_BSN_TOKENS_FOR:-secure_mail}
+            OSIRIS_USE_MOCK_CLIENT: ${OSIRIS_USE_MOCK_CLIENT:-true}
+            OSIRIS_BASE_URL: ${OSIRIS_BASE_URL:-http://localhost:8080/osiris/wsdl}
+            PROMETHEUS_METRICS_ROUTE_ENABLED: ${PROMETHEUS_METRICS_ROUTE_ENABLED:-false}
+            PROMETHEUS_ROUTES_HISTOGRAM_PER_ORGANISATION_ENABLED: ${PROMETHEUS_ROUTES_HISTOGRAM_PER_ORGANISATION_ENABLED:-false}
+            QUEUE_CONNECTION: ${PORTAL_QUEUE_CONNECTION:-sync}
+            RABBITMQ_HOST: ${RABBITMQ_HOST:-127.0.0.1}
+            REDIS_HOST: redis-hap
+            REDIS_HSM_HOST: redis-hav
+            REDIS_HSM_PASSWORD: ${REDIS_HAV_PASSWORD}
+            REDIS_HSM_USERNAME: ${REDIS_HAV_USERNAME}
+            REDIS_PASSWORD: ${REDIS_HAP_PASSWORD}
+            REDIS_USERNAME: ${REDIS_HAP_USERNAME}
+            SECURE_MAIL_BASE_URL: ${SECURE_MAIL_BASE_URL}
+            SECURE_MAIL_JWT_SECRET: ${SECURE_MAIL_JWT_SECRET}
+            SESSION_LIFETIME: ${PORTAL_SESSION_LIFETIME:-30}
+            SESSION_SECURE_COOKIE: ${PORTAL_SESSION_SECURE_COOKIE:-false}
+            SIGRID_CI_ACCOUNT: ${SIGRID_CI_ACCOUNT:-}
+            SIGRID_CI_TOKEN: ${SIGRID_CI_TOKEN:-}
+            SMTP_BCOMAIL_ENCRYPTION: ${PORTAL_SMTP_BCOMAIL_ENCRYPTION:-null}
+            SMTP_BCOMAIL_HOST: ${PORTAL_SMTP_BCOMAIL_HOST:-smtp}
+            SMTP_BCOMAIL_PORT: ${PORTAL_SMTP_BCOMAIL_PORT:-1025}
+            TIH_CLIENT_ID: ${PORTAL_TIH_CLIENT_ID:-1462274220640825445}
+            TIH_CLIENT_SECRET: ${PORTAL_TIH_CLIENT_SECRET}
+            TIH_REDIRECT_URL: ${PORTAL_TIH_REDIRECT_URL:-/auth/login}
+            TRUSTED_HOSTS: ${TRUSTED_HOSTS:-}
+            TRUSTED_PROXIES: ${TRUSTED_PROXIES:-"*"}
+            ZIVVER_ENCRYPTION: ${PORTAL_ZIVVER_ENCRYPTION:-null}
+            ZIVVER_HOST: ${PORTAL_ZIVVER_HOST:-smtp}
+            ZIVVER_PORT: ${PORTAL_ZIVVER_PORT:-1025}
+            ASSIGNMENT_JWT_SECRET: ${ASSIGNMENT_JWT_SECRET}
+            SCHEMA_ELOQUENTCASE_VERSION: ${SCHEMA_ELOQUENTCASE_VERSION}
+            OSIRIS_SEND_CASE_ENABLED: ${OSIRIS_SEND_CASE_ENABLED:-false}
+            OSIRIS_JOB_QUEUE_CONNECTION: ${OSIRIS_JOB_QUEUE_CONNECTION:-rabbitmq}
+            OSIRIS_CASE_EXPORT_JOB_CONNECTION: ${OSIRIS_CASE_EXPORT_JOB_CONNECTION:-rabbitmq}
+        ports:
+            - ${PORTAL_PORT:-8084}:8080
         depends_on:
-            - healthauthority-api
             - mysql
-            - redis-haa
+            - redis-hav
+            - redis-hap
+        volumes:
+            - ./services/shared/resources:/shared/resources
 
-    hsm:
+    gateway:
         extends:
             file: docker-compose/common.yml
-            service: hsm
-
-    worker:
-        extends:
-            file: docker-compose/common.yml
-            service: worker
+            service: gateway
+        depends_on:
+            - rabbitmq
+            - redis-hap
+        image: gateway
+        environment:
+            LOG_CHANNEL: ${LOG_CHANNEL:-"stderr"}
+            APP_KEY: ${GATEWAY_APP_KEY}
+            APP_URL: ${GATEWAY_APP_URL:-http://localhost:8085}
+            GATEWAY_JWT_SECRET: ${GATEWAY_JWT_SECRET}
+            ENCRYPTION_PUBLIC_KEY: ${GATEWAY_ENCRYPTION_PUBLIC_KEY}
+            APP_NAME: ${GATEWAY_APP_NAME-gateway}
+            APP_ENV: ${APP_ENV-development}
+            APP_DEBUG: ${DEBUG:-0}
+            RABBITMQ_HOST: ${RABBITMQ_HOST:-rabbitmq}
+            RABBITMQ_PORT: ${RABBITMQ_PORT:-5672}
+            RABBITMQ_USER: ${RABBITMQ_USER:-guest}
+            RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-guest}
+            REDIS_HOST: redis-hap
+            REDIS_PORT: 6379
+            REDIS_USERNAME: ${REDIS_HAP_USERNAME}
+            REDIS_PASSWORD: ${REDIS_HAP_PASSWORD}
+        volumes:
+            - ./services/shared/library:/shared/library:ro,delegated
+            - ./services/shared/packages:/shared/packages:ro,delegated
 
     mysqlclient:
         extends:

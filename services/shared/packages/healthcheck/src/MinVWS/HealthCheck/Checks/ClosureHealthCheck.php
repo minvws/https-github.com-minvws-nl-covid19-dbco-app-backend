@@ -1,7 +1,9 @@
 <?php
+
 namespace MinVWS\HealthCheck\Checks;
 
 use Closure;
+use Exception;
 use MinVWS\HealthCheck\Models\HealthCheckResult;
 
 /**
@@ -31,6 +33,10 @@ class ClosureHealthCheck implements HealthCheck
      */
     public function performHealthCheck(): HealthCheckResult
     {
-        return call_user_func($this->closure);
+        try {
+            return call_user_func($this->closure);
+        } catch (Exception $e) {
+            return new HealthCheckResult(false, 'internalError', $e->getMessage());
+        }
     }
 }

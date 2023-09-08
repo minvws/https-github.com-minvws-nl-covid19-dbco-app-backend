@@ -1,0 +1,26 @@
+{
+    "name": "minvws/dbco-encryption",
+    "description": "Shared code for DBCO encryption",
+    "require": {
+        "php": "7.4 - 8.2"
+    },
+    "suggest": {
+        "predis/predis": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "MinVWS\\DBCO\\Encryption\\": "src/MinVWS/DBCO/Encryption/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../packages/*"
+        }
+    ],
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

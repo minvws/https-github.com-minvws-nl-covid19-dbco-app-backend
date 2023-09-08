@@ -1,0 +1,40 @@
+{
+    "phpClass": "TaskAdvice",
+    "tsConst": "taskAdvice",
+    "currentVersion": 2,
+    "items": [
+        {
+            "value": "quarantine-not-applicable",
+            "label": "Quarantaine niet van toepassing"
+        },
+        {
+            "value": "quarantine-explained",
+            "label": "Uitleg quarantainebeleid als strikte thuisisolatie niet mogelijk is",
+            "maxVersion": 1
+        },
+        {
+            "value": "live-seperated-explained",
+            "label": "Uitleg gescheiden leven van huisgenoten & schoonmaken van gedeelde keuken en/of badkamer"
+        },
+        {
+            "value": "do-test-asap",
+            "label": "Doe zo snel mogelijk een coronatest",
+            "maxVersion": 1
+        },
+        {
+            "value": "do-test-when-symptoms",
+            "label": "Laat je testen wanneer klachten ontstaan",
+            "maxVersion": 1
+        },
+        {
+            "value": "complaints-selftest",
+            "label": "Bij klachten: doe een zelftest",
+            "minVersion": 2
+        },
+        {
+            "value": "complaints-test-ggd",
+            "label": "Bij klachten: laat je testen bij de GGD. Je hoort bij een doelgroep voor testen bij de GGD",
+            "minVersion": 2
+        }
+    ]
+}

@@ -1,0 +1,33 @@
+type: object
+required:
+    - effect
+properties:
+    effect:
+        type: string
+        enum:
+            - 'HIDE'
+            - 'SHOW'
+            - 'ENABLE'
+            - 'DISABLE'
+    condition:
+        description: >
+            The condition that must be met for the effect to be applied.
+            Note that this schema is not complete, conditions can for example be nested.
+            To keep things simple we currently only support a flat list of conditions.
+        oneOf:
+            - $ref: ./SchemaBasedCondition.yaml
+            - 
+                type: object
+                required:
+                    - type
+                    - conditions
+                properties:
+                    type:
+                        type: string
+                        enum:
+                            - 'OR'
+                            - 'AND'
+                    conditions:
+                        type: array
+                        items:
+                            $ref: ./SchemaBasedCondition.yaml

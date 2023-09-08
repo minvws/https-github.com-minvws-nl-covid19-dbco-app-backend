@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.2/phpunit.xsd"
+    bootstrap="./tests/bootstrap.php"
+    colors="true"
+    cacheResultFile="/tmp/.phpunit.result.cache"
+    executionOrder="random"
+>
+  <testsuites>
+    <testsuite name="Application Test Suite">
+      <directory>./tests</directory>
+    </testsuite>
+    <testsuite name="TimerPackage">
+      <directory>../shared/packages/timer/tests</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+    <env name="APP_ENV" value="testing"/>
+    <env name="CACHE_DRIVER" value="array"/>
+    <env name="LOG_CHANNEL" value="test"/>
+    <env name="QUEUE_CONNECTION" value="sync"/>
+  </php>
+</phpunit>

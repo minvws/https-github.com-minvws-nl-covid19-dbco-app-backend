@@ -1,0 +1,14 @@
+type: object
+allOf:
+    - $ref: ./BaseCustomControlElement.yaml
+properties:
+    customRenderer:
+        type: string
+        enum:
+            - 'Message'
+            - 'JsonEditor'
+            - 'RadioButtonGroup'
+            - 'Table'
+            - 'FormLink'
+            - 'ChildForm'
+            - 'ChildFormCollection'

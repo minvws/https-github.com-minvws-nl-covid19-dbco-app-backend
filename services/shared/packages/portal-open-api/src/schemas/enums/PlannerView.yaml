@@ -1,0 +1,9 @@
+type: string
+enum:
+  - unknown
+  - unassigned
+  - assigned
+  - outsourced
+  - queued
+  - archived
+  - completed

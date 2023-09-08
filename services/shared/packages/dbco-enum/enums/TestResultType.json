@@ -1,0 +1,18 @@
+{
+    "phpClass": "TestResultType",
+    "tsConst": "testResultType",
+    "items": [
+        {
+            "label": "Labuitslag",
+            "value": "lab"
+        },
+        {
+            "label": "Zelftest",
+            "value": "selftest"
+        },
+        {
+            "label": "Onbekend",
+            "value": "unknown"
+        }
+    ]
+}

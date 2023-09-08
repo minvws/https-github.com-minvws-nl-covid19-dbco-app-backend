@@ -1,0 +1,14 @@
+{
+    "phpClass": "ExpertQuestionType",
+    "tsConst": "expertQuestionType",
+    "items": [
+        {
+            "label": "Medische Supervisie",
+            "value": "medical-supervision"
+        },
+        {
+            "label": "Gesprekscoach",
+            "value": "conversation-coach"
+        }
+    ]
+}

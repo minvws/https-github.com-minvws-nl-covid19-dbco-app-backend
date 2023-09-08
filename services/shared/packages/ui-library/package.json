@@ -1,0 +1,78 @@
+{
+    "name": "@dbco/ui-library",
+    "private": true,
+    "version": "1.0.0",
+    "exports": {
+        ".": "./src/index.ts",
+        "./test": "./src/test/index.ts",
+        "./*": "./src/*"
+    },
+    "typesVersions": {
+        "*": {
+            "test": [
+                "./src/test/index.ts"
+            ],
+            "*": [
+                "./src/*"
+            ]
+        }
+    },
+    "scripts": {
+        "test:ci": "NODE_OPTIONS=--max_old_space_size=4096 yarn run vitest run --config ./vitest/config.ci.ts",
+        "test:hl": "yarn run vitest run --config ./vitest/config.ts",
+        "test": "yarn run vitest --config ./vitest/config.ts",
+        "type:check": "tsc --noEmit && echo \"✔ Finished tsc type check (@dbco/ui-library)\"",
+        "volar": "yarn vue-tsc --noEmit --project ./tsconfig.vue-tsc.json && echo \"✔ Finished Volar type check (@dbco/ui-library)\"",
+        "storybook": "storybook dev -p 6006",
+        "storybook-build": "storybook build"
+    },
+    "dependenciesComments": {
+        "autoprefixer": "v10.4.5 due to this issue: https://github.com/tailwindlabs/tailwindcss/issues/8277#issuecomment-1120493503",
+        "@vue/test-utils": "v1 because this is compatible with Vue 2",
+        "vue": "v2 only because the portal is still dependend on Vue v2"
+    },
+    "dependencies": {
+        "@dbco/portal-open-api": "1.0.0",
+        "@jsonforms/core": "3.1.0",
+        "@jsonforms/vue2": "3.1.0",
+        "animejs": "3.2.1",
+        "i18next": "23.4.4",
+        "lodash": "4.17.21",
+        "tailwind-merge": "1.14.0",
+        "tailwindcss": "3.3.3",
+        "vue": "2.7.14"
+    },
+    "devDependencies": {
+        "@faker-js/faker": "8.0.2",
+        "@linusborg/vue-simple-portal": "0.1.5",
+        "@storybook/addon-essentials": "^7.3.2",
+        "@storybook/addon-interactions": "^7.3.2",
+        "@storybook/addon-links": "^7.3.2",
+        "@storybook/blocks": "^7.3.2",
+        "@storybook/testing-library": "^0.2.0",
+        "@storybook/vue": "^7.3.2",
+        "@storybook/vue-vite": "^7.3.2",
+        "@tailwindcss/forms": "0.5.4",
+        "@types/animejs": "3.1.7",
+        "@types/lodash": "4.14.197",
+        "@types/svgo": "^3.0.0",
+        "@vitejs/plugin-vue2": "2.2.0",
+        "@vitest/coverage-v8": "0.34.2",
+        "@vue/test-utils": "1.3.6",
+        "autoprefixer": "10.4.15",
+        "chromatic": "6.22.0",
+        "json-editor-vue": "0.10.6",
+        "postcss": "8.4.28",
+        "sass": "1.66.0",
+        "storybook": "^7.3.2",
+        "svgo": "3.0.2",
+        "typescript": "4.9.5",
+        "vanilla-jsoneditor": "0.17.10",
+        "vite": "4.4.9",
+        "vite-plugin-commonjs": "0.8.2",
+        "vite-plugin-vue2": "2.0.3",
+        "vite-plugin-vue2-svg": "0.4.0",
+        "vitest": "0.34.2",
+        "vue-tsc": "1.8.8"
+    }
+}

@@ -1,0 +1,10 @@
+type: object
+allOf:
+    - $ref: ./BaseControlElement.yaml
+properties:
+    options:
+        oneOf:
+            - $ref: ./options/StringOptions.yaml
+            - $ref: ./options/BooleanOptions.yaml
+            - $ref: ./options/ArrayOptions.yaml
+            - $ref: ./options/EnumOptions.yaml

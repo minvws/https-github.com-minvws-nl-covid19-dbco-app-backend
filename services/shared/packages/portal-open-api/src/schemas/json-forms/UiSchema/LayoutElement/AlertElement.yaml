@@ -1,0 +1,17 @@
+type: object
+allOf:
+    - $ref: ../UiSchemaElement.yaml
+required:
+    - type
+properties:
+    type:
+        type: string
+        enum:
+            - 'Alert'
+    label:
+        type: string
+    description:
+        type: string
+    i18n:
+        type: string
+    options: { type: object, properties: { variant: { type: string, enum: ['success', 'info', 'warning', 'error'] } } }

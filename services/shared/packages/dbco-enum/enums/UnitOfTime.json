@@ -1,0 +1,18 @@
+{
+    "phpClass": "UnitOfTime",
+    "tsConst": "unitOfTime",
+    "items": [
+        {
+            "label": "day",
+            "value": "day"
+        },
+        {
+            "label": "week",
+            "value": "week"
+        },
+        {
+            "label": "month",
+            "value": "month"
+        }
+    ]
+}

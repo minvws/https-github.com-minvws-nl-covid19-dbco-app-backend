@@ -1,0 +1,9 @@
+apiVersion: v2
+version: 0.0.0
+appVersion: 0.0.0
+name: ingest-worker
+engine: gotpl
+description: Ingest-Worker chart for Kubernetes
+home: https://github.com/minvws/nl-covid19-dbco-app-backend-private
+sources:
+  - https://github.com/minvws/nl-covid19-dbco-app-backend-private

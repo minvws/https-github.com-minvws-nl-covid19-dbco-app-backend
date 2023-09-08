@@ -1,0 +1,12 @@
+{
+    "name": "minvws/codable",
+    "description": "JSON decoder",
+    "require": {
+        "php": "7.4 - 8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "MinVWS\\Codable\\": "src/MinVWS/Codable/"
+        }
+    }
+}

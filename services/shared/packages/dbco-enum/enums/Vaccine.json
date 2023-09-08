@@ -1,0 +1,42 @@
+{
+    "phpClass": "Vaccine",
+    "tsConst": "vaccine",
+    "items": [
+        {
+            "label": "Comirnaty (Pfizer / BioNTech)",
+            "value": "pfizer"
+        },
+        {
+            "label": "Spikevax (Moderna)",
+            "value": "moderna"
+        },
+        {
+            "label": "Vaxzevria (AstraZeneca)",
+            "value": "astrazeneca"
+        },
+        {
+            "label": "Janssen Pharmaceutical Companies",
+            "value": "janssen"
+        },
+        {
+            "label": "Sanofi Pasteur / GSK",
+            "value": "gsk"
+        },
+        {
+            "label": "CureVac",
+            "value": "curevac"
+        },
+        {
+            "label": "Nuvaxovid (Novavax)",
+            "value": "novavax"
+        },
+        {
+            "label": "Onbekend",
+            "value": "unknown"
+        },
+        {
+            "label": "Anders",
+            "value": "other"
+        }
+    ]
+}

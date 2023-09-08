@@ -1,7 +1,13 @@
 <?php
+
 namespace MinVWS\Metrics\Services;
 
 use DateTimeImmutable;
+use DateTimeZone;
+use Exception;
+use Illuminate\Support\Str;
+use MinVWS\Metrics\Helpers\CMSHelper;
+use MinVWS\Metrics\Models\ExportConfig;
 use MinVWS\Metrics\Models\Event;
 use MinVWS\Metrics\Models\Export;
 use MinVWS\Metrics\Repositories\ExportRepository;
@@ -17,59 +23,51 @@ use Ramsey\Uuid\Uuid;
 class ExportService
 {
     /**
-     * @var string
+     * @var ExportConfig
      */
-    private string $exportBasePath;
-
-    /**
-     * @var string
-     */
-    private string $exportFilenameTemplate;
-
-    /**
-     * @var string
-     */
-    private string $exportFilenameTimestampFormat;
+    protected ExportConfig $config;
 
     /**
      * @var StorageRepository
      */
-    private StorageRepository $storageRepository;
+    protected StorageRepository $storageRepository;
 
     /**
      * @var ExportRepository
      */
-    private ExportRepository $exportRepository;
+    protected ExportRepository $exportRepository;
 
     /**
      * @var UploadRepository
      */
-    private UploadRepository $uploadRepository;
+    protected UploadRepository $uploadRepository;
+
+    /**
+     * @var CMSHelper
+     */
+    protected CMSHelper $cmsHelper;
 
     /**
      * Constructor.
      *
-     * @param string            $exportBasePath
-     * @param string            $exportFilenameTemplate
-     * @param string            $exportFilenameTimestampFormat
+     * @param ExportConfig      $config
      * @param StorageRepository $storageRepository
      * @param ExportRepository  $exportRepository
      * @param UploadRepository  $uploadRepository
+     * @param CMSHelper         $cmsHelper
      */
     public function __construct(
-        string $exportBasePath,
-        string $exportFilenameTemplate,
-        string $exportFilenameTimestampFormat,
+        ExportConfig $config,
         StorageRepository $storageRepository,
         ExportRepository $exportRepository,
-        UploadRepository $uploadRepository
+        UploadRepository $uploadRepository,
+        CMSHelper $cmsHelper
     ) {
-        $this->exportBasePath = $exportBasePath;
-        $this->exportFilenameTemplate = $exportFilenameTemplate;
-        $this->exportFilenameTimestampFormat = $exportFilenameTimestampFormat;
+        $this->config = $config;
         $this->storageRepository = $storageRepository;
         $this->exportRepository = $exportRepository;
         $this->uploadRepository = $uploadRepository;
+        $this->cmsHelper = $cmsHelper;
     }
 
     /**
@@ -109,46 +107,106 @@ class ExportService
     }
 
     /**
-     * Export the latest metrics to a file at the configured export path.
+     * Returns the export filename.
      *
-     * @return Export
+     * @param Export $export
+     *
+     * @return string
      */
-    public function export(?string $exportUuid): Export
+    public function getFilenameForExport(Export $export): string
     {
-        if ($exportUuid !== null) {
-            $export = $this->storageRepository->getExport($exportUuid);
-        } else {
-            $export = new Export(Uuid::uuid4(), Export::STATUS_INITIAL, new DateTimeImmutable());
-            $this->storageRepository->createExport($export);
-        }
-
-        $exportedAt = new DateTimeImmutable();
-
-        $filename = str_replace(
+        return str_replace(
             [
                 '[uuid]',
                 '[timestamp]'
             ],
             [
                 $export->uuid,
-                $exportedAt->format($this->exportFilenameTimestampFormat)
+                $export->exportedAt->format($this->config->filenameTimestampFormat)
             ],
-            $this->exportFilenameTemplate
+            $this->config->filenameTemplate
         );
+    }
 
-        $path = $this->exportBasePath . '/' . $filename;
+    /**
+     * Export data.
+     *
+     * @param Export $export
+     *
+     * @return string
+     */
+    protected function exportData(Export $export): string
+    {
+        $handle = fopen('php://memory', 'w');
 
-        $export->eventCount = 0;
-        $handle = $this->exportRepository->openFile($path, $export);
-        $this->storageRepository->iterateEventsForExport($export->uuid, function (Event $event) use ($handle, $export) {
-            $this->exportRepository->addEventToFile($event, $handle);
-            $export->eventCount += 1;
+        $this->exportRepository->addHeaderToStream($export, $handle);
+
+        $export->itemCount = 0;
+        $this->storageRepository->iterateForExport($export->uuid, function ($event) use ($handle, $export) {
+            $this->exportRepository->addObjectToStream($event, $handle);
+            $export->itemCount += 1;
         });
-        $this->exportRepository->closeFile($handle);
+
+        $this->exportRepository->addFooterToStream($export, $handle);
+
+        rewind($handle);
+        $data =  stream_get_contents($handle);
+
+        fclose($handle);
+
+        return $data;
+    }
+
+    /**
+     * Store exported events on disk.
+     *
+     * @param string $filename
+     * @param string $data
+     *
+     * @throws Exception
+     */
+    protected function storeExportData(string $filename, string $data)
+    {
+        $path = $this->config->basePath . '/' . $filename;
+
+        if ($this->config->encryption->isEnabled) {
+            $data = $this->cmsHelper->encrypt($data, $this->config->encryption);
+        }
+
+        file_put_contents($path, $data);
+
+        if ($this->config->signature->isEnabled) {
+            $signaturePath = $path . '.sig';
+            $signature = $this->cmsHelper->sign($data, $this->config->signature);
+            file_put_contents($signaturePath, $signature);
+        }
+    }
+
+    /**
+     * Export the latest metrics to a file at the configured export path.
+     *
+     * @param string|null $exportUuid Existing export UUID if you want to re-export an existing export, or null.
+     * @param int|null    $limit      Limit the number of events exported.
+     *
+     * @return Export
+     *
+     * @throws Exception
+     */
+    public function export(?string $exportUuid = null, ?int $limit = null): Export
+    {
+        if ($exportUuid !== null) {
+            $export = $this->storageRepository->getExport($exportUuid);
+        } else {
+            $export = new Export(Uuid::uuid4(), Export::STATUS_INITIAL, new DateTimeImmutable('now', new DateTimeZone('UTC')));
+            $this->storageRepository->createExport($export, $limit);
+        }
 
         $export->status = Export::STATUS_EXPORTED;
-        $export->exportedAt = $exportedAt;
-        $export->filename = $filename;
+        $export->exportedAt = new DateTimeImmutable('now', new DateTimeZone('UTC'));
+        $export->filename = $this->getFilenameForExport($export);
+
+        $data = $this->exportData($export);
+        $this->storeExportData($export->filename, $data);
         $this->storageRepository->updateExport($export, ['status', 'exportedAt', 'filename']);
 
         return $export;
@@ -158,13 +216,15 @@ class ExportService
      * Upload export.
      *
      * @param Export $export Export.
+     *
+     * @throws Exception
      */
     public function upload(Export $export)
     {
-        $path = $this->exportBasePath . '/' . $export->filename;
+        $path = $this->config->basePath . '/' . $export->filename;
         $this->uploadRepository->uploadFile($path, $export);
         $export->status = Export::STATUS_UPLOADED;
-        $export->uploadedAt = new DateTimeImmutable();
+        $export->uploadedAt = new DateTimeImmutable('now', new DateTimeZone('UTC'));
         $this->storageRepository->updateExport($export, ['status', 'uploadedAt']);
     }
 }

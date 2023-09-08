@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+BASE_PATH=$(dirname $0)/..
+BASE_PATH=$(readlink -f "$BASE_PATH")
+
+COMPOSE_FILE="$BASE_PATH/docker-compose/docker-compose.e2e.yml"
+DOCKER_COMPOSE="docker compose -p nl-covid19-dbco-app-backend-private-e2e --env-file $BASE_PATH/.env.e2e --project-directory=$BASE_PATH --file $COMPOSE_FILE"
+COMPOSE_FILE_TOOLS="$BASE_PATH/docker-compose/docker-compose.e2e.tools.yml"
+DOCKER_COMPOSE_TOOLS="$DOCKER_COMPOSE --file $COMPOSE_FILE_TOOLS"
+
+echo
+echo "=====[ REMOVE CONTAINERS AND VOLUMES ]========================="
+$DOCKER_COMPOSE_TOOLS down --remove-orphans -v
+
+echo
+echo "=====[ REMOVE ENV FILES ]========================="
+rm -f "$BASE_PATH"/.env.e2e
+rm -f "$BASE_PATH"/services/portal/src/.env.e2e

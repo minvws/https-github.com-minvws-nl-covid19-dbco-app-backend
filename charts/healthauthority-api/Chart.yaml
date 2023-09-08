@@ -1,9 +1,0 @@
-apiVersion: v1
-version: 0.2.1
-appVersion: 0.2.1
-name: healthauthority-api
-engine: gotpl
-description: Health authority API Helm chart for Kubernetes
-home: https://github.com/minvws/nl-covid19-dbco-app-backend-private
-sources:
-- https://github.com/minvws/nl-covid19-dbco-app-backend-private

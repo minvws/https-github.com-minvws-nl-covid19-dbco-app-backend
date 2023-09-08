@@ -1,0 +1,12 @@
+type: object
+required:
+  - uuid
+  - isCurrent
+properties:
+  uuid:
+    type: string
+    format: uuid
+  isCurrent:
+    type: boolean
+  name:
+    type: string

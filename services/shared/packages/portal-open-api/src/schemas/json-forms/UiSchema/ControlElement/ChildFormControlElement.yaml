@@ -1,0 +1,18 @@
+type: object
+allOf:
+    - $ref: ./BaseCustomControlElement.yaml
+required:
+    - options
+properties:
+    customRenderer:
+        type: string
+        enum:
+            - 'ChildForm'
+            - 'ChildFormCollection'
+    options:
+        type: object
+        required:
+            - detail
+        properties:
+            detail:
+                $ref: ../UiSchema.yaml

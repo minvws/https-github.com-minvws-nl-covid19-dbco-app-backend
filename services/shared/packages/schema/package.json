@@ -1,0 +1,25 @@
+{
+    "name": "@dbco/schema",
+    "private": true,
+    "version": "1.0.0",
+    "dependencies": {
+        "@dbco/enum": "1.0.0"
+    },
+    "exports": {
+        "./dto": "./src/dto.ts",
+        "./*": "./src/generated/*"
+    },
+    "typesVersions": {
+        "*": {
+            "dto": [
+                "./src/dto.ts"
+            ],
+            "unions": [
+                "./src/unions.ts"
+            ],
+            "*": [
+                "./src/generated/*"
+            ]
+        }
+    }
+}

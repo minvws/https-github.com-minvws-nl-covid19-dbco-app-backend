@@ -1,0 +1,14 @@
+apiVersion: v2
+version: 0.0.0
+appVersion: 0.0.0
+name: gateway
+engine: gotpl
+description: Gateway Helm chart for Kubernetes
+home: https://github.com/minvws/nl-covid19-dbco-app-backend-private
+sources:
+  - https://github.com/minvws/nl-covid19-dbco-app-backend-private
+dependencies:
+  - condition: locust.enabled
+    name: locust
+    version: 0.30.0
+    repository: https://charts.deliveryhero.io/

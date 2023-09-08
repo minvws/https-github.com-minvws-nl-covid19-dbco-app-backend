@@ -1,0 +1,30 @@
+{
+    "phpClass": "PersonalProtectiveEquipment",
+    "tsConst": "personalProtectiveEquipment",
+    "items": [
+        {
+            "label": "Handschoenen",
+            "value": "gloves"
+        },
+        {
+            "label": "Niet-medisch mondneuskapje",
+            "value": "non-medical-mask"
+        },
+        {
+            "label": "Medisch mondneuskapje (ten minste type IIR)",
+            "value": "mask"
+        },
+        {
+            "label": "Bril",
+            "value": "glasses"
+        },
+        {
+            "label": "Handhygiëne (handen met zeep / alcohol grondig gereinigd)",
+            "value": "hand-hygiene"
+        },
+        {
+            "label": "Schort",
+            "value": "apron"
+        }
+    ]
+}

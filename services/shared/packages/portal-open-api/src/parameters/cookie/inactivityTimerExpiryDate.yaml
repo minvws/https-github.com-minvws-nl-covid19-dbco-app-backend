@@ -1,0 +1,8 @@
+name: Inactivity timer expiry date
+in: cookie
+required: false
+description: A datetime for when a user is automatically logged out
+example: 2023-02-01T14:52:09.650128Z
+schema:
+  type: string
+  format: datetime

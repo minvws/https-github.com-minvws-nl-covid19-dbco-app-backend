@@ -1,0 +1,35 @@
+organization: min-vws
+
+apis:
+    dbco-portal:
+        root: src/openapi.yaml
+extends:
+    - recommended
+
+theme:
+    openapi:
+        schemaDefinitionsTagName: Schemas
+
+# https://redocly.com/docs/cli/rules/
+rules:
+    no-unused-components: error
+    operation-4xx-response: off
+    # tag-description: off
+    # operation-summary: error
+    # no-unresolved-refs: error
+    # operation-2xx-response: error
+    # operation-operationId: error
+    # operation-singular-tag: error
+    # no-enum-type-mismatch: error
+    # no-identical-paths: error
+    # no-ambiguous-paths: error
+    assert/operation-description:
+        subject:
+            type: Operation
+            property: description
+        assertions:
+            defined: true
+            minLength: 10
+            pattern: /[A-Z0-9].*\.$/
+        message: Operation description must be at least 10 characters, start with a capitalized letter and end with a full stop.
+        severity: error

@@ -1,0 +1,6 @@
+{
+    "name": "@dbco/enum",
+    "private": true,
+    "version": "1.0.0",
+    "main": "./output/ts/index.ts"
+}

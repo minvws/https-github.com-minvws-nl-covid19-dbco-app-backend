@@ -1,0 +1,11 @@
+{
+    "phpClass": "ChoreResourceType",
+    "tsConst": "choreResourceType",
+    "description": "Chore resource types",
+    "items": [
+        {
+            "label": "Covid case",
+            "value": "covid-case"
+        }
+    ]
+}

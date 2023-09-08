@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "app.fullname" . }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: web
+spec:
+  {{- if not .Values.hpa.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  strategy: {{ toYaml .Values.strategy | nindent 4 }}    
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "app.fullname" . }}
+      app.kubernetes.io/component: web
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "app.fullname" . }}
+        app.kubernetes.io/component: web
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/portal-configmap.yaml") . | sha256sum }}
+        {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+    spec:
+    {{- with .Values.topologySpreadConstraints}}
+      topologySpreadConstraints:
+{{ toYaml . | indent 8 }}
+      {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- if .Values.serviceAccount.enabled }}
+      serviceAccountName: {{ template "app.serviceAccountName" . }}
+      {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+{{ toYaml .Values.containerSecurityContext | indent 12 }}
+          envFrom:
+          - configMapRef:
+              name: {{ template "app.fullname" . }}
+          - secretRef:
+              name: {{ template "app.fullname" . }}
+          - secretRef:
+              name: {{ template "app.fullname" . }}-private-api-jwt
+              optional: true
+          - secretRef:
+              name: {{ template "app.fullname" . }}-app
+              optional: true
+          - secretRef:
+              name: {{ template "app.fullname" . }}-db
+              optional: true
+          - secretRef:
+              name: {{ template "app.fullname" . }}-tih
+              optional: true
+          - configMapRef:
+              name: {{ template "app.fullname" . }}-optional
+              optional: true
+          - configMapRef:
+              name: {{ template "app.fullname" . }}-custom
+              optional: true
+          - secretRef:
+              name: {{ template "app.fullname" . }}-custom
+              optional: true
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.httpPort | default 8080 }}
+              protocol: TCP
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          livenessProbe:
+{{ toYaml .Values.livenessProbe | indent 12 }}
+          readinessProbe:
+{{ toYaml .Values.readinessProbe | indent 12 }}
+          lifecycle:
+{{ toYaml .Values.lifecycle | indent 12 }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+          {{- tpl . $ | nindent 12 }}
+          {{- end }}
+    {{- with .Values.hostAliases }}
+      hostAliases:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.securityContext }}
+      securityContext:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.volumes }}
+      volumes:
+      {{- tpl . $ | nindent 8 }}
+    {{- end }}

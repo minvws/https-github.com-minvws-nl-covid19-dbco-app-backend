@@ -2,7 +2,7 @@
     "name": "minvws/healthcheck",
     "description": "A small package for easily incorporating health checks",
     "require": {
-        "php": "^7.4"
+        "php": ">=7.4"
     },
     "suggest": {
         "ext-pdo": "*",

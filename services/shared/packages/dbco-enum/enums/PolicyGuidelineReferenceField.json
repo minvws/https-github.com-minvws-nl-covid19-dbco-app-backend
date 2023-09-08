@@ -1,0 +1,22 @@
+{
+    "phpClass": "PolicyGuidelineReferenceField",
+    "tsConst": "policyGuidelineReferenceField",
+    "properties": {
+        "property": {
+            "type": "string",
+            "scope": "php"
+        }
+    },
+    "items": [
+        {
+            "label": "Eerste ziektedag",
+            "value": "date_of_symptom_onset",
+            "property": "dateOfSymptomOnset"
+        },
+        {
+            "label": "Testdatum",
+            "value": "date_of_test",
+            "property": "dateOfTest"
+        }
+    ]
+}

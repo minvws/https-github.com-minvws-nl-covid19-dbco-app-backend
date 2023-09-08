@@ -1,0 +1,53 @@
+includes:
+    - phpstan-baseline.neon
+parameters:
+    paths:
+        - .
+        - ../../shared/library
+        - ../../shared/packages
+        - ./tests/Helpers/QuerySchema.php
+        - ./tests/Helpers/CreateFragments.php
+    excludePaths:
+        - bootstrap/cache
+        - node_modules/
+        - public/css
+        - public/js
+        - storage/
+        - vendor/
+        - tests/
+        - raw-coverage-portal-backend-tests.php
+        - ../../shared/packages/audit/
+        - ../../shared/packages/codable/
+        - ../../shared/packages/dbco-metrics/
+        - ../../shared/packages/dbco-pairing-request/
+        - ../../shared/packages/dbco-encryption/
+        - ../../shared/packages/dbco-enum/
+        - ../../shared/packages/dbco-ldap-dn/
+        - ../../shared/packages/metrics/
+        - ../../shared/packages/healthcheck/
+        - ../../shared/packages/dbco-queue-messages/
+        - ../../shared/packages/*/tests/*
+        - ../../shared/packages/*/vendor/*
+        - ../../shared/packages/dbco-pairing-request/src/MinVWS/DBCO/PairingRequest/DI/Provider.php
+        - ../../shared/library/*/Tests/*
+        - ../../shared/library/DBCO/Application/Actions/
+        - ../../shared/library/DBCO/Application/Bridge/
+        - ../../shared/library/DBCO/Application/Handlers/
+        - ../../shared/library/DBCO/Application/Metrics/
+        - ../../shared/library/DBCO/Application/ResponseEmitter/
+        - ../../shared/library/DBCO/Application/Responses/
+    level: max
+    checkGenericClassInNonGenericObjectType: false
+    checkMissingIterableValueType: false
+    universalObjectCratesClasses:
+        - MinVWS\Codable\EncodingContainer
+        - MinVWS\Codable\DecodingContainer
+        - App\Schema\OwnerProxy
+    editorUrl: 'phpstorm://open?file=%%file%%&line=%%line%%'
+    stubFiles:
+        - phpstan/EventServiceProvider.stub
+services:
+	-
+		class: App\PHPStan\ModelPropertiesClassReflectionExtension
+		tags:
+			- phpstan.broker.propertiesClassReflectionExtension

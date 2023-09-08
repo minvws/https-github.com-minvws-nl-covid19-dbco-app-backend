@@ -1,0 +1,508 @@
+{
+    "phpClass": "TestResultLaboratory",
+    "tsConst": "testResultLaboratory",
+    "description": "Test Laboratory Names",
+    "items": [
+        {
+            "label": "Alrijne ziekenhuis (LMM), Leiden",
+            "value": "alrijne-ziekenhuis-lmm-leiden"
+        },
+        {
+            "label": "Alrijne ziekenhuis (MML), Leiderdorp",
+            "value": "alrijne-ziekenhuis-mml-leiderdorp"
+        },
+        {
+            "label": "AMC (LMM), Amsterdam",
+            "value": "amc-lmm-amsterdam"
+        },
+        {
+            "label": "Amphia ziekenhuis (Micro&infprev), Breda",
+            "value": "amphia-ziekenhuis-microinfprev-breda"
+        },
+        {
+            "label": "Analistisch Diagnostisch Centrum (A.D.C.), Curacao",
+            "value": "analistisch-diagnostisch-centrum-adc-curacao"
+        },
+        {
+            "label": "Atal, Medisch Diagnostisch Centrum, Amsterdam",
+            "value": "atal-medisch-diagnostisch-centrum-amsterdam"
+        },
+        {
+            "label": "Atalmedial (louwesweg 6), Amsterdam",
+            "value": "atalmedial-louwesweg-6-amsterdam"
+        },
+        {
+            "label": "Bilacon, Rotterdam",
+            "value": "bilacon-rotterdam"
+        },
+        {
+            "label": "Bonbida Med Care (commercieel lab), Bonaire",
+            "value": "bonbida-med-care-commercieel-lab-bonaire"
+        },
+        {
+            "label": "Bravis Ziekenhuis (ST MM), Roosendaal",
+            "value": "bravis-ziekenhuis-st-mm-roosendaal"
+        },
+        {
+            "label": "CBSL Locatie Hilversum, Hilversum",
+            "value": "cbsl-locatie-hilversum-hilversum"
+        },
+        {
+            "label": "Certe Laboratorium voor infectieziekten dep SZE, Emmen",
+            "value": "certe-laboratorium-voor-infectieziekten-dep-sze-emmen"
+        },
+        {
+            "label": "Certe Laboratorium voor infectieziekten dep WZA, Assen",
+            "value": "certe-laboratorium-voor-infectieziekten-dep-wza-assen"
+        },
+        {
+            "label": "CLB, Amsterdam",
+            "value": "clb-amsterdam"
+        },
+        {
+            "label": "Comicro, Hoorn",
+            "value": "comicro-hoorn"
+        },
+        {
+            "label": "Covid-19 Pandemie laboratoria, Alkmaar en Rijswijk",
+            "value": "covid-19-pandemie-laboratoria-alkmaar-en-rijswijk"
+        },
+        {
+            "label": "Covidtestbonaire.com, Bonaire",
+            "value": "covidtestbonairecom-bonaire"
+        },
+        {
+            "label": "CovidtestNederland, Duiven",
+            "value": "covidtest-nederland-duiven"
+        },
+        {
+            "label": "CWZ streeklab volksgezondheid (MMI), Nijmegen",
+            "value": "cwz-streeklab-volksgezondheid-mmi-nijmegen"
+        },
+        {
+            "label": "De Gravin",
+            "value": "de-gravin"
+        },
+        {
+            "label": "Delta Lab, Portugaal",
+            "value": "delta-lab-portugaal"
+        },
+        {
+            "label": "Deventer Ziekenhuis (LMMI), Deventer",
+            "value": "deventer-ziekenhuis-lmmi-deventer"
+        },
+        {
+            "label": "Diagnostiek voor U (DVU), Eindhoven",
+            "value": "diagnostiek-voor-u-dvu-eindhoven"
+        },
+        {
+            "label": "Diagnostiek voor U, Den Bosch",
+            "value": "diagnostiek-voor-u-den-bosch"
+        },
+        {
+            "label": "Diagnostisch Centrum (DCT), Tilburg",
+            "value": "diagnostisch-centrum-dct-tilburg"
+        },
+        {
+            "label": "Diagnostisch Centrum Bernhove, Uden",
+            "value": "diagnostisch-centrum-bernhove-uden"
+        },
+        {
+            "label": "Diakossenhuis (MMIL), Utrecht",
+            "value": "diakossenhuis-mmil-utrecht"
+        },
+        {
+            "label": "Dirkslanziekenhuis Laboratorium (KCHL), Middelharnis",
+            "value": "dirkslanziekenhuis-laboratorium-kchl-middelharnis"
+        },
+        {
+            "label": "Elkerliek Ziekenhuis (AKL), Helmond",
+            "value": "elkerliek-ziekenhuis-akl-helmond"
+        },
+        {
+            "label": "Erasmus MC (LMMI), Rotterdam",
+            "value": "erasmus-mc-lmmi-rotterdam"
+        },
+        {
+            "label": "Erasmus MC-Microbiologie, Rotterdam",
+            "value": "erasmus-mc-microbiologie-rotterdam"
+        },
+        {
+            "label": "Erasmus MC-Virologie, Rotterdam",
+            "value": "erasmus-mc-virologie-rotterdam"
+        },
+        {
+            "label": "Gelderse Vallei, Ede",
+            "value": "gelderse-vallei-ede"
+        },
+        {
+            "label": "Gelre Ziekenhuizen (Het Spittaal), Zutphen",
+            "value": "gelre-ziekenhuizen-het-spittaal-zutphen"
+        },
+        {
+            "label": "GelreLab (LMMI), Apeldoorn",
+            "value": "gelre-lab-lmmi-apeldoorn"
+        },
+        {
+            "label": "Hagaziekenhuis (MML), Den Haag",
+            "value": "hagaziekenhuis-mml-den-haag"
+        },
+        {
+            "label": "Havenziekenhuis laboratorium, Rotterdam",
+            "value": "havenziekenhuis-laboratorium-rotterdam"
+        },
+        {
+            "label": "Hestia Bonaire safe travel (commercieel), Bonaire",
+            "value": "hestia-bonaire-safe-travel-commercieel-bonaire"
+        },
+        {
+            "label": "HMC Bronovo (MMI), Den Haag",
+            "value": "hmc-bronovo-mmi-den-haag"
+        },
+        {
+            "label": "HMC Westeinde (LMM), Den Haag",
+            "value": "hmc-westeinde-lmm-den-haag"
+        },
+        {
+            "label": "IJselland Ziekenhuis (AKL en MM), Cappele a/d IJsel",
+            "value": "ijselland-ziekenhuis-akl-en-mm-cappele-ad-ijsel"
+        },
+        {
+            "label": "Ikazia ziekenhuis (MML), Rotterdam",
+            "value": "ikazia-ziekenhuis-mml-rotterdam"
+        },
+        {
+            "label": "Isal dep. Diaconessenhuis, Meppel",
+            "value": "isal-dep-diaconessenhuis-meppel"
+        },
+        {
+            "label": "Isala Klinieken (LMMI), Zwolle",
+            "value": "isala-klinieken-lmmi-zwolle"
+        },
+        {
+            "label": "Izore Centrum Infectieziekten Frieland, Leeuwarden",
+            "value": "izore-centrum-infectieziekten-frieland-leeuwarden"
+        },
+        {
+            "label": "Janssen Biologics Bio Sience Park, Leiden",
+            "value": "janssen-biologics-bio-sience-park-leiden"
+        },
+        {
+            "label": "Jeroen Bosch Ziekenhuis (rLMMIpr), Den Bosch",
+            "value": "jeroen-bosch-ziekenhuis-r-lmm-ipr-den-bosch"
+        },
+        {
+            "label": "KCL Bethesda mw. P. Engbers-Buijtenhuijs (klinisch chemicus), Hoogeveen",
+            "value": "kcl-bethesda-mw-p-engbers-buijtenhuijs-klinisch-chemicus-hoogeveen"
+        },
+        {
+            "label": "KCL Catharinaziekenhuis, Eindhoven",
+            "value": "kcl-catharinaziekenhuis-eindhoven"
+        },
+        {
+            "label": "KCL Diaconessen S. Martens (arts klinische chemie), Meppel",
+            "value": "kcl-diaconessen-s-martens-arts-klinische-chemie-meppel"
+        },
+        {
+            "label": "KCL Scheper J.G.J. Pouwels (arts klische chemie), Emmen",
+            "value": "kcl-scheper-jgj-pouwels-arts-klische-chemie-emmen"
+        },
+        {
+            "label": "KCL WZA drh. H.A. Assink (klinisch chemicus), Assen",
+            "value": "kcl-wza-drh-ha-assink-klinisch-chemicus-assen"
+        },
+        {
+            "label": "Koninklijk instituut voor de tropen, Biomedical research, Amsterdam",
+            "value": "koninklijk-instituut-voor-de-tropen-biomedical-research-amsterdam"
+        },
+        {
+            "label": "Lab Med Microbiologie en Immunologie (LMMI), Tilburg",
+            "value": "lab-med-microbiologie-en-immunologie-lmmi-tilburg"
+        },
+        {
+            "label": "Laboratorium FM, Bonaire",
+            "value": "laboratorium-fm-bonaire"
+        },
+        {
+            "label": "Laboratorium Microbilogie Twente Achterhoek, Hengelo",
+            "value": "laboratorium-microbilogie-twente-achterhoek-hengelo"
+        },
+        {
+            "label": "Laboratorium N.V. (Bonlab), Bonaire",
+            "value": "laboratorium-nv-bonlab-bonaire"
+        },
+        {
+            "label": "De Zorgpraktijk, Saltro",
+            "value": "de-zorgpraktijk-saltro"
+        },
+        {
+            "label": "LangeLand Ziekenhuis (KCL), Zoetermeer",
+            "value": "lange-land-ziekenhuis-kcl-zoetermeer"
+        },
+        {
+            "label": "Laurentius Ziekenhuis (LMM), Roermond",
+            "value": "laurentius-ziekenhuis-lmm-roermond"
+        },
+        {
+            "label": "LUMC (MM), Leiden",
+            "value": "lumc-mm-leiden"
+        },
+        {
+            "label": "Maasstad ziekenhuis, Rotterdam",
+            "value": "maasstad-ziekenhuis-rotterdam"
+        },
+        {
+            "label": "Maasziekenhuis Pantein (KCL), Boxmeer",
+            "value": "maasziekenhuis-pantein-kcl-boxmeer"
+        },
+        {
+            "label": "MC Zuiderzee, Lelystad",
+            "value": "mc-zuiderzee-lelystad"
+        },
+        {
+            "label": "MDC ziekenhuis Amstelland, Amstelveen",
+            "value": "mdc-ziekenhuis-amstelland-amstelveen"
+        },
+        {
+            "label": "Meander Medisch Centrum (LMM), Amersfoort",
+            "value": "meander-medisch-centrum-lmm-amersfoort"
+        },
+        {
+            "label": "Medical Laboratory Service (M.L.S.), Curaçao",
+            "value": "medical-laboratory-service-mls-curacao"
+        },
+        {
+            "label": "Medlon, Enschede",
+            "value": "medlon-enschede"
+        },
+        {
+            "label": "MUMC+ (LMM), Maastricht",
+            "value": "mumc-lmm-maastricht"
+        },
+        {
+            "label": "Noordwest ziekenhuisgroep (LMM), Alkmaar",
+            "value": "noordwest-ziekenhuisgroep-lmm-alkmaar"
+        },
+        {
+            "label": "OLVG (MML), Amsterdam",
+            "value": "olvg-mml-amsterdam"
+        },
+        {
+            "label": "PAMM (LMM), Veldhoven",
+            "value": "pamm-lmm-veldhoven"
+        },
+        {
+            "label": "Pandemie laboratorium Eurofins NMDL-LCPL, Rijswijk",
+            "value": "pandemie-laboratorium-eurofins-nmdl-lcpl-rijswijk"
+        },
+        {
+            "label": "Pandemielab Symbiant b.v., Alkmaar",
+            "value": "pandemielab-symbiant-bv-alkmaar"
+        },
+        {
+            "label": "Pro Health Medical, Weert",
+            "value": "pro-health-medical-weert"
+        },
+        {
+            "label": "Referentielaboratorium bacteriële meningtis (AMC), Amsterdam",
+            "value": "referentielaboratorium-bacteriele-meningtis-amc-amsterdam"
+        },
+        {
+            "label": "Regionaal Laboratorium Medische Microbiologie, Dordrecht",
+            "value": "regionaal-laboratorium-medische-microbiologie-dordrecht"
+        },
+        {
+            "label": "Reinier de Graaf Groep Diagnostisch Centrum, Delft",
+            "value": "reinier-de-graaf-groep-diagnostisch-centrum-delft"
+        },
+        {
+            "label": "Reinier de Graaf, Delft",
+            "value": "reinier-de-graaf-delft"
+        },
+        {
+            "label": "Reinier MDC, Amsterdam",
+            "value": "reinier-mdc-amsterdam"
+        },
+        {
+            "label": "Reinier MDC, Heerlen",
+            "value": "reinier-mdc-heerlen"
+        },
+        {
+            "label": "Reinier MDC, Spijkenisse",
+            "value": "reinier-mdc-spijkenisse"
+        },
+        {
+            "label": "Result laboratorium Rivas Beatrixziekenhuis, Gorinchem",
+            "value": "result-laboratorium-rivas-beatrixziekenhuis-gorinchem"
+        },
+        {
+            "label": "Result Laboratorium, Albert Schweitzer ziekenhuis (KCL), Dordrecht",
+            "value": "result-laboratorium-albert-schweitzer-ziekenhuis-kcl-dordrecht"
+        },
+        {
+            "label": "Rijnstate, Velp",
+            "value": "rijnstate-velp"
+        },
+        {
+            "label": "RIVM/CIB/IDS (voorheen LIS), Bilthoven",
+            "value": "rivmcibids-voorheen-lis-bilthoven"
+        },
+        {
+            "label": "RKZ laboratorium, Beverwijk",
+            "value": "rkz-laboratorium-beverwijk"
+        },
+        {
+            "label": "Ruwaard van Putten ziekenhuis (KCL), Spijkenisse",
+            "value": "ruwaard-van-putten-ziekenhuis-kcl-spijkenisse"
+        },
+        {
+            "label": "SALT (St ArtsenLaboratorium en Trombosedienst), Koog a/d Zaan",
+            "value": "salt-st-artsen-laboratorium-en-trombosedienst-koog-ad-zaan"
+        },
+        {
+            "label": "Saltro (hoofdkantoor), Utrecht",
+            "value": "saltro-hoofdkantoor-utrecht"
+        },
+        {
+            "label": "Sanquin Bloedbank Regio Zuidwest, Rotterdam",
+            "value": "sanquin-bloedbank-regio-zuidwest-rotterdam"
+        },
+        {
+            "label": "Sanquin Diagnostiek, Amsterdam",
+            "value": "sanquin-diagnostiek-amsterdam"
+        },
+        {
+            "label": "SCAL Medische Diagnostiek, Leiden",
+            "value": "scal-medische-diagnostiek-leiden"
+        },
+        {
+            "label": "Slingeland Ziekenhuis (MML), Doetinchem",
+            "value": "slingeland-ziekenhuis-mml-doetinchem"
+        },
+        {
+            "label": "Slotervaart Ziekenhuis (LMM), Amsterdam",
+            "value": "slotervaart-ziekenhuis-lmm-amsterdam"
+        },
+        {
+            "label": "St Franciscus Gasthuis (SFG) (LMM), Rotterdam",
+            "value": "st-franciscus-gasthuis-sfg-lmm-rotterdam"
+        },
+        {
+            "label": "St. Antonius Ziekenhuis (LMMI), Nieuwegein",
+            "value": "st-antonius-ziekenhuis-lmmi-nieuwegein"
+        },
+        {
+            "label": "St. Jans Gasthuis (MM), Weert",
+            "value": "st-jans-gasthuis-mm-weert"
+        },
+        {
+            "label": "St. Jansdal Ziekenhuis (MM), Harderwijk",
+            "value": "st-jansdal-ziekenhuis-mm-harderwijk"
+        },
+        {
+            "label": "Star MDC, Rotterdam",
+            "value": "star-mdc-rotterdam"
+        },
+        {
+            "label": "Star-Medisch Diagnostisch Centrum, Rotterdam",
+            "value": "star-medisch-diagnostisch-centrum-rotterdam"
+        },
+        {
+            "label": "Star-SHL afdeling bloedafname, Rotterdam",
+            "value": "star-shl-afdeling-bloedafname-rotterdam"
+        },
+        {
+            "label": "Star-SHL diagnostisch centrum, Etten-Leur",
+            "value": "star-shl-diagnostisch-centrum-etten-leur"
+        },
+        {
+            "label": "Steinlab, Valkenburg",
+            "value": "steinlab-valkenburg"
+        },
+        {
+            "label": "Stichting Haags-Rijswijks Artsenlaboratorium, Rijswijk",
+            "value": "stichting-haags-rijswijks-artsenlaboratorium-rijswijk"
+        },
+        {
+            "label": "Stichting huisartsenlaboratorium Oost (SHO), Velp",
+            "value": "stichting-huisartsenlaboratorium-oost-sho-velp"
+        },
+        {
+            "label": "Streeklaboratorium GGD, Amsterdam",
+            "value": "streeklaboratorium-ggd-amsterdam"
+        },
+        {
+            "label": "Streekziekenhuis Koningin Beatrix (KCL), Winterswijk",
+            "value": "streekziekenhuis-koningin-beatrix-kcl-winterswijk"
+        },
+        {
+            "label": "Syrolab, Kerkrade",
+            "value": "syrolab-kerkrade"
+        },
+        {
+            "label": "Trescal B.V, Zoetermeer",
+            "value": "trescal-bv-zoetermeer"
+        },
+        {
+            "label": "U Diagnostics (HetHuisartslab), Baarn",
+            "value": "u-diagnostics-het-huisartslab-baarn"
+        },
+        {
+            "label": "UMC St Radboud (LMM), Nijmegen",
+            "value": "umc-st-radboud-lmm-nijmegen"
+        },
+        {
+            "label": "VieCuri MC (MM), Venlo",
+            "value": "vie-curi-mc-mm-venlo"
+        },
+        {
+            "label": "Vlietland Ziekenhuis (LMM), Rotterdam",
+            "value": "vlietland-ziekenhuis-lmm-rotterdam"
+        },
+        {
+            "label": "Vlietland Ziekenhuis (LMM), Schiedam",
+            "value": "vlietland-ziekenhuis-lmm-schiedam"
+        },
+        {
+            "label": "VU-MC (LMMI), Amsterdam",
+            "value": "vu-mc-lmmi-amsterdam"
+        },
+        {
+            "label": "Waterland Ziekenhuis (KCL), Purmerend",
+            "value": "waterland-ziekenhuis-kcl-purmerend"
+        },
+        {
+            "label": "WBVR, Lelystad",
+            "value": "wbvr-lelystad"
+        },
+        {
+            "label": "Westfries Gasthuis (MML), Hoorn",
+            "value": "westfries-gasthuis-mml-hoorn"
+        },
+        {
+            "label": "Ziekenhuis Rivierenland (LabMedDiagn), Tiel",
+            "value": "ziekenhuis-rivierenland-lab-med-diagn-tiel"
+        },
+        {
+            "label": "Ziekenhuisgroep Twente (Twenteborg), Almelo",
+            "value": "ziekenhuisgroep-twente-twenteborg-almelo"
+        },
+        {
+            "label": "ZorgSaam Zeeuws-Vlaanderen (MM), Terneuzen",
+            "value": "zorgsaam-zeeuws-vlaanderen-mm-terneuzen"
+        },
+        {
+            "label": "Zuwe Hofpoort ziekenhuis (MML), Woerden",
+            "value": "zuwe-hofpoort-ziekenhuis-mml-woerden"
+        },
+        {
+            "label": "Zuyderland Medisch Centrum (LMM), Sittard-Geleen",
+            "value": "zuyderland-medisch-centrum-lmm-sittard-geleen"
+        },
+        {
+            "label": "Zuyderland Medisch Centrum (MM), Heerlen",
+            "value": "zuyderland-medisch-centrum-mm-heerlen"
+        }
+    ]
+    
+}

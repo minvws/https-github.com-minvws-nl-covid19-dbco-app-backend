@@ -1,0 +1,9 @@
+type: object
+allOf:
+    - $ref: ../UiSchemaElement.yaml
+    - $ref: ../Scoped.yaml
+properties:
+    label:
+        type: string
+    i18n:
+        type: string

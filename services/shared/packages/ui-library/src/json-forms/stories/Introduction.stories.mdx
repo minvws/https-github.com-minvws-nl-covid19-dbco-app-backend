@@ -1,0 +1,78 @@
+import { Canvas, Meta, Story, ColorPalette, ColorItem } from '@storybook/addon-docs';
+
+<Meta title="JsonForms/Introduction" />
+
+# JsonForms
+
+[JsonForms](https://jsonforms.io/) was introduced to the ui-library to provide more flexiblilty when it comes 
+to setting up forms. The goal of these components is to create a framework 
+which will set up an entire form soley based on an API response. This gives the 
+backend more options and control for creating new and updating existing forms.
+
+JsonForms will generate an entire form based on the `data`, `(JSON) schema` and `uiSchema` that is provided.
+
+For more information on JSON forms, please refer to the official documentation:
+
+- [JSON Forms](https://jsonforms.io/).
+- [JSON Forms Vue 2](https://github.com/eclipsesource/jsonforms/tree/master/packages/vue2/vue2).
+- [JSON Forms Vue 2 vanilla](https://github.com/eclipsesource/jsonforms/tree/master/packages/vue2/vue2-vanilla) _(for some example implementations)_.
+- [JSON Forms React vanilla](https://github.com/eclipsesource/jsonforms/tree/master/packages/vanilla-renderers/src) _(for some example implementations)_.
+
+There are 3 main components responsible for the working of a form: `JsonForms`, `JsonFormsChild` and `JsonFormsBase`.
+
+```
+JsonForms
+└── JsonFormsChild     <───────────────────┐
+    └── JsonFormsBase                      │
+        - renderers                        │
+          ├── ChildFormControl           ──┤
+          ├── ChildFormCollectionControl ──┘
+          ├── RadioButtonGroup
+          ├── ...Layouts
+          └── ...Other controls 
+```
+
+### `JsonForms`
+
+The `JsonForms` is the _main component_ and also the _only_ component that is exported from the `ui-library`. 
+It extends the `JsonFormsChild` component and serves as the root of the form.
+It is responsible for keeping a local state of the _complete_ form data which is shown in the Form. It also 
+combines the child form change events with its own change events and emits this as a single `change` event 
+for the implementation.
+
+It takes a `formActionHandler` as a prop which it provides for its underlying components. 
+A `formActionHandler` can be used by child components for making calls to the backend.
+
+### `JsonFormsChild`
+
+The `JsonFormsChild` extends the `JsonFormsBase` component. If provided, it uses the `formActionHandler` to push updates to the backend. It also maps soms meta data to the `JsonFormsBase`.
+
+### `JsonFormsBase`
+
+The `JsonFormsBase` extends the original `vue2/JsonForms` component. It contains the main configuration for the `vue2/JsonForms` component.
+
+Child forms (or sub forms) are rendered via the `ChildFormControl` or `ChildFormCollectionControl`. They proved a way to have changes pushed to a different endpoint than the main form. This is done via the `$links` meta data.
+
+<br/>
+
+## FormData
+
+The form data that is used by the `JsonForms` / `JsonFormsChild` is a bit different than the pure data that would normally used by JSON forms.
+Because next to the actual data, it also contains certain meta data that is used by the form. 
+This can include validation errors, links that are used for communication with the backend and also links to new forms entirely.
+
+> Note that a form can contain multiple child forms. This is done by passing another `FormData` object within the data (`T`).
+
+```
+export type FormData<T = any> = {
+    ...T;
+    $validationErrors?: FormError[];
+    $links: {
+        self?: RequestConfig;
+        create?: RequestConfig;
+        update?: RequestConfig;
+        delete?: RequestConfig;
+    };
+};
+```
+

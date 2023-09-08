@@ -1,0 +1,1234 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: DBCO Portal
+  description: API used for the portal for healthcare (BCO) workers
+  license:
+    name: EUROPEAN UNION PUBLIC LICENCE v. 1.2
+    url: https://opensource.org/licenses/EUPL-1.2
+  contact:
+    name: API Support
+    url: https://www.rijksoverheid.nl/documenten/publicaties/2020/05/19/digitale-ondersteuning-covid-19
+    email: dienstpostbusRDO@minvws.nl
+servers:
+  - url: http://localhost:8084/api
+    description: Local development server
+tags:
+  - name: Models
+    x-displayName: Models
+    description: |
+      ## Covid Case
+      <SchemaDefinition schemaRef="/components/schemas/CovidCase" showReadOnly={true} showWriteOnly={true} />
+
+      ## Case Assignment Option
+      <SchemaDefinition schemaRef="/components/schemas/CaseAssignmentOption" showReadOnly={true} showWriteOnly={true} />
+
+      # JSON Forms
+
+      ## FormConfig
+      <SchemaDefinition schemaRef="/components/schemas/FormConfig" showReadOnly={true} showWriteOnly={true} />
+
+      ## FormRootData
+      <SchemaDefinition schemaRef="/components/schemas/FormRootData" showReadOnly={true} showWriteOnly={true} />
+
+      ## UiSchema
+      <SchemaDefinition schemaRef="/components/schemas/UiSchema" showReadOnly={true} showWriteOnly={true} />
+paths:
+  /cases/{case}/assignment:
+    put:
+      summary: Case assignment
+      operationId: cases-case-assignment
+      description: Assign a single case to a user, list or organisation.
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: '#/components/parameters/case'
+        - $ref: '#/components/parameters/xsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CaseAssignment'
+      responses:
+        '200':
+          description: Current case data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CovidCase'
+        '409':
+          description: Conflicting case
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseAssignmentStatus'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+  /cases/{case}/assignment/options:
+    post:
+      summary: Case assignment options
+      operationId: cases-case-assignment-options
+      description: Retrieve available assignment options for a single case.
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: '#/components/parameters/case'
+        - $ref: '#/components/parameters/xsrfToken'
+      responses:
+        '200':
+          description: List of available assignment options
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - options
+                properties:
+                  options:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CaseAssignmentOption'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+  /cases/assignment:
+    put:
+      summary: Multi case assignment
+      operationId: cases-assignment
+      description: Assign multiple cases to a user, list or organisation.
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: '#/components/parameters/xsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/CaseAssignment'
+                - type: object
+                  required:
+                    - cases
+                  properties:
+                    cases:
+                      type: array
+                      items:
+                        type: string
+                        format: uuid
+      responses:
+        '200':
+          description: Some success, but the following cases are conflicting.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CaseAssignmentStatus'
+        '204':
+          description: Success, there are no conflicting cases
+        '409':
+          description: All cases in the request are conflicting
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CaseAssignmentStatus'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+  /cases/assignment/options:
+    post:
+      summary: Multi case assignment options
+      operationId: cases-assignment-options
+      description: Retrieve available assignment options for multiple cases.
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: '#/components/parameters/xsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - cases
+              properties:
+                cases:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+      responses:
+        '200':
+          description: List of available assignment options
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - options
+                properties:
+                  options:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CaseAssignmentOption'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+  /contexts/{context}/fragments/contact:
+    get:
+      summary: Load the context fragment
+      operationId: load-fragment
+      description: Load the fragment from the database.
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: '#/components/parameters/context'
+      responses:
+        '200':
+          description: Contact fragment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fragment'
+    put:
+      summary: Update the context fragment
+      operationId: update-fragment
+      description: Update the fragment in the database.
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: '#/components/parameters/xsrfToken-2'
+        - $ref: '#/components/parameters/context'
+      responses:
+        '200':
+          description: Contact fragment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fragment'
+components:
+  parameters:
+    case:
+      name: case
+      in: path
+      required: true
+      description: The id of the case to retrieve or modify
+      example: ad06f565-b874-4f7a-b316-e057e8dffb7f
+      schema:
+        type: string
+        format: uuid
+    xsrfToken:
+      name: X-XSRF-TOKEN
+      in: header
+      required: true
+      description: XSRF Token
+      schema:
+        type: string
+    context:
+      name: context
+      in: path
+      required: true
+      description: The id of the context to retrieve or modify
+      example: ad06f565-b874-4f7a-b316-e057e8dffb7f
+      schema:
+        type: string
+        format: uuid
+    xsrfToken-2:
+      name: xsrftoken
+      in: cookie
+      required: true
+      description: XSRF Token
+      schema:
+        type: string
+    inactivityTimerExpiryDate:
+      name: Inactivity timer expiry date
+      in: cookie
+      required: false
+      description: A datetime for when a user is automatically logged out
+      example: '2023-02-01T14:52:09.650128Z'
+      schema:
+        type: string
+        format: datetime
+    xsrftoken:
+      name: xsrftoken
+      in: cookie
+      required: true
+      description: XSRF Token
+      schema:
+        type: string
+  schemas:
+    CaseAssignment:
+      type: object
+      required:
+        - staleSince
+      oneOf:
+        - required:
+            - caseListUuid
+        - required:
+            - assignedUserUuid
+        - required:
+            - assignedCaseListUuid
+        - required:
+            - assignedOrganisationUuid
+      properties:
+        caseListUuid:
+          type: string
+          format: uuid
+        assignedUserUuid:
+          type: string
+          format: uuid
+        assignedCaseListUuid:
+          type: string
+          format: uuid
+        assignedOrganisationUuid:
+          type: string
+          format: uuid
+        staleSince:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    StatusIndexContactTracing:
+      type: string
+      enum:
+        - unknown
+        - not_approached
+        - not_reachable
+        - conversation_started
+        - closed_outside_ggd
+        - closed_no_collaboration
+        - completed
+        - new
+        - not_started
+        - two_times_not_reached
+        - callback_request
+        - loose_end
+        - four_times_not_reached
+        - bco_finished
+        - closed
+    CovidCaseOrganisation:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        abbreviation:
+          type: string
+        name:
+          type: string
+        isCurrent:
+          type: boolean
+    CovidCaseCaseList:
+      type: object
+      required:
+        - uuid
+        - isQueue
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        isQueue:
+          type: boolean
+        name:
+          type: string
+    CovidCaseUser:
+      type: object
+      required:
+        - uuid
+        - isCurrent
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        isCurrent:
+          type: boolean
+        name:
+          type: string
+    PlannerView:
+      type: string
+      enum:
+        - unknown
+        - unassigned
+        - assigned
+        - outsourced
+        - queued
+        - archived
+        - completed
+    BCOStatus:
+      type: string
+      enum:
+        - unknown
+        - draft
+        - open
+        - completed
+        - archived
+    BCOPhase:
+      description: BCO Phase
+      type: string
+      enum:
+        - none
+        - '1'
+        - '2'
+        - '3'
+        - '4'
+        - '5'
+        - steekproef
+    Priority:
+      type: integer
+      enum:
+        - 3
+        - 2
+        - 1
+        - 0
+    CovidCaseCaseLabel:
+      title: CovidCaseLabel
+      type: object
+      required:
+        - uuid
+        - label
+        - is_selectable
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        label:
+          type: boolean
+        is_selectable:
+          type: boolean
+    TestResultSource:
+      type: string
+      enum:
+        - coronit
+        - manual
+        - meldportaal
+        - publicWebPortal
+    CovidCase:
+      type: object
+      required:
+        - uuid
+        - caseId
+        - hpzoneNumber
+        - testMonsterNumber
+        - contactsCount
+        - dateOfBirth
+        - dateOfTest
+        - dateOfSymptomOnset
+        - statusIndexContactTracing
+        - statusExplanation
+        - createdAt
+        - updatedAt
+        - organisation
+        - assignedOrganisation
+        - assignedCaseList
+        - assignedUser
+        - isEditable
+        - isDeletable
+        - isClosable
+        - isReopenable
+        - isAssignable
+        - canChangeOrganisation
+        - isApproved
+        - label
+        - plannerView
+        - bcoStatus
+        - bcoPhase
+        - wasOutsourced
+        - wasOutsourcedToOrganisation
+        - lastAssignedUserName
+        - priority
+        - caseLabels
+        - testResults
+        - age
+        - vaccinationCount
+        - mostRecentVaccinationDate
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        caseId:
+          type: string
+          example: YQ1-361-245
+        hpzoneNumber:
+          type:
+            - 'null'
+            - string
+          example: '22345678'
+        testMonsterNumber:
+          type:
+            - 'null'
+            - string
+          example: 123A012345678912
+        contactsCount:
+          type: number
+        dateOfBirth:
+          type: string
+          format: date
+        dateOfTest:
+          type:
+            - 'null'
+            - string
+          format: date
+        dateOfSymptomOnset:
+          type:
+            - 'null'
+            - string
+          format: date
+        statusIndexContactTracing:
+          $ref: '#/components/schemas/StatusIndexContactTracing'
+        statusExplanation:
+          type: string
+        createdAt:
+          type: string
+          format: datetime
+        updatedAt:
+          type: string
+          format: datetime
+        organisation:
+          oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/CovidCaseOrganisation'
+        assignedOrganisation:
+          oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/CovidCaseOrganisation'
+        assignedCaseList:
+          oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/CovidCaseCaseList'
+        assignedUser:
+          oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/CovidCaseUser'
+        isEditable:
+          type: boolean
+        isDeletable:
+          type: boolean
+        isClosable:
+          type: boolean
+        isReopenable:
+          type: boolean
+        isAssignable:
+          type: boolean
+        canChangeOrganisation:
+          type: boolean
+        isApproved:
+          type:
+            - 'null'
+            - boolean
+        label:
+          type:
+            - 'null'
+            - string
+        plannerView:
+          $ref: '#/components/schemas/PlannerView'
+        bcoStatus:
+          $ref: '#/components/schemas/BCOStatus'
+        bcoPhase:
+          $ref: '#/components/schemas/BCOPhase'
+        wasOutsourced:
+          type: boolean
+        wasOutsourcedToOrganisation:
+          oneOf:
+            - type: 'null'
+            - type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+        lastAssignedUserName:
+          type:
+            - 'null'
+            - string
+        priority:
+          $ref: '#/components/schemas/Priority'
+        caseLabels:
+          type: array
+          items:
+            $ref: '#/components/schemas/CovidCaseCaseLabel'
+        hasNotes:
+          type: boolean
+        testResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestResultSource'
+        age:
+          type:
+            - 'null'
+            - integer
+          format: int32
+        vaccinationCount:
+          type:
+            - 'null'
+            - integer
+          format: int32
+        mostRecentVaccinationDate:
+          type:
+            - 'null'
+            - string
+          format: date
+    CaseAssignmentStatus:
+      type: object
+      required:
+        - caseId
+        - assignmentStatus
+      properties:
+        caseId:
+          type: string
+        assignmentStatus:
+          type: string
+    CaseAssignmentOptionTypeSeparator:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+    CaseAssignmentOptionTypeOption:
+      type: object
+      required:
+        - label
+        - isSelected
+        - isEnabled
+        - assignment
+      properties:
+        type:
+          type: string
+        label:
+          type: string
+        isSelected:
+          type: boolean
+        isEnabled:
+          type: boolean
+        isQueue:
+          type: boolean
+        assignmentType:
+          type: string
+          enum:
+            - caseList
+            - organisation
+            - user
+        assignment:
+          type: object
+          oneOf:
+            - required:
+                - assignedCaseListUuid
+            - required:
+                - assignedOrganisationUuid
+            - required:
+                - assignedUserUuid
+          properties:
+            assignedCaseListUuid:
+              type:
+                - 'null'
+                - string
+              format: uuid
+            assignedOrganisationUuid:
+              type:
+                - 'null'
+                - string
+              format: uuid
+            assignedUserUuid:
+              type:
+                - 'null'
+                - string
+              format: uuid
+    CaseAssignmentOption:
+      discriminator:
+        propertyName: type
+        mapping:
+          separator: '#/components/schemas/CaseAssignmentOptionTypeSeparator'
+          option: '#/components/schemas/CaseAssignmentOptionTypeOption'
+          menu: '#/components/schemas/CaseAssignmentOptionTypeMenu'
+      anyOf:
+        - $ref: '#/components/schemas/CaseAssignmentOptionTypeSeparator'
+        - $ref: '#/components/schemas/CaseAssignmentOptionTypeOption'
+        - $ref: '#/components/schemas/CaseAssignmentOptionTypeMenu'
+    CaseAssignmentOptionTypeMenu:
+      type: object
+      required:
+        - type
+        - options
+      properties:
+        type:
+          type: string
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/CaseAssignmentOption'
+    Fragment:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - schemaVersion
+          additionalProperties: true
+          properties:
+            schemaVersion:
+              type: integer
+    nonNegativeInteger:
+      type: integer
+      minimum: 0
+    nonNegativeIntegerDefault0:
+      allOf:
+        - $ref: '#/components/schemas/nonNegativeInteger'
+        - default: 0
+    JsonSchemaDraft07:
+      type: object
+      additionalProperties: false
+      properties:
+        default: {}
+        const: {}
+        $id:
+          type: string
+          format: uri-reference
+        $schema:
+          type: string
+          format: uri
+        $ref:
+          type: string
+          format: uri-reference
+        $comment:
+          type: string
+        title:
+          type: string
+        i18n:
+          type: string
+        description:
+          type: string
+        readOnly:
+          type: boolean
+          default: false
+        writeOnly:
+          type: boolean
+          default: false
+        examples:
+          type: array
+          items: {}
+        multipleOf:
+          type: number
+          exclusiveMinimum: 0
+        maximum:
+          type: number
+        exclusiveMaximum:
+          type: number
+        minimum:
+          type: number
+        exclusiveMinimum:
+          type: number
+        maxLength:
+          $ref: '#/components/schemas/nonNegativeInteger'
+        minLength:
+          $ref: '#/components/schemas/nonNegativeIntegerDefault0'
+        pattern:
+          type: string
+          format: regex
+        additionalItems:
+          oneOf:
+            - type: boolean
+            - $ref: '#/components/schemas/JsonSchemaDraft07'
+        items:
+          anyOf:
+            - $ref: '#/components/schemas/JsonSchemaDraft07'
+            - $ref: '#/components/schemas/schemaArray'
+          default: true
+        maxItems:
+          $ref: '#/components/schemas/nonNegativeInteger'
+        minItems:
+          $ref: '#/components/schemas/nonNegativeIntegerDefault0'
+        uniqueItems:
+          type: boolean
+          default: false
+        contains:
+          $ref: '#/components/schemas/JsonSchemaDraft07'
+        maxProperties:
+          $ref: '#/components/schemas/nonNegativeInteger'
+        minProperties:
+          $ref: '#/components/schemas/nonNegativeIntegerDefault0'
+        required:
+          $ref: '#/components/schemas/stringArray'
+        additionalProperties:
+          oneOf:
+            - type: boolean
+            - $ref: '#/components/schemas/JsonSchemaDraft07'
+        definitions:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/JsonSchemaDraft07'
+          default: {}
+        properties:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/JsonSchemaDraft07'
+          default: {}
+        patternProperties:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/JsonSchemaDraft07'
+          propertyNames:
+            format: regex
+          default: {}
+        dependencies:
+          type: object
+          additionalProperties:
+            anyOf:
+              - $ref: '#/components/schemas/JsonSchemaDraft07'
+              - $ref: '#/components/schemas/stringArray'
+        propertyNames:
+          $ref: '#/components/schemas/JsonSchemaDraft07'
+        enum:
+          type: array
+          items: {}
+          minItems: 1
+          uniqueItems: true
+        type:
+          anyOf:
+            - $ref: '#/components/schemas/simpleTypes'
+            - type: array
+              items:
+                $ref: '#/components/schemas/simpleTypes'
+              minItems: 1
+              uniqueItems: true
+        format:
+          type: string
+        contentMediaType:
+          type: string
+        contentEncoding:
+          type: string
+        if:
+          $ref: '#/components/schemas/JsonSchemaDraft07'
+        then:
+          $ref: '#/components/schemas/JsonSchemaDraft07'
+        else:
+          $ref: '#/components/schemas/JsonSchemaDraft07'
+        allOf:
+          $ref: '#/components/schemas/schemaArray'
+        anyOf:
+          $ref: '#/components/schemas/schemaArray'
+        oneOf:
+          $ref: '#/components/schemas/schemaArray'
+        not:
+          $ref: '#/components/schemas/JsonSchemaDraft07'
+    schemaArray:
+      type: array
+      minItems: 1
+      items:
+        $ref: '#/components/schemas/JsonSchemaDraft07'
+    stringArray:
+      type: array
+      items:
+        type: string
+      uniqueItems: true
+      default: []
+    simpleTypes:
+      type: string
+      enum:
+        - array
+        - boolean
+        - integer
+        - 'null'
+        - number
+        - object
+        - string
+    Scoped:
+      type: object
+      required:
+        - scope
+      properties:
+        scope:
+          type: string
+          example: '#/properties/name'
+    SchemaBasedCondition:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Scoped'
+      required:
+        - schema
+      properties:
+        schema:
+          description: A JSON schema describing the value that the scope should match on.
+          $ref: '#/components/schemas/JsonSchemaDraft07'
+    Rule:
+      type: object
+      required:
+        - effect
+      properties:
+        effect:
+          type: string
+          enum:
+            - HIDE
+            - SHOW
+            - ENABLE
+            - DISABLE
+        condition:
+          description: |
+            The condition that must be met for the effect to be applied. Note that this schema is not complete, conditions can for example be nested. To keep things simple we currently only support a flat list of conditions.
+          oneOf:
+            - $ref: '#/components/schemas/SchemaBasedCondition'
+            - type: object
+              required:
+                - type
+                - conditions
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - OR
+                    - AND
+                conditions:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/SchemaBasedCondition'
+    UiSchemaElement:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+        rule:
+          $ref: '#/components/schemas/Rule'
+    UiSchema:
+      oneOf:
+        - $ref: '#/components/schemas/LayoutElement'
+        - $ref: '#/components/schemas/GroupElement'
+        - $ref: '#/components/schemas/CategoryElement'
+        - $ref: '#/components/schemas/AlertElement'
+        - $ref: '#/components/schemas/ControlElement'
+        - $ref: '#/components/schemas/CustomControlElement'
+        - $ref: '#/components/schemas/ChildFormControlElement'
+    BaseLayoutElement:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/UiSchemaElement'
+      required:
+        - elements
+      properties:
+        elements:
+          type: array
+          items:
+            $ref: '#/components/schemas/UiSchema'
+    LayoutElement:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseLayoutElement'
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - HorizontalLayout
+            - VerticalLayout
+            - Categorization
+    GroupElement:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseLayoutElement'
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - Group
+        label:
+          type: string
+    CategoryElement:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseLayoutElement'
+      required:
+        - type
+        - label
+      properties:
+        type:
+          type: string
+          enum:
+            - Category
+        label:
+          type: string
+    AlertElement:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/UiSchemaElement'
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - Alert
+        label:
+          type: string
+        description:
+          type: string
+        i18n:
+          type: string
+        options:
+          type: object
+          properties:
+            variant:
+              type: string
+              enum:
+                - success
+                - info
+                - warning
+                - error
+    BaseControlElement:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/UiSchemaElement'
+        - $ref: '#/components/schemas/Scoped'
+      properties:
+        label:
+          type: string
+        i18n:
+          type: string
+    PlaceHolderOption:
+      type: object
+      properties:
+        placeholder:
+          type: string
+    CommonTypeOptions:
+      type: object
+      properties:
+        focus:
+          type: boolean
+    StringOptions:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/PlaceHolderOption'
+        - $ref: '#/components/schemas/CommonTypeOptions'
+      properties:
+        multi:
+          type: boolean
+    BooleanOptions:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CommonTypeOptions'
+    ArrayOptions:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CommonTypeOptions'
+      properties:
+        addLabel:
+          type: string
+        showSortButtons:
+          type: boolean
+          description: Show sort buttons for array items, default is false
+        noDataLabel:
+          type: string
+        detail:
+          $ref: '#/components/schemas/UiSchema'
+    EnumOptions:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/PlaceHolderOption'
+        - $ref: '#/components/schemas/CommonTypeOptions'
+      properties:
+        format:
+          type: string
+          enum:
+            - radio
+            - radio-button
+    ControlElement:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseControlElement'
+      properties:
+        options:
+          oneOf:
+            - $ref: '#/components/schemas/StringOptions'
+            - $ref: '#/components/schemas/BooleanOptions'
+            - $ref: '#/components/schemas/ArrayOptions'
+            - $ref: '#/components/schemas/EnumOptions'
+    BaseCustomControlElement:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseControlElement'
+      required:
+        - customRenderer
+      properties:
+        customRenderer:
+          type: string
+    CustomControlElement:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCustomControlElement'
+      properties:
+        customRenderer:
+          type: string
+          enum:
+            - Message
+            - JsonEditor
+            - RadioButtonGroup
+            - Table
+            - FormLink
+            - ChildForm
+            - ChildFormCollection
+    ChildFormControlElement:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCustomControlElement'
+      required:
+        - options
+      properties:
+        customRenderer:
+          type: string
+          enum:
+            - ChildForm
+            - ChildFormCollection
+        options:
+          type: object
+          required:
+            - detail
+          properties:
+            detail:
+              $ref: '#/components/schemas/UiSchema'
+    FormConfig:
+      type: object
+      required:
+        - dataSchema
+        - uiSchema
+      properties:
+        dataSchema:
+          description: |
+            A JSON schema (Draft 07) describing the data that is used for the form. 
+            Even though the actual data will be FormData or FormCollectionData, these 
+            meta data properties should not be included in this dataSchema.
+            This JSON schema is used for referencing the data in the uiSchema.
+            And to provide frontend (JSON Schema) validation on the form data.
+          $ref: '#/components/schemas/JsonSchemaDraft07'
+        uiSchema:
+          $ref: '#/components/schemas/UiSchema'
+    URL:
+      type: string
+      format: uri
+      pattern: ^https?://
+      maxLength: 255
+    FormRequestConfig:
+      type: object
+      required:
+        - href
+      properties:
+        href:
+          $ref: '#/components/schemas/URL'
+        method:
+          type: string
+          description: HTTP method to use for the request, defaults to GET
+          enum:
+            - GET
+            - POST
+            - PUT
+            - PATCH
+            - DELETE
+    FormValidationError:
+      type: object
+      description: Form error object, a partial type of the AJV error object. See https://jsonforms.io/docs/validation#external-validation-errors
+      required:
+        - instancePath
+        - message
+      properties:
+        schemaPath:
+          type: string
+        instancePath:
+          type: string
+        keyword:
+          type: string
+        message:
+          type: string
+        params:
+          type: object
+    FormMetaData:
+      type: object
+      required:
+        - $links
+      properties:
+        $links:
+          description: An object with links to that is used by the form to perform CRUD actions
+          type: object
+          properties:
+            self:
+              $ref: '#/components/schemas/FormRequestConfig'
+            create:
+              $ref: '#/components/schemas/FormRequestConfig'
+            update:
+              $ref: '#/components/schemas/FormRequestConfig'
+            delete:
+              $ref: '#/components/schemas/FormRequestConfig'
+        $validationErrors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormValidationError'
+    FormData:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/FormMetaData'
+      patternProperties:
+        ^[a-zA-Z]+$:
+          description: FormData can contain any data type except `null`
+          type:
+            - number
+            - string
+            - boolean
+            - object
+            - array
+    FormCollectionData:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/FormMetaData'
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormData'
+      additionalProperties: false
+    FormRootData:
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/FormData'
+        - $ref: '#/components/schemas/FormCollectionData'
+      required:
+        - $config
+      properties:
+        $config:
+          description: An URL that should return the `FormConfig` object for this form.
+          $ref: '#/components/schemas/URL'
+        $forms:
+          description: An object with links to other forms that may be referred by the uiSchema (to be opened in a modal)
+          patternProperties:
+            ^[a-zA-Z]+$:
+              description: The key is the name of the form, the value is the url to a FormData object
+              $ref: '#/components/schemas/URL'
+          additionalProperties: false
+  responses:
+    UnexpectedError:
+      description: unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NullResponse:
+      description: Null response
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: bco_portaal_session

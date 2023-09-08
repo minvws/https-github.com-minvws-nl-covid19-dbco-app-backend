@@ -1,0 +1,6 @@
+type: string
+enum:
+  - coronit
+  - manual
+  - meldportaal
+  - publicWebPortal

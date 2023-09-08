@@ -1,0 +1,81 @@
+# Docs @ https://taskfile.dev/
+version: "3"
+
+vars:
+  COMPOSE_PROJECT_NAME_TEST:
+    sh: basename {{.BASE_PATH}}-test
+  DOCKER_COMPOSE_TEST: >-
+    docker compose
+    --project-directory={{.BASE_PATH}}
+    --env-file {{.BASE_PATH}}/.env.test
+    --project-name {{.COMPOSE_PROJECT_NAME_TEST}}
+    --file {{.BASE_PATH}}/docker-compose/docker-compose.test.yml
+  DOCKER_COMPOSE_TEST_TOOLS: >-
+    docker compose
+    --project-directory={{.BASE_PATH}}
+    --env-file {{.BASE_PATH}}/.env.test
+    --project-name {{.COMPOSE_PROJECT_NAME_TEST}}
+    --file {{.BASE_PATH}}/docker-compose/docker-compose.test.yml
+    --file {{.BASE_PATH}}/docker-compose/docker-compose.tools.yml
+
+tasks:
+  dc:
+    cmds:
+      - task: :env
+      - "{{.DOCKER_COMPOSE_TEST}} {{.CLI_ARGS}}"
+
+  dc:tools:
+    cmds:
+      - task: :env
+      - "{{.DOCKER_COMPOSE_TEST_TOOLS}} {{.CLI_ARGS}}"
+
+  setup:if-not-exist:
+    vars:
+      PROJECT_EXISTS:
+        sh: "{{.DOCKER_COMPOSE_TEST}} ps --all --services"
+    status:
+      - test ! -z "{{.PROJECT_EXISTS}}"
+    cmds:
+      - task: setup
+
+  setup:
+    desc: Setup test environment
+    interactive: true
+    cmds:
+      - task: :portal:env
+      - task: :gateway:env
+      - "{{.BASE_PATH}}/bin/phpunit --setup --skip-tests"
+
+  up:
+    desc: Start the test environment
+    cmds:
+      - task: :portal:env
+      - task: :gateway:env
+      - task: setup:if-not-exist
+      - task: dc
+        vars: { CLI_ARGS: up --detach --remove-orphans --no-recreate }
+
+  stop:
+    desc: Stop the test environment
+    cmds:
+      - task: dc
+        vars: { CLI_ARGS: stop }
+
+  down:
+    desc: Down the test environment
+    cmds:
+      - task: dc:tools
+        vars: { CLI_ARGS: down --volumes --remove-orphans }
+
+  reset:
+    desc: Reset the test environment
+    cmds:
+      - task: down
+      - task: setup
+
+  restart:
+    desc: Stop and up the test environment
+    cmds:
+      - task: stop
+      - task: setup:if-not-exist
+      - task: up

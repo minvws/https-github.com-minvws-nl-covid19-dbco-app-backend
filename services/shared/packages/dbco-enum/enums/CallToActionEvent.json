@@ -1,0 +1,27 @@
+{
+    "phpClass": "CallToActionEvent",
+    "tsConst": "callToActionEvent",
+    "description": "CallToAction events",
+    "items": [
+        {
+            "label": "Opgepakt",
+            "value": "picked-up"
+        },
+        {
+            "label": "Teruggegeven",
+            "value": "returned"
+        },
+        {
+            "label": "Notitie geplaatst",
+            "value": "note"
+        },
+        {
+            "label": "Afgerond",
+            "value": "completed"
+        },
+        {
+            "label": "Verlopen",
+            "value": "expired"
+        }
+    ]
+}

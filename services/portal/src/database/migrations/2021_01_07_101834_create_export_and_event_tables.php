@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -8,12 +10,10 @@ class CreateExportAndEventTables extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('export', function (Blueprint $table) {
+        Schema::create('export', static function (Blueprint $table): void {
             $table->uuid('uuid')->primary();
             $table->string('status');
             $table->timestamp('created_at');
@@ -22,7 +22,7 @@ class CreateExportAndEventTables extends Migration
             $table->timestamp('uploaded_at')->nullable();
         });
 
-        Schema::create('event', function (Blueprint $table) {
+        Schema::create('event', static function (Blueprint $table): void {
             $table->uuid('uuid')->primary();
             $table->string('type');
             $table->json('data');
@@ -37,10 +37,8 @@ class CreateExportAndEventTables extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('event');
         Schema::dropIfExists('export');

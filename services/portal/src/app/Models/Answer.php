@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 abstract class Answer
@@ -8,7 +10,7 @@ abstract class Answer
     public string $taskUuid;
     public string $questionUuid;
 
-    abstract public function isCompleted();
-    abstract public function toFormValue();
-    abstract public function fromFormValue(array $formData);
+    abstract public function toFormValue(): array;
+
+    abstract public function fromFormValue(array $formData): void;
 }

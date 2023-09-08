@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+BASE_PATH=$(dirname $0)/..
+BASE_PATH=$(readlink -f "$BASE_PATH")
+
+COMPOSE_FILE="$BASE_PATH/docker-compose/docker-compose.e2e.yml"
+DOCKER_COMPOSE="docker compose -p nl-covid19-dbco-app-backend-private-e2e --env-file $BASE_PATH/.env.e2e --project-directory=$BASE_PATH --file $COMPOSE_FILE"
+COMPOSE_FILE_TOOLS="$BASE_PATH/docker-compose/docker-compose.e2e.tools.yml"
+DOCKER_COMPOSE_TOOLS="$DOCKER_COMPOSE --file $COMPOSE_FILE_TOOLS"
+
+# actions
+BUILD=
+
+# Parse options
+while :; do
+  case $1 in
+    --build)
+      BUILD=true
+      ;;
+
+    --)              # End of all options.
+      shift
+      break
+      ;;
+    -?*)
+      echo "Unknown option (ignored): $1"
+      exit 1;
+      ;;
+    *)               # Default case: If no more options then break out of the loop.
+      break
+  esac
+  shift
+done
+
+echo
+echo "=====[ CREATE ENV FILES ]========================="
+echo PORTAL_APP_URL=http://localhost:8080 >> "$BASE_PATH/.env.e2e"
+echo SECURITY_MODULE_TYPE=fake >> "$BASE_PATH/.env.e2e"
+
+GO_TEMPLATE="docker run --rm --volume $BASE_PATH:/workspace --workdir /workspace --env HOST_OS=darwin --env DEV_MODE=portal-only ghcr.io/hairyhenderson/gomplate:v3.11.2-alpine --datasource HOST_OS=env:HOST_OS --datasource env=./.env.e2e?type=application/x-env"
+$GO_TEMPLATE --file .env.template --out .env.e2e
+$GO_TEMPLATE --file services/portal/src/.env.template --out services/portal/src/.env.e2e --datasource root_env=./.env.e2e?type=application/x-env --datasource "devmode=env:DEV_MODE"
+
+. "$BASE_PATH"/.env.e2e
+
+
+if [ "$BUILD" == "true" ]; then
+  echo
+  echo "=====[ START CONTAINERS (BUILDING NEW IMAGES) ]========================="
+  $DOCKER_COMPOSE up portal -d --build
+else
+  echo
+  echo "=====[ START CONTAINERS (USING EXISTING IMAGES) ]========================="
+  $DOCKER_COMPOSE up portal -d
+fi
+
+echo
+echo "=====[ SETUP MYSQL DATABASE ]========================="
+echo "Waiting for MYSQL to launch..."
+while ! $DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "SELECT 1" > /dev/null 2>&1; do
+  echo "  > mysql not yet running ..."
+  sleep 0.5
+done
+sleep 1
+
+echo
+echo "=====[ CREATE DB USERS ]========================="
+$DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'admin'@'%' IDENTIFIED BY '$DB_ADMIN_PASSWORD'"
+$DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
+$DOCKER_COMPOSE_TOOLS run --rm -T mysqlclient < $BASE_PATH/services/mysql/permissions.sql
+
+echo
+echo "=====[ COPY GENERATED ENV FILE TO PORTAL CONTAINER VOLUME ]========================="
+$DOCKER_COMPOSE cp "$BASE_PATH/services/portal/src/.env.e2e" portal:/src/.env
+
+echo
+echo "=====[ MIGRATE AND SEED DATABASE ]========================="
+$DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
+$DOCKER_COMPOSE run --rm --entrypoint php portal artisan db:seed

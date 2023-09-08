@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+RUN=$(dirname $0)/yarn-run-workspace
+
+$RUN format:fix

@@ -1,0 +1,15 @@
+{
+    "phpClass": "FixedCalendarItem",
+    "tsConst": "FixedCalendarItem",
+    "description": "Fixed calendar items",
+    "items": [
+        {
+            "label": "Source",
+            "value": "source"
+        },
+        {
+            "label": "Contagious",
+            "value": "contagious"
+        }
+    ]
+}

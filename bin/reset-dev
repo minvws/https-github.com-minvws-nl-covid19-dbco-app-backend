@@ -1,8 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -eo pipefail
+
 BASE_PATH=$(dirname $0)/..
-DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
+DOCKER_COMPOSE_TOOLS=$(dirname $0)/docker-compose-dev-tools
 
 echo "=====[ REMOVE CONTAINERS AND VOLUMES ]======================="
-$DOCKER_COMPOSE down --remove-orphans -v
+$DOCKER_COMPOSE_TOOLS down --remove-orphans -v
 echo ""
 $BASE_PATH/bin/setup-dev

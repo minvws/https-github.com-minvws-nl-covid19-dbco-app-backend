@@ -1,40 +1,56 @@
 .container-login {
-  width: 100%;
-  height: 100vh;
-  padding: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-width: 500px;
-  margin: 0 auto;
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .card-login {
-  @extend .card;
-  border: 0;
-  padding: 2rem;
-
-  .card-img-top {
-    padding: 0 4rem;
-    margin-bottom: 2rem;
-  }
-
-  .card-title {
-    margin-bottom: 0;
-    font-weight: 700;
-    font-size: $h2-font-size;
-  }
-
-  .card-body {
-    padding: 0 1.25rem;
-    text-align: center;
-    margin-bottom: 3rem;
-    color: $light-grey;
-  }
-
-  .card-footer {
-    background-color: $white;
+    @extend .card;
     border: 0;
-    padding: 0;
-  }
+    padding: 2rem;
+    min-width: 470px;
+
+    .card-img-top {
+        max-width: 350px;
+        margin: 0 auto 2rem;
+    }
+
+    .card-title {
+        margin-bottom: 0;
+        font-weight: 700;
+        font-size: $h2-font-size;
+    }
+
+    .card-body {
+        padding: 0 1.25rem;
+        text-align: center;
+        margin-bottom: 3rem;
+        color: $light-grey;
+    }
+
+    .card-footer {
+        background-color: $white;
+        border: 0;
+        padding: 0;
+        max-width: 775px;
+
+        .button-group {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: 1fr 1fr;
+            margin: 0 0 3rem 0;
+        }
+
+        .btn {
+            font-size: 14px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
 }

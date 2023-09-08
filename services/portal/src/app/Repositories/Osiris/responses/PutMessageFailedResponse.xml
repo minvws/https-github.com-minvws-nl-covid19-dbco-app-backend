@@ -1,0 +1,8 @@
+<PutResultaat xmlns="http://tempuri.org/PutResultaat.xsd">
+  <resultaat>
+    <osiris_nummer>123456</osiris_nummer>
+    <bericht_ok>false</bericht_ok>
+    <melding_ok>false</melding_ok>
+    <fout_reden>Dodelijke foutmelding vanuit OSIRIS</fout_reden>
+  </resultaat>
+</PutResultaat>

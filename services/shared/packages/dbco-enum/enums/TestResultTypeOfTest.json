@@ -1,0 +1,31 @@
+{
+    "phpClass": "TestResultTypeOfTest",
+    "tsConst": "testResultTypeOfTest",
+    "description": "Type of test result",
+    "properties": {
+        "type": {
+            "type": "TestResultType",
+            "description": "Indicates of Test is lab or selftest",
+            "scope": "shared"
+        }
+    },
+    "items": [
+        {
+            "value": "pcr",
+            "label": "Moleculaire diagnostiek (PCR, LAMP, andere nucleinezuuramplificatietest (NAAT))",
+            "type": "lab"
+        },
+        {
+            "value": "antigen",
+            "label": "Antigeen (door zorgprofessional)",
+            "type": "lab"
+        },
+        {
+            "value": "selftest",
+            "label": "Antigeen (zelftest)",
+            "type": "selftest"
+        },
+        { "value": "custom", "label": "Anders", "type": "unknown" },
+        { "value": "unknown", "label": "Onbekend", "type": "unknown" }
+    ]
+}

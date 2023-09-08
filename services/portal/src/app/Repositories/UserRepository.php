@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
-use App\Models\BCOUser;
 use App\Models\Eloquent\EloquentUser;
+use DateTimeInterface;
+use Illuminate\Support\Collection;
 
 interface UserRepository
 {
@@ -12,18 +15,18 @@ interface UserRepository
      * Laravel's authentication mechanism either needs a database row or an eloquent object,
      * and the database authentication classes don't support our custom 'uuid' id column. That's
      * why for authentication purposes we're passing an EloquentUser around.
-     * @param string $externalId
-     * @param string $name
-     * @param array $roles
-     * @param array $organisationUuids
-     * @return EloquentUser
      */
-    public function upsertUserByExternalId(string $externalId,
-                                           string $name,
-                                           array $roles,
-                                           array $organisationUuids): EloquentUser;
+    public function upsertUserByExternalId(
+        string $externalId,
+        string $name,
+        array $roles,
+        string $organisationUuid,
+    ): EloquentUser;
 
-    public function bcoUserFromEloquentUser(EloquentUser $user): BCOUser;
+    public function getByUuid(string $uuid): ?EloquentUser;
 
-    public function getUsersByOrganisation(BCOUser $user): array;
+    /**
+     * @return Collection<EloquentUser>
+     */
+    public function getAssignableUsers(string $organisationUuid, DateTimeInterface $lastLoginThreshold): Collection;
 }

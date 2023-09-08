@@ -1,0 +1,19 @@
+{
+    "phpClass": "FixedCalendarPeriod",
+    "tsConst": "fixedCalendarPeriod",
+    "description": "All fixed calendar periods",
+    "items": [
+        {
+            "label": "Episode",
+            "value": "episode"
+        },
+        {
+            "label": "Source",
+            "value": "source"
+        },
+        {
+            "label": "Contagious",
+            "value": "contagious"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "phpClass": "InformedBy",
+    "tsConst": "informedBy",
+    "description": "Defines who the task is in contact with for contact research.",
+    "items": [
+        {
+            "value": "index",
+            "label": "Index"
+        },
+        {
+            "value": "staff",
+            "label": "GGD"
+        }
+    ]
+}
