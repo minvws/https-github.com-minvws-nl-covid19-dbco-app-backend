@@ -1,0 +1,22 @@
+{
+    "phpClass": "TestResultSource",
+    "tsConst": "testResultSource",
+    "items": [
+        {
+            "label": "CoronIT",
+            "value": "coronit"
+        },
+        {
+            "label": "Handmatig aangemaakt",
+            "value": "manual"
+        },
+        {
+            "label": "Meldportaal",
+            "value": "meldportaal"
+        },
+        {
+            "label": "Zelfportaal",
+            "value": "publicWebPortal"
+        }
+    ]
+}

@@ -1,0 +1,8 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 5" width="10" height="5">
+	<title>arrow-up-svg</title>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #a3aebf } 
+	</style>
+	<path id="Layer" class="shp0" d="M0 5L5 0L10 5L0 5Z" />
+</svg>

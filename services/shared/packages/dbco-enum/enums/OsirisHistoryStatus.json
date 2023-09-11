@@ -1,0 +1,24 @@
+{
+    "phpClass": "OsirisHistoryStatus",
+    "tsConst": "osirisHistoryStatus",
+    "description": "Osiris history status",
+    "default": "success",
+    "items": [
+        {
+            "label": "Success",
+            "value": "success"
+        },
+        {
+            "label": "Failed",
+            "value": "failed"
+        },
+        {
+            "label": "Validation",
+            "value": "validation"
+        },
+        {
+            "label": "Blocked",
+            "value": "blocked"
+        }
+    ]
+}

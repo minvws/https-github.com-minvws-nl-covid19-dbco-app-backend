@@ -1,3 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -eo pipefail
+
 BASE_PATH=$(dirname $0)/..
-docker-compose --project-directory=$BASE_PATH -f docker-compose.yml "$@"
+DEV_MODE=$(cat $BASE_PATH/.dev-switch)
+
+COMPOSE_FILE=$(if [ $DEV_MODE == "portal-only" ]; then echo -n "$BASE_PATH/docker-compose.portal-only.yml"; else echo -n "$BASE_PATH/docker-compose.yml"; fi)
+
+docker compose --project-directory="$BASE_PATH" --file $COMPOSE_FILE "$@"

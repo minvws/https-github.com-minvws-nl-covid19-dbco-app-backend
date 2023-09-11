@@ -1,0 +1,161 @@
+{
+    "phpClass": "DateOperationRelativeDay",
+    "tsConst": "dateOperationRelativeDay",
+    "items": [
+        {
+            "label": "1 dag voor",
+            "value": -1,
+            "name": "min_1"
+        },
+        {
+            "label": "2 dagen voor",
+            "value": -2,
+            "name": "min_2"
+        },
+        {
+            "label": "3 dagen voor",
+            "value": -3,
+            "name": "min_3"
+        },
+        {
+            "label": "4 dagen voor",
+            "value": -4,
+            "name": "min_4"
+        },
+        {
+            "label": "5 dagen voor",
+            "value": -5,
+            "name": "min_5"
+        },
+        {
+            "label": "6 dagen voor",
+            "value": -6,
+            "name": "min_6"
+        },
+        {
+            "label": "7 dagen voor",
+            "value": -7,
+            "name": "min_7"
+        },
+        {
+            "label": "8 dagen voor",
+            "value": -8,
+            "name": "min_8"
+        },
+        {
+            "label": "9 dagen voor",
+            "value": -9,
+            "name": "min_9"
+        },
+        {
+            "label": "10 dagen voor",
+            "value": -10,
+            "name": "min_10"
+        },
+        {
+            "label": "11 dagen voor",
+            "value": -11,
+            "name": "min_11"
+        },
+        {
+            "label": "12 dagen voor",
+            "value": -12,
+            "name": "min_12"
+        },
+        {
+            "label": "13 dagen voor",
+            "value": -13,
+            "name": "min_13"
+        },
+        {
+            "label": "14 dagen voor",
+            "value": -14,
+            "name": "min_14"
+        },
+        {
+            "label": "15 dagen voor",
+            "value": -15,
+            "name": "min_15"
+        },
+        {
+            "label": "Op de dag van",
+            "value": 0,
+            "name": "zero"
+        },
+        {
+            "label": "1 dag na",
+            "value": 1,
+            "name": "add_1"
+        },
+        {
+            "label": "2 dagen na",
+            "value": 2,
+            "name": "add_2"
+        },
+        {
+            "label": "3 dagen na",
+            "value": 3,
+            "name": "add_3"
+        },
+        {
+            "label": "4 dagen na",
+            "value": 4,
+            "name": "add_4"
+        },
+        {
+            "label": "5 dagen na",
+            "value": 5,
+            "name": "add_5"
+        },
+        {
+            "label": "6 dagen na",
+            "value": 6,
+            "name": "add_6"
+        },
+        {
+            "label": "7 dagen na",
+            "value": 7,
+            "name": "add_7"
+        },
+        {
+            "label": "8 dagen na",
+            "value": 8,
+            "name": "add_8"
+        },
+        {
+            "label": "9 dagen na",
+            "value": 9,
+            "name": "add_9"
+        },
+        {
+            "label": "10 dagen na",
+            "value": 10,
+            "name": "add_10"
+        },
+        {
+            "label": "11 dagen na",
+            "value": 11,
+            "name": "add_11"
+        },
+        {
+            "label": "12 dagen na",
+            "value": 12,
+            "name": "add_12"
+        },
+        {
+            "label": "13 dagen na",
+            "value": 13,
+            "name": "add_12"
+        },
+        {
+            "label": "14 dagen na",
+            "value": 14,
+            "name": "add_14"
+        },
+        {
+            "label": "15 dagen na",
+            "value": 15,
+            "name": "add_15"
+        }
+    ]
+}

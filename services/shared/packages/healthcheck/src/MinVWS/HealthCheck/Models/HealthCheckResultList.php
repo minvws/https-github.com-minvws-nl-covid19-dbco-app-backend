@@ -1,4 +1,5 @@
 <?php
+
 namespace MinVWS\HealthCheck\Models;
 
 use JsonSerializable;
@@ -33,7 +34,7 @@ class HealthCheckResultList implements JsonSerializable
     /**
      * @inheritDoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $data = ['isHealthy' => $this->isHealthy, 'results' => []];
 

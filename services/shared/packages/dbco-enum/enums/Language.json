@@ -1,0 +1,362 @@
+{
+    "phpClass": "Language",
+    "tsConst": "language",
+    "items": [
+        {
+            "label": "Afrikaans",
+            "value": "afr"
+        },
+        {
+            "label": "Albanees",
+            "value": "sqi"
+        },
+        {
+            "label": "Amhaars",
+            "value": "amh"
+        },
+        {
+            "label": "Arabisch (Marokkaans, Darija)",
+            "value": "ary"
+        },
+        {
+            "label": "Arabisch (Overig)",
+            "value": "ara"
+        },
+        {
+            "label": "Armeens",
+            "value": "hye"
+        },
+        {
+            "label": "Assamees",
+            "value": "asm"
+        },
+        {
+            "label": "Aymara",
+            "value": "aym"
+        },
+        {
+            "label": "Azerbeidzjaans",
+            "value": "aze"
+        },
+        {
+            "label": "Bengaals",
+            "value": "ben"
+        },
+        {
+            "label": "Berbers",
+            "value": "ber"
+        },
+        {
+            "label": "Bislama",
+            "value": "bis"
+        },
+        {
+            "label": "Bosnisch",
+            "value": "bos"
+        },
+        {
+            "label": "Bulgaars",
+            "value": "bul"
+        },
+        {
+            "label": "Catalaans",
+            "value": "cat"
+        },
+        {
+            "label": "Chinees (Kantonees)",
+            "value": "yue"
+        },
+        {
+            "label": "Chinees (Mandarijn)",
+            "value": "cmn"
+        },
+        {
+            "label": "Chinees (Overig)",
+            "value": "zho"
+        },
+        {
+            "label": "Dari (Afghaans)",
+            "value": "prs"
+        },
+        {
+            "label": "Deens",
+            "value": "dan"
+        },
+        {
+            "label": "Divehi",
+            "value": "div"
+        },
+        {
+            "label": "Duits",
+            "value": "deu"
+        },
+        {
+            "label": "Dzongkha",
+            "value": "dzo"
+        },
+        {
+            "label": "Engels",
+            "value": "eng"
+        },
+        {
+            "label": "Estisch",
+            "value": "est"
+        },
+        {
+            "label": "Fijisch",
+            "value": "fij"
+        },
+        {
+            "label": "Filipijns",
+            "value": "fil"
+        },
+        {
+            "label": "Fins",
+            "value": "fin"
+        },
+        {
+            "label": "Frans",
+            "value": "fra"
+        },
+        {
+            "label": "Fries",
+            "value": "fry"
+        },
+        {
+            "label": "Georgisch",
+            "value": "kat"
+        },
+        {
+            "label": "Grieks",
+            "value": "ell"
+        },
+        {
+            "label": "Groenlands",
+            "value": "kal"
+        },
+        {
+            "label": "Guaraní",
+            "value": "grn"
+        },
+        {
+            "label": "Haïtiaans Creools",
+            "value": "hat"
+        },
+        {
+            "label": "Hawaïaans",
+            "value": "haw"
+        },
+        {
+            "label": "Hebreeuws",
+            "value": "heb"
+        },
+        {
+            "label": "Hindoestaans (Hindisch, Hindi)",
+            "value": "hin"
+        },
+        {
+            "label": "Hiri Motu",
+            "value": "hmo"
+        },
+        {
+            "label": "Hongaars",
+            "value": "hun"
+        },
+        {
+            "label": "Iers",
+            "value": "gle"
+        },
+        {
+            "label": "IJslands",
+            "value": "isl"
+        },
+        {
+            "label": "Indonesisch",
+            "value": "ind"
+        },
+        {
+            "label": "Italiaans",
+            "value": "ita"
+        },
+        {
+            "label": "Japans",
+            "value": "jpn"
+        },
+        {
+            "label": "Kannada (Kanarees, Kanara)",
+            "value": "kan"
+        },
+        {
+            "label": "Kasjmiri",
+            "value": "kas"
+        },
+        {
+            "label": "Kazachs",
+            "value": "kaz"
+        },
+        {
+            "label": "Khmer, Cambodjaans",
+            "value": "khm"
+        },
+        {
+            "label": "Kirgizisch",
+            "value": "kir"
+        },
+        {
+            "label": "Koerdisch",
+            "value": "kur"
+        },
+        {
+            "label": "Koreaans",
+            "value": "kor"
+        },
+        {
+            "label": "Kroatisch",
+            "value": "hrv"
+        },
+        {
+            "label": "Laotiaans",
+            "value": "lao"
+        },
+        {
+            "label": "Latijn",
+            "value": "lat"
+        },
+        {
+            "label": "Lets",
+            "value": "lav"
+        },
+        {
+            "label": "Litouws",
+            "value": "lit"
+        },
+        {
+            "label": "Luxemburgs",
+            "value": "ltz"
+        },
+        {
+            "label": "Macedonisch",
+            "value": "mkd"
+        },
+        {
+            "label": "Maleis",
+            "value": "msa"
+        },
+        {
+            "label": "Maori",
+            "value": "mri"
+        },
+        {
+            "label": "Nederlands",
+            "value": "nld"
+        },
+        {
+            "label": "Nepalees",
+            "value": "nep"
+        },
+        {
+            "label": "Noors",
+            "value": "nor"
+        },
+        {
+            "label": "Oekraïens",
+            "value": "ukr"
+        },
+        {
+            "label": "Papiaments",
+            "value": "pap"
+        },
+        {
+            "label": "Pasjtoe",
+            "value": "pus"
+        },
+        {
+            "label": "Perzisch (Farsi)",
+            "value": "fas"
+        },
+        {
+            "label": "Pools",
+            "value": "pol"
+        },
+        {
+            "label": "Portugees",
+            "value": "por"
+        },
+        {
+            "label": "Reto-Romaans",
+            "value": "roh"
+        },
+        {
+            "label": "Roemeens",
+            "value": "ron"
+        },
+        {
+            "label": "Romani",
+            "value": "rom"
+        },
+        {
+            "label": "Russisch",
+            "value": "rus"
+        },
+        {
+            "label": "Servisch",
+            "value": "srp"
+        },
+        {
+            "label": "Sloveens",
+            "value": "slv"
+        },
+        {
+            "label": "Slowaaks",
+            "value": "slk"
+        },
+        {
+            "label": "Somalisch",
+            "value": "som"
+        },
+        {
+            "label": "Spaans",
+            "value": "spa"
+        },
+        {
+            "label": "Susu",
+            "value": "sus"
+        },
+        {
+            "label": "Thai",
+            "value": "tha"
+        },
+        {
+            "label": "Tigrinya",
+            "value": "tir"
+        },
+        {
+            "label": "Tsjechisch",
+            "value": "ces"
+        },
+        {
+            "label": "Turks",
+            "value": "tur"
+        },
+        {
+            "label": "Urdu",
+            "value": "urd"
+        },
+        {
+            "label": "Vietnamees",
+            "value": "vie"
+        },
+        {
+            "label": "Welsh",
+            "value": "cym"
+        },
+        {
+            "label": "Wit-Russisch (Belarussisch)",
+            "value": "bel"
+        },
+        {
+            "label": "Zweeds",
+            "value": "swe"
+        }
+    ]
+}

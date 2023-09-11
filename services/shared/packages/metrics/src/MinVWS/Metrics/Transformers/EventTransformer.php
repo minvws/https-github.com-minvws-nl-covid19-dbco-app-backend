@@ -1,4 +1,5 @@
 <?php
+
 namespace MinVWS\Metrics\Transformers;
 
 use MinVWS\Metrics\Models\Event;

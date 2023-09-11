@@ -1,0 +1,7 @@
+type: string
+enum:
+  - unknown
+  - draft
+  - open
+  - completed
+  - archived

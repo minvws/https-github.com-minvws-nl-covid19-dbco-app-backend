@@ -1,7 +1,10 @@
 <?php
+
 namespace DBCO\Shared\Application\Metrics\Transformers;
 
 use DateTime;
+use Exception;
+use MinVWS\DBCO\Metrics\Services\TaskProgressService;
 use MinVWS\Metrics\Models\Event;
 use MinVWS\Metrics\Transformers\EventTransformer as EventTransformerInterface;
 use PDO;
@@ -17,19 +20,29 @@ class EventTransformer implements EventTransformerInterface
     private PDO $client;
 
     /**
+     * @var TaskProgressService
+     */
+    private TaskProgressService $taskProgressService;
+
+    /**
      * Constructor.
      *
      * @param PDO $client
      */
-    public function __construct(PDO $client)
+    public function __construct(PDO $client, TaskProgressService $taskProgressService)
     {
         $this->client = $client;
+        $this->taskProgressService = $taskProgressService;
     }
 
     /**
-     * @inheritDoc
+     * Fetch case data.
+     *
+     * @param Event $event
+     *
+     * @return object|false
      */
-    public function exportDataForEvent(Event $event): array
+    private function fetchCaseData(Event $event)
     {
         $stmt = $this->client->prepare("
             SELECT
@@ -43,51 +56,109 @@ class EventTransformer implements EventTransformerInterface
 
         $stmt->execute(['caseUuid' => $event->data['caseUuid']]);
 
-        $row = $stmt->fetchObject();
-        if (!$row) {
-            return []; // TODO: throw error?
+        return $stmt->fetchObject();
+    }
+
+    /**
+     * Export data for case.
+     *
+     * @param Event $event
+     *
+     * @return array
+     *
+     * @throws Exception
+     */
+    private function exportDataForCase(Event $event): array
+    {
+        $caseData = $this->fetchCaseData($event);
+        if (!$caseData) {
+            return [];
         }
 
         $exportData = [
             'id' => $event->uuid,
             'event' => $event->type,
             'date' => $event->createdAt->format('Y-m-d'),
-            'ts_delta' => $event->createdAt->getTimestamp() - (new DateTime($row->created_at))->getTimestamp(),
+            'ts_delta' => $event->createdAt->getTimestamp() - (new DateTime($caseData->created_at))->getTimestamp(),
             'actor' => $event->data['actor'],
             'pseudo_id' => hash('sha256', $event->data['caseUuid']),
-            'vrregioncode' => $row->organisation_external_id
+            'vrregioncode' => $caseData->organisation_external_id
         ];
 
-        if ($event->type === 'opened') {
-            $exportData['date_of_symptom_onset'] = $row->date_of_symptom_onset;
-        }
-
-        if (in_array($event->type, ['identified', 'inventoried', 'edited', 'exported', 'informed'])) {
-            $stmt = $this->client->prepare("
-                SELECT
-                   t.category,
-                   t.export_id
-                FROM task t 
-                WHERE t.uuid = :taskUuid
-            ");
-
-            $stmt->execute(['taskUuid' => $event->data['taskUuid']]);
-
-            $taskRow = $stmt->fetchObject();
-            if (!$taskRow) {
-                return []; // TODO: throw error?
-            }
-
-            $exportData['contact_pseudo_id'] = hash('sha256', $event->data['taskUuid']);
-            $exportData['category'] = $taskRow->category;
-
-            if (in_array($event->type, ['inventoried', 'edited'])) {
-                $exportData['fields'] = $event->data['taskFields'];
-            } else if ($event->type === 'exported') {
-                $exportData['hpzone_id'] = $taskRow->export_id;
-            }
+        if (in_array($event->type, ['opened', 'identified', 'inventoried', 'edited'])) {
+            $exportData['date_of_symptom_onset'] = $caseData->date_of_symptom_onset;
         }
 
         return $exportData;
+    }
+
+    /**
+     * Fetch task data.
+     *
+     * @param Event $event
+     *
+     * @return object|false
+     */
+    private function fetchTaskData(Event $event)
+    {
+        $stmt = $this->client->prepare("
+            SELECT
+               t.category,
+               t.export_id
+            FROM task t 
+            WHERE t.uuid = :taskUuid
+        ");
+
+        $stmt->execute(['taskUuid' => $event->data['taskUuid']]);
+
+        return $stmt->fetchObject();
+    }
+
+    /**
+     * Export data for task specific events.
+     *
+     * @param Event  $event
+     *
+     * @return array
+     *
+     * @throws Exception
+     */
+    private function exportDataForTask(Event $event): array
+    {
+        if (!in_array($event->type, ['identified', 'inventoried', 'edited', 'exported', 'informed'])) {
+            return [];
+        }
+
+        $taskData = $this->fetchTaskData($event);
+        if (!$taskData) {
+            return []; // TODO: throw error?
+        }
+
+        $exportData = [
+            'contact_pseudo_id' => hash('sha256', $event->data['taskUuid']),
+            'category' => $taskData->category
+        ];
+
+        if (in_array($event->type, ['inventoried', 'edited'])) {
+            $exportData['fields'] = implode(",", $event->data['taskFields']);
+            $exportData['progress'] = $this->taskProgressService->getProgress($event->data['taskUuid']);
+        }
+
+        return $exportData;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function exportDataForEvent(Event $event): array
+    {
+        $caseExportData = $this->exportDataForCase($event);
+        if (count($caseExportData) === 0) {
+            return [];
+        }
+
+        $taskExportData = $this->exportDataForTask($event);
+
+        return array_merge($caseExportData, $taskExportData);
     }
 }

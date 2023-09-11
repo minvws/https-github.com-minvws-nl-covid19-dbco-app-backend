@@ -1,0 +1,17 @@
+{{- if .Values.healthauthorityHsm.redis.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "app.fullname" . }}-healthauthority-hsm-redis
+  labels:
+    app.kubernetes.io/name: {{ include "app.fullname" . }}-healthauthority-hsm-redis
+spec:
+  type: ClusterIP
+  ports:
+    - port: 6379
+      targetPort: redis
+      protocol: TCP
+      name: redis
+  selector:
+    app.kubernetes.io/name: {{ include "app.fullname" . }}-healthauthority-hsm-redis
+{{- end }}

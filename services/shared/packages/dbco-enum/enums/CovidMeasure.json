@@ -1,0 +1,42 @@
+{
+    "phpClass": "CovidMeasure",
+    "tsConst": "covidMeasure",
+    "items": [
+        {
+            "label": "Spatscherm voor gezicht",
+            "value": "spatscherm"
+        },
+        {
+            "label": "Ventileren",
+            "value": "ventilate"
+        },
+        {
+            "label": "Plexiglas afscheidingen",
+            "value": "plexiglass"
+        },
+        {
+            "label": "1,5 meter afstand houden",
+            "value": "distance"
+        },
+        {
+            "label": "Looproutes",
+            "value": "walking-routes"
+        },
+        {
+            "label": "Persoonlijke beschermingsmiddelen",
+            "value": "personal-protective-equipment"
+        },
+        {
+            "label": "Niet-medische mondmaskers",
+            "value": "non-medical-masks"
+        },
+        {
+            "label": "Mogelijkheden tot goede handhygiëne",
+            "value": "hand-hygiene"
+        },
+        {
+            "label": "Controle CoronaCheck app",
+            "value": "corona-check-app"
+        }
+    ]
+}

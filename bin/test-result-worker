@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+$(dirname $0)/assert-devmode-integrated
+
+BASE_PATH=$(dirname $0)/..
+
+echo
+echo "=====[ STARTING TEST-RESULT WORKER ]======================="
+
+DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
+
+$DOCKER_COMPOSE --file $BASE_PATH/docker-compose/docker-compose.tools.yml run --rm test-result-worker "$@"

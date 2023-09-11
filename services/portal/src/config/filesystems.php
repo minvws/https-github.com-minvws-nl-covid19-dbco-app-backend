@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -48,10 +50,16 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'attachments' => [
+            'driver' => 'local',
+            'throw' => true,
+            'root' => resource_path('attachments'),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
 
@@ -65,6 +73,17 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
+        'audit_event_schema' => [
+            'driver' => 'local',
+            'root' => storage_path('audit/schema'),
+            'visibility' => 'private',
+        ],
+
+        'audit_event_specification' => [
+            'driver' => 'local',
+            'root' => storage_path('audit/specification'),
+            'visibility' => 'private',
+        ],
     ],
 
     /*

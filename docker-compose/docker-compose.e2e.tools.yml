@@ -1,0 +1,7 @@
+version: '3.7'
+
+services:
+    mysqlclient:
+        extends:
+            file: docker-compose/tools.yml
+            service: mysqlclient

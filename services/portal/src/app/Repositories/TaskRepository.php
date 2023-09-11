@@ -1,48 +1,63 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
+use App\Models\Eloquent\EloquentCase;
+use App\Models\Eloquent\EloquentTask;
 use App\Models\Task;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
-use Jenssegers\Date\Date;
+use MinVWS\DBCO\Enum\Models\TaskGroup;
 
 interface TaskRepository
 {
     /**
-     * Returns task list.
-     *
-     * @param string $caseUuid Case identifier.
-     *
-     * @return Collection List of tasks
+     * @return Collection<int, Task>
      */
-    public function getTasks(string $caseUuid): Collection;
+    public function getTasks(string $caseUuid, TaskGroup $group): Collection;
 
-    /**
-     * Returns single task.
-     *
-     * @param string $uuid Task identifier.
-     *
-     * @return Task The task (or null if not found)
-     */
     public function getTask(string $taskUuid): ?Task;
 
-    /**
-     * Update a task in the db
-     *
-     * @param Task $task The updated task
-     */
-    public function updateTask(Task $task);
+    public function getEloquentTask(string $taskUuid): ?EloquentTask;
+
+    public function getTaskByUuid(string $taskUuid): ?EloquentTask;
+
+    public function getTaskIncludingSoftDeletes(string $taskUuid): ?EloquentTask;
+
+    public function getTaskModelIncludingSoftDeletes(string $taskUuid): ?Task;
+
+    public function restoreTask(EloquentTask $task): void;
+
+    public function updateTask(Task $task): bool;
+
+    public function createTask(
+        string $caseUuid,
+        TaskGroup $group,
+        string $label,
+        ?string $context,
+        ?string $nature,
+        ?string $category,
+        ?string $communication,
+        ?CarbonInterface $dateOfLastExposure,
+        bool $isSource,
+    ): Task;
+
+    public function deleteTask(EloquentTask $task): void;
 
     /**
-     * Create a new task
+     * @param array<string, mixed> $conditions
      *
-     * @return Task
+     * @return Collection<int, EloquentTask>
      */
-    public function createTask(string $caseUuid, string $label, ?string $context, string $category, string $communication, ?Date $dateOfLastExposure): Task;
+    public function searchTasksForOrganisation(array $conditions, string $organisationUuid): Collection;
 
-    /**
-     * @param string $caseUuid Case to clean up
-     * @param array $keep Task uuids to keep
-     */
-    public function deleteRemovedTasks(string $caseUuid, array $keep);
+    public function getTasksByPseudoBsnGuid(string $pseudoBsnGuid, array $ignoreUuids = []): Collection;
+
+    public function createTaskForCase(EloquentCase $case): EloquentTask;
+
+    public function save(EloquentTask $task): void;
+
+    public function countTaskGroupsForCase(EloquentCase $case): array;
 }

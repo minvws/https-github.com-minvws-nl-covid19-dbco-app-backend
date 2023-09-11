@@ -1,0 +1,17 @@
+.form-chapter {
+    background-color: $white;
+    border-radius: $border-radius-small;
+    border: $border-default;
+    box-shadow: $box-shadow-card;
+    margin-bottom: $padding-sm;
+    padding: 1.5rem $padding-md;
+    position: relative;
+
+    &--not-card {
+        background-color: unset;
+        border-radius: unset;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+    }
+}

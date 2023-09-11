@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
+
+$DOCKER_COMPOSE exec portal php /shared/packages/dbco-enum/scripts/generate.php

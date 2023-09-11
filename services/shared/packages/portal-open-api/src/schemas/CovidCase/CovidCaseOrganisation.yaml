@@ -1,0 +1,11 @@
+type: object
+properties:
+  uuid:
+    type: string
+    format: uuid
+  abbreviation:
+    type: string
+  name:
+    type: string
+  isCurrent:
+    type: boolean

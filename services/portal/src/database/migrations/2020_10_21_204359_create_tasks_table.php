@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -8,18 +10,16 @@ class CreateTasksTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('task', function (Blueprint $table) {
+        Schema::create('task', static function (Blueprint $table): void {
             $table->uuid('uuid')->primary();
             $table->uuid('case_uuid');
 
             $table->foreign('case_uuid')->references('uuid')
-                                                ->on('case')
-                                                ->onDelete('cascade');
+                ->on('case')
+                ->onDelete('cascade');
             $table->string('task_type');
             $table->string('source');
             $table->string('label');
@@ -35,10 +35,8 @@ class CreateTasksTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('task');
     }

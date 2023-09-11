@@ -1,0 +1,18 @@
+{
+    "phpClass": "TestResultResult",
+    "tsConst": "testResultResult",
+    "items": [
+        {
+            "label": "Positief",
+            "value": "positive"
+        },
+        {
+            "label": "Negatief",
+            "value": "negative"
+        },
+        {
+            "label": "Onbekend",
+            "value": "unknown"
+        }
+    ]
+}

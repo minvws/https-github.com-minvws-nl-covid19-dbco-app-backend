@@ -1,0 +1,11 @@
+type: object
+required:
+  - type
+  - options
+properties:
+  type:
+    type: string # menu
+  options:
+    type: array
+    items:
+      $ref: './CaseAssignmentOption.yaml'

@@ -1,0 +1,28 @@
+{
+    "phpClass": "Priority",
+    "tsConst": "priority",
+    "description": "Prioriteit",
+    "scalarType": "int",
+    "items": [
+        {
+            "value": 0,
+            "name": "none",
+            "label": "Geen prioriteit"
+        },
+        {
+            "value": 1,
+            "name": "normal",
+            "label": "Normaal"
+        },
+        {
+            "value": 2,
+            "name": "high",
+            "label": "Hoog"
+        },
+        {
+            "value": 3,
+            "name": "veryHigh",
+            "label": "Heel hoog"
+        }
+    ]
+}

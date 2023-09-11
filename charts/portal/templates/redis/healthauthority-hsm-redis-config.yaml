@@ -1,0 +1,9 @@
+{{- if and (.Values.healthauthorityHsm.redis.enabled) (not .Values.healthauthorityHsm.redis.useSecret) -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "app.fullname" . }}-healthauthority-hsm-redis
+data:
+  redis.conf: |
+    {{- .Values.healthauthorityHsm.redis.config | nindent 4 }}
+{{- end }}

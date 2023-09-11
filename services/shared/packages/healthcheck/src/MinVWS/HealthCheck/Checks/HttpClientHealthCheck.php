@@ -1,6 +1,8 @@
 <?php
+
 namespace MinVWS\HealthCheck\Checks;
 
+use Exception;
 use MinVWS\HealthCheck\Models\HealthCheckResult;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
@@ -111,10 +113,10 @@ class HttpClientHealthCheck implements HealthCheck
             }
 
             return new HealthCheckResult(true);
-        } catch (ClientExceptionInterface $e) {
+        } catch (Exception $e) {
             return new HealthCheckResult(
                 false,
-                'unknownError',
+                'internalError',
                 $e->getMessage()
             );
         }

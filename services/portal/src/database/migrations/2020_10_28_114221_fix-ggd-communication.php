@@ -1,31 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
 class FixGgdCommunication extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         DB::table('task')
-            ->where('communication','ggd')
+            ->where('communication', 'ggd')
             ->update([
-                "communication" => "staff"
+                "communication" => "staff",
             ]);
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         // not relevant
     }

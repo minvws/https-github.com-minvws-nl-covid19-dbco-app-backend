@@ -1,0 +1,13 @@
+<?php
+
+namespace Illuminate\Foundation\Support\Providers;
+
+class EventServiceProvider
+{
+    /**
+     * The event handler mappings for the application.
+     *
+     * @var array<string, array<int, string|array{0: string, 1: string}|\Closure>>
+     */
+    protected $listen = [];
+}

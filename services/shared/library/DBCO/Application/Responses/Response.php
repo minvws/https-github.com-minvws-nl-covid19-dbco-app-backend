@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DBCO\Shared\Application\Responses;
@@ -6,7 +7,6 @@ namespace DBCO\Shared\Application\Responses;
 use JsonSerializable;
 use RuntimeException;
 use Slim\Psr7\Response as SlimResponse;
-
 
 /**
  * Simple response builder.
@@ -50,8 +50,8 @@ abstract class Response
     public function getBody(): string
     {
         if ($this instanceof JsonSerializable) {
-            return json_encode($this, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES);
-        } else if ($this->getStatusCode() === 202 || $this->getStatusCode() === 204) {
+            return json_encode($this, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        } elseif ($this->getStatusCode() === 202 || $this->getStatusCode() === 204) {
             return '';
         } else {
             throw new RuntimeException('Not implemented!');

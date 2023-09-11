@@ -1,0 +1,12 @@
+type: object
+allOf:
+    - $ref: ./BaseLayoutElement.yaml
+required:
+    - type
+properties:
+    type:
+        type: string
+        enum:
+            - 'Group'
+    label:
+        type: string

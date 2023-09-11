@@ -1,0 +1,23 @@
+{
+    "phpClass": "AutomaticAddressVerificationStatus",
+    "tsConst": "automaticAddressVerificationStatus",
+    "description": "Verification status of address details, automatically executed by the system during index identification.",
+    "default": "unchecked",
+    "items": [
+        {
+            "label": "Niet gecontroleerd",
+            "value": "unchecked",
+            "name": "unchecked"
+        },
+        {
+            "label": "Geverifieerd",
+            "value": "verified",
+            "name": "verified"
+        },
+        {
+            "label": "Ongeverifieerd",
+            "value": "unverified",
+            "name": "unverified"
+        }
+    ]
+}

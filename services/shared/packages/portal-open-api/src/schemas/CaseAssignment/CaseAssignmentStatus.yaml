@@ -1,0 +1,9 @@
+type: object
+required:
+  - caseId
+  - assignmentStatus
+properties:
+  caseId:
+    type: string
+  assignmentStatus:
+    type: string

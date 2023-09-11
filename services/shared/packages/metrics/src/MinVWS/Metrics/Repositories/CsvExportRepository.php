@@ -1,11 +1,12 @@
 <?php
+
 namespace MinVWS\Metrics\Repositories;
 
-use MinVWS\Metrics\Models\Event;
 use MinVWS\Metrics\Models\Export;
+use MinVWS\Metrics\Models\Intake;
 
 /**
- * Responsible for exporting to a file.
+ * Responsible for exporting to a CSV file.
  *
  * @package MinVWS\Metrics\Repositories
  */
@@ -14,14 +15,14 @@ class CsvExportRepository implements ExportRepository
     /**
      * @var string[]
      */
-    private array $fields;
+    protected array $fields;
 
     /**
      * Header.
      *
      * @var array|null
      */
-    private ?array $labels;
+    protected ?array $labels;
 
     /**
      * Constructor.
@@ -38,21 +39,17 @@ class CsvExportRepository implements ExportRepository
     /**
      * @inheritdoc
      */
-    public function openFile(string $path, Export $export)
+    public function addHeaderToStream(Export $export, $handle)
     {
-        $handle = fopen($path, 'w');
-
         if ($this->labels !== null) {
             fputcsv($handle, $this->labels);
         }
-
-        return $handle;
     }
 
     /**
      * @inheritdoc
      */
-    public function addEventToFile(Event $event, $handle)
+    public function addObjectToStream($event, $handle)
     {
         $data = [];
         foreach ($this->fields as $field) {
@@ -65,8 +62,8 @@ class CsvExportRepository implements ExportRepository
     /**
      * @inheritdoc
      */
-    public function closeFile($handle)
+    public function addFooterToStream(Export $export, $handle)
     {
-        fclose($handle);
+        // don't do anything
     }
 }

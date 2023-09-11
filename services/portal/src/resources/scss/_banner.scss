@@ -1,0 +1,25 @@
+.banner{
+    padding: 6px 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $white;
+
+    &--yellow{
+        color: $black;
+        background: $bco-orange;
+    }
+    &--purple{
+        background: $purple;
+    }
+    &--green{
+        background: $green;
+    }
+    &--blue{
+        background: $blue-darker;
+    }
+
+    p {
+        margin: 0;
+    }
+}

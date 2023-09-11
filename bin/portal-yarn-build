@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+DOCKER_COMPOSE_TOOLS=$(dirname $0)/docker-compose-dev-tools
+
+$DOCKER_COMPOSE_TOOLS run --rm --workdir /build/portal/src frontend-build yarn build

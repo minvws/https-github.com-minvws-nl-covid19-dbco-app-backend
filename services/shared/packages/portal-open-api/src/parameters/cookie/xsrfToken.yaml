@@ -1,0 +1,6 @@
+name: xsrftoken
+in: cookie
+required: true
+description: XSRF Token
+schema:
+  type: string

@@ -1,3 +1,0 @@
-#!/bin/bash
-DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
-$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml run --rm worker /src/worker "$@"

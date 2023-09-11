@@ -1,30 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
+use App\Helpers\Environment;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\App;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
         $this->call([
             QuestionnaireSeeder::class,
-            OrganizationSeeder::class
-
+            OrganisationSeeder::class,
+            CaseLabelSeeder::class,
         ]);
 
-        if (App::environment() == 'development') {
+        if (Environment::isDevelopment() || Environment::isTesting()) {
             // In development, also populate some test data
             $this->call([
-                DummySeeder::class
+                DummySeeder::class,
             ]);
         }
+
+        $this->call([
+            CaseLabelSeeder::class,
+        ]);
     }
 }

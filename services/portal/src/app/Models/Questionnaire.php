@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-use Faker\Provider\cs_CZ\DateTime;
-use Monolog\DateTimeImmutable;
-
+/**
+ * @deprecated use \App\Models\Eloquent\EloquentQuestionnaire, see DBCO-3004
+ */
 class Questionnaire
 {
     public string $uuid;
@@ -15,5 +17,6 @@ class Questionnaire
 
     public string $version;
 
-    public ?array $questions;
+    /** @var ?array<Question> */
+    public ?array $questions = [];
 }

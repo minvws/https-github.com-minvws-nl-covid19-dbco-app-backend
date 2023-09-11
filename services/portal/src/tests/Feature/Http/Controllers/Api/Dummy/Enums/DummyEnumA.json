@@ -1,0 +1,14 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "/api/export/schemas/enums/DummyEnumA/V1",
+    "oneOf": [
+        {
+            "const": "a",
+            "description": "A"
+        },
+        {
+            "const": "b",
+            "description": "B"
+        }
+    ]
+}

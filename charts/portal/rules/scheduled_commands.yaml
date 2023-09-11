@@ -1,0 +1,8 @@
+- alert: scheduled_job_archive_stale_completed_cases_not_executed
+  expr: max(round(sum by(class) (increase(portal_scheduled_command_counter{namespace="{{.Release.Namespace}}",status="before", class="App\\\\Console\\\\Commands\\\\ArchiveStaleCompletedCases"}[24h])))) < 1
+  for: 1d
+  labels:
+    severity: error
+  annotations:
+    summary: "{{.Release.Namespace}} - Scheduled command: ArchiveStaleCompletedCases niet uitgevoerd"
+    URL: https://grafana.vws.iks.guida.io/d/2jOae6IVk/ggd-bco-meldingen-worker?orgId=1&from=1675070553550&to=1675092153550&viewPanel=25

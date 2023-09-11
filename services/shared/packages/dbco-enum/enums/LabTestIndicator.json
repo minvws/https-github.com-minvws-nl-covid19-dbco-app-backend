@@ -1,0 +1,22 @@
+{
+    "phpClass": "LabTestIndicator",
+    "tsConst": "labTestIndicator",
+    "items": [
+        {
+            "label": "Moleculaire diagnostiek (PCR, LAMP, andere nucleinezuur-amplificatietest (NAAT)) ",
+            "value": "molecular"
+        },
+        {
+            "label": "Antigeen(snel)test ",
+            "value": "antigen"
+        },
+        {
+            "label": "Onbekend",
+            "value": "unknown"
+        },
+        {
+            "label": "Anders, namelijk",
+            "value": "other"
+        }
+    ]
+}

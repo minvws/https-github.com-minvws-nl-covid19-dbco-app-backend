@@ -1,0 +1,10 @@
+discriminator:
+  propertyName: type
+  mapping:
+    separator: ./CaseAssignmentOptionTypeSeparator.yaml
+    option: ./CaseAssignmentOptionTypeOption.yaml
+    menu: ./CaseAssignmentOptionTypeMenu.yaml
+anyOf:
+  - $ref: ./CaseAssignmentOptionTypeSeparator.yaml
+  - $ref: ./CaseAssignmentOptionTypeOption.yaml
+  - $ref: ./CaseAssignmentOptionTypeMenu.yaml

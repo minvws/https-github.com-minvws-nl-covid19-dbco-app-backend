@@ -1,0 +1,49 @@
+// Overriding Vue Bootstrap styling of the outline-secondary button.
+
+.btn-secondary {
+    align-items: center;
+    background-color: $white;
+    border-color: $lightest-grey;
+    color: $primary;
+    display: flex;
+    font-weight: 500;
+    justify-content: center;
+
+    &:focus {
+        background-color: $white;
+        border-color: $primary;
+        color: $primary;
+    }
+
+    &:hover {
+        background-color: $white;
+        border-color: $primary;
+        color: $primary;
+    }
+
+    &:not(:disabled):not(.disabled) {
+        .icon {
+            background-color: $primary;
+            color: $primary;
+        }
+
+        &:active {
+            background-color: $primary;
+            border-color: $primary;
+        }
+    }
+
+    &:disabled,
+    &.disabled {
+        background-color: $white;
+        border-color: $bco-purple;
+        color: $bco-purple;
+    }
+}
+
+.btn-link {
+    &:disabled,
+    &.disabled {
+        color: $bco-purple;
+    }
+}

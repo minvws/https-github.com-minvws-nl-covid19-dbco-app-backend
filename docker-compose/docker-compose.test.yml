@@ -1,86 +1,78 @@
-version: '3.7'
+secrets:
+    composer_auth:
+        file: ./auth.json
 
 volumes:
     mysql-data:
         driver: local
 
-networks:
-    public:
-    sluice:
-    private:
-    healthauthority:
-
 services:
-    redis:
+    redis-sp:
         extends:
             file: docker-compose/common.yml
-            service: redis
+            service: redis-sp
 
-    redis-haa:
+    redis-hav:
         extends:
             file: docker-compose/common.yml
-            service: redis-haa
+            service: redis-hav
+
+    redis-hap:
+        extends:
+            file: docker-compose/common.yml
+            service: redis-hap
+
+    rabbitmq:
+        extends:
+            file: docker-compose/common.yml
+            service: rabbitmq
+        ports:
+            - ${RABBITMQ_PORT:-5672}:5672
 
     mysql:
         extends:
             file: docker-compose/common.yml
             service: mysql
 
-    private-api:
-        extends:
-            file: docker-compose/common.yml
-            service: private-api
-        depends_on:
-            - redis
-        volumes:
-            - ./services/shared/library:/shared/library
-            - ./services/private-api/src:/src
-
-    public-api:
-        extends:
-            file: docker-compose/common.yml
-            service: public-api
-        depends_on:
-            - redis
-        volumes:
-            - ./services/shared/library:/shared/library
-            - ./services/public-api/src:/src
-
-    healthauthority-api:
-        extends:
-            file: docker-compose/common.yml
-            service: healthauthority-api
-        depends_on:
-            - mysql
-            - redis-haa
-        volumes:
-            - ./services/shared/library:/shared/library
-            - ./services/healthauthority-api/src:/src
-
     portal:
         extends:
             file: docker-compose/common.yml
             service: portal
         depends_on:
-            - healthauthority-api
             - mysql
-            - redis-haa
+            - redis-hav
+            - redis-hap
+        build:
+            args:
+                - DEV=1
+            secrets:
+                - composer_auth
+        environment:
+            LOG_CHANNEL: ${LOG_CHANNEL:-"null"}
         volumes:
             - ./services/portal/src:/src
+            - ./services/portal/src/storage/phpunit/coverage:/src/storage/phpunit/coverage
+            - ./services/shared/library:/shared/library:ro,delegated
+            - ./services/shared/packages:/shared/packages:ro,delegated
+            - ./services/shared/resources:/shared/resources:ro,delegated
+        tmpfs:
+            - /src/storage/framework/views
+            - /src/storage/framework/cache
 
-    hsm:
+    gateway:
         extends:
             file: docker-compose/common.yml
-            service: hsm
-
-    worker:
-        extends:
-            file: docker-compose/common.yml
-            service: worker
+            service: gateway
+        build:
+            args:
+                - DEV=1
+            secrets:
+                - composer_auth
+        environment:
+            LOG_CHANNEL: ${LOG_CHANNEL:-"null"}
         volumes:
-            - ./services/worker/src:/src
-
-    mysqlclient:
-        extends:
-            file: docker-compose/tools.yml
-            service: mysqlclient
+            - ./services/gateway/src:/src
+            - ./services/shared/packages:/shared/packages:ro,delegated
+            - ./services/shared/library:/shared/library:ro,delegated
+        depends_on:
+            - redis-hap

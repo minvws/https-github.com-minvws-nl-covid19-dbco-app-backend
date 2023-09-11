@@ -1,0 +1,27 @@
+{
+    "phpClass": "ContextListView",
+    "tsConst": "contextListView",
+    "description": "Context list views",
+    "traits": ["\\MinVWS\\DBCO\\Enum\\Traits\\ContextListViewGroups"],
+    "traitProperties": {
+        "categoryGroups": {
+            "type": "\\MinVWS\\DBCO\\Enum\\Models\\ContextCategoryGroup[]",
+            "description": "Category groups that are part of this list view.",
+            "method": "getGroups"
+        }
+    },
+    "items": [
+        {
+            "value": "zorg",
+            "label": "Zorg"
+        },
+        {
+            "value": "onderwijs",
+            "label": "Onderwijs"
+        },
+        {
+            "value": "overig",
+            "label": "Overig"
+        }
+    ]
+}

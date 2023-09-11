@@ -1,0 +1,6 @@
+type: integer
+enum:
+  - 3 # Very high
+  - 2 # High
+  - 1 # Normal
+  - 0 # None

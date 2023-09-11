@@ -1,0 +1,15 @@
+{
+    "phpClass": "InformTarget",
+    "tsConst": "informTarget",
+    "description": "Defines who should be informed.",
+    "items": [
+        {
+            "value": "contact",
+            "label": "Contact"
+        },
+        {
+            "value": "representative",
+            "label": "Vertegenwoordiger"
+        }
+    ]
+}

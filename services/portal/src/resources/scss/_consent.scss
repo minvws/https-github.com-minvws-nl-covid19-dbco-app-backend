@@ -1,0 +1,32 @@
+.card-consent {
+    padding: 3rem 2rem;
+    max-width: 414px;
+
+    a {
+        color: $bco-purple;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        letter-spacing: 0;
+    }
+
+    .card-body {
+        text-align: left;
+        padding: 0;
+        margin: 0;
+    }
+
+    ul {
+        margin-bottom: 2rem;
+    }
+
+    .formulate-input[data-classification='box'] .formulate-input-element-decorator {
+        min-width: 1em;
+        margin-right: 2em;
+    }
+
+    .btn {
+        padding: 0.75rem;
+    }
+}

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 use App\Models\AnswerOption;
@@ -8,22 +10,26 @@ use App\Models\Eloquent\EloquentQuestion;
 use App\Models\Question;
 use Illuminate\Support\Collection;
 
+use function explode;
+
 class DbQuestionRepository implements QuestionRepository
 {
     public function getQuestions(string $questionnaireUuid): Collection
     {
-        $dbQuestions = EloquentQuestion::where('questionnaire_uuid', $questionnaireUuid)
+        /** @var Collection<int, EloquentQuestion> $dbQuestions */
+        $dbQuestions = EloquentQuestion::query()
+            ->where('questionnaire_uuid', $questionnaireUuid)
             ->orderBy('sort_order')
             ->get();
 
-        $questions = [];
-        foreach ($dbQuestions as $dbQuestion) {
+        return $dbQuestions->map(function (EloquentQuestion $dbQuestion) {
+            /** @var Collection<int, EloquentAnswerOption> $answerOptions */
+            $answerOptions = EloquentAnswerOption::query()
+                ->where('question_uuid', $dbQuestion->uuid)
+                ->get();
 
-            $answerOptions = EloquentAnswerOption::where('question_uuid', $dbQuestion->uuid)->get();
-            $questions[] = $this->questionFromEloquentModel($dbQuestion, $answerOptions);
-        }
-
-        return collect($questions);
+            return $this->questionFromEloquentModel($dbQuestion, $answerOptions);
+        });
     }
 
     private function questionFromEloquentModel(EloquentQuestion $dbQuestion, Collection $dbAnswerOptions): Question
@@ -35,13 +41,11 @@ class DbQuestionRepository implements QuestionRepository
         $question->group = $dbQuestion->group_name;
         $question->description = $dbQuestion->description;
         $question->questionType = $dbQuestion->question_type;
-        $question->relevantForCategories =
-            $dbQuestion->relevant_for_categories != null ?
-                explode(',', $dbQuestion->relevant_for_categories) : [];
+        $question->relevantForCategories = explode(',', $dbQuestion->relevant_for_categories);
 
-        if ($question->questionType == 'multiplechoice') {
+        if ($question->questionType === 'multiplechoice') {
             $answerOptions = [];
-            foreach($dbAnswerOptions as $dbAnswerOption) {
+            foreach ($dbAnswerOptions as $dbAnswerOption) {
                 $answerOption = new AnswerOption();
                 $answerOption->uuid = $dbAnswerOption->uuid;
                 $answerOption->label = $dbAnswerOption->label;

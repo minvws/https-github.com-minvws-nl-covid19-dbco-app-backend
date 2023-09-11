@@ -1,0 +1,13 @@
+.tab-content {
+    .tab-pane {
+        flex: 1 1 auto;
+        .form:first-child{
+            > div {
+                margin-top: 0 !important;
+                *:first-child{
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+}

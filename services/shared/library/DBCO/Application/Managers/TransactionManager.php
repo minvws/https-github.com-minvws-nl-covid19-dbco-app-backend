@@ -1,4 +1,5 @@
 <?php
+
 namespace DBCO\Shared\Application\Managers;
 
 use Exception;
@@ -20,5 +21,5 @@ interface TransactionManager
      *
      * @throws Exception
      */
-    function run(Callable $callback);
+    public function run(callable $callback);
 }

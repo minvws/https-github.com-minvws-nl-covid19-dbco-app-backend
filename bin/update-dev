@@ -1,43 +1,64 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -eo pipefail
+
 BASE_PATH=$(dirname $0)/..
+DEV_MODE=$(cat $BASE_PATH/.dev-switch)
 DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
-DOCKER_COMPOSE_TOOLS="$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml"
+DOCKER_COMPOSE_TOOLS=$(dirname $0)/docker-compose-dev-tools
 
-$DOCKER_COMPOSE up -d --remove-orphans
+# Options
+SKIP_BUILD=
 
-echo
-echo "=====[ UPDATE PRIVATE API ]====="
-$DOCKER_COMPOSE run --rm --entrypoint composer private-api install
+# Parse options
+while :; do
+  case $1 in
+    --skip-build)
+      SKIP_BUILD=true
+      ;;
 
-echo
-echo "=====[ UPDATE PUBLIC API ]====="
-$DOCKER_COMPOSE run --rm --entrypoint composer public-api install
+    --)              # End of all options.
+      shift
+      break
+      ;;
+    -?*)
+      echo "Unknown option (ignored): $1"
+      exit 1;
+      ;;
+    *)               # Default case: If no more options then break out of the loop.
+      break
+  esac
+  shift
+done
 
-echo
-echo "=====[ UPDATE HEALTHAUTHORITY API ]====="
-$DOCKER_COMPOSE run --rm --entrypoint composer healthauthority-api install
+if [ -z "$SKIP_BUILD" ]; then
+  echo "=====[ REBUILD CONTAINERS ]======================="
+  $DOCKER_COMPOSE build --pull
+  $DOCKER_COMPOSE up --detach --remove-orphans --force-recreate
+else
+  echo "!! SKIP REBUILD CONTAINERS !!"
+  $DOCKER_COMPOSE up --detach --remove-orphans
+fi
 
 echo
 echo "=====[ UPDATE PORTAL ]====="
+$DOCKER_COMPOSE run --rm --entrypoint php portal /shared/packages/dbco-enum/scripts/generate.php
 $DOCKER_COMPOSE run --rm --entrypoint composer portal install
-$DOCKER_COMPOSE run --rm --entrypoint npm portal install
-$DOCKER_COMPOSE run --rm --entrypoint npm portal run dev
+$DOCKER_COMPOSE_TOOLS run --rm --workdir /build/portal/src frontend-build yarn --immutable
+$DOCKER_COMPOSE_TOOLS run --rm --workdir /build/portal/src frontend-build yarn build
+sleep 5
+$DOCKER_COMPOSE run --rm --entrypoint php portal artisan security:manage-keys -p -s
+sleep 5
 $DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
+sleep 5
 $DOCKER_COMPOSE run --rm --entrypoint php portal artisan db:seed --class QuestionnaireSeeder
+$DOCKER_COMPOSE run --rm --entrypoint php portal artisan schema:generate-versions
 
-echo
-echo "=====[ UPDATE WORKER ]====="
-$DOCKER_COMPOSE_TOOLS run --rm --entrypoint composer worker install
+if [ $DEV_MODE == "integrated" ]; then
 
-echo
-echo "=====[ UPDATE BRIDGE ]====="
-$DOCKER_COMPOSE_TOOLS run --rm --entrypoint composer bridge install
+  echo
+  echo "=====[ UPDATE GATEWAY ]====="
+  $DOCKER_COMPOSE_TOOLS run --rm --entrypoint composer gateway install
+  $DOCKER_COMPOSE_TOOLS run --rm --entrypoint php gateway artisan message-queue:setup
 
-echo
-echo "=====[ UPDATE SIMULATOR ]====="
-$DOCKER_COMPOSE_TOOLS run --rm --entrypoint composer simulator install
-
-echo
-echo "=====[ UPDATE QUESTIONNAIRE/TASK CACHE ]====="
-$DOCKER_COMPOSE_TOOLS run --rm worker /src/worker questionnaire:refresh-all
-$DOCKER_COMPOSE_TOOLS run --rm worker /src/worker task:refresh-general
+fi

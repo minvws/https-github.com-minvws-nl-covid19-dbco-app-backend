@@ -1,0 +1,14 @@
+{{- if .Values.testResultWorker.enabled -}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "app.fullname" . }}-test-result-worker
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: test-result-worker
+data:
+  {{- with .Values.testResultWorker.env }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+{{- end }}

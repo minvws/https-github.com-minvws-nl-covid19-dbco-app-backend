@@ -1,0 +1,9 @@
+.DS_Store
+.env
+.env.backup
+.env.e2e
+.env.testing
+.phpunit.result.cache
+phpstan.neon
+phpunit.xml
+vendor

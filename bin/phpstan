@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+BASE_PATH=$(dirname $0)/..
+DOCKER_COMPOSE=$(dirname $0)/docker-compose-dev
+DOCKER_COMPOSE_TOOLS="$DOCKER_COMPOSE --file $BASE_PATH/docker-compose/docker-compose.tools.yml"
+
+$(dirname $0)/assert-devmode-integrated
+
+CONTAINER=$1
+PHPSTAN_ARGS="${@:2}"
+
+if [ ! "$(docker ps --quiet --file name=portal)" ]; then
+  echo "=====[ START CONTAINERS ]====="
+  $DOCKER_COMPOSE up --detach --remove-orphans
+fi
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "gateway" ]; then
+  echo
+  echo "=====[ RUN PHPSTAN FOR GATEWAY ]====="
+  $DOCKER_COMPOSE_TOOLS run --rm --entrypoint=/src/vendor/bin/phpstan gateway analyse --memory-limit=-1 "$PHPSTAN_ARGS"
+fi
+
+if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "portal" ]; then
+  echo
+  echo "=====[ RUN PHPSTAN FOR PORTAL ]====="
+  $DOCKER_COMPOSE_TOOLS run --rm --entrypoint=/src/vendor/bin/phpstan portal analyse --memory-limit=-1 "$PHPSTAN_ARGS"
+fi

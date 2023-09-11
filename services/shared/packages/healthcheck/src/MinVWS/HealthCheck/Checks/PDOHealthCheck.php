@@ -1,6 +1,8 @@
 <?php
+
 namespace MinVWS\HealthCheck\Checks;
 
+use Closure;
 use Exception;
 use MinVWS\HealthCheck\Models\HealthCheckResult;
 use PDO;
@@ -13,18 +15,18 @@ use PDO;
 class PDOHealthCheck implements HealthCheck
 {
     /**
-     * @var PDO
+     * @var Closure
      */
-    private PDO $client;
+    private Closure $pdoGetter;
 
     /**
      * Constructor.
      *
-     * @param PDO $client
+     * @param Closure $pdoGetter Callback that returns the PDO object.
      */
-    public function __construct(PDO $client)
+    public function __construct(Closure $pdoGetter)
     {
-        $this->client = $client;
+        $this->pdoGetter = $pdoGetter;
     }
 
     /**
@@ -33,13 +35,19 @@ class PDOHealthCheck implements HealthCheck
     public function performHealthCheck(): HealthCheckResult
     {
         try {
-            if ($this->client->query('SELECT 1') ||
-                $this->client->query('SELECT 1 FROM dual')) {
+            /** @var $client PDO */
+            $client = call_user_func($this->pdoGetter);
+
+            if (
+                $client->query('SELECT 1') ||
+                $client->query('SELECT 1 FROM dual')
+            ) {
                 return new HealthCheckResult(true);
+            } else {
+                return new HealthCheckResult(false);
             }
         } catch (Exception $e) {
+            return new HealthCheckResult(false, 'internalError', $e->getMessage());
         }
-
-        return new HealthCheckResult(false);
     }
 }

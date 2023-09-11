@@ -1,31 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
-use App\Models\BCOUser;
 use App\Models\Eloquent\EloquentUser;
-use App\Models\Organisation;
-use Illuminate\Support\Str;
+use DateTimeInterface;
+use Illuminate\Support\Collection;
+
+use function collect;
+use function implode;
 
 class DbUserRepository implements UserRepository
 {
     /**
-     * Note, we're normally not exposing EloquentObjects outside our service layer, however
-     * Laravel's authentication mechanism either needs a database row or an eloquent object,
-     * and the database authentication classes don't support our custom 'uuid' id column. That's
-     * why for authentication purposes we're passing an EloquentUser around.
-     * @param string $externalId
-     * @param string $name
-     * @param array $roles
-     * @param array $organisationUuids
-     * @return EloquentUser
+     * @inheritDoc
      */
-    public function upsertUserByExternalId(string $externalId,
-                                           string $name,
-                                           array $roles,
-                                           array $organisationUuids): EloquentUser
-    {
-        $dbUser = EloquentUser::where('external_id', $externalId)->get()->first();
+    public function upsertUserByExternalId(
+        string $externalId,
+        string $name,
+        array $roles,
+        string $organisationUuid,
+    ): EloquentUser {
+        $dbUser = EloquentUser::where('external_id', $externalId)->first();
 
         if (!$dbUser) {
             // User doesn't exist, create.
@@ -39,48 +36,25 @@ class DbUserRepository implements UserRepository
         $dbUser->save();
 
         // Refresh organisations.
-        $dbUser->organisations()->sync($organisationUuids);
+        $dbUser->organisations()->sync(collect($organisationUuid));
 
         return $dbUser;
-
     }
 
-    public function getUsersByOrganisation(BCOUser $user): array
+    public function getByUuid(string $uuid): ?EloquentUser
     {
-        $orgIds = [];
-        foreach($user->organisations as $organisation) {
-            $orgIds[] = $organisation->uuid;
-        }
-        $dbUsers = EloquentUser::whereIn('user_organisation.organisation_uuid', $orgIds)
+        return EloquentUser::query()->find($uuid);
+    }
+
+    public function getAssignableUsers(string $organisationUuid, DateTimeInterface $lastLoginThreshold): Collection
+    {
+        return
+            EloquentUser::query()
+            ->where('user_organisation.organisation_uuid', $organisationUuid)
+            ->where('bcouser.last_login_at', '>', $lastLoginThreshold->format('Y-m-d H:i:s'))
             ->select('bcouser.*')
             ->join('user_organisation', 'user_organisation.user_uuid', '=', 'bcouser.uuid')
-            ->orderBy('bcouser.name', 'asc')->get();
-
-        $users = [];
-        foreach ($dbUsers as $dbUser) {
-            $users[] = $this->bcoUserFromEloquentUser($dbUser);
-        }
-
-        return $users;
-    }
-
-    public function bcoUserFromEloquentUser(EloquentUser $dbUser): BCOUser
-    {
-        $user = new BCOUser();
-        $user->uuid = $dbUser->uuid;
-        $user->name = $dbUser->name;
-        $user->externalId = $dbUser->external_id;
-        $user->roles = explode(',', $dbUser->roles);
-
-        foreach ($dbUser->organisations as $dbOrganisation)
-        {
-            $organisation = new Organisation();
-            $organisation->uuid = $dbOrganisation->uuid;
-            $organisation->externalId = $dbOrganisation->external_id;
-            $organisation->name = $dbOrganisation->name;
-            $user->organisations[] = $organisation;
-        }
-
-        return $user;
+            ->orderBy('bcouser.name', 'asc')
+            ->get();
     }
 }

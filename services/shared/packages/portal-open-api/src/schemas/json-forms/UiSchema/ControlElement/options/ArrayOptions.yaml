@@ -1,0 +1,13 @@
+type: object
+allOf:
+    - $ref: CommonTypeOptions.yaml
+properties:
+    addLabel:
+        type: string
+    showSortButtons:
+        type: boolean
+        description: Show sort buttons for array items, default is false
+    noDataLabel:
+        type: string
+    detail:
+        $ref: ../../UiSchema.yaml

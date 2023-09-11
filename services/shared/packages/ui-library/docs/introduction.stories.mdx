@@ -1,0 +1,86 @@
+import { Canvas, Meta, Story, ColorPalette, ColorItem } from '@storybook/addon-docs';
+
+<Meta title="Introduction" />
+
+# Welcome to the UI Library
+
+Here you will find a collection of components and styles to use for your project.
+
+<br />
+
+## Components
+
+All components of the `ui-library` are available through the index. Which means you can directly import and start using them without specifying any extra paths (_provided that the alias paths are configured correctly_).
+
+```ts
+import { Heading } from '@dbco/ui-library';
+```
+
+All the available components are documented here with examples and controls which you can use to test them.
+
+> Note that the hot reload is currently not working in the Canvas view. It does work on the Docs view. This will be resolved when we can move the storybook over to Vue3.
+
+<br />
+
+## Tailwind
+
+The ui-library also comes with a [tailwind](https://tailwindcss.com/) config which is set up to match [the design system](https://egeniq.atlassian.net/wiki/spaces/GGD/pages/2154725381/Design+System). It contains the [fundamentals](https://www.figma.com/file/aFJlQTQ4XzGF18OsiRVqJa/%F0%9F%8E%A8-Fundamentals) to be used for all the styles. These Fundamentals are also documented here, you can find them in the menu on the left.
+
+> Currently a prefix is configured to avoid conflicts with other existing helpers / classes in the codebase (Bootstrap). The prefix is `tw` (tailwind).
+
+Tailwind offers a great [VSCode plugin](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) which can read the config and help with highlighting / linting and autocompletion. We highly recommend you install this plugin.
+There are a lot of utility helpers included which [are well documented](https://tailwindcss.com/docs/utility-first). They might differ slightly depending on the current configuration.
+You use the styles by simply applying the correcty utility class names to an element.
+
+```ts
+<div class="tw-bg-violet-800 tw-text-white tw-text-center"> ... </div>
+```
+
+A more complete example:
+
+```ts
+<template>
+    <div class='tw-w-1/2 tw-inline-block'>
+        <Heading size='lg'>Welcome to the UI Library</Heading>
+        <p class='tw-body-md'>
+            Odio facere autem eaque iste pariatur labore quibusdam ipsa dolor perferendis sint error delectus.
+        </p>
+    </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { Heading } from '@dbco/ui-library';
+
+export default defineComponent({
+    components: { Heading },
+    setup() {
+        ...
+    },
+});
+</script>
+```
+
+## Sass
+
+We recommend you apply the utility classes directly to the element you are trying to style. However if you wish to use the styles within sass there are a couple of options.
+You can using `@apply` and `theme(...)`. Also here the Tailwind extension will help you out with the autocompletion.
+
+-   `@apply` - will apply the utility styled onto the class you defined.
+-   `theme(..)` - can be used to retrieve a value from the theme configuration.
+
+> There are a few things that won't work such as using a theme value inside a sass function. Also look at the [official documentation for more info](https://tailwindcss.com/docs/using-with-preprocessors#using-sass-less-or-stylus).
+
+example:
+
+```ts
+...
+
+<style lang="scss" scoped>
+.funky-colors {
+    @apply tw-bg-violet-900 tw-text-orange-500;
+
+    border: 4px solid theme('colors.seaGreen.700');
+}
+</style>
+```

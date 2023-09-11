@@ -1,98 +1,181 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -eo pipefail
+
 BASE_PATH=$(dirname $0)/..
 
 . $BASE_PATH/.env.test
 
-PROJECT_NAME=dbco-test
+pushd $BASE_PATH > /dev/null
+FULL_PATH=$(pwd)
+BASE_NAME=$(basename $FULL_PATH)
+popd > /dev/null
 
-DOCKER_COMPOSE="docker-compose --project-directory=$BASE_PATH -p $PROJECT_NAME --env-file ./.env.test -f docker-compose/docker-compose.test.yml"
-DOCKER_COMPOSE_SETUP="$DOCKER_COMPOSE -f docker-compose/docker-compose.setup.yml"
+PROJECT_NAME=$BASE_NAME-test
+
+DOCKER_COMPOSE="docker compose --project-directory=$BASE_PATH --project-name $PROJECT_NAME --env-file $BASE_PATH/.env.test --file $BASE_PATH/docker-compose/docker-compose.test.yml"
+DOCKER_COMPOSE_TOOLS="$DOCKER_COMPOSE --file $BASE_PATH/docker-compose/docker-compose.tools.yml"
+
+# actions
+RESET_ENV=
+SETUP_ENV=
+SHUTDOWN=
+WIPE=
+SKIP_TESTS=
+CODE_COVERAGE=--no-coverage
+SHELL=
+MYSQL=
+
+# Parse options
+while :; do
+  case $1 in
+    --reset)
+      RESET_ENV=true
+      ;;
+
+    --setup)
+      SETUP_ENV=true
+      ;;
+
+    --shutdown)
+      SHUTDOWN=true
+      ;;
+
+    --wipe)
+      WIPE=true
+      ;;
+
+    --skip-tests)
+      SKIP_TESTS=true
+      ;;
+
+    --code-coverage)
+      CODE_COVERAGE=--disable-coverage-ignore
+      ;;
+
+    --shell)
+      SKIP_TESTS=true
+      SHELL=true
+      ;;
+
+    --mysql)
+      SKIP_TESTS=true
+      MYSQL=true
+      ;;
+
+    --)              # End of all options.
+      shift
+      break
+      ;;
+    -?*)
+      echo "Unknown option (ignored): $1"
+      exit 1;
+      ;;
+    *)               # Default case: If no more options then break out of the loop.
+      break
+  esac
+  shift
+done
 
 CONTAINER=$1
-PHPUNIT_ARGS="${@:2}"
+PHPUNIT_ARGS=${@:2}
 
-if [ "$1" == "--reset" ]; then
-  CONTAINER=$2
-  PHPUNIT_ARGS="${@:3}"
-
+if [ "$RESET_ENV" == "true" ]; then
   echo "=====[ RESET ]====="
   $DOCKER_COMPOSE down --remove-orphans -v
-  $DOCKER_COMPOSE_SETUP build
+  $DOCKER_COMPOSE build
   echo
 fi
 
-if [ "$1" == "--setup" ] || [ "$1" == "--reset" ]; then
-  echo "=====[ SETUP HSM ]======================="
-  $DOCKER_COMPOSE up -d hsm
+if [ -z "$SHUTDOWN" ]; then
+  echo "=====[ START CONTAINERS ]====="
+  $DOCKER_COMPOSE up --detach --remove-orphans
+
+  echo
+  echo "=====[ START MYSQL DATABASE ]========================="
+  echo "Waiting for MYSQL to launch..."
+  while ! $DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "SELECT 1" > /dev/null 2>&1; do
+    echo "  > mysql not yet running ..."
+    sleep 0.5
+  done
+fi
+
+if [ "$SETUP_ENV" == "true" ] || [ "$RESET_ENV" == "true" ]; then
   sleep 5
-  $DOCKER_COMPOSE_SETUP run --rm hsm-setup
-fi
-
-echo "=====[ START CONTAINERS ]====="
-$DOCKER_COMPOSE up -d
-
-echo
-echo "=====[ START MYSQL DATABASE ]========================="
-echo "Waiting for MYSQL to launch..."
-while ! echo "SELECT 1" | $DOCKER_COMPOSE run --rm mysqlclient > /dev/null 2>&1; do
-  sleep 0.5
-done
-
-if [ "$1" == "--keep-alive" ]; then
-  CONTAINER=$2
-  PHPUNIT_ARGS="${@:3}"
-fi
-
-if [ "$1" == "--setup" ] || [ "$1" == "--reset" ]; then
-  sleep 10
-
-  CONTAINER=$2
-  PHPUNIT_ARGS="${@:3}"
 
   echo
   echo "=====[ SETUP MYSQL DATABASE ]========================="
-  $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
-  $DOCKER_COMPOSE run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
-  $DOCKER_COMPOSE run --rm mysqlclient < $BASE_PATH/services/mysql/permissions.sql
+  $DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'admin'@'%' IDENTIFIED BY '$DB_ADMIN_PASSWORD'"
+  $DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
+  $DOCKER_COMPOSE_TOOLS run --rm -T mysqlclient < $BASE_PATH/services/mysql/permissions.sql
 fi
 
-if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "healthauthority-api" ] || [ "$CONTAINER" == "portal" ]; then
+if [ "$MYSQL" == "true" ]; then
+    echo
+    echo "=====[ MYSQL ]====="
+    $DOCKER_COMPOSE_TOOLS run --rm mysqlclient
+
+    if [ "$SHUTDOWN" == "true" ]; then
+      echo
+      echo "=====[ STOP CONTAINERS ]====="
+      $DOCKER_COMPOSE stop
+    fi
+
+    exit 0
+fi
+
+if [ "$WIPE" == "true" ]; then
+  echo
+  echo "=====[ WIPE DATABASE ]====="
+  $DOCKER_COMPOSE run --rm --entrypoint php portal artisan db:wipe --env=testing
+fi
+
+if [ -z "$SHUTDOWN" ] && { [ "$SETUP_ENV" == "true" ] || [ "$RESET_ENV" == "true" ] || [ "$WIPE" == "true" ] || [ -z "$CONTAINER" ] || [ "$CONTAINER" == "portal" ]; }; then
   echo
   echo "=====[ RUN MIGRATIONS ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate
+  $DOCKER_COMPOSE run --rm --entrypoint php portal artisan migrate --env=testing
 fi
 
-if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "worker" ]; then
+if [ "$SETUP_ENV" == "true" ] || [ "$RESET_ENV" == "true" ] || [ "$WIPE" == "true" ]; then
   echo
-  echo "=====[ RUN TESTS FOR WORKER ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit worker "$PHPUNIT_ARGS"
+  echo "=====[ SEED DATA ]====="
+  $DOCKER_COMPOSE run --rm  --env APP_ENV=testing --entrypoint php portal artisan db:seed --env=testing
 fi
 
-if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "private-api" ]; then
+if [ -z "$SKIP_TESTS" ] && [ -z "$SHUTDOWN" ]; then
+  if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "gateway" ]; then
+    echo
+    echo "Waiting for RabbitMQ to launch..."
+    while ! $DOCKER_COMPOSE_TOOLS exec rabbitmq rabbitmq-diagnostics -q check_running; do
+      echo "  > RabbitMQ not yet running ..."
+      sleep 0.5
+    done
+
+    echo
+    echo "=====[ RUN TESTS FOR GATEWAY ]====="
+    $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit gateway $PHPUNIT_ARGS
+  fi
+
+  if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "portal" ]; then
+    echo
+    echo "=====[ RUN TESTS FOR PORTAL ]====="
+    $DOCKER_COMPOSE run --rm --entrypoint php portal vendor/bin/phpunit -c phpunit.xml.dist $CODE_COVERAGE $PHPUNIT_ARGS
+  fi
+fi
+
+if [ "$CONTAINER" == "portal" ]; then
   echo
-  echo "=====[ RUN TESTS FOR PRIVATE API ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit private-api $PHPUNIT_ARGS
+  echo "=====[ SHELL FOR PORTAL ]====="
+  $DOCKER_COMPOSE run --rm --entrypoint=/bin/bash portal
 fi
 
-if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "public-api" ]; then
+if [ "$CONTAINER" == "gateway" ]; then
   echo
-  echo "=====[ RUN TESTS FOR PUBLIC API ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit public-api $PHPUNIT_ARGS
+  echo "=====[ SHELL FOR GATEWAY ]====="
+  $DOCKER_COMPOSE run --rm --entrypoint=/bin/bash gateway
 fi
 
-if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "healthauthority-api" ]; then
-  echo
-  echo "=====[ RUN TESTS FOR HEALTHAUTHORITY API ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit healthauthority-api $PHPUNIT_ARGS
-fi
-
-if [ -z "$CONTAINER" ] || [ "$CONTAINER" == "portal" ]; then
-  echo
-  echo "=====[ RUN TESTS FOR PORTAL ]====="
-  $DOCKER_COMPOSE run --rm --entrypoint=/src/vendor/bin/phpunit portal $PHPUNIT_ARGS
-fi
-
-if [ "$1" != "--keep-alive" ]; then
+if [ "$SHUTDOWN" == "true" ]; then
   echo
   echo "=====[ STOP CONTAINERS ]====="
   $DOCKER_COMPOSE stop

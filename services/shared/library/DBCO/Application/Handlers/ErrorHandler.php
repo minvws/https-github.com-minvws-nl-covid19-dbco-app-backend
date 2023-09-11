@@ -1,11 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DBCO\Shared\Application\Handlers;
 
 use DBCO\Shared\Application\Actions\ActionException;
+use Error;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Handlers\ErrorHandler as SlimErrorHandler;
+use Throwable;
 
 /**
  * Error handler.
@@ -21,9 +24,9 @@ class ErrorHandler extends SlimErrorHandler
     {
         if ($this->displayErrorDetails) {
             parent::writeToErrorLog(); // log all errors if display error details is on
-        } else if (!($this->exception instanceof ActionException)) {
+        } elseif (!($this->exception instanceof ActionException)) {
             parent::writeToErrorLog(); // unexpected error
-        } else if ($this->exception->getCode() === ActionException::INTERNAL_SERVER_ERROR) {
+        } elseif ($this->exception->getCode() === ActionException::INTERNAL_SERVER_ERROR) {
             parent::writeToErrorLog(); // explicit internal error
         }
     }
@@ -38,12 +41,7 @@ class ErrorHandler extends SlimErrorHandler
         if (!($exception instanceof ActionException)) {
             $message = 'An error occurred while processing your request. Please try again later.';
             if ($this->displayErrorDetails) {
-                $message .= "\n\nException: " . $exception->getMessage() . "\n" . $exception->getTraceAsString();
-                if ($exception->getPrevious()) {
-                    $message .=
-                        "\n\nNested exception: " . $exception->getPrevious()->getMessage() . "\n" .
-                        $exception->getPrevious()->getTraceAsString();
-                }
+                $message .= "\n\n" . $this->getErrorDetails($exception);
             }
             $exception = new ActionException($this->request, 'internalError', $message, ActionException::INTERNAL_SERVER_ERROR, $exception);
         }
@@ -52,5 +50,31 @@ class ErrorHandler extends SlimErrorHandler
         $json = json_encode($exception, JSON_PRETTY_PRINT);
         $response->getBody()->write($json);
         return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    /**
+     * Get error details.
+     *
+     * @param Throwable $exception
+     *
+     * @return string
+     */
+    private function getErrorDetails(Throwable $exception): string
+    {
+        if ($exception instanceof Error || $exception instanceof PHPError) {
+            $message = "PHP error: " . $exception->getMessage() . "\n" .
+                $exception->getFile() . ' at line ' . $exception->getLine() . "\n" .
+                $exception->getTraceAsString();
+        } else {
+            $message = "Exception: " . $exception->getMessage() . "\n" .
+                $exception->getTraceAsString();
+        }
+
+        $previous = $exception->getPrevious();
+        if ($previous !== null) {
+            $message .= "\n\nNested " . $this->getErrorDetails($previous);
+        }
+
+        return $message;
     }
 }

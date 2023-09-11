@@ -1,0 +1,107 @@
+{
+    "phpClass": "Symptom",
+    "tsConst": "symptom",
+    "description": "COVID symptoms",
+    "items": [
+        {
+            "value": "nasal-cold",
+            "label": "Neusverkoudheid"
+        },
+        {
+            "value": "hoarse-voice",
+            "label": "Schorre stem"
+        },
+        {
+            "value": "sore-throat",
+            "label": "Keelpijn"
+        },
+        {
+            "value": "cough",
+            "label": "(licht) hoesten"
+        },
+        {
+            "value": "shortness-of-breath",
+            "label": "Kortademigheid/benauwdheid"
+        },
+        {
+            "value": "painful-breathing",
+            "label": "Pijn bij de ademhaling"
+        },
+        {
+            "value": "fever",
+            "label": "Koorts (= boven 38 graden Celsius)"
+        },
+        {
+            "value": "cold-shivers",
+            "label": "Koude rillingen"
+        },
+        {
+            "value": "loss-of-smell",
+            "label": "Verlies van of verminderde reuk"
+        },
+        {
+            "value": "loss-of-taste",
+            "label": "Verlies van of verminderde smaak"
+        },
+        {
+            "value": "malaise",
+            "label": "Algehele malaise"
+        },
+        {
+            "value": "fatigue",
+            "label": "Vermoeidheid"
+        },
+        {
+            "value": "headache",
+            "label": "Hoofdpijn"
+        },
+        {
+            "value": "muscle-strain",
+            "label": "Spierpijn"
+        },
+        {
+            "value": "pain-behind-the-eyes",
+            "label": "Pijn achter de ogen"
+        },
+        {
+            "value": "pain",
+            "label": "Algehele pijnklachten"
+        },
+        {
+            "value": "dizziness",
+            "label": "Duizeligheid"
+        },
+        {
+            "value": "irritable-confused",
+            "label": "Prikkelbaar/verwardheid"
+        },
+        {
+            "value": "loss-of-appetite",
+            "label": "Verlies van eetlust"
+        },
+        {
+            "value": "nausea",
+            "label": "Misselijkheid"
+        },
+        {
+            "value": "vomiting",
+            "label": "Overgeven"
+        },
+        {
+            "value": "diarrhea",
+            "label": "Diarree"
+        },
+        {
+            "value": "stomach-ache",
+            "label": "Buikpijn"
+        },
+        {
+            "value": "pink-eye",
+            "label": "Rode prikkende ogen (oogontsteking)"
+        },
+        {
+            "value": "skin-condition",
+            "label": "Huidafwijkingen"
+        }
+    ]
+}

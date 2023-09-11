@@ -1,4 +1,5 @@
 <?php
+
 namespace MinVWS\HealthCheck\Checks;
 
 use MinVWS\HealthCheck\Models\HealthCheckResult;

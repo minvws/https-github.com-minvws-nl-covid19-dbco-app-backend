@@ -1,0 +1,31 @@
+{
+    "phpClass": "JobSectorGroup",
+    "tsConst": "jobSectorGroup",
+    "description": "Job sector groups.",
+    "traits": ["\\MinVWS\\DBCO\\Enum\\Traits\\JobSectorGroupJobSectors"],
+    "traitProperties": {
+        "categories": {
+            "type": "\\MinVWS\\DBCO\\Enum\\Models\\JobSector[]",
+            "description": "Job sectors that are part of this group.",
+            "method": "getJobSectors"
+        }
+    },
+    "items": [
+        {
+            "value": "care",
+            "label": "Zorg"
+        },
+        {
+            "value": "eduDaycare",
+            "label": "Onderwijs / kinderopvang"
+        },
+        {
+            "value": "foodOrAnimals",
+            "label": "Met voedsel of dieren"
+        },
+        {
+            "value": "other",
+            "label": "Overig"
+        }
+    ]
+}

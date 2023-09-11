@@ -1,0 +1,38 @@
+{
+    "phpClass": "CalendarPeriodColor",
+    "tsConst": "calendarPeriodColor",
+    "items": [
+        {
+            "label": "Licht rood",
+            "value": "light_red"
+        },
+        {
+            "label": "Licht oranje",
+            "value": "light_orange"
+        },
+        {
+            "label": "Licht geel",
+            "value": "light_yellow"
+        },
+        {
+            "label": "Licht groen",
+            "value": "light_green"
+        },
+        {
+            "label": "Licht blauw",
+            "value": "light_blue"
+        },
+        {
+            "label": "Licht paars",
+            "value": "light_purple"
+        },
+        {
+            "label": "Licht lavendel",
+            "value": "light_lavender"
+        },
+        {
+            "label": "Licht roze",
+            "value": "light_pink"
+        }
+    ]
+}

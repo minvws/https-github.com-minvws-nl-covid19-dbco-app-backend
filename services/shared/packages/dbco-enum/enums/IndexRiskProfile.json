@@ -1,0 +1,22 @@
+{
+    "phpClass": "IndexRiskProfile",
+    "tsConst": "indexRiskProfile",
+    "items": [
+        {
+            "label": "Ziekenhuisopname",
+            "value": "hospital_admitted"
+        },
+        {
+            "label": "Verminderde afweer",
+            "value": "is_immuno_compromised"
+        },
+        {
+            "label": "Symptomatische index standaard",
+            "value": "has_symptoms"
+        },
+        {
+            "label": "Asymptomatische index standaard",
+            "value": "no_symptoms"
+        }
+    ]
+}

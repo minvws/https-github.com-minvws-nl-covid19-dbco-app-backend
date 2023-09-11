@@ -1,0 +1,6 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Card.vue > should be able to render with default props 1`] = `
+"<div class=\\"tw-bg-white tw-shadow-sm tw-mb-4 tw-p-6 tw-border tw-rounded-sm tw-border-solid tw-border-gray-200\\">
+  <!----> test content</div>"
+`;

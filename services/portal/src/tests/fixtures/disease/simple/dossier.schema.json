@@ -1,0 +1,40 @@
+{
+    "type": "object",
+    "properties": {
+        "person": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string",
+                    "validationRules": {
+                        "warning": [
+                            "required",
+                            "max:50"
+                        ]
+                    }
+                },
+                "lastName": {
+                    "type": "string",
+                    "validationRules": {
+                        "warning": [
+                            "required",
+                            "max:50"
+                        ]
+                    }
+                }
+            }
+        },
+        "contacts": {
+            "type": "hasMany",
+            "listProperties": [
+                "person.firstName",
+                "person.lastName"
+            ]
+        },
+        "events": {
+            "type": "hasMany",
+            "listProperties": [
+            ]
+        }
+    }
+}

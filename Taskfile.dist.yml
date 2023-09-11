@@ -1,0 +1,115 @@
+# Docs @ https://taskfile.dev/
+version: "3"
+
+includes:
+  dev:
+    taskfile: bin/Taskfile.dev.yml
+    dir: .
+  test:
+    taskfile: bin/Taskfile.test.yml
+    dir: .
+  portal:
+    taskfile: services/portal
+    dir: services/portal
+  gateway:
+    taskfile: services/gateway
+    dir: services/gateway
+
+vars:
+  BASE_PATH:
+    sh: pwd
+  GOMPLATE_IMAGE_TAG: v3.11.5-alpine
+
+silent: true
+
+tasks:
+  env:
+    desc: Template root .env and .env.test
+    run: once
+    vars:
+      ROOT_ENV: '{{.ROOT_ENV | default ".env"}}'
+      ROOT_ENV_EXISTS:
+        sh: if [ -r "{{.ROOT_ENV}}" ]; then echo 1; else echo 0; fi
+      TEST_ENV: '{{.TEST_ENV | default ".env.test"}}'
+      TEST_ENV_EXISTS:
+        sh: if [ -r "{{.TEST_ENV}}" ]; then echo 1; else echo 0; fi
+      DEV_SWITCH_EXISTS:
+        sh: if [ -r "{{.BASE_PATH}}/.dev-switch" ]; then echo 1; else echo 0; fi
+    cmds:
+      - docker run
+        --rm
+        --tty
+        --volume "{{.BASE_PATH}}":/workspace
+        --workdir /workspace
+        --env HOST_OS={{OS}}
+        --user $(id -u):$(id -g)
+        ghcr.io/hairyhenderson/gomplate:{{.GOMPLATE_IMAGE_TAG}}
+        --file .env.template
+        --out .env
+        --datasource "HOST_OS=env:HOST_OS"
+        {{if eq .ROOT_ENV_EXISTS "1"}}
+        --datasource "env=file:///workspace/{{.ROOT_ENV}}?type=application/x-env"
+        {{end}}
+        {{if eq .DEV_SWITCH_EXISTS "1"}}
+        --datasource devmode=file:///workspace/.dev-switch?type=text/plain
+        {{end}}
+      - docker run
+        --rm
+        --tty
+        --volume "{{.BASE_PATH}}":/workspace
+        --workdir /workspace
+        --env HOST_OS={{OS}}
+        --user $(id -u):$(id -g)
+        ghcr.io/hairyhenderson/gomplate:{{.GOMPLATE_IMAGE_TAG}}
+        --file .env.test.template
+        --out .env.test
+        --datasource "HOST_OS=env:HOST_OS"
+        {{if eq .TEST_ENV_EXISTS "1"}}
+        --datasource "env=file:///workspace/{{.TEST_ENV}}?type=application/x-env"
+        {{end}}
+      - echo "Done templating (root) .env and .env.test"
+    sources:
+      - '{{.ROOT_ENV}}.template'
+      - '{{.TEST_ENV}}.template'
+    generates:
+      - '{{.ROOT_ENV}}'
+      - '{{.TEST_ENV}}'
+
+  cleanup:
+    desc: Cleanup generated files
+    cmds:
+      - rm -rf
+        .env
+        .env.test
+        services/portal/src/.env
+        services/portal/src/.env.testing
+        services/gateway/src/.env
+        services/gateway/src/.env.testing
+        export_enc_cert.pem
+        export_enc_key.pem
+        export_sig_cert.pem
+        export_sig_key.pem
+        sftp_id_rsa
+        sftp_id_rsa.pub
+
+  cleanup:containers:
+    desc: Cleanup development/testing containers
+    cmds:
+      - task: dev:down
+      - task: test:down
+
+  cleanup:all:
+    desc: Cleanup of almost all gitignored files and development/testing containers
+    summary: |
+      Cleanup of almost all gitignored files and development/testing containers.
+
+      The following files/dirs are excluded:
+        - /.idea
+        - /.dev-switch
+    cmds:
+      - task: cleanup:containers
+      - git clean
+        -xd
+        --force
+        --exclude .idea
+        --exclude .dev-switch

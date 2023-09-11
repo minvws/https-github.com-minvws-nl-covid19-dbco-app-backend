@@ -1,19 +1,63 @@
 /**********************************
+ * Colors
+**********************************/
+
+$input-grey: #f8f8fb;
+
+$bco-purple: #5616ff;
+$bco-red: #ff002e;
+$bco-green: #00b69e;
+$bco-grey: #f2f2f7;
+$bco-orange: #ff9d12;
+$bco-blue: #e0efff;
+$bco-blue-gray: #a3aebf;
+$bco-info: #2962ff;
+
+$blue: #3472f6;
+$blue-darker: #2274a5;
+$purple: #7a306c;
+$orange: #ffb612;
+$yellow: #ffd600;
+$green: #008148;
+$light-green: #23cc52;
+$black: #001e49;
+$white: #ffffff;
+$grey: #42526e;
+$grey-on-black: #405677;
+$light-black: #0a2d5f;
+$light-grey: #576578;
+$lighter-grey: #a3aebf;
+$lightest-grey: #e6e6ef;
+$lightest-grey-on-black: #d0d0db;
+$even-lighter-grey: #fafafc;
+$dark-grey: #808da1;
+
+$primary: #5616ff;
+
+// deprecated, lighter colors should use the primary color with rgba($primarycolor, 0.1)
+$bco-red-light: #ffe5ea;
+$bco-purple-light: #e6e6ff;
+
+$button-color: $bco-purple;
+
+/**********************************
  * Sizes
 **********************************/
 
 $sizes: (
-        5: 5%,
-        10: 10%,
-        15: 15%,
-        20: 20%,
-        25: 25%,
-        30: 30%,
-        50: 50%,
-        55: 55%,
-        75: 75%,
-        100: 100%,
-        auto: auto
+    5: 5%,
+    10: 10%,
+    15: 15%,
+    20: 20%,
+    25: 25%,
+    30: 30%,
+    35: 35%,
+    40: 40%,
+    50: 50%,
+    55: 55%,
+    75: 75%,
+    100: 100%,
+    auto: auto,
 );
 
 /**********************************
@@ -21,36 +65,72 @@ $sizes: (
 **********************************/
 
 $container-max-widths: (
-        sm: 540px,
-        md: 720px,
-        lg: 960px,
-        xl: 1600px
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1600px,
 );
+
+/**********************************
+ * Paddings
+**********************************/
+
+$padding-xs: 0.5rem;
+$padding-sm: 1rem;
+$padding-md: 2rem;
+$padding-lg: 3rem;
+$padding-xl: 4rem;
+$padding-default: $padding-md;
 
 /**********************************
  * Fonts
 **********************************/
 
 $font-family-base: 'Roboto', sans-serif;
+$line-height-input: 20px;
 
 /**********************************
- * Colors
+ * Generic
 **********************************/
 
-$blue: #3472F6;
-$orange: #FFB612;
-$black: #001E49;
-$grey: #42526E;
-$grey-medium: #616171;
-$light-grey: #576578;
-$lighter-grey: #A3AEBF;
+$border-radius-medium: 0.5rem;
+$border-radius-small: 0.25rem;
+$ui-drop-shadow-filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.16)) drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.1))
+    drop-shadow(0px 32px 64px rgba(0, 0, 0, 0.06));
+$box-shadow-card: 0px 1px 0px #e6e6ef, 0px 2px 4px rgba(0, 0, 0, 0.03);
+$radio-toggle-group-shadow: inset 0px 1px 0px #e6e6ef, inset 0px 2px 4px rgba(0, 0, 0, 0.06);
+
+/**********************************
+ * Borders
+**********************************/
+
+$border-default: 1px solid $lightest-grey;
 
 /**********************************
  * Body
 **********************************/
 
-$body-bg: #F2F2F7;
-$body-color: $light-grey;
+$body-bg: #f2f2f7;
+$body-color: $black;
+
+/**********************************
+ * Dropdown
+**********************************/
+
+$dropdown-border-width: 0;
+$dropdown-link-hover-bg: #f2f2f7;
+$dropdown-link-active-bg: #f2f2f2;
+$dropdown-min-width: 265px;
+$dropdown-padding-x: 0;
+$dropdown-padding-y: 0.25rem;
+$dropdown-item-padding-y: 0.875rem;
+$dropdown-item-padding-x: 0.75rem;
+
+/**********************************
+ * Inputs
+**********************************/
+
+$input-disabled-bg: $lightest-grey;
 
 /**********************************
  * Tabs
@@ -73,20 +153,45 @@ $table-hover-bg: rgba(0, 71, 255, 0.05);
 $headings-color: $black;
 
 /**********************************
+ * Modal
+**********************************/
+
+$modal-content-border-radius: $border-radius-medium;
+$modal-footer-border-width: 0;
+
+/**********************************
  * Navbar
 **********************************/
 
 $navbar-light-color: $light-grey;
 $navbar-light-hover-color: $grey;
 $navbar-light-active-color: $grey;
+$navbar-nav-link-padding-x: 0.5625rem;
+$navbar-height: 56px;
 
 /**********************************
- * Form
+ * Sidebar
+**********************************/
+$sidebar-width: 344px;
+$sidebar-transition: 0.2s linear;
+
+// Custom
+$navbar-nav-background-color: #001e49;
+$navbar-nav-link-active-color: rgba(255, 255, 255, 0.1);
+$navbar-divider-color: #2f4361;
+
+/**********************************
+ * Spinner
 **********************************/
 
-$custom-control-label-color: $light-grey;
+$spinner-border-width: 2px;
+$spinner-width: 22px;
 
-$bco-purple:#5616FF;
-$bco-purple-light:#E6E6FF;
-
-$button-color: $bco-purple;
+/**********************************
+ * Breakpoints
+**********************************/
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1400px;

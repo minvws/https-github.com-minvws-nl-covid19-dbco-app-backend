@@ -1,0 +1,12 @@
+type: object
+allOf: 
+  - $ref: ../FormMetaData/FormMetaData.yaml
+required: 
+  - items
+properties:
+  items:
+    type: array
+    items:
+      $ref: ../FormData/FormData.yaml
+additionalProperties: false
+  

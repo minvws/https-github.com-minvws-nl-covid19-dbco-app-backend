@@ -1,0 +1,35 @@
+{
+    "phpClass": "CalendarView",
+    "tsConst": "calendarView",
+    "description": "All calendar views",
+    "items": [
+        {
+            "label": "Index sidebar",
+            "value": "index_sidebar"
+        },
+        {
+            "label": "Index contact contagious sidebar",
+            "value": "index_task_contagious_sidebar"
+        },
+        {
+            "label": "Index contact source sidebar",
+            "value": "index_task_source_sidebar"
+        },
+        {
+            "label": "Index contact contagious table",
+            "value": "index_task_contagious_table"
+        },
+        {
+            "label": "Index contact source table",
+            "value": "index_task_source_table"
+        },
+        {
+            "label": "Index context sidebar",
+            "value": "index_context_sidebar"
+        },
+        {
+            "label": "Index context table",
+            "value": "index_context_table"
+        }
+    ]
+}

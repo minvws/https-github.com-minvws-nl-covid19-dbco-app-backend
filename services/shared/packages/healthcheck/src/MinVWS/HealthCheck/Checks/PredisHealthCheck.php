@@ -1,6 +1,9 @@
 <?php
+
 namespace MinVWS\HealthCheck\Checks;
 
+use Closure;
+use Exception;
 use MinVWS\HealthCheck\Models\HealthCheckResult;
 use Predis\Client as PredisClient;
 
@@ -12,18 +15,18 @@ use Predis\Client as PredisClient;
 class PredisHealthCheck implements HealthCheck
 {
     /**
-     * @var PredisClient
+     * @var Closure
      */
-    private PredisClient $client;
+    private Closure $predisGetter;
 
     /**
      * Constructor.
      *
-     * @param PredisClient $client
+     * @param Closure $predisGetter
      */
-    public function __construct(PredisClient $client)
+    public function __construct(Closure $predisGetter)
     {
-        $this->client = $client;
+        $this->predisGetter = $predisGetter;
     }
 
     /**
@@ -31,10 +34,18 @@ class PredisHealthCheck implements HealthCheck
      */
     public function performHealthCheck(): HealthCheckResult
     {
-        if ((string)$this->client->ping() === 'PONG') {
-            return new HealthCheckResult(true);
-        } else {
-            return new HealthCheckResult(false);
+        try {
+            /** @var $client PredisClient */
+            $client = call_user_func($this->predisGetter);
+
+            if ((string)$client->ping() === 'PONG') {
+                return new HealthCheckResult(true);
+            } else {
+                return new HealthCheckResult(false);
+            }
+        } catch (Exception $e) {
+            error_clear_last(); // error is also registered as PHP error
+            return new HealthCheckResult(false, 'internalError', $e->getMessage());
         }
     }
 }

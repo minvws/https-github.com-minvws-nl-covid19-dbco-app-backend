@@ -1,0 +1,14 @@
+{
+    "phpClass": "CalendarItem",
+    "tsConst": "calendarItem",
+    "items": [
+        {
+            "label": "Één dag",
+            "value": "point"
+        },
+        {
+            "label": "Periode",
+            "value": "period"
+        }
+    ]
+}

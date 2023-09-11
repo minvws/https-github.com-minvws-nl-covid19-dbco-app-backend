@@ -1,0 +1,62 @@
+{
+    "phpClass": "TransportationType",
+    "tsConst": "transportationType",
+    "items": [
+        {
+            "label": "Auto",
+            "value": "car"
+        },
+        {
+            "label": "Bus",
+            "value": "bus"
+        },
+        {
+            "label": "Brommer / Scooter",
+            "value": "moped"
+        },
+        {
+            "label": "Caravan / camper",
+            "value": "caravan"
+        },
+        {
+            "label": "Fiets",
+            "value": "bicycle"
+        },
+        {
+            "label": "Lopend / Te voet",
+            "value": "by-foot"
+        },
+        {
+            "label": "Metro",
+            "value": "subway"
+        },
+        {
+            "label": "Motor",
+            "value": "motorcycle"
+        },
+        {
+            "label": "Tram",
+            "value": "tram"
+        },
+        {
+            "label": "Trein",
+            "value": "train"
+        },
+        {
+            "label": "(Veer)boot",
+            "value": "ship"
+        },
+        {
+            "label": "Vliegtuig",
+            "value": "plane"
+        },
+        {
+            "label": "Vrachtwagen",
+            "value": "truck"
+        },
+        {
+            "label": "Overig",
+            "value": "other"
+        }
+    ]
+}

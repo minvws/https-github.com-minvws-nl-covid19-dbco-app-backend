@@ -1,4 +1,5 @@
 <?php
+
 namespace DBCO\Shared\Application\DTO;
 
 use DBCO\Shared\Application\Models\SealedData as SealedDataModel;
@@ -50,6 +51,7 @@ class SealedData implements JsonSerializable
     /**
      * @inheritDoc
      */
+    #[\ReturnTypeWillChange()]
     public function jsonSerialize()
     {
         return [

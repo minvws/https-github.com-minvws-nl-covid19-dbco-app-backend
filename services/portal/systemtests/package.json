@@ -1,0 +1,33 @@
+{
+    "private": true,
+    "name": "systemtests",
+    "version": "1.0.0",
+    "scripts": {
+        "type:check": "tsc --noEmit && echo \"✔ Finished tsc type check (cypress)\"",
+        "test": "cypress open",
+        "test:hl": "cypress run",
+        "ci": "cypress open --config-file cypress.ci.config.ts",
+        "ci:hl": "cypress run --config-file cypress.ci.config.ts",
+        "setup": "../../../bin/setup-ci --build",
+        "remove": "../../../bin/remove-ci",
+        "reset": "../../../bin/reset-db-ci",
+        "qa": "cypress open --config-file cypress.config.qa.ts --env grepTags=-@skip-regression",
+        "qa:hl": "cypress run --config-file cypress.config.qa.ts --env grepTags=-@skip-regression",
+        "noqa": "cypress open --config-file cypress.config.qa.ts --env grepTags=@skip-regression",
+        "noqa:hl": "cypress run --config-file cypress.config.qa.ts --env grepTags=@skip-regression"
+    },
+    "dependencies": {
+        "@dbco/portal-api": "1.0.0",
+        "@dbco/ui-library": "1.0.0",
+        "@faker-js/faker": "8.0.2",
+        "@testing-library/cypress": "9.0.0",
+        "date-fns": "^2.30.0",
+        "typescript": "4.9.5"
+    },
+    "devDependencies": {
+        "@cypress/grep": "3.1.5",
+        "@types/node": "18.17.5",
+        "cypress": "12.17.4",
+        "escape-string-regexp": "^5.0.0"
+    }
+}

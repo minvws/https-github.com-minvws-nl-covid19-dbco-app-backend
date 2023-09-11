@@ -1,4 +1,5 @@
 <?php
+
 namespace DBCO\Shared\Application\Managers;
 
 use Exception;
@@ -36,7 +37,7 @@ class DbTransactionManager implements TransactionManager
      *
      * @throws Exception
      */
-    function run(Callable $callback)
+    public function run(callable $callback)
     {
         // We support one nested level of transactions using savepoints.
         // This is primarily used for running unit tests with database

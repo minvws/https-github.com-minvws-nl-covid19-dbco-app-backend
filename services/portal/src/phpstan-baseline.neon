@@ -1,0 +1,2511 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Access to property \\$ciphertext on an unknown class DBCO\\\\Shared\\\\Application\\\\DTO\\\\stdClass\\.$#"
+			count: 1
+			path: /shared/library/DBCO/Application/DTO/SealedData.php
+
+		-
+			message: "#^Access to property \\$nonce on an unknown class DBCO\\\\Shared\\\\Application\\\\DTO\\\\stdClass\\.$#"
+			count: 1
+			path: /shared/library/DBCO/Application/DTO/SealedData.php
+
+		-
+			message: "#^Parameter \\$data of method DBCO\\\\Shared\\\\Application\\\\DTO\\\\SealedData\\:\\:jsonUnserialize\\(\\) has invalid type DBCO\\\\Shared\\\\Application\\\\DTO\\\\stdClass\\.$#"
+			count: 1
+			path: /shared/library/DBCO/Application/DTO/SealedData.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function strtolower expects string, string\\|null given\\.$#"
+			count: 1
+			path: /shared/library/DBCO/Application/Helpers/TextCaseConvertor.php
+
+		-
+			message: "#^If condition is always false\\.$#"
+			count: 1
+			path: /shared/library/DBCO/Application/Managers/DbTransactionManager.php
+
+		-
+			message: "#^PHPDoc type array of property App\\\\Exceptions\\\\Handler\\:\\:\\$dontFlash is not covariant with PHPDoc type array\\<int, string\\> of overridden property Illuminate\\\\Foundation\\\\Exceptions\\\\Handler\\:\\:\\$dontFlash\\.$#"
+			count: 1
+			path: app/Exceptions/Handler.php
+
+		-
+			message: "#^PHPDoc type array of property App\\\\Exceptions\\\\Handler\\:\\:\\$dontReport is not covariant with PHPDoc type array\\<int, class\\-string\\<Throwable\\>\\> of overridden property Illuminate\\\\Foundation\\\\Exceptions\\\\Handler\\:\\:\\$dontReport\\.$#"
+			count: 1
+			path: app/Exceptions/Handler.php
+
+		-
+			message: "#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#"
+			count: 1
+			path: app/Helpers/SearchableHash.php
+
+		-
+			message: "#^Cannot call method all\\(\\) on mixed\\.$#"
+			count: 2
+			path: app/Http/Controllers/Api/ApiAbstractFragmentController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ApiAbstractFragmentController\\:\\:handleGetFragments\\(\\) should return Illuminate\\\\Http\\\\JsonResponse but returns mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiAbstractFragmentController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ApiAbstractFragmentController\\:\\:handleUpdateFragments\\(\\) should return Illuminate\\\\Http\\\\JsonResponse but returns mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiAbstractFragmentController.php
+
+		-
+			message: "#^Parameter \\#3 \\$data of method App\\\\Services\\\\FragmentService\\:\\:validateFragments\\(\\) expects array, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiAbstractFragmentController.php
+
+		-
+			message: "#^Parameter \\#2 \\$value of function cookie expects string\\|null, mixed given\\.$#"
+			count: 2
+			path: app/Http/Controllers/Api/ApiAccessRequestController.php
+
+		-
+			message: "#^Cannot access property \\$bcoStatus on mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiCaseAssignmentController.php
+
+		-
+			message: "#^Dead catch \\- Illuminate\\\\Validation\\\\UnauthorizedException is never thrown in the try block\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiCaseAssignmentController.php
+
+		-
+			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiCaseAssignmentController.php
+
+		-
+			message: "#^Cannot access property \\$editCommand on mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiCaseController.php
+
+		-
+			message: "#^Cannot access property \\$uuid on mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiCaseController.php
+
+		-
+			message: "#^Property App\\\\Http\\\\Controllers\\\\Api\\\\ApiCaseMessageController\\:\\:\\$caseFragmentService is never read, only written\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiCaseMessageController.php
+
+		-
+			message: "#^Property App\\\\Http\\\\Controllers\\\\Api\\\\ApiCaseMessageController\\:\\:\\$contextService is never read, only written\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiCaseMessageController.php
+
+		-
+			message: "#^Cannot call method all\\(\\) on mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiExpertQuestionController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ApiExpertQuestionController\\:\\:answerExpertQuestion\\(\\) should return App\\\\Http\\\\Responses\\\\EncodableResponse but returns mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiExpertQuestionController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ApiExpertQuestionController\\:\\:assignExpertQuestion\\(\\) should return App\\\\Http\\\\Responses\\\\EncodableResponse but returns mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiExpertQuestionController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ApiExpertQuestionController\\:\\:findExpertQuestionByCaseId\\(\\) should return App\\\\Http\\\\Responses\\\\EncodableResponse but returns mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiExpertQuestionController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ApiExpertQuestionController\\:\\:getExpertQuestion\\(\\) should return App\\\\Http\\\\Responses\\\\EncodableResponse but returns mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiExpertQuestionController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ApiExpertQuestionController\\:\\:listExpertQuestions\\(\\) should return App\\\\Http\\\\Responses\\\\EncodableResponse but returns mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiExpertQuestionController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\Api\\\\ApiExpertQuestionController\\:\\:unassignExpertQuestion\\(\\) should return App\\\\Http\\\\Responses\\\\EncodableResponse but returns mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiExpertQuestionController.php
+
+		-
+			message: "#^Unable to resolve the template type TKey in call to function collect$#"
+			count: 3
+			path: app/Http/Controllers/Api/ApiHpZoneCopyController.php
+
+		-
+			message: "#^Unable to resolve the template type TValue in call to function collect$#"
+			count: 3
+			path: app/Http/Controllers/Api/ApiHpZoneCopyController.php
+
+		-
+			message: "#^Cannot access property \\$uuid on mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiIntakeController.php
+
+		-
+			message: "#^Cannot access offset 'merge_places' on mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiPlaceController.php
+
+		-
+			message: "#^Cannot access property \\$uuid on mixed\\.$#"
+			count: 2
+			path: app/Http/Controllers/Api/ApiPlaceController.php
+
+		-
+			message: "#^Parameter \\#1 \\$objects of method MinVWS\\\\Audit\\\\Models\\\\AuditEvent\\:\\:objects\\(\\) expects array\\<MinVWS\\\\Audit\\\\Models\\\\AuditObject\\>, array given\\.$#"
+			count: 2
+			path: app/Http/Controllers/Api/ApiPlaceController.php
+
+		-
+			message: "#^Parameter \\#2 \\$data of method App\\\\Services\\\\PlaceService\\:\\:updatePlace\\(\\) expects array, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiPlaceController.php
+
+		-
+			message: "#^Property App\\\\Http\\\\Controllers\\\\Api\\\\ApiPlaceController\\:\\:\\$locationService is never read, only written\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiPlaceController.php
+
+		-
+			message: "#^Cannot access property \\$uuid on mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiPlannerCaseController.php
+
+		-
+			message: "#^Cannot call method all\\(\\) on mixed\\.$#"
+			count: 2
+			path: app/Http/Controllers/Api/ApiPlannerCaseController.php
+
+		-
+			message: "#^Parameter \\#1 \\$data of method App\\\\Http\\\\Controllers\\\\Api\\\\ApiPlannerCaseController\\:\\:validateModelRules\\(\\) expects array\\|null, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiPlannerCaseController.php
+
+		-
+			message: "#^Parameter \\#1 \\$data of static method App\\\\Models\\\\CovidCase\\\\PlannerCase\\:\\:fetchValidationRules\\(\\) expects array, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ApiPlannerCaseController.php
+
+		-
+			message: "#^Cannot call method all\\(\\) on mixed\\.$#"
+			count: 2
+			path: app/Http/Controllers/Api/ApiTaskController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ConsentController\\:\\:showConsent\\(\\) should return Illuminate\\\\Contracts\\\\View\\\\View but returns mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/ConsentController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ConsentController\\:\\:showPrivacyStatement\\(\\) should return Illuminate\\\\Contracts\\\\View\\\\View but returns mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/ConsentController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Controllers\\\\ConsentController\\:\\:storeConsent\\(\\) should return Illuminate\\\\Http\\\\RedirectResponse but returns mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/ConsentController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Requests\\\\Api\\\\BcoPhaseMultiUpdateRequest\\:\\:getCases\\(\\) should return array but returns mixed\\.$#"
+			count: 1
+			path: app/Http/Requests/Api/BcoPhaseMultiUpdateRequest.php
+
+		-
+			message: "#^Cannot access property \\$bcoStatus on mixed\\.$#"
+			count: 1
+			path: app/Http/Requests/Api/CovidCase/UpdateContactStatusRequest.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Requests\\\\Api\\\\CovidCase\\\\UpdateContactStatusRequest\\:\\:forceOsirisNotification\\(\\) should return string\\|null but returns mixed\\.$#"
+			count: 1
+			path: app/Http/Requests/Api/CovidCase/UpdateContactStatusRequest.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Requests\\\\Api\\\\CovidCase\\\\UpdateContactStatusRequest\\:\\:statusExplanation\\(\\) should return string\\|null but returns mixed\\.$#"
+			count: 1
+			path: app/Http/Requests/Api/CovidCase/UpdateContactStatusRequest.php
+
+		-
+			message: "#^Parameter \\#1 \\$value of static method App\\\\Models\\\\StatusIndexContactTracing\\:\\:fromString\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: app/Http/Requests/Api/CovidCase/UpdateContactStatusRequest.php
+
+		-
+			message: "#^Property App\\\\Http\\\\Requests\\\\Api\\\\Intake\\\\ListRequest\\:\\:\\$filter \\(array\\|null\\) does not accept mixed\\.$#"
+			count: 1
+			path: app/Http/Requests/Api/Intake/ListRequest.php
+
+		-
+			message: "#^Parameter \\#2 \\$user of class App\\\\Rules\\\\PlaceBatchPermissionRule constructor expects App\\\\Models\\\\Eloquent\\\\EloquentUser, App\\\\Models\\\\Eloquent\\\\EloquentUser\\|null given\\.$#"
+			count: 1
+			path: app/Http/Requests/Api/Place/VerifyMultipleRequest.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Requests\\\\Api\\\\PlannerCase\\\\UpdatePriorityRequest\\:\\:getCaseUuids\\(\\) should return array but returns mixed\\.$#"
+			count: 1
+			path: app/Http/Requests/Api/PlannerCase/UpdatePriorityRequest.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Requests\\\\ContextFormRequest\\:\\:validated\\(\\) should return array but returns mixed\\.$#"
+			count: 1
+			path: app/Http/Requests/ContextFormRequest.php
+
+		-
+			message: "#^Parameter \\#1 \\$locale of static method IntlDateFormatter\\:\\:create\\(\\) expects string\\|null, mixed given\\.$#"
+			count: 1
+			path: app/Http/Responses/Api/CaseUpdate/UpdateFieldDiffDecorator.php
+
+		-
+			message: "#^Parameter \\#1 \\$timezone of class DateTimeZone constructor expects string, mixed given\\.$#"
+			count: 1
+			path: app/Http/Responses/Api/CaseUpdate/UpdateFieldDiffDecorator.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$phpClass\\.$#"
+			count: 2
+			path: app/Http/Responses/Api/Catalog/EnumTypeDecorator.php
+
+		-
+			message: "#^Parameter \\#2 \\$diffToType of method App\\\\Http\\\\Responses\\\\Api\\\\Catalog\\\\EnumTypeDecorator\\:\\:diffResult\\(\\) expects App\\\\Schema\\\\Types\\\\EnumVersionType, mixed given\\.$#"
+			count: 1
+			path: app/Http/Responses/Api/Catalog/EnumTypeDecorator.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\CovidCase\\\\Symptoms\\:\\:\\$stillHadSymptomsAt\\.$#"
+			count: 1
+			path: app/Http/Responses/PlannerCase/CovidCaseWithAssignmentTokenEncoder.php
+
+		-
+			message: "#^Property App\\\\Http\\\\View\\\\Composers\\\\HeaderComposer\\:\\:\\$authenticationService is never read, only written\\.$#"
+			count: 1
+			path: app/Http/View/Composers/HeaderComposer.php
+
+		-
+			message: "#^Method App\\\\Http\\\\View\\\\Composers\\\\UserInfoComposer\\:\\:getOrganisationData\\(\\) should return array but returns mixed\\.$#"
+			count: 1
+			path: app/Http/View/Composers/UserInfoComposer.php
+
+		-
+			message: "#^Method App\\\\Http\\\\View\\\\Composers\\\\UserInfoComposer\\:\\:getUserPermissions\\(\\) should return array\\<string\\> but returns array\\.$#"
+			count: 1
+			path: app/Http/View/Composers/UserInfoComposer.php
+
+		-
+			message: "#^Parameter \\#1 \\$job of event class App\\\\Events\\\\JobHandled constructor expects Illuminate\\\\Contracts\\\\Queue\\\\Job in App\\\\Events\\\\JobHandled\\:\\:dispatch\\(\\), Illuminate\\\\Contracts\\\\Queue\\\\Job\\|null given\\.$#"
+			count: 1
+			path: app/Jobs/ExportCaseToOsiris.php
+
+		-
+			message: "#^Parameter \\#1 \\$job of static method App\\\\Events\\\\JobHandled\\:\\:dispatch\\(\\) expects Illuminate\\\\Contracts\\\\Queue\\\\Job, Illuminate\\\\Contracts\\\\Queue\\\\Job\\|null given\\.$#"
+			count: 1
+			path: app/Jobs/ExportCaseToOsiris.php
+
+		-
+			message: "#^Method App\\\\Jobs\\\\Middleware\\\\RateLimited\\:\\:getQueueJob\\(\\) should return Illuminate\\\\Contracts\\\\Queue\\\\Job but returns class\\-string\\<Illuminate\\\\Contracts\\\\Queue\\\\Job\\>\\|Illuminate\\\\Contracts\\\\Queue\\\\Job\\.$#"
+			count: 1
+			path: app/Jobs/Middleware/RateLimited.php
+
+		-
+			message: "#^Parameter \\#1 \\$address of method Illuminate\\\\Mail\\\\Mailable\\:\\:from\\(\\) expects array\\|object\\|string, mixed given\\.$#"
+			count: 1
+			path: app/Mail/IntakeConfirmation.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Assignment\\\\UserAssignment\\:\\:isValidForCaseWithSelectedOrganisation\\(\\) should return bool but returns mixed\\.$#"
+			count: 1
+			path: app/Models/Assignment/UserAssignment.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Assignment\\\\UserAssignment\\:\\:isValidForSelectedOrganisation\\(\\) should return bool but returns mixed\\.$#"
+			count: 1
+			path: app/Models/Assignment/UserAssignment.php
+
+		-
+			message: "#^Parameter \\#1 \\$bcoStatus of static method App\\\\Models\\\\Assignment\\\\UserAssignment\\:\\:getRequiredPermissionForStatus\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: app/Models/Assignment/UserAssignment.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$order\\.$#"
+			count: 1
+			path: app/Models/CallToAction/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$page\\.$#"
+			count: 1
+			path: app/Models/CallToAction/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$perPage\\.$#"
+			count: 1
+			path: app/Models/CallToAction/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$sort\\.$#"
+			count: 1
+			path: app/Models/CallToAction/ListOptions.php
+
+		-
+			message: "#^Cannot cast mixed to int\\.$#"
+			count: 2
+			path: app/Models/CallToAction/ListOptions.php
+
+		-
+			message: "#^Cannot cast mixed to string\\.$#"
+			count: 2
+			path: app/Models/CallToAction/ListOptions.php
+
+		-
+			message: "#^Method App\\\\Models\\\\CallToAction\\\\ListOptions\\:\\:decode\\(\\) should return static\\(App\\\\Models\\\\CallToAction\\\\ListOptions\\) but returns object\\.$#"
+			count: 1
+			path: app/Models/CallToAction/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Circumstances\\\\CircumstancesCommon\\:\\:\\$causeForConcern\\.$#"
+			count: 2
+			path: app/Models/Context/Codables/CircumstancesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Circumstances\\\\CircumstancesCommon\\:\\:\\$causeForConcernRemark\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/CircumstancesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Circumstances\\\\CircumstancesCommon\\:\\:\\$covidMeasures\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/CircumstancesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Circumstances\\\\CircumstancesCommon\\:\\:\\$isUsingPPE\\.$#"
+			count: 2
+			path: app/Models/Context/Codables/CircumstancesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Circumstances\\\\CircumstancesCommon\\:\\:\\$otherCovidMeasures\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/CircumstancesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Circumstances\\\\CircumstancesCommon\\:\\:\\$ppeReplaceFrequency\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/CircumstancesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Circumstances\\\\CircumstancesCommon\\:\\:\\$ppeType\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/CircumstancesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Circumstances\\\\CircumstancesCommon\\:\\:\\$sharedTransportation\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/CircumstancesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Circumstances\\\\CircumstancesCommon\\:\\:\\$usedPersonalProtectiveEquipment\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/CircumstancesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Contact\\\\ContactCommon\\:\\:\\$firstname\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/ContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Contact\\\\ContactCommon\\:\\:\\$isInformed\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/ContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Contact\\\\ContactCommon\\:\\:\\$lastname\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/ContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Contact\\\\ContactCommon\\:\\:\\$notificationConsent\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/ContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Contact\\\\ContactCommon\\:\\:\\$notificationNamedConsent\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/ContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Contact\\\\ContactCommon\\:\\:\\$phone\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/ContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\General\\\\GeneralCommon\\:\\:\\$isSource\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\General\\\\GeneralCommon\\:\\:\\$label\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\General\\\\GeneralCommon\\:\\:\\$moments\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\General\\\\GeneralCommon\\:\\:\\$otherRelationship\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\General\\\\GeneralCommon\\:\\:\\$relationship\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Moment\\\\MomentCommon\\:\\:\\$day\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/MomentEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Moment\\\\MomentCommon\\:\\:\\$endTime\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/MomentEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Moment\\\\MomentCommon\\:\\:\\$startTime\\.$#"
+			count: 1
+			path: app/Models/Context/Codables/MomentEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Moment\\\\MomentCommon\\:\\:\\$day\\.$#"
+			count: 1
+			path: app/Models/Context/General.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Moment\\\\MomentCommon\\:\\:\\$endTime\\.$#"
+			count: 1
+			path: app/Models/Context/General.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Context\\\\Moment\\\\MomentCommon\\:\\:\\$startTime\\.$#"
+			count: 1
+			path: app/Models/Context/General.php
+
+		-
+			message: "#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: app/Models/Context/General.php
+
+		-
+			message: "#^Cannot access property \\$day on mixed\\.$#"
+			count: 1
+			path: app/Models/Context/General.php
+
+		-
+			message: "#^Cannot access property \\$end_time on mixed\\.$#"
+			count: 1
+			path: app/Models/Context/General.php
+
+		-
+			message: "#^Cannot access property \\$start_time on mixed\\.$#"
+			count: 1
+			path: app/Models/Context/General.php
+
+		-
+			message: "#^Parameter \\#1 \\$contextUuid of method App\\\\Repositories\\\\DbMomentRepository\\:\\:deleteAllMomentsByContext\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: app/Models/Context/General.php
+
+		-
+			message: "#^Cannot access property \\$general on mixed\\.$#"
+			count: 4
+			path: app/Models/Context/Moment.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Abroad\\\\AbroadCommon\\:\\:\\$trips\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/AbroadEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Abroad\\\\AbroadCommon\\:\\:\\$wasAbroad\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/AbroadEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\AlternateContact\\\\AlternateContactCommon\\:\\:\\$email\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/AlternateContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\AlternateContact\\\\AlternateContactCommon\\:\\:\\$firstname\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/AlternateContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\AlternateContact\\\\AlternateContactCommon\\:\\:\\$gender\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/AlternateContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\AlternateContact\\\\AlternateContactCommon\\:\\:\\$hasAlternateContact\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/AlternateContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\AlternateContact\\\\AlternateContactCommon\\:\\:\\$isDefaultContact\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/AlternateContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\AlternateContact\\\\AlternateContactCommon\\:\\:\\$lastname\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/AlternateContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\AlternateContact\\\\AlternateContactCommon\\:\\:\\$phone\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/AlternateContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\AlternateContact\\\\AlternateContactCommon\\:\\:\\$relationship\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/AlternateContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\AlternateResidency\\\\AlternateResidencyCommon\\:\\:\\$address\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/AlternateResidencyEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\AlternateResidency\\\\AlternateResidencyCommon\\:\\:\\$hasAlternateResidency\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/AlternateResidencyEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\AlternativeLanguage\\\\AlternativeLanguageCommon\\:\\:\\$emailLanguage\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/AlternativeLanguageEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\AlternativeLanguage\\\\AlternativeLanguageCommon\\:\\:\\$phoneLanguages\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/AlternativeLanguageEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\AlternativeLanguage\\\\AlternativeLanguageCommon\\:\\:\\$useAlternativeLanguage\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/AlternativeLanguageEncoder.php
+
+		-
+			message: "#^Access to an undefined property \\(App\\\\Models\\\\Versions\\\\CovidCase\\\\Communication\\\\CommunicationCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\Communication\\\\CommunicationV1UpTo1\\)\\|\\(App\\\\Models\\\\Versions\\\\CovidCase\\\\Communication\\\\CommunicationCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\Communication\\\\CommunicationV2UpTo3\\)\\:\\:\\$isolationAdviceGiven\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/CommunicationEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Communication\\\\CommunicationCommon\\:\\:\\$particularities\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/CommunicationEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Contact\\\\ContactCommon\\:\\:\\$email\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/ContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Contact\\\\ContactCommon\\:\\:\\$phone\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/ContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Contacts\\\\ContactsCommon\\:\\:\\$shareNameWithContacts\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/ContactsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Deceased\\\\DeceasedCommon\\:\\:\\$cause\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/DeceasedEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Deceased\\\\DeceasedCommon\\:\\:\\$deceasedAt\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/DeceasedEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Deceased\\\\DeceasedCommon\\:\\:\\$isDeceased\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/DeceasedEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\CovidCase\\\\EduDaycare&App\\\\Models\\\\Versions\\\\CovidCase\\\\EduDaycare\\\\EduDaycareV1UpTo1\\:\\:\\$isStudent\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/EduDaycareEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\CovidCase\\\\EduDaycare&App\\\\Models\\\\Versions\\\\CovidCase\\\\EduDaycare\\\\EduDaycareV1UpTo1\\:\\:\\$type\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/EduDaycareEncoder.php
+
+		-
+			message: "#^Method App\\\\Models\\\\CovidCase\\\\Codables\\\\ExportEncoder\\:\\:encode\\(\\) should return object but returns mixed\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/ExportEncoder.php
+
+		-
+			message: "#^Access to an undefined property \\(App\\\\Models\\\\Versions\\\\CovidCase\\\\ExtensiveContactTracing\\\\ExtensiveContactTracingCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\ExtensiveContactTracing\\\\ExtensiveContactTracingV1UpTo1\\)\\|App\\\\Models\\\\Versions\\\\CovidCase\\\\ExtensiveContactTracing\\\\ExtensiveContactTracingV2Up\\:\\:\\$receivesExtensiveContactTracing\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/ExtensiveContactTracingEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\ExtensiveContactTracing\\\\ExtensiveContactTracingCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\ExtensiveContactTracing\\\\ExtensiveContactTracingV1UpTo2\\:\\:\\$notes\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/ExtensiveContactTracingEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\ExtensiveContactTracing\\\\ExtensiveContactTracingCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\ExtensiveContactTracing\\\\ExtensiveContactTracingV1UpTo2\\:\\:\\$reasons\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/ExtensiveContactTracingEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\General\\\\GeneralCommon\\:\\:\\$createdAt\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\General\\\\GeneralCommon\\:\\:\\$deletedAt\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\General\\\\GeneralCommon\\:\\:\\$hpzoneNumber\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\General\\\\GeneralCommon\\:\\:\\$organisation\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\General\\\\GeneralCommon\\:\\:\\$reference\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\General\\\\GeneralCommon\\:\\:\\$source\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\GeneralPractitioner\\\\GeneralPractitionerCommon\\:\\:\\$address\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/GeneralPractitionerEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\GeneralPractitioner\\\\GeneralPractitionerCommon\\:\\:\\$hasInfectionNotificationConsent\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/GeneralPractitionerEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\GeneralPractitioner\\\\GeneralPractitionerCommon\\:\\:\\$name\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/GeneralPractitionerEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\GeneralPractitioner\\\\GeneralPractitionerCommon\\:\\:\\$practiceName\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/GeneralPractitionerEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\GroupTransport\\\\GroupTransportCommon\\:\\:\\$withReservedSeats\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/GroupTransportEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Hospital\\\\HospitalCommon\\:\\:\\$admittedAt\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/HospitalEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Hospital\\\\HospitalCommon\\:\\:\\$admittedInICUAt\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/HospitalEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Hospital\\\\HospitalCommon\\:\\:\\$isAdmitted\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/HospitalEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Hospital\\\\HospitalCommon\\:\\:\\$isInICU\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/HospitalEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Hospital\\\\HospitalCommon\\:\\:\\$location\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/HospitalEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Hospital\\\\HospitalCommon\\:\\:\\$name\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/HospitalEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Hospital\\\\HospitalCommon\\:\\:\\$practitioner\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/HospitalEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Hospital\\\\HospitalCommon\\:\\:\\$practitionerPhone\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/HospitalEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Hospital\\\\HospitalCommon\\:\\:\\$reason\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/HospitalEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Hospital\\\\HospitalCommon\\:\\:\\$releasedAt\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/HospitalEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Housemates\\\\HousematesCommon\\:\\:\\$canStrictlyIsolate\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/HousematesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Housemates\\\\HousematesCommon\\:\\:\\$hasHouseMates\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/HousematesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Housemates\\\\HousematesCommon\\:\\:\\$hasOwnBedroom\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/HousematesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Housemates\\\\HousematesCommon\\:\\:\\$hasOwnFacilities\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/HousematesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Housemates\\\\HousematesCommon\\:\\:\\$hasOwnKitchen\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/HousematesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Housemates\\\\HousematesCommon\\:\\:\\$hasOwnRestroom\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/HousematesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Immunity\\\\ImmunityCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\Immunity\\\\ImmunityV1UpTo1\\:\\:\\$isImmune\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/ImmunityEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Immunity\\\\ImmunityCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\Immunity\\\\ImmunityV1UpTo1\\:\\:\\$remarks\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/ImmunityEncoder.php
+
+		-
+			message: "#^Access to an undefined property \\(App\\\\Models\\\\Versions\\\\CovidCase\\\\Index\\\\IndexCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\Index\\\\IndexV1UpTo1\\)\\|App\\\\Models\\\\Versions\\\\CovidCase\\\\Index\\\\IndexV2Up\\:\\:\\$hasNoBsnOrAddress\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/IndexEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Index\\\\IndexCommon\\:\\:\\$address\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/IndexEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Index\\\\IndexCommon\\:\\:\\$bsnCensored\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/IndexEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Index\\\\IndexCommon\\:\\:\\$bsnLetters\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/IndexEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Index\\\\IndexCommon\\:\\:\\$bsnNotes\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/IndexEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Index\\\\IndexCommon\\:\\:\\$dateOfBirth\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/IndexEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Index\\\\IndexCommon\\:\\:\\$firstname\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/IndexEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Index\\\\IndexCommon\\:\\:\\$gender\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/IndexEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Index\\\\IndexCommon\\:\\:\\$initials\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/IndexEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Index\\\\IndexCommon\\:\\:\\$lastname\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/IndexEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Job\\\\JobCommon\\:\\:\\$closeContactAtJob\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/JobEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Job\\\\JobCommon\\:\\:\\$otherProfession\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/JobEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Job\\\\JobCommon\\:\\:\\$particularities\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/JobEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Job\\\\JobCommon\\:\\:\\$professionCare\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/JobEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Job\\\\JobCommon\\:\\:\\$professionOther\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/JobEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Job\\\\JobCommon\\:\\:\\$sectors\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/JobEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Job\\\\JobCommon\\:\\:\\$wasAtJob\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/JobEncoder.php
+
+		-
+			message: "#^Unable to resolve the template type TKey in call to function collect$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/JobEncoder.php
+
+		-
+			message: "#^Unable to resolve the template type TValue in call to function collect$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/JobEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Medication\\\\MedicationCommon\\:\\:\\$hasMedication\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/MedicationEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Medication\\\\MedicationCommon\\:\\:\\$isImmunoCompromised\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/MedicationEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Medication\\\\MedicationCommon\\:\\:\\$medicines\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/MedicationEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Pregnancy\\\\PregnancyCommon\\:\\:\\$isPregnant\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/PregnancyEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\PrincipalContextualSettings\\\\PrincipalContextualSettingsCommon\\:\\:\\$hasPrincipalContextualSettings\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/PrincipalContextualSettingsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\PrincipalContextualSettings\\\\PrincipalContextualSettingsCommon\\:\\:\\$items\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/PrincipalContextualSettingsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\PrincipalContextualSettings\\\\PrincipalContextualSettingsCommon\\:\\:\\$otherItems\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/PrincipalContextualSettingsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\RecentBirth\\\\RecentBirthCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\RecentBirth\\\\RecentBirthV1UpTo1\\:\\:\\$birthDate\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/RecentBirthEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\RecentBirth\\\\RecentBirthCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\RecentBirth\\\\RecentBirthV1UpTo1\\:\\:\\$hasRecentlyGivenBirth\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/RecentBirthEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\RiskLocation\\\\RiskLocationCommon\\:\\:\\$isLivingAtRiskLocation\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/RiskLocationEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\RiskLocation\\\\RiskLocationCommon\\:\\:\\$otherType\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/RiskLocationEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\RiskLocation\\\\RiskLocationCommon\\:\\:\\$type\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/RiskLocationEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\SourceEnvironments\\\\SourceEnvironmentsCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\SourceEnvironments\\\\SourceEnvironmentsV1UpTo1\\:\\:\\$hasLikelySourceEnvironments\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/SourceEnvironmentsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\SourceEnvironments\\\\SourceEnvironmentsCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\SourceEnvironments\\\\SourceEnvironmentsV1UpTo1\\:\\:\\$likelySourceEnvironments\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/SourceEnvironmentsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Symptoms\\\\SymptomsCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\Symptoms\\\\SymptomsV1UpTo1\\:\\:\\$stillHadSymptomsAt\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/SymptomsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Symptoms\\\\SymptomsCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\Symptoms\\\\SymptomsV1UpTo1\\:\\:\\$wasSymptomaticAtTimeOfCall\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/SymptomsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Symptoms\\\\SymptomsCommon\\:\\:\\$hasSymptoms\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/SymptomsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Symptoms\\\\SymptomsCommon\\:\\:\\$otherSymptoms\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/SymptomsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Symptoms\\\\SymptomsCommon\\:\\:\\$symptoms\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/SymptomsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestV1UpTo3\\:\\:\\$previousInfectionHpzoneNumber\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$contactOfConfirmedInfection\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$dateOfInfectiousnessStart\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$dateOfResult\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$dateOfSymptomOnset\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$dateOfTest\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$infectionIndicator\\.$#"
+			count: 3
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$isReinfection\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$labTestIndicator\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$monsterNumber\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$otherLabTestIndicator\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$otherReason\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$previousInfectionCaseNumber\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$previousInfectionDateOfSymptom\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$previousInfectionProven\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$previousInfectionReported\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$previousInfectionSymptomFree\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestCommon\\:\\:\\$selfTestIndicator\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestV3Up\\:\\:\\$reasons\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property \\(App\\\\Models\\\\Versions\\\\CovidCase\\\\UnderlyingSuffering\\\\UnderlyingSufferingCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\UnderlyingSuffering\\\\UnderlyingSufferingV1UpTo1\\)\\|App\\\\Models\\\\Versions\\\\CovidCase\\\\UnderlyingSuffering\\\\UnderlyingSufferingV2Up\\:\\:\\$items\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/UnderlyingSufferingEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\UnderlyingSuffering\\\\UnderlyingSufferingCommon\\:\\:\\$hasUnderlyingSuffering\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/UnderlyingSufferingEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\UnderlyingSuffering\\\\UnderlyingSufferingCommon\\:\\:\\$hasUnderlyingSufferingOrMedication\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/UnderlyingSufferingEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\UnderlyingSuffering\\\\UnderlyingSufferingCommon\\:\\:\\$otherItems\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/UnderlyingSufferingEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\UnderlyingSuffering\\\\UnderlyingSufferingCommon\\:\\:\\$remarks\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/UnderlyingSufferingEncoder.php
+
+		-
+			message: "#^Access to an undefined property \\(App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationV1UpTo2\\)\\|App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationV3Up\\:\\:\\$vaccineInjections\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/VaccinationEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationV1UpTo1\\:\\:\\$groups\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/VaccinationEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationV1UpTo1\\:\\:\\$hasCompletedVaccinationSeries\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/VaccinationEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationV1UpTo1\\:\\:\\$hasReceivedInvite\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/VaccinationEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationCommon&App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationV1UpTo1\\:\\:\\$otherGroup\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Codables/VaccinationEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationCommon\\:\\:\\$isVaccinated\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Codables/VaccinationEncoder.php
+
+		-
+			message: "#^Cannot cast mixed to int\\.$#"
+			count: 1
+			path: app/Models/CovidCase/General.php
+
+		-
+			message: "#^Cannot call method hashForLastNameAndDateOfBirth\\(\\) on mixed\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Index.php
+
+		-
+			message: "#^Parameter \\#1 \\$datetime of class DateTimeImmutable constructor expects string, mixed given\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Test.php
+
+		-
+			message: "#^Access to an undefined property \\$this\\(App\\\\Models\\\\CovidCase\\\\Vaccination\\)&App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationV1UpTo2\\:\\:\\$vaccineInjections\\.$#"
+			count: 1
+			path: app/Models/CovidCase/Vaccination.php
+
+		-
+			message: "#^Access to an undefined property \\(\\$this\\(App\\\\Models\\\\CovidCase\\\\Vaccination\\)&App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationV1UpTo2\\)\\|\\(\\$this\\(App\\\\Models\\\\CovidCase\\\\Vaccination\\)&App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationV3Up\\)\\:\\:\\$vaccineInjections\\.$#"
+			count: 2
+			path: app/Models/CovidCase/Vaccination.php
+
+		-
+			message: "#^Unable to resolve the template type TKey in call to function collect$#"
+			count: 1
+			path: app/Models/CovidCase/Vaccination.php
+
+		-
+			message: "#^Unable to resolve the template type TValue in call to function collect$#"
+			count: 1
+			path: app/Models/CovidCase/Vaccination.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$is_queue\\.$#"
+			count: 2
+			path: app/Models/Eloquent/CaseList.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$name\\.$#"
+			count: 1
+			path: app/Models/Eloquent/CaseList.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: app/Models/Eloquent/EloquentTask.php
+
+		-
+			message: "#^Cannot call method where\\(\\) on array\\<App\\\\Models\\\\Versions\\\\CaseUpdateContactFragment\\\\CaseUpdateContactFragmentV1\\>\\|null\\.$#"
+			count: 1
+			path: app/Models/Eloquent/IntakeContact.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$order\\.$#"
+			count: 1
+			path: app/Models/ExpertQuestion/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$page\\.$#"
+			count: 1
+			path: app/Models/ExpertQuestion/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$perPage\\.$#"
+			count: 1
+			path: app/Models/ExpertQuestion/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$sort\\.$#"
+			count: 1
+			path: app/Models/ExpertQuestion/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$type\\.$#"
+			count: 1
+			path: app/Models/ExpertQuestion/ListOptions.php
+
+		-
+			message: "#^Cannot cast mixed to int\\.$#"
+			count: 2
+			path: app/Models/ExpertQuestion/ListOptions.php
+
+		-
+			message: "#^Cannot cast mixed to string\\.$#"
+			count: 3
+			path: app/Models/ExpertQuestion/ListOptions.php
+
+		-
+			message: "#^Method App\\\\Models\\\\ExpertQuestion\\\\ListOptions\\:\\:decode\\(\\) should return static\\(App\\\\Models\\\\ExpertQuestion\\\\ListOptions\\) but returns object\\.$#"
+			count: 1
+			path: app/Models/ExpertQuestion/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$order\\.$#"
+			count: 1
+			path: app/Models/Place/Cases/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$page\\.$#"
+			count: 1
+			path: app/Models/Place/Cases/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$perPage\\.$#"
+			count: 1
+			path: app/Models/Place/Cases/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$sort\\.$#"
+			count: 1
+			path: app/Models/Place/Cases/ListOptions.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Place\\\\Cases\\\\ListOptions\\:\\:decode\\(\\) should return static\\(App\\\\Models\\\\Place\\\\Cases\\\\ListOptions\\) but returns object\\.$#"
+			count: 1
+			path: app/Models/Place/Cases/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$categoryGroup\\.$#"
+			count: 1
+			path: app/Models/Place/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$isVerified\\.$#"
+			count: 1
+			path: app/Models/Place/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$order\\.$#"
+			count: 1
+			path: app/Models/Place/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$page\\.$#"
+			count: 1
+			path: app/Models/Place/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$perPage\\.$#"
+			count: 1
+			path: app/Models/Place/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$sort\\.$#"
+			count: 1
+			path: app/Models/Place/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$view\\.$#"
+			count: 1
+			path: app/Models/Place/ListOptions.php
+
+		-
+			message: "#^Cannot cast mixed to int\\.$#"
+			count: 2
+			path: app/Models/Place/ListOptions.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Place\\\\ListOptions\\:\\:decode\\(\\) should return static\\(App\\\\Models\\\\Place\\\\ListOptions\\) but returns object\\.$#"
+			count: 1
+			path: app/Models/Place/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$caseListUuid\\.$#"
+			count: 1
+			path: app/Models/PlannerCase/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$includeTotal\\.$#"
+			count: 1
+			path: app/Models/PlannerCase/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$label\\.$#"
+			count: 1
+			path: app/Models/PlannerCase/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$order\\.$#"
+			count: 1
+			path: app/Models/PlannerCase/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$organisation\\.$#"
+			count: 1
+			path: app/Models/PlannerCase/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$page\\.$#"
+			count: 1
+			path: app/Models/PlannerCase/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$perPage\\.$#"
+			count: 1
+			path: app/Models/PlannerCase/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$sort\\.$#"
+			count: 1
+			path: app/Models/PlannerCase/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$userAssignment\\.$#"
+			count: 1
+			path: app/Models/PlannerCase/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$view\\.$#"
+			count: 1
+			path: app/Models/PlannerCase/ListOptions.php
+
+		-
+			message: "#^Cannot cast mixed to int\\.$#"
+			count: 4
+			path: app/Models/PlannerCase/ListOptions.php
+
+		-
+			message: "#^Method App\\\\Models\\\\PlannerCase\\\\ListOptions\\:\\:decode\\(\\) should return static\\(App\\\\Models\\\\PlannerCase\\\\ListOptions\\) but returns object\\.$#"
+			count: 1
+			path: app/Models/PlannerCase/ListOptions.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\AlternateContact\\\\AlternateContactCommon\\:\\:\\$explanation\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/AlternateContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\AlternateContact\\\\AlternateContactCommon\\:\\:\\$firstname\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/AlternateContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\AlternateContact\\\\AlternateContactCommon\\:\\:\\$gender\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/AlternateContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\AlternateContact\\\\AlternateContactCommon\\:\\:\\$hasAlternateContact\\.$#"
+			count: 2
+			path: app/Models/Task/Codables/AlternateContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\AlternateContact\\\\AlternateContactCommon\\:\\:\\$lastname\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/AlternateContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\AlternateContact\\\\AlternateContactCommon\\:\\:\\$relationship\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/AlternateContactEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\AlternativeLanguage\\\\AlternativeLanguageCommon\\:\\:\\$emailLanguage\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/AlternativeLanguageEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\AlternativeLanguage\\\\AlternativeLanguageCommon\\:\\:\\$phoneLanguages\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/AlternativeLanguageEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\AlternativeLanguage\\\\AlternativeLanguageCommon\\:\\:\\$useAlternativeLanguage\\.$#"
+			count: 2
+			path: app/Models/Task/Codables/AlternativeLanguageEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Circumstances\\\\CircumstancesCommon\\:\\:\\$ppeMedicallyCompetent\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/CircumstancesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Circumstances\\\\CircumstancesCommon\\:\\:\\$ppeReplaceFrequency\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/CircumstancesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Circumstances\\\\CircumstancesCommon\\:\\:\\$usedPersonalProtectiveEquipment\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/CircumstancesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Circumstances\\\\CircumstancesCommon\\:\\:\\$wasUsingPPE\\.$#"
+			count: 2
+			path: app/Models/Task/Codables/CircumstancesEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\General\\\\GeneralCommon\\:\\:\\$category\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\General\\\\GeneralCommon\\:\\:\\$closeContactDuringQuarantine\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\General\\\\GeneralCommon\\:\\:\\$context\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\General\\\\GeneralCommon\\:\\:\\$dateOfLastExposure\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\General\\\\GeneralCommon\\:\\:\\$deletedAt\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\General\\\\GeneralCommon\\:\\:\\$email\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\General\\\\GeneralCommon\\:\\:\\$firstname\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\General\\\\GeneralCommon\\:\\:\\$isSource\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\General\\\\GeneralCommon\\:\\:\\$label\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\General\\\\GeneralCommon\\:\\:\\$lastname\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\General\\\\GeneralCommon\\:\\:\\$nature\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\General\\\\GeneralCommon\\:\\:\\$otherRelationship\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\General\\\\GeneralCommon\\:\\:\\$phone\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\General\\\\GeneralCommon\\:\\:\\$reference\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\General\\\\GeneralCommon\\:\\:\\$relationship\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/GeneralEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Immunity\\\\ImmunityCommon&App\\\\Models\\\\Versions\\\\Task\\\\Immunity\\\\ImmunityV1UpTo1\\:\\:\\$isImmune\\.$#"
+			count: 2
+			path: app/Models/Task/Codables/ImmunityEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Immunity\\\\ImmunityCommon&App\\\\Models\\\\Versions\\\\Task\\\\Immunity\\\\ImmunityV1UpTo1\\:\\:\\$remarks\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/ImmunityEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Inform\\\\InformCommon\\:\\:\\$informTarget\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/InformEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Inform\\\\InformCommon\\:\\:\\$informedBy\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/InformEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Inform\\\\InformCommon\\:\\:\\$shareIndexNameWithContact\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/InformEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Inform\\\\InformCommon\\:\\:\\$status\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/InformEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Job\\\\JobCommon\\:\\:\\$healthCareFunction\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/JobEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Job\\\\JobCommon\\:\\:\\$worksInAviation\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/JobEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Job\\\\JobCommon\\:\\:\\$worksInHealthCare\\.$#"
+			count: 2
+			path: app/Models/Task/Codables/JobEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\PersonalDetails\\\\PersonalDetailsCommon\\:\\:\\$address\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/PersonalDetailsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\PersonalDetails\\\\PersonalDetailsCommon\\:\\:\\$bsnCensored\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/PersonalDetailsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\PersonalDetails\\\\PersonalDetailsCommon\\:\\:\\$bsnLetters\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/PersonalDetailsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\PersonalDetails\\\\PersonalDetailsCommon\\:\\:\\$bsnNotes\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/PersonalDetailsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\PersonalDetails\\\\PersonalDetailsCommon\\:\\:\\$dateOfBirth\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/PersonalDetailsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\PersonalDetails\\\\PersonalDetailsCommon\\:\\:\\$gender\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/PersonalDetailsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\PersonalDetails\\\\PersonalDetailsV2Up\\:\\:\\$hasNoBsnOrAddress\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/PersonalDetailsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Symptoms\\\\SymptomsCommon\\:\\:\\$hasSymptoms\\.$#"
+			count: 2
+			path: app/Models/Task/Codables/SymptomsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Symptoms\\\\SymptomsCommon\\:\\:\\$otherSymptoms\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/SymptomsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Symptoms\\\\SymptomsCommon\\:\\:\\$symptoms\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/SymptomsEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Test\\\\TestCommon\\:\\:\\$dateOfTest\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Test\\\\TestCommon\\:\\:\\$isTested\\.$#"
+			count: 2
+			path: app/Models/Task/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Test\\\\TestCommon\\:\\:\\$testResult\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/TestEncoder.php
+
+		-
+			message: "#^Access to an undefined property \\(App\\\\Models\\\\Versions\\\\Task\\\\Vaccination\\\\VaccinationCommon&App\\\\Models\\\\Versions\\\\Task\\\\Vaccination\\\\VaccinationV1UpTo2\\)\\|App\\\\Models\\\\Versions\\\\Task\\\\Vaccination\\\\VaccinationV3Up\\:\\:\\$vaccineInjections\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/VaccinationEncoder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Task\\\\Vaccination\\\\VaccinationCommon&App\\\\Models\\\\Versions\\\\Task\\\\Vaccination\\\\VaccinationV1UpTo1\\:\\:\\$hasCompletedVaccinationSeries\\.$#"
+			count: 1
+			path: app/Models/Task/Codables/VaccinationEncoder.php
+
+		-
+			message: "#^Method App\\\\Models\\\\Task\\\\General\\:\\:getLabelFieldValue\\(\\) should return string\\|null but returns mixed\\.$#"
+			count: 2
+			path: app/Models/Task/General.php
+
+		-
+			message: "#^Access to an undefined property \\(\\$this\\(App\\\\Models\\\\Task\\\\Vaccination\\)&App\\\\Models\\\\Versions\\\\Task\\\\Vaccination\\\\VaccinationV1UpTo2\\)\\|\\(\\$this\\(App\\\\Models\\\\Task\\\\Vaccination\\)&App\\\\Models\\\\Versions\\\\Task\\\\Vaccination\\\\VaccinationV3Up\\)\\:\\:\\$vaccineInjections\\.$#"
+			count: 1
+			path: app/Models/Task/Vaccination.php
+
+		-
+			message: "#^Unable to resolve the template type TKey in call to function collect$#"
+			count: 1
+			path: app/Models/Task/Vaccination.php
+
+		-
+			message: "#^Unable to resolve the template type TValue in call to function collect$#"
+			count: 1
+			path: app/Models/Task/Vaccination.php
+
+		-
+			message: "#^Cannot access offset string on mixed\\.$#"
+			count: 1
+			path: app/Repositories/ConfigPermissionRepository.php
+
+		-
+			message: "#^Parameter \\#2 \\$rolesAndPermission of method App\\\\Repositories\\\\ConfigPermissionRepository\\:\\:isExistingAndValidRole\\(\\) expects array, mixed given\\.$#"
+			count: 1
+			path: app/Repositories/ConfigPermissionRepository.php
+
+		-
+			message: "#^Method App\\\\Repositories\\\\DbCaseFragmentRepository\\:\\:columnNameForFragmentName\\(\\) is unused\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseFragmentRepository.php
+
+		-
+			message: "#^Template type T of method App\\\\Repositories\\\\DbCaseFragmentRepository\\:\\:createCaseFragment\\(\\) is not referenced in a parameter\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseFragmentRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$assignedOrganisationLabel\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$assignedUserUuid\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$bcoStatus\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$caseId\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$caseLabels\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$completedAt\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$copiedAt\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$dateOfSymptomOnset\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$dateOfTest\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$exportId\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$exportedAt\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$indexStatus\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$isApproved\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$organisationLabel\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$priority\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$pseudoBsnGuid\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$statusExplanation\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$statusIndexContactTracing\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$symptomatic\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$testMonsterNumber\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$updated_at\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$uuid\\.$#"
+			count: 3
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Cannot cast mixed to int\\.$#"
+			count: 3
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Parameter \\#1 \\$perPage of method Illuminate\\\\Database\\\\Eloquent\\\\Builder\\<App\\\\Models\\\\Eloquent\\\\EloquentCase\\>\\:\\:paginate\\(\\) expects int\\|null, mixed given\\.$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Unable to resolve the template type TKey in call to function collect$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Unable to resolve the template type TValue in call to function collect$#"
+			count: 1
+			path: app/Repositories/DbCaseRepository.php
+
+		-
+			message: "#^Method App\\\\Repositories\\\\DbOrganisationRepository\\:\\:getOutsourceOrganisation\\(\\) should return App\\\\Models\\\\Eloquent\\\\EloquentOrganisation\\|null but returns Illuminate\\\\Database\\\\Eloquent\\\\Model\\|null\\.$#"
+			count: 1
+			path: app/Repositories/DbOrganisationRepository.php
+
+		-
+			message: "#^Parameter \\#1 \\$relations of method Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<\\(int\\|string\\),App\\\\Models\\\\Eloquent\\\\EloquentCase\\>\\:\\:load\\(\\) expects array\\<\\(callable\\(Illuminate\\\\Database\\\\Eloquent\\\\Builder\\)\\: mixed\\)\\|string\\>\\|string, array\\{contexts\\: Closure\\(Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\HasMany\\)\\: void, 0\\: 'hospital'\\} given\\.$#"
+			count: 1
+			path: app/Repositories/DbPlaceRepository.php
+
+		-
+			message: "#^Cannot access property \\$label on mixed\\.$#"
+			count: 1
+			path: app/Repositories/DbQuestionRepository.php
+
+		-
+			message: "#^Cannot access property \\$trigger_name on mixed\\.$#"
+			count: 1
+			path: app/Repositories/DbQuestionRepository.php
+
+		-
+			message: "#^Cannot access property \\$uuid on mixed\\.$#"
+			count: 1
+			path: app/Repositories/DbQuestionRepository.php
+
+		-
+			message: "#^Cannot access property \\$value on mixed\\.$#"
+			count: 1
+			path: app/Repositories/DbQuestionRepository.php
+
+		-
+			message: "#^Parameter \\#1 \\$value of function collect expects Illuminate\\\\Contracts\\\\Support\\\\Arrayable\\<\\(int\\|string\\), mixed\\>\\|iterable\\<\\(int\\|string\\), mixed\\>\\|null, string given\\.$#"
+			count: 1
+			path: app/Repositories/DbUserRepository.php
+
+		-
+			message: "#^Unable to resolve the template type TKey in call to function collect$#"
+			count: 1
+			path: app/Repositories/DbUserRepository.php
+
+		-
+			message: "#^Unable to resolve the template type TValue in call to function collect$#"
+			count: 1
+			path: app/Repositories/DbUserRepository.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Organisation\\\\OrganisationCommon\\:\\:\\$externalId\\.$#"
+			count: 2
+			path: app/Repositories/Osiris/DiskCredentialsRepository.php
+
+		-
+			message: "#^Parameter \\#1 \\$value of function collect expects Illuminate\\\\Contracts\\\\Support\\\\Arrayable\\<\\(int\\|string\\), mixed\\>\\|iterable\\<\\(int\\|string\\), mixed\\>\\|null, mixed given\\.$#"
+			count: 1
+			path: app/Rules/ExistsRule.php
+
+		-
+			message: "#^Unable to resolve the template type TKey in call to function collect$#"
+			count: 1
+			path: app/Rules/ExistsRule.php
+
+		-
+			message: "#^Unable to resolve the template type TValue in call to function collect$#"
+			count: 1
+			path: app/Rules/ExistsRule.php
+
+		-
+			message: "#^Method App\\\\Schema\\\\Entity\\:\\:newInstanceWithVersion\\(\\) should return static\\(App\\\\Schema\\\\Entity\\) but returns App\\\\Schema\\\\SchemaObject\\.$#"
+			count: 1
+			path: app/Schema/Entity.php
+
+		-
+			message: "#^Parameter \\#1 \\$schemaVersion of class App\\\\Schema\\\\Entity constructor expects App\\\\Schema\\\\SchemaVersion\\<static\\(App\\\\Schema\\\\EntityObject\\)\\>, App\\\\Schema\\\\SchemaVersion\\<static\\(App\\\\Schema\\\\Entity\\)\\> given\\.$#"
+			count: 1
+			path: app/Schema/Entity.php
+
+		-
+			message: "#^Call to function is_object\\(\\) with array will always evaluate to false\\.$#"
+			count: 1
+			path: app/Schema/FragmentModel.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: app/Schema/FragmentModel.php
+
+		-
+			message: "#^Parameter \\#4 \\$versionDiffs of class App\\\\Schema\\\\Generator\\\\JSONSchema\\\\Diff\\\\Model\\\\SchemaDiff constructor expects App\\\\Schema\\\\Generator\\\\JSONSchema\\\\Diff\\\\Model\\\\DiffList\\<int, App\\\\Schema\\\\Generator\\\\JSONSchema\\\\Diff\\\\Model\\\\SchemaVersionDiff\\>\\|null, App\\\\Schema\\\\Generator\\\\JSONSchema\\\\Diff\\\\Model\\\\DiffList\\<int\\|string, App\\\\Schema\\\\Generator\\\\JSONSchema\\\\Diff\\\\Model\\\\Diff\\> given\\.$#"
+			count: 1
+			path: app/Schema/Generator/JSONSchema/Diff/Schema/Schema.php
+
+		-
+			message: "#^Method App\\\\Schema\\\\SchemaVersion\\:\\:getClass\\(\\) should return class\\-string\\<T of App\\\\Schema\\\\SchemaObject\\> but returns class\\-string\\.$#"
+			count: 1
+			path: app/Schema/SchemaVersion.php
+
+		-
+			message: "#^Method App\\\\Services\\\\AbstractFragmentService\\:\\:encodeFragmentUsingEncoder\\(\\) should return array but returns mixed\\.$#"
+			count: 1
+			path: app/Services/AbstractFragmentService.php
+
+		-
+			message: "#^Unsafe access to private property App\\\\Services\\\\AbstractFragmentService\\:\\:\\$fragmentClasses through static\\:\\:\\.$#"
+			count: 5
+			path: app/Services/AbstractFragmentService.php
+
+		-
+			message: "#^Argument of an invalid type object supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: app/Services/AccessRequestService.php
+
+		-
+			message: "#^Parameter \\#1 \\$data of method App\\\\Services\\\\AccessRequestService\\:\\:postProcessObject\\(\\) expects object, mixed given\\.$#"
+			count: 1
+			path: app/Services/AccessRequestService.php
+
+		-
+			message: "#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#"
+			count: 1
+			path: app/Services/AccessRequestService.php
+
+		-
+			message: "#^Method App\\\\Services\\\\AuthorizationService\\:\\:getPermissionsForRoles\\(\\) should return array\\<MinVWS\\\\DBCO\\\\Enum\\\\Models\\\\Permission\\> but returns array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: app/Services/AuthorizationService.php
+
+		-
+			message: "#^Cannot access property \\$isDefault on mixed\\.$#"
+			count: 2
+			path: app/Services/CaseAssignmentService.php
+
+		-
+			message: "#^Cannot access property \\$isQueue on mixed\\.$#"
+			count: 2
+			path: app/Services/CaseAssignmentService.php
+
+		-
+			message: "#^Parameter \\#1 \\$case of method App\\\\Services\\\\CaseAssignmentService\\:\\:assignCaseIfUnchanged\\(\\) expects App\\\\Models\\\\Eloquent\\\\EloquentCase, mixed given\\.$#"
+			count: 1
+			path: app/Services/CaseAssignmentService.php
+
+		-
+			message: "#^Parameter \\#1 \\$caseList of class App\\\\Models\\\\Assignment\\\\CaseListAssignment constructor expects App\\\\Models\\\\Eloquent\\\\CaseList, mixed given\\.$#"
+			count: 2
+			path: app/Services/CaseAssignmentService.php
+
+		-
+			message: "#^Parameter \\#1 \\$organisation of class App\\\\Models\\\\Assignment\\\\OrganisationAssignment constructor expects App\\\\Models\\\\Eloquent\\\\EloquentOrganisation, mixed given\\.$#"
+			count: 1
+			path: app/Services/CaseAssignmentService.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of class App\\\\Models\\\\Assignment\\\\UserAssignment constructor expects App\\\\Models\\\\Eloquent\\\\EloquentUser, mixed given\\.$#"
+			count: 2
+			path: app/Services/CaseAssignmentService.php
+
+		-
+			message: "#^Parameter \\#2 \\$case of method App\\\\Services\\\\CaseAssignmentService\\:\\:updateAssignmentOptionForCase\\(\\) expects App\\\\Models\\\\Eloquent\\\\EloquentCase, mixed given\\.$#"
+			count: 1
+			path: app/Services/CaseAssignmentService.php
+
+		-
+			message: "#^Cannot cast mixed to int\\.$#"
+			count: 2
+			path: app/Services/CaseLockService.php
+
+		-
+			message: "#^Call to an undefined method DateTimeInterface\\:\\:copy\\(\\)\\.$#"
+			count: 1
+			path: app/Services/CaseService.php
+
+		-
+			message: "#^Argument of an invalid type array\\<App\\\\Models\\\\Versions\\\\CaseUpdateContactFragment\\\\CaseUpdateContactFragmentV1\\>\\|null supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: app/Services/CaseUpdate/CaseUpdateService.php
+
+		-
+			message: "#^Unsafe call to private method App\\\\Services\\\\FragmentMigration\\\\FragmentExtractionHelper\\:\\:extractFragment\\(\\) through static\\:\\:\\.$#"
+			count: 3
+			path: app/Services/FragmentMigration/FragmentExtractionHelper.php
+
+		-
+			message: "#^Unsafe call to private method App\\\\Services\\\\FragmentMigration\\\\FragmentExtractionHelper\\:\\:extractFragmentVersion\\(\\) through static\\:\\:\\.$#"
+			count: 1
+			path: app/Services/FragmentMigration/FragmentExtractionHelper.php
+
+		-
+			message: "#^Method App\\\\Services\\\\Intake\\\\IncomingMessageToRawIntakeConverter\\:\\:decryptEncryptedData\\(\\) should return array but returns mixed\\.$#"
+			count: 1
+			path: app/Services/Intake/IncomingMessageToRawIntakeConverter.php
+
+		-
+			message: "#^Method App\\\\Services\\\\Intake\\\\IntakeConfig\\:\\:getAllowedCaseFragments\\(\\) should return array\\<string\\> but returns array\\.$#"
+			count: 1
+			path: app/Services/Intake/IntakeConfig.php
+
+		-
+			message: "#^Parameter \\#1 \\$externalId of method App\\\\Repositories\\\\OrganisationRepository\\:\\:getOrganisationByExternalId\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: app/Services/Intake/RawIntakeToIntakeConverter.php
+
+		-
+			message: "#^Class App\\\\Services\\\\Location\\\\LocationClient extends @final class GuzzleHttp\\\\Client\\.$#"
+			count: 1
+			path: app/Services/Location/LocationClient.php
+
+		-
+			message: "#^Method App\\\\Services\\\\Location\\\\LocationService\\:\\:doRequest\\(\\) should return array but returns mixed\\.$#"
+			count: 1
+			path: app/Services/Location/LocationService.php
+
+		-
+			message: "#^Method App\\\\Services\\\\Message\\\\AttachmentFileHelper\\:\\:getContent\\(\\) should return string but returns string\\|null\\.$#"
+			count: 1
+			path: app/Services/Message/AttachmentFileHelper.php
+
+		-
+			message: "#^Cannot access offset 'transport' on mixed\\.$#"
+			count: 1
+			path: app/Services/Message/MessageTransportService.php
+
+		-
+			message: "#^Parameter \\#1 \\$driver of method Illuminate\\\\Support\\\\Manager\\:\\:driver\\(\\) expects string\\|null, mixed given\\.$#"
+			count: 1
+			path: app/Services/Message/MessageTransportService.php
+
+		-
+			message: "#^Method App\\\\Services\\\\Message\\\\Transport\\\\MessageTransportManager\\:\\:createSecureMailDriver\\(\\) should return App\\\\Services\\\\Message\\\\Transport\\\\SecureMailMessageTransport but returns mixed\\.$#"
+			count: 1
+			path: app/Services/Message/Transport/MessageTransportManager.php
+
+		-
+			message: "#^Method App\\\\Services\\\\Message\\\\Transport\\\\MessageTransportManager\\:\\:createSmtpDriver\\(\\) should return App\\\\Services\\\\Message\\\\Transport\\\\SmtpMailerMessageTransport but returns mixed\\.$#"
+			count: 1
+			path: app/Services/Message/Transport/MessageTransportManager.php
+
+		-
+			message: "#^Method App\\\\Services\\\\Message\\\\Transport\\\\MessageTransportManager\\:\\:createZivverDriver\\(\\) should return App\\\\Services\\\\Message\\\\Transport\\\\ZivverMessageTransport but returns mixed\\.$#"
+			count: 1
+			path: app/Services/Message/Transport/MessageTransportManager.php
+
+		-
+			message: "#^Method App\\\\Services\\\\Message\\\\Transport\\\\MessageTransportManager\\:\\:getDefaultDriver\\(\\) should return string but returns mixed\\.$#"
+			count: 1
+			path: app/Services/Message/Transport/MessageTransportManager.php
+
+		-
+			message: "#^Cannot access offset 'data' on mixed\\.$#"
+			count: 1
+			path: app/Services/MessageQueue/AMQPIncomingMessage.php
+
+		-
+			message: "#^Cannot access offset 'id' on mixed\\.$#"
+			count: 1
+			path: app/Services/MessageQueue/AMQPIncomingMessage.php
+
+		-
+			message: "#^Property App\\\\Services\\\\MessageQueue\\\\AMQPIncomingMessage\\:\\:\\$data \\(array\\) does not accept mixed\\.$#"
+			count: 1
+			path: app/Services/MessageQueue/AMQPIncomingMessage.php
+
+		-
+			message: "#^Property App\\\\Services\\\\MessageQueue\\\\AMQPIncomingMessage\\:\\:\\$id \\(string\\) does not accept mixed\\.$#"
+			count: 1
+			path: app/Services/MessageQueue/AMQPIncomingMessage.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\CovidCase\\\\Communication&App\\\\Models\\\\Versions\\\\CovidCase\\\\Communication\\\\CommunicationV3Up\\:\\:\\$remarksRivm\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/MELGGDExternBuilder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\CovidCase\\\\ExtensiveContactTracing&App\\\\Models\\\\Versions\\\\CovidCase\\\\ExtensiveContactTracing\\\\ExtensiveContactTracingV2Up\\:\\:\\$receivesExtensiveContactTracing\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVBcoTypeBuilder.php
+
+		-
+			message: "#^Cannot access property \\$otherDescription on App\\\\Models\\\\CovidCase\\\\ExtensiveContactTracing\\|null\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVBcoTypeandBuilder.php
+
+		-
+			message: "#^Cannot access property \\$receivesExtensiveContactTracing on App\\\\Models\\\\CovidCase\\\\ExtensiveContactTracing\\|null\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVBcoTypeandBuilder.php
+
+		-
+			message: "#^Cannot access property \\$receivesExtensiveContactTracing on App\\\\Models\\\\CovidCase\\\\ExtensiveContactTracing\\|null\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVContactInv3Builder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Shared\\\\VaccineInjection\\\\VaccineInjectionCommon\\:\\:\\$injectionDate\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVDtbekvacLtsBuilder.php
+
+		-
+			message: "#^Cannot access property \\$isStudent on App\\\\Models\\\\CovidCase\\\\EduDaycare\\|null\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVStudentLLBuilder.php
+
+		-
+			message: "#^Cannot access property \\$type on App\\\\Models\\\\CovidCase\\\\EduDaycare\\|null\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVStudentLLBuilder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\CovidCase\\\\Test&App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestV1UpTo3\\:\\:\\$previousInfectionHpzoneNumber\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVherinfmeldnrBuilder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\CovidCase\\\\Test&App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestV4Up\\:\\:\\$previousInfectionCaseNumber\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVherinfmeldnrBuilder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\UnderlyingSuffering\\\\UnderlyingSufferingV2Up\\:\\:\\$hasUnderlyingSuffering\\.$#"
+			count: 2
+			path: app/Services/Osiris/Answer/NCOVondaandcomorV2Builder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\UnderlyingSuffering\\\\UnderlyingSufferingV2Up\\:\\:\\$hasUnderlyingSufferingOrMedication\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVondaandcomorV2Builder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\UnderlyingSuffering\\\\UnderlyingSufferingV2Up\\:\\:\\$items\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVondaandcomorV2Builder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\CovidCase\\\\UnderlyingSuffering\\\\UnderlyingSufferingV2Up\\:\\:\\$otherItems\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVondaandcomorV2Builder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Shared\\\\VaccineInjection\\\\VaccineInjectionCommon\\:\\:\\$injectionDate\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVpatvacLtsDtBuilder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\CovidCase\\\\Pregnancy\\:\\:\\$dueDate\\.$#"
+			count: 2
+			path: app/Services/Osiris/Answer/NCOVtrimzwangerBuilder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Shared\\\\VaccineInjection\\\\VaccineInjectionCommon\\:\\:\\$vaccineType\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVvacmerkLtsBuilder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Shared\\\\VaccineInjection\\\\VaccineInjectionCommon\\:\\:\\$otherVaccineType\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVvacmerkLtsandBuilder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Shared\\\\VaccineInjection\\\\VaccineInjectionCommon\\:\\:\\$vaccineType\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVvacmerkLtsandBuilder.php
+
+		-
+			message: "#^Access to an undefined property \\(App\\\\Models\\\\CovidCase\\\\Test&App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestV3Up\\)\\|App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestV1\\|App\\\\Models\\\\Versions\\\\CovidCase\\\\Test\\\\TestV2\\:\\:\\$reasons\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVwaarschuwBuilder.php
+
+		-
+			message: "#^Cannot access property \\$isLivingAtRiskLocation on App\\\\Models\\\\CovidCase\\\\RiskLocation\\|null\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVwinstelBuilder.php
+
+		-
+			message: "#^Cannot access property \\$isLivingAtRiskLocation on App\\\\Models\\\\CovidCase\\\\RiskLocation\\|null\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVwinsteltypeOvBuilder.php
+
+		-
+			message: "#^Cannot access property \\$otherType on App\\\\Models\\\\CovidCase\\\\RiskLocation\\|null\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVwinsteltypeOvBuilder.php
+
+		-
+			message: "#^Cannot access property \\$type on App\\\\Models\\\\CovidCase\\\\RiskLocation\\|null\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVwinsteltypeOvBuilder.php
+
+		-
+			message: "#^Cannot access property \\$isLivingAtRiskLocation on App\\\\Models\\\\CovidCase\\\\RiskLocation\\|null\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVwinsteltypeV2Builder.php
+
+		-
+			message: "#^Cannot access property \\$type on App\\\\Models\\\\CovidCase\\\\RiskLocation\\|null\\.$#"
+			count: 2
+			path: app/Services/Osiris/Answer/NCOVwinsteltypeV2Builder.php
+
+		-
+			message: "#^Cannot access property \\$isLivingAtRiskLocation on App\\\\Models\\\\CovidCase\\\\RiskLocation\\|null\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/NCOVwinsteltypeV3Builder.php
+
+		-
+			message: "#^Cannot access property \\$type on App\\\\Models\\\\CovidCase\\\\RiskLocation\\|null\\.$#"
+			count: 2
+			path: app/Services/Osiris/Answer/NCOVwinsteltypeV3Builder.php
+
+		-
+			message: "#^Cannot access property \\$hasLikelySourceEnvironments on App\\\\Models\\\\CovidCase\\\\SourceEnvironments\\|null\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/PATAzcBuilder.php
+
+		-
+			message: "#^Cannot access property \\$likelySourceEnvironments on App\\\\Models\\\\CovidCase\\\\SourceEnvironments\\|null\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/PATAzcBuilder.php
+
+		-
+			message: "#^Unable to resolve the template type TKey in call to function collect$#"
+			count: 1
+			path: app/Services/Osiris/Answer/PATAzcBuilder.php
+
+		-
+			message: "#^Unable to resolve the template type TValue in call to function collect$#"
+			count: 1
+			path: app/Services/Osiris/Answer/PATAzcBuilder.php
+
+		-
+			message: "#^Cannot access property \\$hasLikelySourceEnvironments on App\\\\Models\\\\CovidCase\\\\SourceEnvironments\\|null\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/SourceEnvironmentsBuilder.php
+
+		-
+			message: "#^Cannot access property \\$likelySourceEnvironments on App\\\\Models\\\\CovidCase\\\\SourceEnvironments\\|null\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/SourceEnvironmentsBuilder.php
+
+		-
+			message: "#^Access to an undefined property \\(App\\\\Models\\\\CovidCase\\\\Vaccination&App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationV1UpTo2\\)\\|\\(App\\\\Models\\\\CovidCase\\\\Vaccination&App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationV3Up\\)\\:\\:\\$vaccineInjections\\.$#"
+			count: 1
+			path: app/Services/Osiris/Answer/VaccinationsBuilder.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\CovidCase\\\\Vaccination&App\\\\Models\\\\Versions\\\\CovidCase\\\\Vaccination\\\\VaccinationV3Up\\:\\:\\$vaccinationCount\\.$#"
+			count: 3
+			path: app/Services/Osiris/CaseValidator.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Versions\\\\Shared\\\\VaccineInjection\\\\VaccineInjectionCommon\\:\\:\\$injectionDate\\.$#"
+			count: 3
+			path: app/Services/Osiris/CaseValidator.php
+
+		-
+			message: "#^Unable to resolve the template type TKey in call to function collect$#"
+			count: 1
+			path: app/Services/Place/MergeService.php
+
+		-
+			message: "#^Unable to resolve the template type TValue in call to function collect$#"
+			count: 1
+			path: app/Services/Place/MergeService.php
+
+		-
+			message: "#^Parameter \\#1 \\.\\.\\.\\$arrays of function array_merge expects array, mixed given\\.$#"
+			count: 1
+			path: app/Services/PlaceService.php
+
+		-
+			message: "#^Property App\\\\Models\\\\Questionnaire\\:\\:\\$questions \\(array\\<App\\\\Models\\\\Question\\>\\|null\\) does not accept array\\.$#"
+			count: 1
+			path: app/Services/QuestionnaireService.php
+
+		-
+			message: "#^Method App\\\\Services\\\\SearchHash\\\\SearchService\\:\\:getMatches\\(\\) should return array\\<int, string\\> but returns array\\.$#"
+			count: 1
+			path: app/Services/SearchHash/SearchService.php
+
+		-
+			message: "#^Method App\\\\Services\\\\SearchHash\\\\SearchService\\:\\:getSearchHashResultsByKeys\\(\\) should return Illuminate\\\\Support\\\\Collection\\<\\(int\\|string\\), App\\\\Services\\\\SearchHash\\\\Dto\\\\SearchHashResult\\> but returns Illuminate\\\\Support\\\\Collection\\<int, mixed\\>\\.$#"
+			count: 1
+			path: app/Services/SearchHash/SearchService.php
+
+		-
+			message: "#^Cannot access property \\$questionUuid on mixed\\.$#"
+			count: 1
+			path: app/Services/TaskService.php
+
+		-
+			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
+			count: 1
+			path: app/Services/Timeline/AssignmentMessageService.php
+
+		-
+			message: "#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: app/Services/UserService.php
+
+		-
+			message: "#^Parameter \\#1 \\$externalId of method App\\\\Repositories\\\\OrganisationRepository\\:\\:getOrganisationByExternalId\\(\\) expects string, mixed given\\.$#"
+			count: 2
+			path: app/Services/UserService.php
+
+		-
+			message: "#^Parameter \\#2 \\$array of function array_key_exists expects array, mixed given\\.$#"
+			count: 1
+			path: app/Services/UserService.php
+
+		-
+			message: "#^Parameter \\#2 \\$name of method App\\\\Repositories\\\\UserRepository\\:\\:upsertUserByExternalId\\(\\) expects string, string\\|null given\\.$#"
+			count: 1
+			path: app/Services/UserService.php
+
+		-
+			message: "#^Parameter \\#2 \\$string of function explode expects string, mixed given\\.$#"
+			count: 1
+			path: app/Services/UserService.php
+
+		-
+			message: "#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#"
+			count: 2
+			path: app/Services/UserService.php
+
+		-
+			message: "#^Called 'Model\\:\\:make\\(\\)' which performs unnecessary work, use 'new Model\\(\\)'\\.$#"
+			count: 1
+			path: database/factories/Eloquent/CaseAssignmentHistoryFactory.php
+
+		-
+			message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Database\\\\Eloquent\\\\Factories\\\\Factory\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>\\:\\:afterMaking\\(\\) expects Closure\\(Illuminate\\\\Database\\\\Eloquent\\\\Model\\)\\: mixed, Closure\\(App\\\\Models\\\\Eloquent\\\\CaseAssignmentHistory\\)\\: void given\\.$#"
+			count: 1
+			path: database/factories/Eloquent/CaseAssignmentHistoryFactory.php
+
+		-
+			message: "#^Cannot call method getAllowedCaseFragments\\(\\) on mixed\\.$#"
+			count: 1
+			path: database/factories/Eloquent/CaseUpdateFactory.php
+
+		-
+			message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Database\\\\Eloquent\\\\Factories\\\\Factory\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>\\:\\:afterCreating\\(\\) expects Closure\\(Illuminate\\\\Database\\\\Eloquent\\\\Model\\)\\: mixed, Closure\\(App\\\\Models\\\\Eloquent\\\\CaseUpdate\\)\\: void given\\.$#"
+			count: 1
+			path: database/factories/Eloquent/CaseUpdateFactory.php
+
+		-
+			message: "#^Call to an undefined method Faker\\\\Generator\\:\\:randomSample\\(\\)\\.$#"
+			count: 1
+			path: database/factories/Eloquent/CaseUpdateFragmentFactory.php
+
+		-
+			message: "#^Cannot call method getAllowedCaseFragments\\(\\) on mixed\\.$#"
+			count: 1
+			path: database/factories/Eloquent/CaseUpdateFragmentFactory.php
+
+		-
+			message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Database\\\\Eloquent\\\\Factories\\\\Factory\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>\\:\\:afterMaking\\(\\) expects Closure\\(Illuminate\\\\Database\\\\Eloquent\\\\Model\\)\\: mixed, Closure\\(App\\\\Models\\\\Eloquent\\\\CaseUpdateFragment\\)\\: void given\\.$#"
+			count: 1
+			path: database/factories/Eloquent/CaseUpdateFragmentFactory.php
+
+		-
+			message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Database\\\\Eloquent\\\\Factories\\\\Factory\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>\\:\\:afterMaking\\(\\) expects Closure\\(Illuminate\\\\Database\\\\Eloquent\\\\Model\\)\\: mixed, Closure\\(App\\\\Models\\\\Eloquent\\\\Context\\)\\: void given\\.$#"
+			count: 1
+			path: database/factories/Eloquent/ContextFactory.php
+
+		-
+			message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Database\\\\Eloquent\\\\Factories\\\\Factory\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>\\:\\:afterMaking\\(\\) expects Closure\\(Illuminate\\\\Database\\\\Eloquent\\\\Model\\)\\: mixed, Closure\\(App\\\\Models\\\\Eloquent\\\\EloquentAnswer\\)\\: void given\\.$#"
+			count: 1
+			path: database/factories/Eloquent/EloquentAnswerFactory.php
+
+		-
+			message: "#^Call to an undefined static method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:getSchema\\(\\)\\.$#"
+			count: 1
+			path: database/factories/Eloquent/EloquentCaseFactory.php
+
+		-
+			message: "#^Parameter \\#1 \\$version of method App\\\\Schema\\\\Schema\\<App\\\\Models\\\\Eloquent\\\\EloquentCase\\>\\:\\:getVersion\\(\\) expects int, mixed given\\.$#"
+			count: 1
+			path: database/factories/Eloquent/EloquentCaseFactory.php
+
+		-
+			message: "#^Parameter \\#1 \\$version of method App\\\\Schema\\\\Schema\\<App\\\\Models\\\\Eloquent\\\\EloquentTask\\>\\:\\:getVersion\\(\\) expects int, mixed given\\.$#"
+			count: 1
+			path: database/factories/Eloquent/EloquentTaskFactory.php
+
+		-
+			message: "#^Parameter \\#1 \\$value of function collect expects Illuminate\\\\Contracts\\\\Support\\\\Arrayable\\<\\(int\\|string\\), mixed\\>\\|iterable\\<\\(int\\|string\\), mixed\\>\\|null, mixed given\\.$#"
+			count: 1
+			path: database/factories/Eloquent/EloquentUserFactory.php
+
+		-
+			message: "#^Unable to resolve the template type TKey in call to function collect$#"
+			count: 1
+			path: database/factories/Eloquent/EloquentUserFactory.php
+
+		-
+			message: "#^Unable to resolve the template type TValue in call to function collect$#"
+			count: 1
+			path: database/factories/Eloquent/EloquentUserFactory.php
+
+		-
+			message: "#^Call to an undefined static method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:getSchema\\(\\)\\.$#"
+			count: 1
+			path: database/factories/Eloquent/ExpertQuestionAnswerFactory.php
+
+		-
+			message: "#^Call to an undefined static method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:getSchema\\(\\)\\.$#"
+			count: 1
+			path: database/factories/Eloquent/ExpertQuestionFactory.php
+
+		-
+			message: "#^Called 'Model\\:\\:make\\(\\)' which performs unnecessary work, use 'new Model\\(\\)'\\.$#"
+			count: 1
+			path: database/factories/Eloquent/ExpertQuestionFactory.php
+
+		-
+			message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Database\\\\Eloquent\\\\Factories\\\\Factory\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>\\:\\:afterMaking\\(\\) expects Closure\\(Illuminate\\\\Database\\\\Eloquent\\\\Model\\)\\: mixed, Closure\\(App\\\\Models\\\\Eloquent\\\\ExpertQuestion\\)\\: void given\\.$#"
+			count: 2
+			path: database/factories/Eloquent/ExpertQuestionFactory.php
+
+		-
+			message: "#^Called 'Model\\:\\:make\\(\\)' which performs unnecessary work, use 'new Model\\(\\)'\\.$#"
+			count: 1
+			path: database/factories/Eloquent/NoteFactory.php
+
+		-
+			message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Database\\\\Eloquent\\\\Factories\\\\Factory\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>\\:\\:afterMaking\\(\\) expects Closure\\(Illuminate\\\\Database\\\\Eloquent\\\\Model\\)\\: mixed, Closure\\(App\\\\Models\\\\Eloquent\\\\Note\\)\\: void given\\.$#"
+			count: 1
+			path: database/factories/Eloquent/NoteFactory.php
+
+		-
+			message: "#^Cannot access property \\$hasPrimaryKey on mixed\\.$#"
+			count: 1
+			path: database/migrations/2021_06_24_085710_add_pk_to_organisation_outsource.php
+
+		-
+			message: "#^Cannot access property \\$reference on mixed\\.$#"
+			count: 1
+			path: database/migrations/2021_07_01_121733_task_source_contact_dossier_number.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$uuid\\.$#"
+			count: 3
+			path: database/migrations/2021_07_30_110826_update_has_house_mates_yes_no_unknown.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$hasCompletedVaccinationSeries\\.$#"
+			count: 1
+			path: database/migrations/2021_09_10_085348_support_unlimited_vaccine_injections.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$uuid\\.$#"
+			count: 2
+			path: database/migrations/2021_09_10_085348_support_unlimited_vaccine_injections.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$vaccineInjections\\.$#"
+			count: 1
+			path: database/migrations/2021_09_10_085348_support_unlimited_vaccine_injections.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$vaccineType\\.$#"
+			count: 2
+			path: database/migrations/2021_09_10_085348_support_unlimited_vaccine_injections.php
+
+		-
+			message: "#^Cannot call method task\\(\\) on mixed\\.$#"
+			count: 2
+			path: database/migrations/2021_10_01_104423_change_task_job_works_in_aviation_type.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\CovidCase\\\\Symptoms\\:\\:\\$wasSymptomaticAtTimeOfCall\\.$#"
+			count: 2
+			path: database/migrations/2021_10_15_133814_update_symptoms_convert_was_symptomatic_at_time_of_call.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$stillHadSymptomsAt\\.$#"
+			count: 1
+			path: database/migrations/2021_10_15_133814_update_symptoms_convert_was_symptomatic_at_time_of_call.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$wasSymptomaticAtTimeOfCall\\.$#"
+			count: 1
+			path: database/migrations/2021_10_15_133814_update_symptoms_convert_was_symptomatic_at_time_of_call.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$sortorder\\.$#"
+			count: 1
+			path: database/migrations/2021_11_29_084757_update_labels.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between App\\\\Models\\\\Eloquent\\\\EloquentOrganisation and null will always evaluate to false\\.$#"
+			count: 1
+			path: database/migrations/2022_03_08_161803_seed_new_user_organisation_and_roles.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between App\\\\Models\\\\Eloquent\\\\EloquentOrganisation and null will always evaluate to false\\.$#"
+			count: 1
+			path: database/migrations/2022_05_10_093802_seed_user_medical_supervisor_role.php

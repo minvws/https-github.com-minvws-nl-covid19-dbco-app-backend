@@ -1,0 +1,49 @@
+secrets:
+    composer_auth:
+        file: ./auth.json
+
+volumes:
+    mysql-data:
+        driver: local
+    phpstan:
+
+services:
+    #Single Redis intance for persistent and volatile storage
+    redis-hap:
+        extends:
+            file: docker-compose/common.yml
+            service: redis-hap
+        ports:
+            - 6379:6379
+
+    mysql:
+        extends:
+            file: docker-compose/common.yml
+            service: mysql
+        ports:
+            - ${MYSQL_PORT:-3306}:3306
+
+    portal:
+        extends:
+            file: docker-compose/common.yml
+            service: portal
+        depends_on:
+            - mysql
+            - redis-hap
+        build:
+            target: base
+            args:
+                - DEV=1
+            secrets:
+                - composer_auth
+        environment:
+            - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
+        ports:
+            - ${PORTAL_PORT:-8084}:8080
+        volumes:
+            - ./services/portal/src:/src
+            - ./services/shared/packages/dbco-enum/output/ts:/src/resources/js/types/enums
+            - ./services/shared/library:/shared/library
+            - ./services/shared/packages:/shared/packages
+            - ./services/shared/resources:/shared/resources
+            - phpstan:/tmp/phpstan

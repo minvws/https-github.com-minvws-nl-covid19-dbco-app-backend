@@ -1,0 +1,83 @@
+@mixin badge-variant($color) {
+    color: $color;
+    background-color: $color;
+    background-color: rgba($color, 0.1);
+
+    @at-root a#{&} {
+        @include hover-focus() {
+            color: $color;
+            background-color: darken($color, 10%);
+            background-color: rgba(darken($color, 10%), 0.1);
+        }
+
+        &:focus,
+        &.focus {
+            outline: 0;
+            box-shadow: 0 0 0 $badge-focus-width rgba($color, 0.5);
+        }
+    }
+}
+
+@mixin badge-outline-variant($bc, $color: $bc) {
+    color: $color;
+    border: 1px solid $bc;
+
+    @at-root a#{&} {
+        @include hover-focus() {
+            color: darken($color, 10%);
+            border: 1px solid darken($bc, 10%);
+        }
+
+        &:focus,
+        &.focus {
+            outline: 0;
+            box-shadow: 0 0 0 $badge-focus-width rgba($bc, 0.5);
+        }
+    }
+}
+
+$badge-colors: (
+    "primary":    $bco-purple,
+    "success":    $bco-green,
+    "info":       $bco-info,
+    "warning":    $bco-orange,
+    "danger":     $bco-red,
+    "light":      $light,
+    "dark":       $dark,
+    "light-grey": $light-grey,
+    "lightest-grey": $lightest-grey
+);
+
+.badge {
+    padding: 7px 10px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    text-transform: uppercase;
+
+    &--small{
+        padding: 2px 6px;
+    }
+
+    &--light{
+        color: $black;
+        border: 1px solid $lightest-grey;
+        background-color: white;
+    }
+
+    &.badge-outline-light-grey {
+        @include badge-outline-variant($lightest-grey, $black);
+    }
+
+    @each $color, $value in $badge-colors {
+        &.badge-#{$color} {
+            @include badge-variant($value);
+        }
+    }
+
+    @each $color, $value in $badge-colors {
+        &.badge-outline-#{$color} {
+            @include badge-outline-variant($value, $black);
+        }
+    }
+}

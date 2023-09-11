@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -8,15 +10,13 @@ class AddQuestionResults extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         // api wise we have task -> questionnaire result -> answers but since
         // questionnaireresult doesn't have any fields but a questionnaire id, we
         // don't create it at the db level (we can add questionnaire id on the task level)
-        Schema::create('answer', function (Blueprint $table) {
+        Schema::create('answer', static function (Blueprint $table): void {
             $table->uuid('uuid')->primary();
             $table->uuid('task_uuid');
             $table->foreign('task_uuid')->references('uuid')
@@ -45,19 +45,17 @@ class AddQuestionResults extends Migration
             $table->timestamps();
         });
 
-        Schema::table('task', function (Blueprint $table) {
+        Schema::table('task', static function (Blueprint $table): void {
             $table->string('questionnaire_uuid')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('task', function (Blueprint $table) {
+        Schema::table('task', static function (Blueprint $table): void {
             $table->dropColumn('questionnaire_uuid');
         });
 

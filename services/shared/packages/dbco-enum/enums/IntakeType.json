@@ -1,0 +1,14 @@
+{
+    "phpClass": "IntakeType",
+    "tsConst": "intakeType",
+    "items": [
+        {
+            "label": "BCO",
+            "value": "bco"
+        },
+        {
+            "label": "Zelftest",
+            "value": "selftest"
+        }
+    ]
+}

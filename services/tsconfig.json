@@ -1,0 +1,17 @@
+{
+    "exclude": ["shared/packages/**/tests/**", "shared/packages/**/dist/**"],
+    "references": [
+        {
+            "path": "./portal/src"
+        },
+        {
+            "path": "./shared/packages/schema"
+        },
+        {
+            "path": "./shared/packages/ui-library"
+        },
+        {
+            "path": "./shared/packages/portal-open-api"
+        }
+    ]
+}

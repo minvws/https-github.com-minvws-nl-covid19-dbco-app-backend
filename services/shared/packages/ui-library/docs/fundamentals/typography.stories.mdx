@@ -1,0 +1,65 @@
+import { Canvas, Meta, Story, ColorPalette, ColorItem } from '@storybook/addon-docs'
+import { FontDisplay ,TextStyleDisplay } from '../components'
+
+<Meta title="Fundamentals/Typography" />
+
+# Fundamentals - Typography
+
+<br/><br/>
+
+## Fonts
+
+The following custom fonts are defined in the theme. They are loaded via the `/base.css` file.
+To apply a font family or weight to an element you can use the tailwind utility classes.
+
+```html
+<div class="tw-font-sans tw-font-normal tw-italic" />
+```
+
+<Canvas>
+  <Story name="Fonts">
+    {{
+        components: { FontDisplay },
+        template: `
+        <div>
+          <FontDisplay name="Roboto (light)" className="tw-font-sans tw-font-light" />
+          <FontDisplay name="Roboto (normal)" className="tw-font-sans tw-font-normal" />
+          <FontDisplay name="Roboto (medium)" className="tw-font-sans tw-font-medium" />
+          <FontDisplay name="Roboto (bold)" className="tw-font-sans tw-font-bold" />
+          <br/>
+          <FontDisplay name="Roboto (light italic)" className="tw-font-sans tw-font-light tw-italic" />
+          <FontDisplay name="Roboto (normal italic)" className="tw-font-sans tw-font-normal tw-italic" />
+          <FontDisplay name="Roboto (medium italic)" className="tw-font-sans tw-font-medium tw-italic" />
+          <FontDisplay name="Roboto (bold italic)" className="tw-font-sans tw-font-bold tw-italic" />
+          <br/>
+          <FontDisplay name="Roboto Mono" className="tw-font-mono" />
+        </div>
+          `,
+      }}
+  </Story>
+</Canvas>
+
+
+## Text styles
+
+There are a couple of pre-defined text styles available. To apply a text style to an element you can use the tailwind utility classes.
+
+```
+<p class="tw-body-md" />
+```
+
+
+<Canvas>
+  <Story name="Text styles">
+    {{
+        components: { TextStyleDisplay },
+        template: `
+        <div>
+          <TextStyleDisplay name="body sm" className="tw-body-sm" />
+          <TextStyleDisplay name="body md" className="tw-body-md" />
+          <TextStyleDisplay name="body lg" className="tw-body-lg" />
+        </div>
+          `,
+      }}
+  </Story>
+</Canvas>

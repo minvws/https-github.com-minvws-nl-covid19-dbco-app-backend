@@ -1,0 +1,27 @@
+- alert: portal_audit_event_spec_deviation_total
+  expr: sum(delta(portal_audit_event_spec_deviation_total{namespace="{{.Release.Namespace}}"}[30m])) > 0
+  labels:
+    severity: error
+  annotations:
+    summary: "{{.Release.Namespace}} - In de afgelopen 30 minuten zijn er audit event(s) gedetecteerd die afwijken van de specificaties."
+
+- alert: portal_audit_event_spec_missing_total
+  expr: sum(delta(portal_audit_event_spec_missing_total{namespace="{{.Release.Namespace}}"}[30m])) > 0
+  labels:
+    severity: error
+  annotations:
+    summary: "{{.Release.Namespace}} - In de afgelopen 30 minuten zijn er audit event(s) gedetecteerd waarvoor geen specificaties zijn vastgelegd."
+
+- alert: portal_audit_event_schema_deviation_total
+  expr: sum(delta(portal_audit_event_schema_deviation_total{namespace="{{.Release.Namespace}}"}[30m])) > 0
+  labels:
+    severity: error
+  annotations:
+    summary: "{{.Release.Namespace}} - In de afgelopen 30 minuten zijn er audit event(s) gedetecteerd die afwijken van het schema."
+
+- alert: portal_audit_event_schema_missing_total
+  expr: sum(delta(portal_audit_event_schema_missing_total{namespace="{{.Release.Namespace}}"}[30m])) > 0
+  labels:
+    severity: error
+  annotations:
+    summary: "{{.Release.Namespace}} - In de afgelopen 30 minuten konden audit event(s) niet worden gevalideerd doordat het schema mist."

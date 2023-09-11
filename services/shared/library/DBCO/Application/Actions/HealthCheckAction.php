@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DBCO\Shared\Application\Actions;
@@ -7,6 +8,7 @@ use DBCO\Shared\Application\Responses\HealthCheckResponse;
 use MinVWS\HealthCheck\HealthChecker;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
+use MinVWS\Audit\AuditService;
 
 /**
  * Health check action.
@@ -24,11 +26,15 @@ class HealthCheckAction extends Action
      * Constructor.
      *
      * @param LoggerInterface $logger
+     * @param AuditService    $auditService
      * @param HealthChecker   $healthChecker
      */
-    public function __construct(LoggerInterface $logger, HealthChecker $healthChecker)
-    {
-        parent::__construct($logger);
+    public function __construct(
+        LoggerInterface $logger,
+        AuditService $auditService,
+        HealthChecker $healthChecker
+    ) {
+        parent::__construct($logger, $auditService);
         $this->healthChecker = $healthChecker;
     }
 
@@ -37,6 +43,8 @@ class HealthCheckAction extends Action
      */
     protected function action(): Response
     {
+        $this->auditService->setEventExpected(false);
+
         $result = $this->healthChecker->performHealthChecks();
         return $this->respond(new HealthCheckResponse($result));
     }

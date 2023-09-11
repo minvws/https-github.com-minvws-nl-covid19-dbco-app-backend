@@ -1,0 +1,24 @@
+{
+    "phpClass": "InformStatus",
+    "tsConst": "informStatus",
+    "description": "Status for informing a contact",
+    "default": "uninformed",
+    "items": [
+        {
+            "value": "uninformed",
+            "label": "Nog niet geïnformeerd"
+        },
+        {
+            "value": "unreachable",
+            "label": "Geen gehoor"
+        },
+        {
+            "value": "emailSent",
+            "label": "Alleen gemaild"
+        },
+        {
+            "value": "informed",
+            "label": "Geïnformeerd"
+        }
+    ]
+}

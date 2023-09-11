@@ -1,0 +1,420 @@
+{
+    "phpClass": "Permission",
+    "tsConst": "permission",
+    "description": "Permission for role",
+    "properties": {
+        "entity": {
+            "type": "PermissionEntity",
+            "description": "Entity for permission",
+            "scope": "shared"
+        }
+    },
+    "items": [
+        {
+            "label": "caseListUserCases",
+            "value": "caseListUserCases",
+            "entity": "case"
+        },
+        {
+            "label": "caseListPlannerCases",
+            "value": "caseListPlannerCases",
+            "entity": "case"
+        },
+        {
+            "label": "caseCreate",
+            "value": "caseCreate",
+            "entity": "case"
+        },
+        {
+            "label": "caseUserEdit",
+            "value": "caseUserEdit",
+            "entity": "case"
+        },
+        {
+            "label": "caseEditContactStatus",
+            "value": "caseEditContactStatus",
+            "entity": "case"
+        },
+        {
+            "label": "caseApprove",
+            "value": "caseApprove",
+            "entity": "case"
+        },
+        {
+            "label": "caseArchiveDirectly",
+            "value": "caseArchiveDirectly",
+            "entity": "case"
+        },
+        {
+            "label": "casePlannerEdit",
+            "value": "casePlannerEdit",
+            "entity": "case"
+        },
+        {
+            "label": "casePlannerDelete",
+            "value": "casePlannerDelete",
+            "entity": "case"
+        },
+        {
+            "label": "caseExport",
+            "value": "caseExport",
+            "entity": "case"
+        },
+        {
+            "label": "caseCanBeAssignedToDraft",
+            "value": "caseCanBeAssignedToDraft",
+            "entity": "case"
+        },
+        {
+            "label": "caseCanBeAssignedToOpen",
+            "value": "caseCanBeAssignedToOpen",
+            "entity": "case"
+        },
+        {
+            "label": "caseCanBeAssignedToCompleted",
+            "value": "caseCanBeAssignedToCompleted",
+            "entity": "case"
+        },
+        {
+            "label": "caseCanBeAssignedToArchived",
+            "value": "caseCanBeAssignedToArchived",
+            "entity": "case"
+        },
+        {
+            "label": "caseCanBeAssignedToUnknown",
+            "value": "caseCanBeAssignedToUnknown",
+            "entity": "case"
+        },
+        {
+            "label": "caseListAccessRequests",
+            "value": "caseListAccessRequests",
+            "entity": "case"
+        },
+        {
+            "label": "caseViewAccessRequest",
+            "value": "caseViewAccessRequest",
+            "entity": "case"
+        },
+        {
+            "label": "caseComplianceDelete",
+            "value": "caseComplianceDelete",
+            "entity": "case"
+        },
+        {
+            "label": "caseRestore",
+            "value": "caseRestore",
+            "entity": "case"
+        },
+        {
+            "label": "caseReopen",
+            "value": "caseReopen",
+            "entity": "case"
+        },
+        {
+            "label": "caseBsnLookup",
+            "value": "caseBsnLookup",
+            "entity": "case"
+        },
+        {
+            "label": "caseAddressLookup",
+            "value": "caseAddressLookup",
+            "entity": "case"
+        },
+        {
+            "label": "caseSearch",
+            "value": "caseSearch",
+            "entity": "case"
+        },
+        {
+            "label": "caseCanPickUpNew",
+            "value": "caseCanPickUpNew",
+            "entity": "case"
+        },
+        {
+            "label": "taskCreate",
+            "value": "taskCreate",
+            "entity": "task"
+        },
+        {
+            "label": "taskEdit",
+            "value": "taskEdit",
+            "entity": "task"
+        },
+        {
+            "label": "taskUserDelete",
+            "value": "taskUserDelete",
+            "entity": "task"
+        },
+        {
+            "label": "taskViewAccessRequest",
+            "value": "taskViewAccessRequest",
+            "entity": "task"
+        },
+        {
+            "label": "taskComplianceDelete",
+            "value": "taskComplianceDelete",
+            "entity": "task"
+        },
+        {
+            "label": "taskRestore",
+            "value": "taskRestore",
+            "entity": "task"
+        },
+        {
+            "label": "contextCreate",
+            "value": "contextCreate",
+            "entity": "context"
+        },
+        {
+            "label": "contextEdit",
+            "value": "contextEdit",
+            "entity": "context"
+        },
+        {
+            "label": "contextDelete",
+            "value": "contextDelete",
+            "entity": "context"
+        },
+        {
+            "label": "contextList",
+            "value": "contextList",
+            "entity": "context"
+        },
+        {
+            "label": "contextMerge",
+            "value": "contextMerge",
+            "entity": "context"
+        },
+        {
+            "label": "contextSearch",
+            "value": "contextSearch",
+            "entity": "context"
+        },
+        {
+            "label": "contextLink",
+            "value": "contextLink",
+            "entity": "context"
+        },
+        {
+            "label": "caseArchive",
+            "value": "caseArchive",
+            "entity": "case"
+        },
+        {
+            "label": "placeCreate",
+            "value": "placeCreate",
+            "entity": "place"
+        },
+        {
+            "label": "placeEdit",
+            "value": "placeEdit",
+            "entity": "place"
+        },
+        {
+            "label": "placeEditOwnedByOrganisation",
+            "value": "placeEditOwnedByOrganisation",
+            "entity": "place"
+        },
+        {
+            "label": "placeEditNotOwnedByOrganisation",
+            "value": "placeEditNotOwnedByOrganisation",
+            "entity": "place"
+        },
+        {
+            "label": "placeDelete",
+            "value": "placeDelete",
+            "entity": "context"
+        },
+        {
+            "label": "placeList",
+            "value": "placeList",
+            "entity": "place"
+        },
+        {
+            "label": "placeMerge",
+            "value": "placeMerge",
+            "entity": "place"
+        },
+        {
+            "label": "placeSearch",
+            "value": "placeSearch",
+            "entity": "place"
+        },
+        {
+            "label": "placeCaseList",
+            "value": "placeCaseList",
+            "entity": "place"
+        },
+        {
+            "label": "placeSectionList",
+            "value": "placeSectionList",
+            "entity": "place"
+        },
+        {
+            "label": "placeSectionCreate",
+            "value": "placeSectionCreate",
+            "entity": "place"
+        },
+        {
+            "label": "placeSectionCreateOwnedByOrganisation",
+            "value": "placeSectionCreateOwnedByOrganisation",
+            "entity": "place"
+        },
+        {
+            "label": "placeSectionCreateNotOwnedByOrganisation",
+            "value": "placeSectionCreateNotOwnedByOrganisation",
+            "entity": "place"
+        },
+        {
+            "label": "placeSectionEdit",
+            "value": "placeSectionEdit",
+            "entity": "place"
+        },
+        {
+            "label": "placeSectionEditOwnedByOrganisation",
+            "value": "placeSectionEditOwnedByOrganisation",
+            "entity": "place"
+        },
+        {
+            "label": "placeSectionEditNotOwnedByOrganisation",
+            "value": "placeSectionEditNotOwnedByOrganisation",
+            "entity": "place"
+        },
+        {
+            "label": "placeSectionDelete",
+            "value": "placeSectionDelete",
+            "entity": "place"
+        },
+        {
+            "label": "placeSectionMerge",
+            "value": "placeSectionMerge",
+            "entity": "place"
+        },
+        {
+            "label": "intakeList",
+            "value": "intakeList",
+            "entity": "intake"
+        },
+        {
+            "label": "placeVerify",
+            "value": "placeVerify",
+            "entity": "place"
+        },
+        {
+            "label": "organisationList",
+            "value": "organisationList",
+            "entity": "organisation"
+        },
+        {
+            "label": "organisationUpdate",
+            "value": "organisationUpdate",
+            "entity": "organisation"
+        },
+        {
+            "label": "caseViewPlannerTimeline",
+            "value": "caseViewPlannerTimeline",
+            "entity": "case"
+        },
+        {
+            "label": "caseViewSupervisionRegional",
+            "value": "caseViewSupervisionRegional",
+            "entity": "case"
+        },
+        {
+            "label": "caseViewSupervisionNationwide",
+            "value": "caseViewSupervisionNationwide",
+            "entity": "case"
+        },
+        {
+            "label": "caseViewUserTimeline",
+            "value": "caseViewUserTimeline",
+            "entity": "case"
+        },
+        {
+            "label": "caseBcoPhaseEdit",
+            "value": "caseBcoPhaseEdit",
+            "entity": "case"
+        },
+        {
+            "label": "expertQuestionMedicalSupervisor",
+            "value": "expertQuestionMedicalSupervisor"
+        },
+        {
+            "label": "expertQuestionConversationCoach",
+            "value": "expertQuestionConversationCoach"
+        },
+        {
+            "label": "expertQuestionList",
+            "value": "expertQuestionList"
+        },
+        {
+            "label": "expertQuestionAssign",
+            "value": "expertQuestionAssign"
+        },
+        {
+            "label": "expertQuestionAnswer",
+            "value": "expertQuestionAnswer"
+        },
+        {
+            "label": "callcenterView",
+            "value": "callcenterView"
+        },
+        {
+            "label": "caseCreateCallToAction",
+            "value": "caseCreateCallToAction"
+        },
+        {
+            "label": "caseViewCallToAction",
+            "value": "caseViewCallToAction"
+        },
+        {
+            "label": "choreList",
+            "value": "choreList"
+        },
+        {
+            "label": "callToAction",
+            "value": "callToAction"
+        },
+        {
+            "label": "datacatalog",
+            "value": "datacatalog"
+        },
+        {
+            "label": "caseEditViaSearchCase",
+            "value": "caseEditViaSearchCase"
+        },
+        {
+            "label": "caseEditCallcenterExpert",
+            "value": "caseEditCallcenterExpert"
+        },
+        {
+            "label": "caseMetricsList",
+            "value": "caseMetricsList"
+        },
+        {
+            "label": "addCasesByChore",
+            "value": "addCasesByChore"
+        },
+        {
+            "label": "caseCreateNote",
+            "value": "caseCreateNote",
+            "entity": "case"
+        },
+        {
+            "label": "createCallToActionViaSearchCase",
+            "value": "createCallToActionViaSearchCase"
+        },
+        {
+            "label": "caseViewOsirisHistory",
+            "value": "caseViewOsirisHistory"
+        },
+        {
+            "label": "adminView",
+            "value": "adminView"
+        },
+        {
+            "label": "adminPolicyAdviceModule",
+            "value": "adminPolicyAdviceModule"
+        }
+    ]
+}

@@ -1,42 +1,39 @@
 <?php
+
 namespace MinVWS\Metrics\Repositories;
 
 use MinVWS\Metrics\Models\Event;
 use MinVWS\Metrics\Models\Export;
+use MinVWS\Metrics\Models\Intake;
 
 /**
- * Responsible for exporting to a file.
+ * Responsible for exporting to a file stream.
  *
  * @package MinVWS\Metrics\Repositories
  */
 interface ExportRepository
 {
     /**
-     * Open export file.
+     * Add Event header to stream (if any).
      *
-     * @param string $path
-     * @param Export $export
-     *
-     * @return resource
+     * @param Export   $export
+     * @param resource $handle
      */
-    public function openFile(string $path, Export $export);
+    public function addHeaderToStream(Export $export, $handle);
 
     /**
      * Add event to resource.
      *
      * @param Event    $event
      * @param resource $handle
-     *
-     * @return mixed
      */
-    public function addEventToFile(Event $event, $handle);
+    public function addObjectToStream($object, $handle);
 
     /**
-     * Close export file.
+     * Add footer to stream (if any).
      *
+     * @param Export   $export
      * @param resource $handle
-     *
-     * @return mixed
      */
-    public function closeFile($handle);
+    public function addFooterToStream(Export $export, $handle);
 }

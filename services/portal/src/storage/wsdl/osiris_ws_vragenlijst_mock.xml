@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="RIVM" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="RIVM" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">De webservice van Osiris maakt het andere informatiesystemen mogelijk meldingen aan te leveren aan Osiris. Ook is het mogelijk berichten op te halen uit Osiris.&lt;br&gt;&lt;br&gt;Informatie voor ontwikkelaars van systemen die de webservice gaan gebruiken, is te vinden op &lt;a href='https://osiris.rivm.nl/osirishelp/osirishelp.html'&gt;de helppagina's van Osiris&lt;/a&gt;.</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="RIVM">
+      <s:element name="PutMessage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SysLogin" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SysPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Protocol" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CommunicatieId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PutMessageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PutMessageResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMessage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SysLogin" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SysPassword" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMessageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMessageResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAttachment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SysLogin" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SysPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="BijlageID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAttachmentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAttachmentResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AckMessage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SysLogin" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SysPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="QueueId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="MessageOk" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="Elucidate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AckMessageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AckMessageResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="HelloWorld">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pstrString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="HelloWorldResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HelloWorldResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QuestionnaireContent">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pstrUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pstrPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pstrInfeCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pintAantal" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QuestionnaireContentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QuestionnaireContentResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMeldingList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pstrUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pstrPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pLookupValue" type="tns:ArrayOfInt" />
+            <s:element minOccurs="1" maxOccurs="1" name="pOwnerWithoutPersonName" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="pdtWijzigDatumVan" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="pdtWijzigDatumTot" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfInt">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="int" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetMeldingListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMeldingListResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMeldingListByStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pstrUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pstrPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pLookupValue" type="tns:ArrayOfInt" />
+            <s:element minOccurs="1" maxOccurs="1" name="pOwnerWithoutPersonName" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="pdtWijzigDatumVan" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="pdtWijzigDatumTot" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="OudeStatus" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMeldingListByStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMeldingListByStatusResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateMeldingStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pstrUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pstrPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pintMdgeId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="pstrNieuweStatus" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateMeldingStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateMeldingStatusResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProcesList">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetProcesListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetProcesListResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetOrganisatieList">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetOrganisatieListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetOrganisatieListResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="PutMessageSoapIn">
+    <wsdl:part name="parameters" element="tns:PutMessage" />
+  </wsdl:message>
+  <wsdl:message name="PutMessageSoapOut">
+    <wsdl:part name="parameters" element="tns:PutMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMessageSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMessage" />
+  </wsdl:message>
+  <wsdl:message name="GetMessageSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAttachmentSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAttachment" />
+  </wsdl:message>
+  <wsdl:message name="GetAttachmentSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAttachmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="AckMessageSoapIn">
+    <wsdl:part name="parameters" element="tns:AckMessage" />
+  </wsdl:message>
+  <wsdl:message name="AckMessageSoapOut">
+    <wsdl:part name="parameters" element="tns:AckMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="HelloWorldSoapIn">
+    <wsdl:part name="parameters" element="tns:HelloWorld" />
+  </wsdl:message>
+  <wsdl:message name="HelloWorldSoapOut">
+    <wsdl:part name="parameters" element="tns:HelloWorldResponse" />
+  </wsdl:message>
+  <wsdl:message name="QuestionnaireContentSoapIn">
+    <wsdl:part name="parameters" element="tns:QuestionnaireContent" />
+  </wsdl:message>
+  <wsdl:message name="QuestionnaireContentSoapOut">
+    <wsdl:part name="parameters" element="tns:QuestionnaireContentResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMeldingListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMeldingList" />
+  </wsdl:message>
+  <wsdl:message name="GetMeldingListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMeldingListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMeldingListByStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMeldingListByStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetMeldingListByStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMeldingListByStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateMeldingStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateMeldingStatus" />
+  </wsdl:message>
+  <wsdl:message name="UpdateMeldingStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateMeldingStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProcesListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProcesList" />
+  </wsdl:message>
+  <wsdl:message name="GetProcesListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProcesListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetOrganisatieListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetOrganisatieList" />
+  </wsdl:message>
+  <wsdl:message name="GetOrganisatieListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetOrganisatieListResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WSVragenLijstSoap">
+    <wsdl:operation name="PutMessage">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Roep deze procedure aan om een melding te versturen naar Osiris. Er worden twee protocollen ondersteund: xmlv2 en hl7v2.</wsdl:documentation>
+      <wsdl:input message="tns:PutMessageSoapIn" />
+      <wsdl:output message="tns:PutMessageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMessage">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Roep deze procedure aan om berichten op te halen. Ieder goed ontvangen bericht moet via de procedure AckMessage afgemeld worden. Pas daarna kan er via deze procedure een nieuw bericht opgehaald worden.</wsdl:documentation>
+      <wsdl:input message="tns:GetMessageSoapIn" />
+      <wsdl:output message="tns:GetMessageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAttachment">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Roep deze procedure aan om bijlagen op te halen.</wsdl:documentation>
+      <wsdl:input message="tns:GetAttachmentSoapIn" />
+      <wsdl:output message="tns:GetAttachmentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AckMessage">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Roep de procedure AckMessage aan voor het bevestigen van de goede ontvangst van een bericht.</wsdl:documentation>
+      <wsdl:input message="tns:AckMessageSoapIn" />
+      <wsdl:output message="tns:AckMessageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="HelloWorld">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Deze procedure kan gebruikt worden om de verbinding met de webservice te testen. Roep de procedure HelloWorld aan met een string als parameter. Het resultaat van de aanroep is dezelfde string met "Rivm heeft het volgende ontvangen: " ervoor.</wsdl:documentation>
+      <wsdl:input message="tns:HelloWorldSoapIn" />
+      <wsdl:output message="tns:HelloWorldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QuestionnaireContent">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Deze procedure stuurt de structuur van een vragenlijst terug. Deze procedure is niet bedoeld voor gebruik door andere partijen dan het RIVM.</wsdl:documentation>
+      <wsdl:input message="tns:QuestionnaireContentSoapIn" />
+      <wsdl:output message="tns:QuestionnaireContentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMeldingList">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Deze procedure stuurt een lijst met meldingen terug. Deze procedure is niet bedoeld voor gebruik door andere partijen dan het RIVM.</wsdl:documentation>
+      <wsdl:input message="tns:GetMeldingListSoapIn" />
+      <wsdl:output message="tns:GetMeldingListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMeldingListByStatus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Deze procedure stuurt een lijst met meldingen terug met een opgegeven status. Deze procedure is niet bedoeld voor gebruik door andere partijen dan het RIVM.</wsdl:documentation>
+      <wsdl:input message="tns:GetMeldingListByStatusSoapIn" />
+      <wsdl:output message="tns:GetMeldingListByStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMeldingStatus">
+      <wsdl:input message="tns:UpdateMeldingStatusSoapIn" />
+      <wsdl:output message="tns:UpdateMeldingStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProcesList">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Deze procedure stuurt een lijst met processen terug.</wsdl:documentation>
+      <wsdl:input message="tns:GetProcesListSoapIn" />
+      <wsdl:output message="tns:GetProcesListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOrganisatieList">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Deze procedure stuurt een lijst met organisaties terug.</wsdl:documentation>
+      <wsdl:input message="tns:GetOrganisatieListSoapIn" />
+      <wsdl:output message="tns:GetOrganisatieListSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSVragenLijstSoap" type="tns:WSVragenLijstSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="PutMessage">
+      <soap:operation soapAction="RIVM/PutMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMessage">
+      <soap:operation soapAction="RIVM/GetMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAttachment">
+      <soap:operation soapAction="RIVM/GetAttachment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AckMessage">
+      <soap:operation soapAction="RIVM/AckMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HelloWorld">
+      <soap:operation soapAction="RIVM/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QuestionnaireContent">
+      <soap:operation soapAction="RIVM/QuestionnaireContent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMeldingList">
+      <soap:operation soapAction="RIVM/GetMeldingList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMeldingListByStatus">
+      <soap:operation soapAction="RIVM/GetMeldingListByStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMeldingStatus">
+      <soap:operation soapAction="RIVM/UpdateMeldingStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProcesList">
+      <soap:operation soapAction="RIVM/GetProcesList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrganisatieList">
+      <soap:operation soapAction="RIVM/GetOrganisatieList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WSVragenLijstSoap12" type="tns:WSVragenLijstSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="PutMessage">
+      <soap12:operation soapAction="RIVM/PutMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMessage">
+      <soap12:operation soapAction="RIVM/GetMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAttachment">
+      <soap12:operation soapAction="RIVM/GetAttachment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AckMessage">
+      <soap12:operation soapAction="RIVM/AckMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HelloWorld">
+      <soap12:operation soapAction="RIVM/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QuestionnaireContent">
+      <soap12:operation soapAction="RIVM/QuestionnaireContent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMeldingList">
+      <soap12:operation soapAction="RIVM/GetMeldingList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMeldingListByStatus">
+      <soap12:operation soapAction="RIVM/GetMeldingListByStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMeldingStatus">
+      <soap12:operation soapAction="RIVM/UpdateMeldingStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProcesList">
+      <soap12:operation soapAction="RIVM/GetProcesList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrganisatieList">
+      <soap12:operation soapAction="RIVM/GetOrganisatieList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WSVragenLijst">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">De webservice van Osiris maakt het andere informatiesystemen mogelijk meldingen aan te leveren aan Osiris. Ook is het mogelijk berichten op te halen uit Osiris.&lt;br&gt;&lt;br&gt;Informatie voor ontwikkelaars van systemen die de webservice gaan gebruiken, is te vinden op &lt;a href='https://osiris.rivm.nl/osirishelp/osirishelp.html'&gt;de helppagina's van Osiris&lt;/a&gt;.</wsdl:documentation>
+    <wsdl:port name="WSVragenLijstSoap" binding="tns:WSVragenLijstSoap">
+      <soap:address location="http://portal:8080/osiris" />
+    </wsdl:port>
+    <wsdl:port name="WSVragenLijstSoap12" binding="tns:WSVragenLijstSoap12">
+      <soap12:address location="http://portal:8080/osiris" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

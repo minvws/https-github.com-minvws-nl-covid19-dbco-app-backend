@@ -1,0 +1,13 @@
+**/public/**/*.js
+**/vendor/*
+**/node_modules/*
+**/public/*
+
+# ESlint currenly only configured for TS
+*.js
+
+# Schema files are auto generated
+**/generated
+**/composer.json
+**/dbco-enum/*
+shared/packages/portal-open-api/output/**

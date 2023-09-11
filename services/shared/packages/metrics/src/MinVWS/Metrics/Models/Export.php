@@ -1,4 +1,5 @@
 <?php
+
 namespace MinVWS\Metrics\Models;
 
 use DateTimeInterface;
@@ -8,9 +9,9 @@ use DateTimeInterface;
  */
 class Export
 {
-    const STATUS_INITIAL  = 'initial';
-    const STATUS_EXPORTED = 'exported';
-    const STATUS_UPLOADED = 'uploaded';
+    public const STATUS_INITIAL  = 'initial';
+    public const STATUS_EXPORTED = 'exported';
+    public const STATUS_UPLOADED = 'uploaded';
 
     /**
      * @var string
@@ -45,19 +46,10 @@ class Export
     /**
      * @var int|null
      */
-    public ?int $eventCount = null;
+    public ?int $itemCount = null;
 
-    /**
-     * Constructor.
-     *
-     * @param string                 $uuid
-     * @param string                 $status
-     * @param DateTimeInterface      $createdAt
-     * @param string|null            $filename
-     * @param DateTimeInterface|null $exportedAt
-     * @param DateTimeInterface|null $uploadedAt
-     */
-    public function __construct(string $uuid, string $status, DateTimeInterface $createdAt, ?string $filename = null, ?DateTimeInterface $exportedAt = null, ?DateTimeInterface $uploadedAt = null, ?int $eventCount = null)
+
+    public function __construct(string $uuid, string $status, DateTimeInterface $createdAt, ?string $filename = null, ?DateTimeInterface $exportedAt = null, ?DateTimeInterface $uploadedAt = null, ?int $itemCount = null)
     {
         $this->uuid = $uuid;
         $this->status = $status;
@@ -65,6 +57,6 @@ class Export
         $this->filename = $filename;
         $this->exportedAt = $exportedAt;
         $this->uploadedAt = $uploadedAt;
-        $this->eventCount = $eventCount;
+        $this->itemCount = $itemCount;
     }
 }

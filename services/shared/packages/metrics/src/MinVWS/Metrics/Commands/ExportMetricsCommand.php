@@ -1,26 +1,30 @@
 <?php
+
 namespace MinVWS\Metrics\Commands;
 
+use Exception;
+use Illuminate\Support\Str;
 use MinVWS\Metrics\Services\ExportService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use MinVWS\Metrics\Models\Export;
 
 /**
  * Export metrics.
  *
  * @package MinVWS\Metrics\Commands
  */
-class ExportMetricsCommand extends Command
+class ExportMetricsCommand extends AbstractExportMetricsCommand
 {
     protected static $defaultName = 'metrics:export';
 
     /**
      * @var ExportService
      */
-    private ExportService $exportService;
+    protected ExportService $exportService;
 
     /**
      * Constructor.
@@ -41,36 +45,13 @@ class ExportMetricsCommand extends Command
         $this
             ->setDescription('Export metrics')
             ->setHelp('Can be used to export metrics for certain events')
+            ->addArgument('exportUuid', InputArgument::OPTIONAL, 'Export UUID, can be used to re-export an existing set of exported metrics', null)
             ->addOption('upload', 'u', InputOption::VALUE_NONE, 'Upload after export')
-            ->addArgument('exportUuid', InputArgument::OPTIONAL, 'Export UUID, can be used to re-export an existing set of exported metrics', null);
+            ->addOption('limit', 'l', InputOption::VALUE_REQUIRED, 'Limit the number of events to export', null);
     }
 
-    /**
-     * Execute command.
-     *
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function getOutputMessage(): string
     {
-        $output->write('Exporting metrics...');
-        $exportUuid = $input->getArgument('exportUuid', null);
-        $export = $this->exportService->export($exportUuid);
-        $output->writeln(' [OK]');
-        $output->writeln('');
-        $output->writeln(sprintf('Export UUID     : %s', $export->uuid));
-        $output->writeln(sprintf('Export filename : %s', $export->filename));
-        $output->writeln(sprintf('Events          : %d', $export->eventCount));
-
-        if ($input->getOption('upload')) {
-            $output->writeln('');
-            $output->write('Uploading metrics...');
-            $this->exportService->upload($export);
-            $output->writeln(' [OK]');
-        }
-
-        return Command::SUCCESS;
+        return 'Uploading metrics...';
     }
 }

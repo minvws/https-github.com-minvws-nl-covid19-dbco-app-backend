@@ -1,41 +1,53 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -eo pipefail
+
 BASE_PATH=$(dirname $0)/..
+DEV_MODE=$(cat $BASE_PATH/.dev-switch)
 DOCKER_COMPOSE="$(dirname $0)/docker-compose-dev"
-DOCKER_COMPOSE_TOOLS="$DOCKER_COMPOSE -f docker-compose/docker-compose.tools.yml"
-DOCKER_COMPOSE_SETUP="$DOCKER_COMPOSE -f docker-compose/docker-compose.setup.yml"
-DOCKER_COMPOSE_SETUP_AND_TOOLS="$DOCKER_COMPOSE_SETUP -f docker-compose/docker-compose.tools.yml"
+DOCKER_COMPOSE_TOOLS="$(dirname $0)/docker-compose-dev-tools"
+
+if [ $DEV_MODE == "integrated" ]; then
+  DOCKER_COMPOSE_SETUP="$DOCKER_COMPOSE --file $BASE_PATH/docker-compose/docker-compose.setup.yml"
+  DOCKER_COMPOSE_SETUP_AND_TOOLS="$DOCKER_COMPOSE_SETUP --file $BASE_PATH/docker-compose/docker-compose.tools.yml"
+fi
 
 . $BASE_PATH/.env
 
-echo "=====[ GENERATE SFTP KEYPAIR ]======================="
-ssh-keygen -f $BASE_PATH/sftp_id_rsa -N ""
-echo
+echo "=====[ GENERATE AUTH.JSON ]======================="
+$BASE_PATH/bin/composer-auth-json
 
+if [ $DEV_MODE == "integrated" ]; then
+  echo "=====[ GENERATE CERTS / KEYS ]======================="
+  ssh-keygen -f $BASE_PATH/sftp_id_rsa -N "" <<< y
+  openssl req -x509 -newkey rsa:4096 -keyout $BASE_PATH/export_enc_key.pem -out $BASE_PATH/export_enc_cert.pem -days 365 -nodes -subj '/CN=encryption'
+  openssl req -x509 -newkey rsa:4096 -keyout $BASE_PATH/export_sig_key.pem -out $BASE_PATH/export_sig_cert.pem -days 365 -nodes -subj '/CN=signature'
+  echo
+fi
+
+echo
 echo "=====[ BUILD CONTAINERS ]======================="
-$DOCKER_COMPOSE_SETUP_AND_TOOLS build
-
-echo
-echo "=====[ SETUP HSM ]======================="
-$DOCKER_COMPOSE up -d hsm
-sleep 5
-$DOCKER_COMPOSE_SETUP run --rm hsm-setup
+$DOCKER_COMPOSE build
 
 echo
 echo "=====[ SETUP OTHER CONTAINERS ]======================="
-$DOCKER_COMPOSE up -d --remove-orphans
+$DOCKER_COMPOSE up --detach --remove-orphans
 
 echo
 echo "=====[ SETUP MYSQL DATABASE ]========================="
 echo "Waiting for MYSQL to launch..."
-while ! echo "SELECT 1" | $DOCKER_COMPOSE_TOOLS run --rm mysqlclient > /dev/null 2>&1; do
+while ! $DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "SELECT 1" > /dev/null 2>&1; do
+  echo "  > mysql not yet running ..."
   sleep 0.5
 done
 
-$DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
-$DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'healthauthority_api'@'%' IDENTIFIED BY '$HEALTHAUTHORITY_API_DB_PASSWORD'"
-$DOCKER_COMPOSE_TOOLS run --rm mysqlclient < $BASE_PATH/services/mysql/permissions.sql
+sleep 10
 
-$BASE_PATH/bin/update-dev
+$DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'admin'@'%' IDENTIFIED BY '$DB_ADMIN_PASSWORD'"
+$DOCKER_COMPOSE_TOOLS run --rm mysqlclient -e "CREATE USER 'portal'@'%' IDENTIFIED BY '$PORTAL_DB_PASSWORD'"
+$DOCKER_COMPOSE_TOOLS run --rm -T mysqlclient < $BASE_PATH/services/mysql/permissions.sql
+
+$BASE_PATH/bin/update-dev --skip-build
 
 echo
 echo "=====[ SEED DATABASE ]========================="

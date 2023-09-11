@@ -1,0 +1,11 @@
+{
+    "phpClass": "MessageStatus",
+    "tsConst": "messageStatus",
+    "description": "Status for a message",
+    "items": [
+        {
+            "value": "draft",
+            "label": "Concept"
+        }
+    ]
+}

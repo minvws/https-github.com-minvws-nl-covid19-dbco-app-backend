@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "lib": ["es2017", "dom"],
+        "types": ["cypress", "@testing-library/cypress", "@cypress/grep", "node"],
+        "baseUrl": "./",
+        "paths": {
+            "@/*": ["./*"]
+        }
+    },
+    "include": ["**/*.ts", "@dbco/ui-library"]
+}

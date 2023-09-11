@@ -1,8 +1,200 @@
-
 .btn-primary {
-    @include button-variant($bco-purple, darken($bco-purple, 7.5%), darken($bco-purple, 10%), lighten($bco-purple,5%), lighten($bco-purple, 10%), darken($bco-purple,30%));
+    @include button-variant(
+        $bco-purple,
+        darken($bco-purple, 7.5%),
+        darken($bco-purple, 10%),
+        lighten($bco-purple, 5%),
+        lighten($bco-purple, 10%),
+        darken($bco-purple, 30%)
+    );
+
+    &:disabled {
+        background-color: $bco-purple;
+        border-color: $bco-purple;
+        color: $white;
+    }
 }
 
 .btn-outline-primary {
-    @include button-outline-variant($bco-purple, #222222, lighten($bco-purple,5%), $bco-purple);
+    @include button-outline-variant($bco-purple, $white, lighten($bco-purple, 5%), $bco-purple);
+}
+
+.btn-outline-primary.disabled {
+    .icon {
+        filter: none;
+    }
+}
+
+.btn-outline-light {
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.btn.btn-lg {
+    font-size: $font-size-sm;
+}
+
+.btn--text-small {
+    font-size: $font-size-sm;
+    font-weight: 500;
+    padding: 9px;
+}
+
+.btn--small {
+    font-size: $font-size-sm;
+    font-weight: 500;
+    padding: 2px 12px;
+}
+
+.dropdown-menu {
+    z-index: 1100; // make sure the menu is shown above top navbar
+    filter: $ui-drop-shadow-filter;
+}
+
+.bg-grey {
+    background-color: $input-grey;
+}
+
+.btn-primary {
+    font-weight: 500;
+}
+
+.dropdown .btn-link::after,
+.dropdown .btn-link span {
+    ::after {
+        color: $lighter-grey;
+    }
+}
+
+.b-toast,
+.toast {
+    flex-basis: 450px;
+    max-width: 450px;
+}
+
+.b-toaster.b-toaster-top-center .b-toaster-slot {
+    top: 6.5rem;
+    max-width: 450px;
+}
+
+.toast {
+    border: none;
+    .toast-body {
+        border: none;
+        border-radius: $border-radius-small;
+        color: $white;
+        background-color: $light-black;
+        &.error {
+            background-color: $bco-red;
+        }
+
+        .close {
+            background-color: transparent;
+            color: inherit;
+            font-size: 1.5em;
+            font-weight: 300;
+            outline: none;
+            box-shadow: none;
+            border: none;
+            padding: 0 0.125em 0.125em;
+        }
+    }
+}
+
+.count-skeleton {
+    display: inline-block;
+    vertical-align: bottom;
+    width: 0.55em;
+    height: 0.925em;
+    border-radius: $border-radius-small;
+}
+
+.b-form-datepicker {
+    border: $border-default;
+    &.placeholder {
+        > button {
+            color: $dark-grey;
+        }
+    }
+    color: $black;
+    font-size: 0.875rem;
+    > button {
+        color: inherit;
+        order: 1;
+    }
+    > label {
+        color: $black;
+        line-height: 1.5;
+        padding: $padding-xs $padding-sm;
+        &.text-muted {
+            color: $dark-grey !important; // overwrite important in app.css
+        }
+    }
+    .b-calendar-nav {
+        button.disabled {
+            opacity: 0.25;
+        }
+        button:nth-of-type(3) {
+            pointer-events: none;
+            visibility: hidden;
+        }
+    }
+
+    .b-calendar-grid-body {
+        div[role='button'] {
+            position: relative;
+            span.btn {
+                &.active:hover,
+                &.btn-outline-primary:hover {
+                    background-color: $bco-purple;
+                }
+                &.btn-outline-light:hover {
+                    background-color: rgba($bco-purple, 0.1);
+                    color: $bco-purple !important; // overwrite important in app.css
+                }
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                }
+            }
+        }
+    }
+}
+
+.table-checkbox-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+
+    > .custom-checkbox {
+        position: static;
+        z-index: auto;
+        > .custom-control-label {
+            cursor: pointer;
+            display: flex;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+
+            &::before,
+            &::after {
+                top: 50%;
+                left: 0.75rem;
+                transform: translateY(-50%);
+            }
+        }
+    }
+}
+
+.invalid-feedback {
+    font-size: inherit;
 }

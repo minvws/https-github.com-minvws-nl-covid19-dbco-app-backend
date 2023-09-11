@@ -1,8 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exceptions;
 
+use App\Services\Assignment\Exception\AssignmentInternalValidationException;
+use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
+
+use function response;
 
 class Handler extends ExceptionHandler
 {
@@ -11,9 +21,7 @@ class Handler extends ExceptionHandler
      *
      * @var array
      */
-    protected $dontReport = [
-        //
-    ];
+    protected $dontReport = [];
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
@@ -27,11 +35,19 @@ class Handler extends ExceptionHandler
 
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        //
+        $this->renderable(static function (NotFoundHttpException $e, Request $request) {
+            if ($request->isXmlHttpRequest()) {
+                return response()->json(['error' => $e->getMessage()], Response::HTTP_NOT_FOUND);
+            }
+        });
+
+        /** @var Config $config */
+        $config = $this->container->make(Config::class);
+
+        $this->map(static fn (AssignmentInternalValidationException $e): Throwable
+            => $config->get('app.debug') ? $e->getPrevious() : $e);
     }
 }

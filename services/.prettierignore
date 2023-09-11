@@ -1,0 +1,17 @@
+**/coverage/
+*.mdx
+
+# Currently the files in /types are auto generated and not part of this package.
+**/resources/js/types/*
+
+# The files in /schemas are auto generated
+**/vendor
+**/public
+**/generated
+**/composer.json
+**/schemas/json/**/*.json
+**/dbco-enum/output/ts/*
+**/dbco-enum/enums/*
+shared/packages/portal-open-api/output/**
+
+**/tests/fixtures/*

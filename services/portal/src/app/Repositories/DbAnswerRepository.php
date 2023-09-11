@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 use App\Models\Answer;
@@ -8,46 +10,39 @@ use App\Models\ContactDetailsAnswer;
 use App\Models\Eloquent\EloquentAnswer;
 use App\Models\IndecipherableAnswer;
 use App\Models\SimpleAnswer;
-use App\Security\CacheEntryNotFoundException;
-use App\Security\EncryptionHelper;
 use Illuminate\Support\Collection;
-use Jenssegers\Date\Date;
+use MinVWS\DBCO\Encryption\Security\CacheEntryNotFoundException;
+use MinVWS\DBCO\Encryption\Security\EncryptionHelper;
+use MinVWS\DBCO\Encryption\Security\StorageTerm;
 use Ramsey\Uuid\Uuid;
+
+use function collect;
 
 class DbAnswerRepository implements AnswerRepository
 {
-    /**
-     * @var EncryptionHelper
-     */
-    private EncryptionHelper $encryptionHelper;
-
-    /**
-     * Constructor.
-     *
-     * @param EncryptionHelper $encryptionHelper
-     */
-    public function __construct(EncryptionHelper $encryptionHelper)
-    {
-        $this->encryptionHelper = $encryptionHelper;
+    public function __construct(
+        private readonly EncryptionHelper $encryptionHelper,
+    ) {
     }
 
-    public function getAllAnswersByCase(string $caseUuid): Collection
+    public function getContactDetailsAnswerByTask(string $taskUuid): ?ContactDetailsAnswer
     {
-        $dbAnswers = EloquentAnswer::where('case_uuid', $caseUuid)
+        $dbAnswer = EloquentAnswer::where('task_uuid', $taskUuid)
             ->select('answer.*', 'question.question_type')
-            ->join('task', 'answer.task_uuid', '=', 'task.uuid')
             ->join('question', 'answer.question_uuid', '=', 'question.uuid')
-            ->orderBy('task.uuid')
-            ->orderBy('question.sort_order')
-            ->get();
+            ->where('question.question_type', 'contactdetails')->first();
 
-        $answers = array();
+        if (!$dbAnswer) {
+            return null;
+        }
 
-        foreach($dbAnswers as $dbAnswer) {
-            $answers[] = $this->answerFromEloquentModel($dbAnswer);
-        };
+        $answer = $this->answerFromEloquentModel($dbAnswer);
 
-        return collect($answers);
+        if (!$answer instanceof ContactDetailsAnswer) {
+            return null;
+        }
+
+        return $answer;
     }
 
     public function getAllAnswersByTask(string $taskUuid): Collection
@@ -56,21 +51,43 @@ class DbAnswerRepository implements AnswerRepository
             ->select('answer.*', 'question.question_type')
             ->join('question', 'answer.question_uuid', '=', 'question.uuid')->get();
 
-        $answers = array();
+        $answers = [];
 
-        foreach($dbAnswers as $dbAnswer) {
+        foreach ($dbAnswers as $dbAnswer) {
             $answers[] = $this->answerFromEloquentModel($dbAnswer);
-        };
+        }
 
         return collect($answers);
     }
 
-    public function answerFromEloquentModel(EloquentAnswer $dbAnswer): Answer
+    public function createAnswer(Answer $answer): EloquentAnswer
     {
-        $answer = null;
+        $dbAnswer = new EloquentAnswer();
+        $dbAnswer = $this->updateFromEntity($dbAnswer, $answer);
+        $dbAnswer->save();
+        return $dbAnswer;
+    }
 
+    public function updateAnswer(Answer $answer): EloquentAnswer
+    {
+        // phpcs:ignore Generic.Commenting.Todo.TaskFound -- baseline
+        // TODO fixme: this retrieves the object from the db, again; but eloquent won't let us easily instantiate
+        // an object directly from an Answer
+
+        /** @var EloquentAnswer $dbAnswer */
+        $dbAnswer = EloquentAnswer::query()
+            ->where('uuid', $answer->uuid)
+            ->firstOrFail();
+        $dbAnswer = $this->updateFromEntity($dbAnswer, $answer);
+        $dbAnswer->save();
+
+        return $dbAnswer;
+    }
+
+    private function answerFromEloquentModel(EloquentAnswer $dbAnswer): Answer
+    {
         try {
-            switch($dbAnswer->question_type) {
+            switch ($dbAnswer->question_type) {
                 case 'contactdetails':
                     $answer = new ContactDetailsAnswer();
                     $answer->firstname = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->ctd_firstname);
@@ -80,10 +97,7 @@ class DbAnswerRepository implements AnswerRepository
                     break;
                 case 'classificationdetails':
                     $answer = new ClassificationDetailsAnswer();
-                    $answer->category1Risk = $dbAnswer->cfd_cat_1_risk;
-                    $answer->category2ARisk = $dbAnswer->cfd_cat_2a_risk;
-                    $answer->category2BRisk = $dbAnswer->cfd_cat_2b_risk;
-                    $answer->category3Risk = $dbAnswer->cfd_cat_3_risk;
+                    $answer->value = $this->encryptionHelper->unsealOptionalStoreValue($dbAnswer->spv_value);
                     break;
                 default:
                     $answer = new SimpleAnswer();
@@ -100,22 +114,6 @@ class DbAnswerRepository implements AnswerRepository
         return $answer;
     }
 
-    public function createAnswer(Answer $answer): void
-    {
-        $dbAnswer = new EloquentAnswer;
-        $dbAnswer = $this->updateFromEntity($dbAnswer, $answer);
-        $dbAnswer->save();
-    }
-
-    public function updateAnswer(Answer $answer): void
-    {
-        // TODO fixme: this retrieves the object from the db, again; but eloquent won't let us easily instantiate
-        // an object directly from an Answer
-        $dbAnswer = EloquentAnswer::where('uuid', $answer->uuid)->get()->first();
-        $dbAnswer = $this->updateFromEntity($dbAnswer, $answer);
-        $dbAnswer->save();
-    }
-
     private function updateFromEntity(EloquentAnswer $dbAnswer, Answer $answer): EloquentAnswer
     {
         $dbAnswer->uuid = $answer->uuid ?? Uuid::uuid4();
@@ -123,30 +121,40 @@ class DbAnswerRepository implements AnswerRepository
         $dbAnswer->question_uuid = $answer->questionUuid;
 
         if ($answer instanceof SimpleAnswer) {
-            $dbAnswer->spv_value = $this->seal($answer->value);
+            $dbAnswer->spv_value = $this->encryptionHelper->sealOptionalStoreValue(
+                $answer->value,
+                StorageTerm::short(),
+                $dbAnswer->task->created_at,
+            );
         } elseif ($answer instanceof ContactDetailsAnswer) {
-            $dbAnswer->ctd_firstname = $this->seal($answer->firstname);
-            $dbAnswer->ctd_lastname = $this->seal($answer->lastname);
-            $dbAnswer->ctd_email = $this->seal($answer->email);
-            $dbAnswer->ctd_phonenumber = $this->seal($answer->phonenumber);
+            $dbAnswer->ctd_firstname = $this->encryptionHelper->sealOptionalStoreValue(
+                $answer->firstname,
+                StorageTerm::short(),
+                $dbAnswer->task->created_at,
+            );
+            $dbAnswer->ctd_lastname = $this->encryptionHelper->sealOptionalStoreValue(
+                $answer->lastname,
+                StorageTerm::short(),
+                $dbAnswer->task->created_at,
+            );
+            $dbAnswer->ctd_email = $this->encryptionHelper->sealOptionalStoreValue(
+                $answer->email,
+                StorageTerm::short(),
+                $dbAnswer->task->created_at,
+            );
+            $dbAnswer->ctd_phonenumber = $this->encryptionHelper->sealOptionalStoreValue(
+                $answer->phonenumber,
+                StorageTerm::short(),
+                $dbAnswer->task->created_at,
+            );
         } elseif ($answer instanceof ClassificationDetailsAnswer) {
-            $dbAnswer->cfd_cat_1_risk = $answer->category1Risk;
-            $dbAnswer->cfd_cat_2a_risk = $answer->category2ARisk;
-            $dbAnswer->cfd_cat_2b_risk = $answer->category2BRisk;
-            $dbAnswer->cfd_cat_3_risk = $answer->category3Risk;
+            $dbAnswer->spv_value = $this->encryptionHelper->sealOptionalStoreValue(
+                $answer->value,
+                StorageTerm::short(),
+                $dbAnswer->task->created_at,
+            );
         }
 
         return $dbAnswer;
-    }
-
-    // @todo copied from another DbRepo, refactor into EncryptionHelper(?)
-    private function seal(?string $value): ?string
-    {
-        if ($value === null) {
-            return null;
-        } else {
-//            return $this->encryptionHelper->sealStoreValue($value);
-            return $value;
-        }
     }
 }

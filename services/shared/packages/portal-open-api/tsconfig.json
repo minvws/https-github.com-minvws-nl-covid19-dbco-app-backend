@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "declaration": true,
+        "strict": true
+    },
+    "include": ["./orval.config.ts", "./output/**/*.ts"]
+}

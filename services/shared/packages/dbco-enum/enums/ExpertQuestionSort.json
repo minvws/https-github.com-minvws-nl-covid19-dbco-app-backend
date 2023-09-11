@@ -1,0 +1,14 @@
+{
+    "phpClass": "ExpertQuestionSort",
+    "tsConst": "expertQuestionSort",
+    "items": [
+        {
+            "value": "createdAt",
+            "label": "createdAt"
+        },
+        {
+            "value": "status",
+            "label": "status"
+        }
+    ]
+}

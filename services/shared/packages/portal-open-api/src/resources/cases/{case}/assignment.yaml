@@ -1,0 +1,30 @@
+put:
+  summary: Case assignment
+  operationId: cases-case-assignment
+  description: Assign a single case to a user, list or organisation.
+  security:
+    - cookieAuth: []
+  parameters:
+    - $ref: '../../../parameters/path/case.yaml'
+    - $ref: '../../../parameters/header/xsrfToken.yaml'
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../../schemas/CaseAssignment/CaseAssignment.yaml'
+  responses:
+    200:
+      description: Current case data
+      content:
+        application/json:
+          schema:
+            $ref: '../../../schemas/CovidCase/CovidCase.yaml'
+    409:
+      description: Conflicting case
+      content:
+        application/json:
+          schema:
+            $ref: ../../../schemas/CaseAssignment/CaseAssignmentStatus.yaml
+    default:
+      $ref: '../../../responses/UnexpectedError.yaml'

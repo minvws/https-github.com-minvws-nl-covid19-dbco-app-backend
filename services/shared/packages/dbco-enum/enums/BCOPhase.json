@@ -1,0 +1,43 @@
+{
+    "phpClass": "BCOPhase",
+    "tsConst": "bcoPhase",
+    "description": "BCO phase",
+    "default": "5",
+    "items": [
+        {
+            "label": "Geen Fase",
+            "value": "none",
+            "name": "phaseNone"
+        },
+        {
+            "label": "Fase 1",
+            "value": "1",
+            "name": "phase1"
+        },
+        {
+            "label": "Fase 2",
+            "value": "2",
+            "name": "phase2"
+        },
+        {
+            "label": "Fase 3",
+            "value": "3",
+            "name": "phase3"
+        },
+        {
+            "label": "Fase 4",
+            "value": "4",
+            "name": "phase4"
+        },
+        {
+            "label": "Fase 5",
+            "value": "5",
+            "name": "phase5"
+        },
+        {
+            "label": "Fase Steekproef",
+            "value": "steekproef",
+            "name": "phaseSteekproef"
+        }
+    ]
+}

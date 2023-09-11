@@ -1,32 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
+use App\Http\View\Composers\HeaderComposer;
+use App\Http\View\Composers\LayoutComposer;
+use App\Http\View\Composers\UserInfoComposer;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
 {
-    /**
-    * Register any application services.
-    *
-    * @return void
-    */
-    public function register()
+    public function boot(): void
     {
-    //
-    }
-
-    /**
-    * Bootstrap any application services.
-    *
-    * @return void
-    */
-    public function boot()
-    {
-        // Using class based composers...
-        View::composer(
-            'navbar', 'App\Http\View\Composers\NavBarComposer'
-        );
+        View::composer('includes/header', HeaderComposer::class);
+        View::composer('includes/userinfo', UserInfoComposer::class);
+        View::composer('*', LayoutComposer::class);
     }
 }

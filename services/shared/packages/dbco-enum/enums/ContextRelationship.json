@@ -1,0 +1,43 @@
+{
+    "phpClass": "ContextRelationship",
+    "tsConst": "contextRelationship",
+    "description": "Context relationship",
+    "items": [
+        {
+            "label": "Medewerker",
+            "value": "staff"
+        },
+        {
+            "label": "Bezoeker",
+            "value": "visitor"
+        },
+        {
+            "label": "Bewoner",
+            "value": "resident"
+        },
+        {
+            "label": "Patiënt",
+            "value": "patient"
+        },
+        {
+            "label": "Docent",
+            "value": "teacher"
+        },
+        {
+            "label": "Student / Leerling",
+            "value": "student"
+        },
+        {
+            "label": "Reiziger/passagier",
+            "value": "traveler"
+        },
+        {
+            "label": "Onbekend",
+            "value": "unknown"
+        },
+        {
+            "label": "Anders",
+            "value": "other"
+        }
+    ]
+}

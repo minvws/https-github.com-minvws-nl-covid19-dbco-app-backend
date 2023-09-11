@@ -1,0 +1,19 @@
+{
+    "phpClass": "DateOperationIdentifier",
+    "tsConst": "dateOperationIdentifier",
+    "default": "default",
+    "items": [
+        {
+            "label": "default",
+            "value": "default"
+        },
+        {
+            "label": "min",
+            "value": "min"
+        },
+        {
+            "label": "max",
+            "value": "max"
+        }
+    ]
+}

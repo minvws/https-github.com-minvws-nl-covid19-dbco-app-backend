@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Jobs\RateLimited\RabbitMQJob;
+
 return [
 
     /*
@@ -67,6 +71,56 @@ return [
             'block_for' => null,
         ],
 
+        'rabbitmq' => [
+
+            'driver' => 'rabbitmq',
+            'queue' => env('RABBITMQ_QUEUE', 'default'),
+
+            'hosts' => [
+                [
+                    'host' => env('RABBITMQ_HOST', '127.0.0.1'),
+                    'port' => env('RABBITMQ_PORT', 5672),
+                    'user' => env('RABBITMQ_USER', 'guest'),
+                    'password' => env('RABBITMQ_PASSWORD', 'guest'),
+                    'vhost' => env('RABBITMQ_VHOST', '/'),
+                ],
+            ],
+
+            'options' => [
+                'ssl_options' => [
+                    'cafile' => env('RABBITMQ_SSL_CAFILE', null),
+                    'local_cert' => env('RABBITMQ_SSL_LOCALCERT', null),
+                    'local_key' => env('RABBITMQ_SSL_LOCALKEY', null),
+                    'verify_peer' => env('RABBITMQ_SSL_VERIFY_PEER', true),
+                    'passphrase' => env('RABBITMQ_SSL_PASSPHRASE', null),
+                ],
+                'heartbeat' => env('RABBITMQ_HEARTBEAT', 3600),
+                'read_write_timeout' => env('RABBITMQ_READ_WRITE_TIMEOUT', 10_800),
+                'queue' => [
+                    'job' => RabbitMQJob::class,
+                ],
+            ],
+
+            'worker' => env('RABBITMQ_WORKER', 'default'),
+
+        ],
+
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Job Batching
+    |--------------------------------------------------------------------------
+    |
+    | The following options configure the database and table that store job
+    | batching information. These options can be updated to any database
+    | connection and table which has been defined by your application.
+    |
+    */
+
+    'batching' => [
+        'database' => env('DB_CONNECTION', 'mysql'),
+        'table' => 'job_batches',
     ],
 
     /*

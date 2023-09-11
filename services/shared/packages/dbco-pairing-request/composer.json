@@ -1,0 +1,22 @@
+{
+    "name": "minvws/dbco-pairing-request",
+    "description": "Shared code for DBCO pairing requests",
+    "require": {
+        "php": "^7.4"
+    },
+    "suggest": {
+        "predis/predis": "^1.1",
+        "minvws/codable": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "MinVWS\\DBCO\\PairingRequest\\": "src/MinVWS/DBCO/PairingRequest/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../packages/*"
+        }
+    ]
+}

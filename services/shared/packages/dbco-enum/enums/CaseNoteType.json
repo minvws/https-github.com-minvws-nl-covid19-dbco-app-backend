@@ -1,0 +1,54 @@
+{
+    "phpClass": "CaseNoteType",
+    "tsConst": "caseNoteType",
+    "items": [
+        {
+            "label": "Notitie toegevoegd bij aanmaken",
+            "value": "case-added"
+        },
+        {
+            "label": "Case teruggegeven aan werkverdeler",
+            "value": "case-returned"
+        },
+        {
+            "label": "Case gecontroleerd, goedgekeurd en case gesloten",
+            "value": "case-checked-approved-closed"
+        },
+        {
+            "label": "Case gecontroleerd, afgekeurd en teruggegeven",
+            "value": "case-checked-rejected-returned"
+        },
+        {
+            "label": "Case niet gecontroleerd en teruggegeven voor controle",
+            "value": "case-not-checked-returned"
+        },
+        {
+            "label": "Case niet gecontroleerd en case gesloten",
+            "value": "case-not-checked-closed"
+        },
+        {
+            "label": "Case direct gesloten",
+            "value": "case-directly-archived"
+        },
+        {
+            "label": "Case heropend",
+            "value": "case-reopened"
+        },
+        {
+            "label": "Case is overgedragen van organisatie",
+            "value": "case-changed-organisation"
+        },
+        {
+            "label": "Notitie door werkverdeler",
+            "value": "case-note"
+        },
+        {
+            "label": "Notitie over index via dossier zoeken",
+            "value": "case-note-index-by-search"
+        },
+        {
+            "label": "Notitie over contact via dossier zoeken",
+            "value": "case-note-contact-by-search"
+        }
+    ]
+}

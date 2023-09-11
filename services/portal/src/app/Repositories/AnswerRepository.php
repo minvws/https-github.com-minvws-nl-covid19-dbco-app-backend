@@ -1,17 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 use App\Models\Answer;
+use App\Models\ContactDetailsAnswer;
+use App\Models\Eloquent\EloquentAnswer;
 use Illuminate\Support\Collection;
 
 interface AnswerRepository
 {
-    public function getAllAnswersByCase(string $caseUuid): Collection;
-
     public function getAllAnswersByTask(string $taskUuid): Collection;
 
-    public function createAnswer(Answer $answer);
+    public function getContactDetailsAnswerByTask(string $taskUuid): ?ContactDetailsAnswer;
 
-    public function updateAnswer(Answer $answer);
+    public function createAnswer(Answer $answer): EloquentAnswer;
+
+    public function updateAnswer(Answer $answer): EloquentAnswer;
 }

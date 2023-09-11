@@ -1,51 +1,114 @@
+@import '@dbco/ui-library/base';
 @import 'variables';
-
-/**
- * Import fonts.
- */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,700&display=swap');
 
 /**
  * Import Bootstrap assets.
  */
-@import "../../node_modules/bootstrap/scss/functions";
-@import "../../node_modules/bootstrap/scss/variables";
-@import "../../node_modules/bootstrap/scss/mixins";
-@import "../../node_modules/bootstrap/scss/root";
-@import "../../node_modules/bootstrap/scss/reboot";
-@import "../../node_modules/bootstrap/scss/type";
-@import "../../node_modules/bootstrap/scss/grid";
-@import "../../node_modules/bootstrap/scss/tables";
-@import "../../node_modules/bootstrap/scss/forms";
-@import "../../node_modules/bootstrap/scss/buttons";
-@import "../../node_modules/bootstrap/scss/transitions";
-@import "../../node_modules/bootstrap/scss/button-group";
-@import "../../node_modules/bootstrap/scss/input-group";
-@import "../../node_modules/bootstrap/scss/custom-forms";
-@import "../../node_modules/bootstrap/scss/nav";
-@import "../../node_modules/bootstrap/scss/navbar";
-@import "../../node_modules/bootstrap/scss/card";
-@import "../../node_modules/bootstrap/scss/list-group";
-@import "../../node_modules/bootstrap/scss/close";
-@import "../../node_modules/bootstrap/scss/modal";
-@import "../../node_modules/bootstrap/scss/popover";
-@import "../../node_modules/bootstrap/scss/utilities";
-@import "../../node_modules/bootstrap/scss/print";
-@import "../../node_modules/bootstrap/scss/pagination";
-@import "../../node_modules/bootstrap/scss/alert";
-@import "../../node_modules/bootstrap/scss/dropdown";
+@import 'bootstrap/scss/bootstrap.scss';
+
+/**
+ * Bootstrap Vue assets
+ */
+@import 'bootstrap-vue/src/index.scss';
+
+html,
+body {
+    min-height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-style: normal;
+    font-size: 14px;
+    line-height: 20px;
+    overflow-x: hidden;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1.25;
+    letter-spacing: 0.5px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1.167;
+}
+
+h3 {
+    font-size: 1.125rem;
+    font-weight: bold;
+    line-height: 1.333;
+    letter-spacing: 0.15px;
+}
+h4 {
+    font-size: 1rem;
+    font-weight: bold;
+    line-height: 1.25;
+    letter-spacing: 0.15px;
+}
+
+ol.list,
+ul.list {
+    padding-left: 1rem;
+
+    li {
+        margin-bottom: 0.5rem;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.highlight {
+    color: $bco-purple;
+}
+
+.mono-font {
+    font-family: Roboto Mono;
+    font-size: 14px;
+    font-style: normal;
+    letter-spacing: 0.15px;
+}
+
+[v-cloak] {
+    display: none;
+}
+
+// Mixins
+@import 'mixins/gap';
 
 /**
  * Import overrides.
  */
-@import "calendar";
-@import "icon";
-@import "questionform";
-@import "login";
-@import "nav-tabs";
-@import "table";
-@import "support";
-@import "sidebar";
-@import "custombootstrap";
-@import "export";
-@import "autocomplete-dropdown";
+@import 'animations';
+@import 'badge';
+@import 'banner';
+@import 'section';
+@import 'buttons';
+@import 'calendar';
+@import 'clipboard';
+@import 'consent';
+@import 'custombootstrap';
+@import 'dbco-components';
+@import 'form-chapter';
+@import 'form-heading';
+@import 'form';
+@import 'icon-categories';
+@import 'icon';
+@import 'login';
+@import 'modal';
+@import 'nav-bar';
+@import 'nav-tabs';
+@import 'place-select';
+@import 'privacy';
+@import 'spinner';
+@import 'sticky-top';
+@import 'support';
+@import 'table';
+@import 'tabs';
+@import 'tooltip';

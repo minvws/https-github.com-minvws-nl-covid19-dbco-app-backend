@@ -1,0 +1,388 @@
+{
+    "phpClass": "ContextCategory",
+    "tsConst": "contextCategory",
+    "description": "Context categories.",
+    "properties": {
+        "description": {
+            "type": "string",
+            "description": "Description",
+            "scope": "ts"
+        },
+        "group": {
+            "type": "ContextCategoryGroup",
+            "description": "Category group",
+            "scope": "shared"
+        },
+        "suggestionGroup": {
+            "type": "string",
+            "description": "Suggestion group",
+            "scope": "shared"
+        }
+    },
+    "items": [
+        {
+            "value": "restaurant",
+            "label": "Restaurant / Café",
+            "description": "O.a. lunchroom, kroeg",
+            "group": "horeca",
+            "suggestionGroup": "horeca"
+        },
+        {
+            "value": "club",
+            "label": "Club / Disco",
+            "description": null,
+            "group": "horeca",
+            "suggestionGroup": "horeca"
+        },
+        {
+            "value": "accomodatie_binnenland",
+            "label": "Accommodatie binnenland",
+            "description": "O.a. hotel, B&B, camping, vakantiepark of -huis",
+            "group": "horeca",
+            "suggestionGroup": "accommodatie"
+        },
+        {
+            "value": "retail",
+            "label": "Retail, detailhandel",
+            "description": "O.a. winkel, supermarkt, tuin- of bouwcentrum, woonboulevard",
+            "group": "horeca",
+            "suggestionGroup": "retail"
+        },
+        {
+            "value": "evenement_vast",
+            "label": "Evenement / Attractie met vaste zitplekken",
+            "description": "O.a. theater, bioscoop, sportwedstrijd",
+            "group": "horeca",
+            "suggestionGroup": "evenement"
+        },
+        {
+            "value": "evenement_zonder",
+            "label": "Evenement / Attractie zonder vaste zitplekken",
+            "description": "O.a. pretpark, museum, festival, dierentuin, beurs, demonstratie",
+            "group": "horeca",
+            "suggestionGroup": "evenement"
+        },
+        {
+            "value": "zwembad",
+            "label": "Zwembad / Sauna",
+            "description": null,
+            "group": "horeca",
+            "suggestionGroup": "zwembad"
+        },
+        {
+            "value": "horeca_overig",
+            "label": "Overige horeca / Retail / Entertainment",
+            "description": "O.a. kapper, beautysalon, massagesalon",
+            "group": "horeca",
+            "suggestionGroup": "horeca_overig"
+        },
+        {
+            "value": "asielzoekerscentrum",
+            "label": "Asielzoekerscentrum",
+            "description": "O.a. aanmeld- en opvangcentrum AZC",
+            "group": "opvang",
+            "suggestionGroup": "maatschappelijke_opvang"
+        },
+        {
+            "value": "penitentiaire_instelling",
+            "label": "Penitentiaire instelling",
+            "description": "O.a. huis van bewaring, tbs-kliniek, semi-residentieel volwassen",
+            "group": "opvang",
+            "suggestionGroup": "maatschappelijke_opvang"
+        },
+        {
+            "value": "residentiele_jeugdinstelling",
+            "label": "(Semi-)residentiele jeugdinstelling",
+            "description": null,
+            "group": "opvang",
+            "suggestionGroup": "maatschappelijke_opvang"
+        },
+        {
+            "value": "opvang_overig",
+            "label": "Overige maatschappelijke opvang",
+            "description": "O.a. thuis- en dakloos, crisis, blijf-van-mijn-lijf, verslaving",
+            "group": "opvang",
+            "suggestionGroup": "maatschappelijke_opvang"
+        },
+        {
+            "value": "kinder_opvang",
+            "label": "Kinderdagverblijf / Kinderopvang / BSO",
+            "description": "Ook medisch kinderdagverblijf, peuterspeelzaal",
+            "group": "onderwijs",
+            "suggestionGroup": "kinderopvang"
+        },
+        {
+            "value": "basis_onderwijs",
+            "label": "Basisonderwijs",
+            "description": "Ook speciaal basisonderwijs",
+            "group": "onderwijs",
+            "suggestionGroup": "onderwijs"
+        },
+        {
+            "value": "voortgezet_onderwijs",
+            "label": "Voortgezet Onderwijs",
+            "description": "Ook speciaal voortgezet onderwijs, praktijkschool",
+            "group": "onderwijs",
+            "suggestionGroup": "onderwijs"
+        },
+        {
+            "value": "mbo",
+            "label": "MBO",
+            "description": null,
+            "group": "onderwijs",
+            "suggestionGroup": "onderwijs"
+        },
+        {
+            "value": "hbo_universiteit",
+            "label": "HBO of WO (Universiteit)",
+            "description": null,
+            "group": "onderwijs",
+            "suggestionGroup": "onderwijs"
+        },
+        {
+            "value": "buitenland",
+            "label": "Buitenland reis",
+            "description": "O.a. vakantie, zakenreis, bezoek familie/vrienden, groepsreis",
+            "group": "transport",
+            "suggestionGroup": "buitenland"
+        },
+        {
+            "value": "zee_transport",
+            "label": "Schip / Zee- en binnenvaart / Haven",
+            "description": "O.a. zee-, binnenvaart vracht, zee-, riviercruise",
+            "group": "transport",
+            "suggestionGroup": "zee_transport"
+        },
+        {
+            "value": "vlieg_transport",
+            "label": "Vliegreis / Luchthaven",
+            "description": null,
+            "group": "transport",
+            "suggestionGroup": "vlieg_transport"
+        },
+        {
+            "value": "transport_overige",
+            "label": "Overig transport",
+            "description": "O.a openbaar vervoer, taxi, treinstation, tankstation",
+            "group": "transport",
+            "suggestionGroup": "reizen_vervoer_overig"
+        },
+        {
+            "value": "thuis",
+            "label": "Thuissituatie",
+            "description": "Ziektegevallen huisgenoten of niet-samenwonende partner",
+            "group": "thuis",
+            "suggestionGroup": "thuissituatie_bezoek"
+        },
+        {
+            "value": "bezoek",
+            "label": "Bezoek in de thuissituatie",
+            "description": "O.a. van of bij familie, vrienden",
+            "group": "thuis",
+            "suggestionGroup": "thuissituatie_bezoek"
+        },
+        {
+            "value": "groep",
+            "label": "Studentenhuis",
+            "description": "O.a. zelfstandig of gedeelde voorzieningen",
+            "group": "thuis",
+            "suggestionGroup": "thuissituatie_bezoek"
+        },
+        {
+            "value": "feest",
+            "label": "Feest / Groepsbijeenkomst privésfeer",
+            "description": "O.a. borrel, etentje, verjaardag",
+            "group": "thuis",
+            "suggestionGroup": "thuissituatie_bezoek"
+        },
+        {
+            "value": "bruiloft",
+            "label": "Bruiloft",
+            "description": "Alleen wanneer niet bij restaurant / evenentenlocatie / kerk",
+            "group": "thuis",
+            "suggestionGroup": "thuissituatie_bezoek"
+        },
+        {
+            "value": "uitvaart",
+            "label": "Uitvaart",
+            "description": "O.a. ceremonie, receptie, wake",
+            "group": "thuis",
+            "suggestionGroup": "thuissituatie_bezoek"
+        },
+        {
+            "value": "religie",
+            "label": "Religieuze bijeenkomst",
+            "description": "O.a. kerkdienst, suikerfeest, doop, bar mitswa",
+            "group": "vereniging",
+            "suggestionGroup": "religieuze_bijeenkomst"
+        },
+        {
+            "value": "koor",
+            "label": "Koor",
+            "description": null,
+            "group": "vereniging",
+            "suggestionGroup": "koor"
+        },
+        {
+            "value": "studentenverening",
+            "label": "Studentenverening-activiteiten",
+            "description": "O.a. introductieweek, feest, kamp, borrel, vergadering",
+            "group": "vereniging",
+            "suggestionGroup": "studentenverening"
+        },
+        {
+            "value": "sport",
+            "label": "Sportclub/ -school",
+            "description": "O.a. binnen- en buitensport, sportkantine- en hal",
+            "group": "vereniging",
+            "suggestionGroup": "sport"
+        },
+        {
+            "value": "vereniging_overige",
+            "label": "Overige verenigingen",
+            "description": "O.a schilderclub, muziekschool, fotografieclub, scouting",
+            "group": "vereniging",
+            "suggestionGroup": "vereniging_overige"
+        },
+        {
+            "value": "verpleeghuis",
+            "label": "Verpleeghuis of woonzorgcentrum",
+            "description": "O.a. revalidatiecentrum, gemengd wonen, verzorgingshuis",
+            "group": "vvt",
+            "suggestionGroup": "zorg"
+        },
+        {
+            "value": "instelling",
+            "label": "Instelling voor verstandelijk en/of lichamelijk beperkten",
+            "description": "Ook logeerhuis",
+            "group": "vvt",
+            "suggestionGroup": "zorg"
+        },
+        {
+            "value": "ggz_instelling",
+            "label": "GGZ-instelling (geestelijke gezondheidszorg)",
+            "description": "O.a. geriatrische psychiatrie, PAAZ, intramurale verslavingszorg",
+            "group": "vvt",
+            "suggestionGroup": "zorg"
+        },
+        {
+            "value": "begeleid",
+            "label": "Begeleid kleinschalig wonen",
+            "description": "O.a. psychiatrie, ouderenzorg, beschermd wonen",
+            "group": "vvt",
+            "suggestionGroup": "zorg"
+        },
+        {
+            "value": "dagopvang",
+            "label": "Dagopvang",
+            "description": "O.a. psychiatrie, ouderen, verstandelijk of lichamelijk beperkten",
+            "group": "vvt",
+            "suggestionGroup": "zorg"
+        },
+        {
+            "value": "thuiszorg",
+            "label": "Thuiszorg",
+            "description": "Ook kraamzorg",
+            "group": "vvt",
+            "suggestionGroup": "zorg"
+        },
+        {
+            "value": "ziekenhuis",
+            "label": "Ziekenhuis",
+            "description": "O.a. spoedeisende hulp, polikliniek",
+            "group": "zorg",
+            "suggestionGroup": "zorg_overig"
+        },
+        {
+            "value": "huisarts",
+            "label": "Huisartsen praktijk",
+            "description": null,
+            "group": "zorg",
+            "suggestionGroup": "zorg_overig"
+        },
+        {
+            "value": "zorg_overig",
+            "label": "Overige gezondheidzorg",
+            "description": "O.a. tandarts, fysiotherapie, psycholoog, ambulance, jeugdzorg",
+            "group": "zorg",
+            "suggestionGroup": "zorg_overig"
+        },
+        {
+            "value": "omgeving_buiten",
+            "label": "Omgeving (buiten)",
+            "description": "O.a. natuurgebied, bos, park, plein",
+            "group": "overig",
+            "suggestionGroup": "overig"
+        },
+        {
+            "value": "water_buiten",
+            "label": "Water (buiten)",
+            "description": "O.a. zwemplas, strand (let op: NIET Zwembad / Sauna)",
+            "group": "overig",
+            "suggestionGroup": "overig"
+        },
+        {
+            "value": "dieren",
+            "label": "Dieren",
+            "description": "O.a. kinderboerderij of dierenarts",
+            "group": "overig",
+            "suggestionGroup": "overig"
+        },
+        {
+            "value": "overig",
+            "label": "Overig",
+            "description": "Alleen als context niet onder andere categorie past",
+            "group": "overig",
+            "suggestionGroup": "overig"
+        },
+        {
+            "value": "vleesverwerking_slachthuis",
+            "label": "Vleesverwerking / Slachthuis",
+            "description": null,
+            "group": "anders",
+            "suggestionGroup": "vleesverwerking_slachthuis"
+        },
+        {
+            "value": "land_en_tuinbouw",
+            "label": "Land- en tuinbouw",
+            "description": "O.a. kas, kwekerij, veeteelt, (bloemen)veiling ",
+            "group": "anders",
+            "suggestionGroup": "land_en_tuinbouw"
+        },
+        {
+            "value": "bouw",
+            "label": "Bouw",
+            "description": "O.a. project binnen of buiten",
+            "group": "anders",
+            "suggestionGroup": "bouw"
+        },
+        {
+            "value": "fabriek",
+            "label": "Fabriek",
+            "description": "O.a. voeding, textiel, hout, electronica",
+            "group": "anders",
+            "suggestionGroup": "fabriek"
+        },
+        {
+            "value": "kantoor_overige_branche",
+            "label": "Kantoor overige branche",
+            "description": "Alleen als context niet onder andere categorie past",
+            "group": "anders",
+            "suggestionGroup": "kantoor_overige_branche"
+        },
+        {
+            "value": "overige_andere_werkplek",
+            "label": "Overige andere werkplek",
+            "description": "Alleen als context niet onder andere categorie past",
+            "group": "anders",
+            "suggestionGroup": "overige_andere_werkplek"
+        },
+        {
+            "value": "onbekend",
+            "label": "Onbekend",
+            "description": null,
+            "group": "onbekend",
+            "suggestionGroup": "overig"
+        }
+    ]
+}

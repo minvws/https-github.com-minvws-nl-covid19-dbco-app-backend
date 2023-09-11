@@ -1,0 +1,33 @@
+{
+    "phpClass": "IndexStatus",
+    "tsConst": "indexStatus",
+    "description": "Index status for case",
+    "default": "initial",
+    "items": [
+        {
+            "label": "Koppelcode gedeeld",
+            "value": "initial"
+        },
+        {
+            "label": "Pairing request geaccepteerd",
+            "value": "pairing_request_accepted",
+            "name": "pairingRequestAccepted"
+        },
+        {
+            "label": "Nog niets ontvangen",
+            "value": "paired"
+        },
+        {
+            "label": "Gegevens aangeleverd",
+            "value": "delivered"
+        },
+        {
+            "label": "Verlopen",
+            "value": "timeout"
+        },
+        {
+            "label": "Koppelcode verlopen",
+            "value": "expired"
+        }
+    ]
+}

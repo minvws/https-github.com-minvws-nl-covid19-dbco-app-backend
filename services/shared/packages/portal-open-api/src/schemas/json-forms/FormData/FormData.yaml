@@ -1,0 +1,12 @@
+type: object
+allOf:
+    - $ref: ../FormMetaData/FormMetaData.yaml
+patternProperties:
+    '^[a-zA-Z]+$':
+        description: FormData can contain any data type except `null`
+        type:
+            - number
+            - string
+            - boolean
+            - object
+            - array
